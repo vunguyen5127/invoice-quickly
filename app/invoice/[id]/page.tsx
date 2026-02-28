@@ -1,0 +1,126 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { getInvoiceById } from "./actions";
+import { deleteInvoice } from "@/app/dashboard/actions";
+import { InvoicePreview } from "@/components/invoice-preview";
+import { generatePDF } from "@/utils/generate-pdf";
+import { InvoiceState } from "@/types/invoice";
+import { ArrowLeft, Download, Trash2, Loader2 } from "lucide-react";
+import Link from "next/link";
+
+export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const [invoice, setInvoice] = useState<InvoiceState | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!supabase) return;
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push("/login?redirect=/dashboard");
+        return;
+      }
+
+      const { id } = await params;
+      const data = await getInvoiceById(id);
+      
+      if (data) {
+        setInvoice(data);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [params, router]);
+
+  const handleDownload = async () => {
+    if (!invoice) return;
+    setIsGenerating(true);
+    await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+    setIsGenerating(false);
+  };
+
+  const handleDelete = async () => {
+    if (confirm("Are you sure you want to delete this invoice?")) {
+      const { id } = await params;
+      const success = await deleteInvoice(id);
+      if (success) {
+        router.push("/dashboard");
+      } else {
+        alert("Failed to delete invoice");
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  if (!invoice) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center max-w-xl">
+        <h1 className="text-2xl font-bold mb-4 text-zinc-900 dark:text-zinc-100">Invoice Not Found</h1>
+        <p className="text-zinc-500 mb-8">This invoice either doesn't exist or you don't have permission to view it.</p>
+        <Link 
+          href="/dashboard"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 font-medium transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" /> Return to Dashboard
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <div className="flex items-center gap-4">
+          <Link
+            href="/dashboard"
+            className="p-2 -ml-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:text-white dark:hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Invoice #{invoice.details.invoiceNumber}
+            </h1>
+            <p className="text-sm text-zinc-500">{invoice.client.name}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <button
+            onClick={handleDelete}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 font-medium transition-colors border border-red-200 dark:border-red-900/30"
+          >
+            <Trash2 className="w-4 h-4" /> Delete
+          </button>
+          <button
+            onClick={handleDownload}
+            disabled={isGenerating}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors disabled:opacity-75 shadow-sm"
+          >
+            <Download className="w-4 h-4" /> {isGenerating ? "Generating..." : "Download PDF"}
+          </button>
+        </div>
+      </div>
+
+      <div className="w-full overflow-x-auto rounded-2xl shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10 dark:shadow-none bg-zinc-200/50 dark:bg-zinc-900/80 p-2 sm:p-8 flex justify-center">
+        <div className="transform origin-top transition-transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100">
+          <InvoicePreview invoice={invoice} />
+        </div>
+      </div>
+    </div>
+  );
+}
