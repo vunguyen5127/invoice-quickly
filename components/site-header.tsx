@@ -16,17 +16,18 @@ export function SiteHeader() {
   useEffect(() => {
     if (!supabase) return;
     const checkUser = async () => {
+      if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       setHasUser(!!session?.user);
     };
     checkUser();
 
-    // @ts-ignore - Handle possible null supabase client strictly inside the effect since null check is above
+    // @ts-ignore
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setHasUser(!!session?.user);
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, []);
 
   // Hide global header on editor pages so they can render their own custom sticky header
