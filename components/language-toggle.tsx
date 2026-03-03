@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Globe, Check } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 const languages = [
   { code: "EN", name: "English" },
@@ -29,7 +30,7 @@ const languages = [
 ];
 
 export function LanguageToggle() {
-  const [lang, setLang] = useState("EN");
+  const { lang, setLang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -46,14 +47,13 @@ export function LanguageToggle() {
   const selectLang = (code: string) => {
     setLang(code);
     setIsOpen(false);
-    // Future: Connect this to actual i18n localization logic
   };
 
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center rounded-full p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="inline-flex items-center justify-center rounded-[5px] p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         aria-label="Select language"
         title="Select language"
         aria-expanded={isOpen}
@@ -63,7 +63,7 @@ export function LanguageToggle() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+        <div className="absolute right-0 top-full mt-2 w-48 rounded-[5px] bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
           <div className="py-1 flex flex-col max-h-80 overflow-y-auto custom-scrollbar">
             {languages.map((l) => (
               <button

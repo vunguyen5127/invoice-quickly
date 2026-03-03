@@ -63,7 +63,7 @@ export function AuthButton() {
 
   if (loading) {
     return (
-      <button className="inline-flex items-center justify-center rounded-full px-4 text-sm font-medium h-9 text-zinc-500 bg-zinc-100 dark:bg-zinc-800 disabled">
+      <button className="inline-flex items-center justify-center rounded-[5px] px-4 text-sm font-medium h-9 text-zinc-500 bg-zinc-100 dark:bg-zinc-800 disabled">
         <Loader2 className="w-4 h-4 animate-spin" />
       </button>
     );
@@ -81,7 +81,7 @@ export function AuthButton() {
           // eslint-disable-next-line @next/next/no-img-element
           <button
             onClick={toggleDropdown}
-            className="rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700 hover:ring-2 hover:ring-zinc-300 dark:hover:ring-zinc-600 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="rounded-[5px] overflow-hidden border border-zinc-200 dark:border-zinc-700 hover:ring-2 hover:ring-zinc-300 dark:hover:ring-zinc-600 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label="User menu"
             aria-expanded={isOpen}
           >
@@ -99,7 +99,7 @@ export function AuthButton() {
               className="fixed inset-0 z-40" 
               onClick={() => setIsOpen(false)}
             />
-            <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2">
+            <div className="absolute right-0 top-full mt-2 w-48 rounded-[5px] bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2">
               <div className="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800">
                 <p className="text-sm text-zinc-900 dark:text-white font-medium truncate">
                   {user.user_metadata?.name || user.email}
@@ -141,7 +141,7 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="inline-flex items-center justify-center gap-2 rounded-full px-4 h-9 text-sm font-medium transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+      className="inline-flex items-center justify-center gap-2 rounded-[5px] px-4 h-9 text-sm font-medium transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
       aria-label="Sign in with Google"
     >
       <LogIn className="w-4 h-4" />

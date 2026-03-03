@@ -3,6 +3,7 @@
 import React from "react";
 import { InvoiceState } from "@/types/invoice";
 import { format } from "date-fns";
+import { useLanguage } from "@/contexts/language-context";
 
 interface InvoicePreviewProps {
   invoice: InvoiceState;
@@ -21,6 +22,7 @@ const getSymbol = (currency: string) => {
 }
 
 export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewProps) {
+  const { t } = useLanguage();
   const symbol = getSymbol(invoice.currency);
 
   const subTotal = invoice.items.reduce((acc, item) => acc + (item.quantity * item.rate), 0);
@@ -46,153 +48,157 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
 
   return (
     <div 
-      className="bg-white text-zinc-900 mx-auto overflow-hidden sm:rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-zinc-900/5 transition-transform duration-100" 
+      className="bg-white text-zinc-900 mx-auto overflow-hidden sm:rounded-[5px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-zinc-900/5 transition-transform duration-100" 
       style={{
         width: "100%",
         maxWidth: "210mm",     // A4 width
-        minHeight: "297mm",    // A4 height
-        padding: "40mm 20mm 40mm 20mm", // standard margins
       }}
     >
-      <div id="invoice-capture-area" className="w-full h-full bg-white print:p-0 flex flex-col" style={{ padding: '0 20px' }}>
+      <div 
+        id="invoice-capture-area" 
+        className="w-full bg-white flex flex-col font-mono text-zinc-900" 
+        style={{ 
+          minHeight: "297mm",    // A4 height
+          padding: "16mm 16mm",  // Standard margins
+        }}
+      >
         
-        {/* Header */}
-        <div className="flex justify-between items-start border-b border-zinc-200 pb-8 mb-8">
-          <div className="flex-1">
-            <h1 className="text-4xl font-light text-zinc-900 tracking-tight mb-2">INVOICE</h1>
-            <p className="text-sm font-medium text-zinc-500 uppercase tracking-widest">
-              #{invoice.details.invoiceNumber}
-            </p>
-          </div>
-          <div className="text-right flex-1 min-w-0 flex flex-col items-end">
-            {invoice.company.logo && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={invoice.company.logo} alt="Company Logo" className="max-w-[150px] max-h-[80px] object-contain mb-4 mix-blend-multiply" />
-            )}
-            <h2 className="text-2xl font-semibold text-zinc-900 mb-2 truncate max-w-full">{invoice.company.name}</h2>
-            <div className="text-sm text-zinc-600 space-y-1">
-              <p className="whitespace-pre-wrap">{invoice.company.address}</p>
-              <p>{invoice.company.email}</p>
-              {invoice.company.phone && <p>{invoice.company.phone}</p>}
-            </div>
-          </div>
-        </div>
-
-        {/* Client & Dates */}
-        <div className="flex justify-between mb-12">
-          <div className="flex-1">
-            <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-2">Billed To</p>
-            <h3 className="text-lg font-semibold text-zinc-900 mb-1">{invoice.client.name}</h3>
-            <div className="text-sm text-zinc-600 space-y-1">
-              <p className="whitespace-pre-wrap">{invoice.client.address}</p>
-              <p>{invoice.client.email}</p>
-              {invoice.client.phone && <p>{invoice.client.phone}</p>}
-            </div>
-          </div>
-          <div className="text-right flex-1 space-y-4">
-            <div>
-              <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-1">Date of Issue</p>
-              <p className="text-sm font-semibold text-zinc-900">{formatDate(invoice.details.issueDate)}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-1">Due Date</p>
-              <p className="text-sm font-semibold text-zinc-900">{formatDate(invoice.details.dueDate)}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Items Table */}
-        <div className="mb-12 flex-1">
-          <div className="w-full text-left">
-            <div className="border-b-2 border-zinc-900 pb-3 mb-3 flex px-2">
-              <div className="font-semibold text-sm uppercase tracking-wider flex-1">Description</div>
-              <div className="font-semibold text-sm uppercase tracking-wider w-24 text-right">Rate</div>
-              <div className="font-semibold text-sm uppercase tracking-wider w-20 text-right">Qty</div>
-              <div className="font-semibold text-sm uppercase tracking-wider w-28 text-right">Line Total</div>
-            </div>
-            
-            <div className="space-y-3">
-              {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
-                <div key={item.id} className="flex px-2 py-2 border-b border-zinc-100 last:border-0 hover:bg-zinc-50 transition-colors rounded-sm">
-                  <div className="text-sm text-zinc-900 flex-1 pr-4">{item.description || "-"}</div>
-                  <div className="text-sm text-zinc-600 w-24 text-right">{symbol}{item.rate.toFixed(2)}</div>
-                  <div className="text-sm text-zinc-600 w-20 text-right">{item.quantity}</div>
-                  <div className="text-sm font-medium text-zinc-900 w-28 text-right">{symbol}{(item.quantity * item.rate).toFixed(2)}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Calculations */}
-        <div className="flex justify-end mb-12">
-          <div className="w-full max-w-sm space-y-3 bg-white rounded-lg p-6 ring-1 ring-zinc-900/5">
-            <div className="flex justify-between text-sm text-zinc-600">
-              <span>Subtotal</span>
-              <span>{symbol}{subTotal.toFixed(2)}</span>
-            </div>
-            
-            {invoice.discount > 0 && (
-              <div className="flex justify-between text-sm text-red-500">
-                <span>Discount {invoice.discountType === 'percentage' ? `(${invoice.discount}%)` : ''}</span>
-                <span>-{symbol}{discountAmount.toFixed(2)}</span>
-              </div>
-            )}
-            
-            {invoice.taxRate > 0 && (
-              <div className="flex justify-between text-sm text-zinc-600">
-                <span>Tax ({invoice.taxRate}%)</span>
-                <span>{symbol}{taxAmount.toFixed(2)}</span>
-              </div>
-            )}
-            
-            <div className="flex justify-between items-center text-[22px] font-extrabold border-t border-zinc-200 pt-4 mt-2 text-zinc-950 bg-blue-50/50 px-4 py-3 rounded-xl">
-              <span>Total Due</span>
-              <span className="text-blue-700">{symbol}{total.toFixed(2)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer & Signature */}
-        <div className="mt-auto border-t border-zinc-200 pt-8 pt-auto flex flex-col sm:flex-row justify-between items-end gap-8">
-          <div className="text-sm text-zinc-500 max-w-sm text-left">
-            {invoice.notes && (
-              <div className="mb-4">
-                <strong className="text-zinc-700 block mb-1">Notes</strong>
-                <p className="whitespace-pre-wrap">{invoice.notes}</p>
-              </div>
-            )}
-            {invoice.terms && (
-              <div>
-                <strong className="text-zinc-700 block mb-1">Terms</strong>
-                <p className="whitespace-pre-wrap">{invoice.terms}</p>
-              </div>
-            )}
-          </div>
-          
-          {/* Signature Zone */}
-          {invoice.signature && (
-             <div className="flex flex-col items-center">
-               <div className="w-48 h-24 flex flex-col items-center justify-end">
-                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                 <img src={invoice.signature} alt="Signature" className="max-w-full max-h-[80px] object-contain mix-blend-multiply" />
-               </div>
-               
-               {/* Only show the text if a name is actually provided */}
-               {invoice.signatureName && invoice.signatureName.trim() !== "" && (
-                 <div className="w-48 mt-2 text-center text-sm font-semibold text-zinc-900">
-                   {invoice.signatureName}
-                 </div>
-               )}
+        {/* Top Company Logo/Name Row */}
+        <div className="flex justify-between items-start mb-8">
+           <div className="space-y-1">
+             <h2 className="text-2xl font-black tracking-tighter uppercase">{invoice.company.name.split(/,|\n/)[0]}</h2>
+             <div className="text-[12px] text-zinc-500 max-w-xs">
+                {invoice.company.name.split(/,|\n/).slice(1).map((line, idx) => (
+                  <p key={idx}>{line.trim()}</p>
+                ))}
              </div>
+           </div>
+           <div className="shrink-0">
+             {invoice.company.logo && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={invoice.company.logo} alt="Company Logo" className="max-w-[120px] max-h-[50px] object-contain mix-blend-multiply" />
+            )}
+           </div>
+        </div>
+
+        {/* 2-Column Header Area */}
+        <div className="flex justify-between md:grid-cols-2 gap-8 mb-10 text-[13px]">
+           {/* Bill To */}
+           <div>
+             <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.billedTo || "Bill To"}</p>
+             <div className="text-zinc-600 space-y-0.5 leading-tight">
+               <p className="font-bold text-zinc-900 text-[15px]">{invoice.client.name}</p>
+               <p className="whitespace-pre-wrap">{invoice.client.address}</p>
+               <p>{invoice.client.email}</p>
+             </div>
+           </div>
+
+           {/* Invoice Details Block */}
+           <div className="text-right">
+              <div className="inline-grid grid-cols-2 gap-x-4 gap-y-1 text-left">
+                <span className="font-bold pr-4">Invoice #</span>
+                <span className="text-zinc-600">{invoice.details.invoiceNumber}</span>
+                
+                <span className="font-bold pr-4">Invoice Date</span>
+                <span className="text-zinc-600">{formatDate(invoice.details.issueDate)}</span>
+                
+                <span className="font-bold pr-4">Due Date</span>
+                <span className="text-zinc-600">{formatDate(invoice.details.dueDate)}</span>
+              </div>
+           </div>
+        </div>
+
+        {/* Full Grid Table */}
+        <div className="mb-0 flex-1">
+          <table className="w-full border-collapse border border-zinc-300">
+            <thead>
+              <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
+                <th className="w-16 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Qty</th>
+                <th className="py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Description</th>
+                <th className="w-32 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Unit Price</th>
+                <th className="w-32 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Amount</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-300">
+              {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
+                <tr key={item.id} className="divide-x divide-zinc-300">
+                  <td className="py-3 px-3 text-center align-top">{item.quantity}</td>
+                  <td className="py-3 px-3 text-left align-top">{item.description || "-"}</td>
+                  <td className="py-3 px-3 text-right align-top">{item.rate.toFixed(2)}</td>
+                  <td className="py-3 px-3 text-right align-top font-bold">{(item.quantity * item.rate).toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Table Summary Section - Boxed Values Style */}
+          <div className="flex justify-end mt-0">
+            <div className="w-[calc(18rem+2px)]"> 
+              <div className="flex border-x border-b border-zinc-300 divide-zinc-300">
+                <div className="flex-1 py-3 px-4 text-right font-bold text-[14px] bg-white">Subtotal</div>
+                <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-zinc-300">{subTotal.toFixed(2)}</div>
+              </div>
+
+              {invoice.taxRate > 0 && (
+                <div className="flex border-x border-b border-zinc-300 divide-zinc-300">
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px] bg-white">Sales Tax {invoice.taxRate.toFixed(1)}%</div>
+                  <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-zinc-300">{taxAmount.toFixed(2)}</div>
+                </div>
+              )}
+
+              {invoice.discount > 0 && (
+                <div className="flex border-x border-b border-zinc-300 divide-zinc-300 text-red-600">
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Discount</div>
+                  <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-zinc-300">-{discountAmount.toFixed(2)}</div>
+                </div>
+              )}
+
+              <div className="flex border-x border-b-2 border-zinc-300 divide-zinc-300 bg-zinc-50">
+                <div className="flex-1 py-4 px-4 text-right font-black text-xl uppercase tracking-tighter">TOTAL</div>
+                <div className="w-32 py-4 px-4 text-right font-black text-xl border-l border-zinc-300">
+                  {symbol}{total.toFixed(2)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Signature Area - Positioned right below Summary */}
+        <div className="mt-8 flex justify-end">
+           {invoice.signature && (
+             <div className="flex flex-col items-center">
+                <div className="mb-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain mix-blend-multiply" />
+                </div>
+                {invoice.signatureName && (
+                  <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
+                )}
+             </div>
+           )}
+        </div>
+
+        {/* Footer Notes & Terms - Bottom of Page */}
+        <div className="mt-auto pt-16">
+          {invoice.notes && (
+            <div className="mb-6">
+              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">Notes</p>
+              <p className="text-[13px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
+            </div>
+          )}
+          {invoice.terms && (
+            <div className="mb-8">
+              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">Terms & Conditions</p>
+              <p className="text-[13px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
+            </div>
           )}
         </div>
-        
-        {/* Watermark Section */}
+
+        {/* App Watermark */}
         {!isLoggedIn && (
-           <div className="text-center pb-6 mt-8">
-             <span className="text-xs font-medium text-zinc-300 pointer-events-none select-none">
-               Created with InvoiceQuickly
+           <div className="text-center pb-6 mt-12 bg-white">
+             <span className="text-[10px] font-medium text-zinc-300 pointer-events-none select-none italic">
+               {t.watermark}
              </span>
            </div>
         )}

@@ -90,7 +90,7 @@ export default function Dashboard() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full -mr-32 -mt-32 pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 blur-3xl rounded-full -ml-32 -mb-32 pointer-events-none"></div>
           
-          <div className="w-20 h-20 bg-gradient-to-tr from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50 shadow-inner">
+          <div className="w-20 h-20 bg-gradient-to-tr from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-[5px] flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50 shadow-inner">
             <Building2 className="w-10 h-10" />
           </div>
           <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-3 relative z-10">Create Your First Company</h3>
@@ -120,8 +120,13 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-2xl rounded-full -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
                 <div className="flex justify-between items-start mb-6 relative">
-                  <div className="w-14 h-14 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-800/50 rounded-2xl flex items-center justify-center border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                     <Building2 className="w-7 h-7 text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-800/50 rounded-[5px] flex items-center justify-center border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm group-hover:scale-105 transition-transform duration-300 overflow-hidden bg-white">
+                    {company.logo_url ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
+                    ) : (
+                      <Building2 className="w-7 h-7 text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                    )}
                   </div>
                   <div className="flex items-center gap-1 z-10 transition-opacity">
                     <button

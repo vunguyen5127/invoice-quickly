@@ -62,39 +62,84 @@ body {
     background: transparent;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    margin: 0;
+    padding: 0;
   }
 
-  /* Hide everything except the element with id="invoice-capture-area" */
-  body * {
-    visibility: hidden;
+  /* Reset all transforms and positions to prevent CSS scale from breaking print layout */
+  html,
+  body,
+  .min-h-screen {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
   }
 
-  /* We need to make the capture area and all its children visible */
   #invoice-capture-area,
   #invoice-capture-area * {
-    visibility: visible;
+    transform: none !important;
+    transition: none !important;
   }
 
-  /* Position it absolutely to the top left so it fills the printed page */
-  #invoice-capture-area {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 210mm !important;
-    /* Force A4 exact width */
-    height: 297mm !important;
-    /* Force A4 exact height */
+  /* Hide header and any UI not part of the preview */
+  header,
+  nav,
+  [role="banner"],
+  .container>.flex-col.xl\:flex-row>div:first-child,
+  .sm\:hidden.fixed.bottom-0 {
+    display: none !important;
+  }
+
+  /* The container holding the invoice should just take up normal flow space without scrolling or scaling */
+  .container,
+  .container>.flex-col.xl\:flex-row>div:last-child,
+  .overflow-x-auto {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
     margin: 0 !important;
-    padding: 20mm !important;
-    box-sizing: border-box;
+    width: 100% !important;
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
     box-shadow: none !important;
     border: none !important;
+    background: transparent !important;
+  }
+
+  /* Target the scale wrapper and reset it */
+  .transform.origin-top {
+    transform: none !important;
+    scale: 1 !important;
+    width: 100% !important;
+  }
+
+  /* 
+  Hide the action buttons explicitly.
+  In invoice/[id]/page.tsx they are in a flex-wrap container before the overflow-x-auto.
+  In generator/page.tsx they are in a hidden sm:flex container before the overflow-x-auto.
+  */
+  .flex.items-center.gap-3.w-full.sm\:w-auto,
+  .hidden.sm\:flex.items-center.justify-between.mb-2 {
+    display: none !important;
+  }
+
+  /* Force the invoice to look like a page */
+  #invoice-capture-area {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 
   /* Page setup */
   @page {
     size: A4 portrait;
     margin: 0;
-    /* Remove browser default margins like header/footer text */
   }
 }

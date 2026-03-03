@@ -8,7 +8,7 @@ import { deleteInvoice } from "@/app/dashboard/actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
-import { ArrowLeft, Download, Trash2, Loader2 } from "lucide-react";
+import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2 } from "lucide-react";
 import Link from "next/link";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
@@ -44,6 +44,27 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     setIsGenerating(true);
     await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
     setIsGenerating(false);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `Invoice #${invoice?.details.invoiceNumber}`,
+          text: 'Here is my invoice.',
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+      }
+    } catch (err) {
+      console.error("Error sharing", err);
+    }
   };
 
   const handleDelete = async () => {
@@ -99,19 +120,28 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           </div>
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <button
             onClick={handleDelete}
             className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 font-medium transition-colors border border-red-200 dark:border-red-900/30"
           >
-            <Trash2 className="w-4 h-4" /> Delete
+            <Trash2 className="w-4 h-4" /> <span className="hidden sm:inline">Delete</span>
           </button>
+          
+          
+          <button 
+            onClick={handleShare}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium transition-colors border border-zinc-200 dark:border-zinc-800 shadow-sm"
+          >
+            <Share2 className="w-4 h-4" /> <span className="hidden sm:inline">Share</span>
+          </button>
+          
           <button
             onClick={handleDownload}
             disabled={isGenerating}
             className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors disabled:opacity-75 shadow-sm"
           >
-            <Download className="w-4 h-4" /> {isGenerating ? "Generating..." : "Download PDF"}
+            <Download className="w-4 h-4" /> <span className="hidden sm:inline">{isGenerating ? "Gen..." : "Download"}</span>
           </button>
         </div>
       </div>

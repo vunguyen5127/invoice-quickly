@@ -1,0 +1,2 @@
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS signature_url TEXT;
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS signer_name TEXT;

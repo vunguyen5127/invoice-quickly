@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { LanguageProvider } from "@/contexts/language-context";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
@@ -30,12 +31,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
-            <SiteHeader />
-            <main className="flex-1">
-              {children}
-            </main>
-          </div>
+          <LanguageProvider>
+            <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
+              <SiteHeader />
+              <main className="flex-1">
+                {children}
+              </main>
+            </div>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

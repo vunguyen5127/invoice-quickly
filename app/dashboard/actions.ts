@@ -23,7 +23,7 @@ export async function getUserCompanies() {
   return data;
 }
 
-export async function createCompany(companyData: { name: string; email: string; address: string }) {
+export async function createCompany(companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string }) {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return null;
@@ -34,7 +34,11 @@ export async function createCompany(companyData: { name: string; email: string; 
       user_id: session.user.id,
       name: companyData.name,
       email: companyData.email,
-      address: companyData.address
+      address: companyData.address,
+      phone: companyData.phone,
+      logo_url: companyData.logo,
+      signature_url: companyData.signatureUrl,
+      signer_name: companyData.signerName
     }])
     .select()
     .single();
@@ -46,7 +50,7 @@ export async function createCompany(companyData: { name: string; email: string; 
   return data;
 }
 
-export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string }) {
+export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string }) {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return null;
@@ -56,7 +60,11 @@ export async function updateCompany(companyId: string, companyData: { name: stri
     .update({
       name: companyData.name,
       email: companyData.email,
-      address: companyData.address
+      address: companyData.address,
+      phone: companyData.phone,
+      logo_url: companyData.logo,
+      signature_url: companyData.signatureUrl,
+      signer_name: companyData.signerName
     })
     .eq("id", companyId)
     .eq("user_id", session.user.id) // Ensure user owns the company

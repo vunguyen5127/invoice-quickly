@@ -36,21 +36,21 @@ export function SignaturePadModal({ isOpen, onClose, onSave }: SignaturePadModal
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-900/60 backdrop-blur-sm transition-all duration-300">
       <div 
-        className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col transform transition-all"
+        className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-[5px] shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col transform transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800">
           <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Draw Signature</h2>
           <button 
             onClick={onClose}
-            className="p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="p-2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 rounded-[5px] hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
         
         <div className="p-6">
-          <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-2xl bg-zinc-50 dark:bg-zinc-950 overflow-hidden relative group">
+          <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-[5px] bg-zinc-50 dark:bg-zinc-950 overflow-hidden relative group">
              <SignatureCanvas 
               ref={sigCanvas} 
               penColor="black"
@@ -68,7 +68,7 @@ export function SignaturePadModal({ isOpen, onClose, onSave }: SignaturePadModal
             
             <button 
               onClick={clear}
-              className="absolute top-3 right-3 p-1.5 bg-white dark:bg-zinc-800 text-zinc-500 hover:text-red-500 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-3 right-3 p-1.5 bg-white dark:bg-zinc-800 text-zinc-500 hover:text-red-500 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity"
               title="Clear Pad"
             >
               <Eraser className="w-4 h-4" />
@@ -78,13 +78,13 @@ export function SignaturePadModal({ isOpen, onClose, onSave }: SignaturePadModal
           <div className="mt-6 flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 py-3 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+              className="flex-1 py-3 px-4 rounded-[5px] border border-zinc-200 dark:border-zinc-700 font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={save}
-              className="flex-1 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium flex items-center justify-center gap-2 shadow-sm transition-colors"
+              className="flex-1 py-3 px-4 rounded-[5px] bg-blue-600 hover:bg-blue-700 text-white font-medium flex items-center justify-center gap-2 shadow-sm transition-colors"
             >
               <Check className="w-4 h-4" /> Save Signature
             </button>

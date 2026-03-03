@@ -43,15 +43,15 @@ export interface InvoiceState {
 
 export const initialInvoiceState: InvoiceState = {
   company: {
-    name: "Acme Corp",
-    email: "billing@acme.com",
-    address: "123 Business Rd\nTech City, TC 90210",
-    phone: "(555) 123-4567"
+    name: "Acme Corp, 123 Business Rd Tech City TC 90210, billing@acme.com, (555) 123-4567",
+    email: "",
+    address: "",
+    phone: ""
   },
   client: {
     name: "Globex Inc",
     email: "accounts@globex.com",
-    address: "456 Corporate Blvd\nIndustry Town, IT 10001",
+    address: "456 Corporate Blvd, Industry Town, IT 10001",
     phone: "(555) 987-6543"
   },
   details: {
@@ -62,15 +62,15 @@ export const initialInvoiceState: InvoiceState = {
   items: [
     {
       id: "1",
-      description: "Web Design Services",
-      quantity: 1,
-      rate: 1500
+      description: "Premium Wireless Headphones (Black)",
+      quantity: 2,
+      rate: 250
     },
     {
       id: "2",
-      description: "Frontend Development (hours)",
-      quantity: 40,
-      rate: 75
+      description: "Ergonomic Mechanical Keyboard",
+      quantity: 1,
+      rate: 180
     }
   ],
   taxRate: 10,
