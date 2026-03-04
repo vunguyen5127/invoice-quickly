@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { InvoiceState } from "@/types/invoice";
+import { InvoiceState, getCurrencySymbol } from "@/types/invoice";
 import { format } from "date-fns";
 import { useLanguage } from "@/contexts/language-context";
 
@@ -10,20 +10,9 @@ interface InvoicePreviewProps {
   isLoggedIn?: boolean;
 }
 
-const getSymbol = (currency: string) => {
-  switch (currency) {
-    case 'USD': return '$';
-    case 'EUR': return '€';
-    case 'GBP': return '£';
-    case 'AUD': return 'A$';
-    case 'CAD': return 'C$';
-    default: return '$';
-  }
-}
-
 export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewProps) {
   const { t } = useLanguage();
-  const symbol = getSymbol(invoice.currency);
+  const symbol = getCurrencySymbol(invoice.currency);
 
   const subTotal = invoice.items.reduce((acc, item) => acc + (item.quantity * item.rate), 0);
   

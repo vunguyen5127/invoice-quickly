@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { updateCompany } from "@/app/dashboard/actions";
 import { X, Loader2, PenTool, Upload, Building2 } from "lucide-react";
 import { SignaturePadModal } from "./signature-pad-modal";
+import { InvoiceState, CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
 
 interface EditCompanyModalProps {
@@ -165,11 +166,11 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                   <fieldset className={fs}>
                     <legend className={lg}>Currency</legend>
                     <select value={defaultCurrency} onChange={e => setDefaultCurrency(e.target.value)} className={`${ic} py-0.5`}>
-                      <option value="USD">USD ($)</option>
-                      <option value="EUR">EUR (€)</option>
-                      <option value="GBP">GBP (£)</option>
-                      <option value="AUD">AUD (A$)</option>
-                      <option value="CAD">CAD (C$)</option>
+                      {CURRENCIES.map(c => (
+                        <option key={c.code} value={c.code}>
+                          {c.code} ({c.symbol})
+                        </option>
+                      ))}
                     </select>
                   </fieldset>
                 </div>
