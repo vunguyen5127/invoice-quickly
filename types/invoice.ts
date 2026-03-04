@@ -3,6 +3,8 @@ export interface InvoiceItem {
   description: string;
   quantity: number;
   rate: number;
+  billingStart?: string;
+  billingEnd?: string;
 }
 
 export interface InvoiceDetails {
@@ -43,7 +45,7 @@ export interface InvoiceState {
 
 export const initialInvoiceState: InvoiceState = {
   company: {
-    name: "Acme Corp, 123 Business Rd Tech City TC 90210, billing@acme.com, (555) 123-4567",
+    name: "InvoiceQuicklyCorp, 123 Professional Way, San Francisco, CA 94105, billing@InvoiceQuickly.net, +1 (415) 555-0123",
     email: "",
     address: "",
     phone: ""
@@ -62,22 +64,18 @@ export const initialInvoiceState: InvoiceState = {
   items: [
     {
       id: "1",
-      description: "Premium Wireless Headphones (Black)",
-      quantity: 2,
-      rate: 250
-    },
-    {
-      id: "2",
-      description: "Ergonomic Mechanical Keyboard",
+      description: "InvoiceQuicklySeller Growth Plan (Monthly) — Mar 03, 2026 to Apr 03, 2026",
       quantity: 1,
-      rate: 180
+      rate: 69.00,
+      billingStart: "2026-03-03",
+      billingEnd: "2026-04-03"
     }
   ],
-  taxRate: 10,
+  taxRate: 0,
   discount: 0,
   discountType: 'percentage',
-  notes: "Thank you for your business. It's been a pleasure working with you.",
-  terms: "Please pay within 14 days. Make checks payable to Acme Corp.",
+  notes: "Thank you for subscribing to InvoiceQuickly! Your growth is our priority.",
+  terms: "Paid via subscription billing.\nQuestions? Contact support@InvoiceQuickly.net",
   currency: "USD",
   signature: "",
   signatureName: ""

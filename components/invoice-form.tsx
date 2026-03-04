@@ -2,7 +2,8 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { InvoiceState, InvoiceItem } from "@/types/invoice";
-import { Plus, Trash2, Upload, X, PenTool, ChevronDown, ChevronUp, Building2, User } from "lucide-react";
+import { Plus, Trash2, Upload, X, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar } from "lucide-react";
+import { format, parseISO } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { SignaturePadModal } from "./signature-pad-modal";
 import { useLanguage } from "@/contexts/language-context";
@@ -13,9 +14,11 @@ interface InvoiceFormProps {
   invoice: InvoiceState;
   setInvoice: React.Dispatch<React.SetStateAction<InvoiceState>>;
   defaultCompanyId?: string;
+  initialNotesOpen?: boolean;
+  initialTermsOpen?: boolean;
 }
 
-export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFormProps) {
+export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNotesOpen = false, initialTermsOpen = false }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
@@ -82,7 +85,23 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: any) => {
     setInvoice((prev) => {
       const newItems = [...prev.items];
-      newItems[index] = { ...newItems[index], [field]: value };
+      const item = { ...newItems[index], [field]: value };
+      
+      // Auto-compose description if billing dates or description itself changes
+      if (field === 'billingStart' || field === 'billingEnd') {
+        const baseDesc = item.description.split(' — ')[0];
+        if (item.billingStart && item.billingEnd) {
+          try {
+            const start = format(parseISO(item.billingStart), 'MMM dd, yyyy');
+            const end = format(parseISO(item.billingEnd), 'MMM dd, yyyy');
+            item.description = `${baseDesc} — ${start} to ${end}`;
+          } catch (e) {
+            // Ignore invalid dates
+          }
+        }
+      }
+      
+      newItems[index] = item;
       return { ...prev, items: newItems };
     });
   };
@@ -119,8 +138,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
 
   // Accordion states
-  const [isNotesOpen, setIsNotesOpen] = useState(false);
-  const [isTermsOpen, setIsTermsOpen] = useState(false);
+  const [isNotesOpen, setIsNotesOpen] = useState(initialNotesOpen);
+  const [isTermsOpen, setIsTermsOpen] = useState(initialTermsOpen);
   const [isSignatureOpen, setIsSignatureOpen] = useState(false);
 
   const inputBaseClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400";
@@ -313,70 +332,149 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
       {/* Items Section */}
       <div className={sectionClass}>
-        <h3 className={sectionTitleClass}>{t.lineItems}</h3>
+        <div className="flex items-center justify-between mb-6 border-b border-zinc-100 dark:border-zinc-800/60 pb-3">
+          <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{t.lineItems}</h3>
+          <button 
+            onClick={addItem}
+            className="flex items-center gap-1.5 text-[13px] font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+          >
+            <Plus className="w-4 h-4" /> {t.addItem}
+          </button>
+        </div>
         
-        <div className="hidden md:grid grid-cols-12 gap-4 pb-3 mb-4 border-b border-zinc-100 dark:border-zinc-800/60 px-2 text-[13px] font-semibold text-zinc-600 dark:text-zinc-400">
+        {/* Header - Desktop Only */}
+        <div className="hidden md:grid grid-cols-12 gap-4 pb-2 mb-2 px-4 text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          <div className="col-span-2">{t.qty}</div>
           <div className="col-span-6">{t.description}</div>
-          <div className="col-span-2 text-right">{t.qty}</div>
           <div className="col-span-3 text-right">{t.rate}</div>
           <div className="col-span-1"></div>
         </div>
 
         <div className="space-y-3">
           {invoice.items.map((item, index) => (
-            <div key={item.id} className="grid grid-cols-12 gap-3 md:gap-4 items-start group hover:bg-zinc-50/50 dark:hover:bg-zinc-800/20 p-2 -mx-2 rounded-[5px] transition-colors">
-              <div className="col-span-12 md:col-span-6">
-                <input 
-                  type="text" 
-                  placeholder={t.itemDescription}
-                  className={inputBaseClass} 
-                  value={item.description}
-                  onChange={(e) => handleItemChange(index, "description", e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
-                />
+            <div 
+              key={item.id} 
+              className="relative grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-4 items-center p-4 bg-zinc-50/50 dark:bg-zinc-900/30 border border-zinc-200/60 dark:border-zinc-800/50 rounded-xl hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-white dark:hover:bg-zinc-900/50 transition-all group shadow-sm hover:shadow-md"
+            >
+              {/* Qty (with Stepper) */}
+              <div className="md:col-span-2 order-2 md:order-1">
+                <div className="flex flex-col gap-1">
+                  <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">{t.qty}</span>
+                  <div className="flex items-center h-10 w-full md:w-24 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                    <button 
+                      onClick={() => handleItemChange(index, "quantity", Math.max(1, item.quantity - 1))}
+                      className="w-10 h-full flex items-center justify-center text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 border-r border-zinc-200 dark:border-zinc-800 transition-colors"
+                    >
+                      <span className="text-lg font-medium">−</span>
+                    </button>
+                    <input 
+                      type="number" 
+                      className="w-full h-full bg-transparent text-center text-sm font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      value={item.quantity}
+                      onChange={(e) => handleItemChange(index, "quantity", Math.max(1, Number(e.target.value)))}
+                      min="1"
+                    />
+                    <button 
+                      onClick={() => handleItemChange(index, "quantity", item.quantity + 1)}
+                      className="w-10 h-full flex items-center justify-center text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 border-l border-zinc-200 dark:border-zinc-800 transition-colors"
+                    >
+                      <span className="text-lg font-medium">+</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="col-span-4 md:col-span-2">
-                <input 
-                  type="number" 
-                  placeholder={t.qty}
-                  className={`${inputBaseClass} md:text-right`} 
-                  value={item.quantity}
-                  onChange={(e) => handleItemChange(index, "quantity", Number(e.target.value))}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
-                  min="0"
-                />
+
+              {/* Description & Billing Period */}
+              <div className="md:col-span-6 order-1 md:order-2">
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">{t.description}</span>
+                    <div className="relative group/desc">
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Seller Growth Plan (Monthly) — Billing period: Mar 03–Apr 03"
+                        className="w-full h-10 px-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                        value={item.description}
+                        maxLength={120}
+                        onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
+                      />
+                      <div className="absolute top-[-18px] right-0 opacity-0 group-focus-within/desc:opacity-100 transition-opacity">
+                        <span className={`text-[10px] font-bold ${item.description.length >= 110 ? 'text-amber-500' : 'text-zinc-400'}`}>
+                          {item.description.length}/120
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <div className="relative h-8">
+                        <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
+                        <input 
+                          type="date"
+                          className="w-full h-full pl-8 pr-2 bg-white/50 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 rounded-md text-[11px] font-medium text-zinc-600 dark:text-zinc-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/10 transition-all hover:bg-white dark:hover:bg-zinc-950"
+                          value={item.billingStart || ''}
+                          onChange={(e) => handleItemChange(index, "billingStart", e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-zinc-300 dark:text-zinc-700 text-xs font-bold">to</span>
+                    <div className="flex-1">
+                      <div className="relative h-8">
+                        <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
+                        <input 
+                          type="date"
+                          className="w-full h-full pl-8 pr-2 bg-white/50 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 rounded-md text-[11px] font-medium text-zinc-600 dark:text-zinc-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/10 transition-all hover:bg-white dark:hover:bg-zinc-950"
+                          value={item.billingEnd || ''}
+                          onChange={(e) => handleItemChange(index, "billingEnd", e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="col-span-6 md:col-span-3">
-                <input 
-                  type="number" 
-                  placeholder={t.rate}
-                  className={`${inputBaseClass} text-right`} 
-                  value={item.rate}
-                  onChange={(e) => handleItemChange(index, "rate", Number(e.target.value))}
-                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
-                  min="0"
-                />
+
+              {/* Amount (Unit Price) */}
+              <div className="md:col-span-3 order-3">
+                <div className="flex flex-col gap-1">
+                  <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">{t.rate}</span>
+                  <div className="relative flex items-center">
+                    <span className="absolute left-3 text-zinc-400 text-sm font-medium">$</span>
+                    <input 
+                      type="number" 
+                      placeholder="0.00"
+                      className="w-full h-10 pl-7 pr-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-right text-sm font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      value={item.rate || ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === '' || /^\d*\.?\d{0,2}$/.test(val)) {
+                          handleItemChange(index, "rate", val === '' ? 0 : Number(val));
+                        }
+                      }}
+                      onBlur={(e) => handleItemChange(index, "rate", Number(Number(e.target.value).toFixed(2)))}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
+                      min="0"
+                      step="0.01"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="col-span-2 md:col-span-1 flex justify-end md:justify-center items-center h-10">
+
+              {/* Delete Icon */}
+              <div className="md:col-span-1 order-4 flex justify-end md:justify-center items-center pt-2 md:pt-0">
                 <button 
                   onClick={() => removeItem(item.id)}
-                  className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-[5px] transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100"
+                  className="p-2.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20"
                   aria-label="Remove item"
                   title="Remove item"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4.5 h-4.5" />
                 </button>
               </div>
             </div>
           ))}
         </div>
-
-        <button 
-          onClick={addItem}
-          className="mt-4 flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors py-2"
-        >
-          <Plus className="w-4 h-4" /> {t.addItem}
-        </button>
       </div>
 
       {/* Totals & Notes Setup */}

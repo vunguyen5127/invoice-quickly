@@ -46,6 +46,9 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
     }
   };
 
+  const formatAmount = (value: number) =>
+    new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+
   return (
     <div 
       className="bg-white text-zinc-900 mx-auto overflow-hidden sm:rounded-[5px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-zinc-900/5 transition-transform duration-100" 
@@ -56,12 +59,17 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
     >
       <div 
         id="invoice-capture-area" 
-        className="w-full bg-white flex flex-col font-mono text-zinc-900" 
+        className="w-full bg-white flex flex-col font-mono text-zinc-900 relative" 
         style={{ 
           minHeight: "297mm",    // A4 height
           padding: "16mm 16mm",  // Standard margins
         }}
       >
+        {!isLoggedIn && (
+          <div className="absolute top-8 right-8 rotate-12 opacity-10 pointer-events-none select-none border-4 border-zinc-900 px-4 py-2 text-2xl font-black uppercase tracking-tighter">
+            Sample Preview
+          </div>
+        )}
         
         {/* Top Company Logo/Name Row */}
         <div className="flex justify-between items-start mb-8">
@@ -82,7 +90,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
         </div>
 
         {/* 2-Column Header Area */}
-        <div className="flex justify-between md:grid-cols-2 gap-8 mb-10 text-[13px]">
+        <div className="flex justify-between md:grid-cols-2 gap-4 mb-10 text-[13px]">
            {/* Bill To */}
            <div>
              <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.billedTo || "Bill To"}</p>
@@ -95,15 +103,15 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
 
            {/* Invoice Details Block */}
            <div className="text-right">
-              <div className="inline-grid grid-cols-2 gap-x-4 gap-y-1 text-left">
-                <span className="font-bold pr-4">Invoice #</span>
-                <span className="text-zinc-600">{invoice.details.invoiceNumber}</span>
+              <div className="inline-grid grid-cols-[auto_auto] gap-x-4 gap-y-1 text-left">
+                <span className="font-bold whitespace-nowrap">Invoice #</span>
+                <span className="text-zinc-600 whitespace-nowrap">{invoice.details.invoiceNumber}</span>
                 
-                <span className="font-bold pr-4">Invoice Date</span>
-                <span className="text-zinc-600">{formatDate(invoice.details.issueDate)}</span>
+                <span className="font-bold whitespace-nowrap">Invoice Date</span>
+                <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.issueDate)}</span>
                 
-                <span className="font-bold pr-4">Due Date</span>
-                <span className="text-zinc-600">{formatDate(invoice.details.dueDate)}</span>
+                <span className="font-bold whitespace-nowrap">Due Date</span>
+                <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.dueDate)}</span>
               </div>
            </div>
         </div>
@@ -115,66 +123,77 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
               <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
                 <th className="w-16 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Qty</th>
                 <th className="py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Description</th>
-                <th className="w-32 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Unit Price</th>
-                <th className="w-32 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Amount</th>
+                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">Amount</th>
+                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">Total</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-300">
               {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
                 <tr key={item.id} className="divide-x divide-zinc-300">
                   <td className="py-3 px-3 text-center align-top">{item.quantity}</td>
-                  <td className="py-3 px-3 text-left align-top">{item.description || "-"}</td>
-                  <td className="py-3 px-3 text-right align-top">{item.rate.toFixed(2)}</td>
-                  <td className="py-3 px-3 text-right align-top font-bold">{(item.quantity * item.rate).toFixed(2)}</td>
+                  <td className="py-3 px-3 text-left align-top whitespace-pre-wrap">{item.description || "-"}</td>
+                  <td className="py-3 px-3 text-right align-top">{formatAmount(item.rate)}</td>
+                  <td className="py-3 px-3 text-right align-top font-bold">{formatAmount(item.quantity * item.rate)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {/* Table Summary Section - Boxed Values Style */}
+          {/* Table Summary Section - Numeric Boxed Style */}
           <div className="flex justify-end mt-0">
-            <div className="w-[calc(18rem+2px)]"> 
-              <div className="flex border-x border-b border-zinc-300 divide-zinc-300">
-                <div className="flex-1 py-3 px-4 text-right font-bold text-[14px] bg-white">Subtotal</div>
-                <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-zinc-300">{subTotal.toFixed(2)}</div>
+            <div className="w-[calc(22rem+2px)]">
+              <div className="flex">
+                <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Subtotal</div>
+                <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
               </div>
 
-              {invoice.taxRate > 0 && (
-                <div className="flex border-x border-b border-zinc-300 divide-zinc-300">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px] bg-white">Sales Tax {invoice.taxRate.toFixed(1)}%</div>
-                  <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-zinc-300">{taxAmount.toFixed(2)}</div>
+              {invoice.taxRate > 0 ? (
+                <div className="flex">
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Sales Tax {invoice.taxRate.toFixed(1)}%</div>
+                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
+                </div>
+              ) : !isLoggedIn && (
+                <div className="flex opacity-50">
+                  <div className="flex-1 py-3 px-4 text-right font-medium text-[12px] italic">Tax calculated by payment provider</div>
+                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">0.00</div>
                 </div>
               )}
 
               {invoice.discount > 0 && (
-                <div className="flex border-x border-b border-zinc-300 divide-zinc-300 text-red-600">
+                <div className="flex text-red-600">
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Discount</div>
-                  <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-zinc-300">-{discountAmount.toFixed(2)}</div>
+                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
                 </div>
               )}
 
-              <div className="flex border-x border-b-2 border-zinc-300 divide-zinc-300 bg-zinc-50">
-                <div className="flex-1 py-4 px-4 text-right font-black text-xl uppercase tracking-tighter">TOTAL</div>
-                <div className="w-32 py-4 px-4 text-right font-black text-xl border-l border-zinc-300">
-                  {symbol}{total.toFixed(2)}
+              <div className="flex">
+                <div className="flex-1 py-4 px-4 text-right font-black text-[14px] uppercase tracking-tighter">TOTAL</div>
+                <div className="w-40 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
+                  {symbol}{formatAmount(total)}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Signature Area - Positioned right below Summary */}
+        {/* Signature Area */}
         <div className="mt-8 flex justify-end">
-           {invoice.signature && (
+           {invoice.signature || invoice.signatureName ? (
              <div className="flex flex-col items-center">
-                <div className="mb-2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain mix-blend-multiply" />
-                </div>
+                {invoice.signature && (
+                  <div className="mb-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain mix-blend-multiply" />
+                  </div>
+                )}
                 {invoice.signatureName && (
                   <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
                 )}
              </div>
+           ) : (
+             <p className="text-[11px] text-zinc-400 italic max-w-[200px] text-right">
+                This invoice is generated electronically and is valid without a signature.
+             </p>
            )}
         </div>
 

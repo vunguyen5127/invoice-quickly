@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Save, ArrowLeft, Loader2, Receipt, Printer, Share2 } from "lucide-react";
+import { Download, Save, Loader2, Receipt, Printer, Share2, ChevronRight } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getCompanyById } from "@/app/dashboard/actions";
@@ -22,6 +22,8 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [companyName, setCompanyName] = useState("");
+  const [initialNotesOpen, setInitialNotesOpen] = useState(false);
+  const [initialTermsOpen, setInitialTermsOpen] = useState(false);
   const router = useRouter();
 
   // Load company data on mount and pre-fill the invoice state
@@ -63,11 +65,17 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           email: "",
           address: "",
           phone: "",
-          logo: companyData.logo_url || prev.company.logo, // Ensure logo is fetched!
+          logo: companyData.logo_url || prev.company.logo,
         },
         signatureName: prev.signatureName || defaultSignatureName,
-        signature: companyData.signature_url || prev.signature
+        signature: companyData.signature_url || prev.signature,
+        currency: companyData.default_currency || prev.currency,
+        notes: companyData.default_notes || prev.notes,
+        terms: companyData.default_terms || prev.terms,
       }));
+
+      setInitialNotesOpen(companyData.show_notes ?? true);
+      setInitialTermsOpen(companyData.show_terms ?? true);
 
       setLoading(false);
     };
@@ -169,34 +177,43 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           </div>
         </div>
       </header>
-
       <div className="container mx-auto px-4 py-8 max-w-[1600px] flex-1">
-        <Link href={`/company/${resolvedParams.id}`} className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back to Company Dashboard
-        </Link>
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-sm mb-6">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+            Dashboard
+          </Link>
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          <Link href={`/company/${resolvedParams.id}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
+            {companyName || "Company"}
+          </Link>
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium">New Invoice</span>
+        </nav>
 
         <div className="flex flex-col xl:flex-row gap-8 pb-32 xl:pb-20">
           
           {/* Left Column: Form */}
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Create Invoice</h1>
+            <div className="flex items-center justify-between h-10">
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Create Invoice</h2>
             </div>
-          
-          <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
-            <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={resolvedParams.id} />
+            <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 mt-[3px]">
+              <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={resolvedParams.id} initialNotesOpen={initialNotesOpen} initialTermsOpen={initialTermsOpen} />
+            </div>
           </div>
-        </div>
 
         {/* Right Column: Preview */}
         <div className="w-full xl:w-1/2 flex flex-col gap-6">
-          <div className="hidden sm:flex items-center justify-between mb-2">
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 hidden xl:block">Live Preview</h2>
+          <div className="flex items-center justify-between h-10">
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Live Preview</h2>
           </div>
           
-          <div className="xl:sticky xl:top-24 mt-4 xl:mt-0 w-full overflow-x-auto rounded-3xl shadow-inner ring-1 ring-zinc-900/5 dark:ring-white/10 bg-zinc-50 dark:bg-zinc-950 p-4 sm:p-12 flex justify-center [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-            <div className="transform origin-top scale-[0.6] sm:scale-75 lg:scale-90 xl:scale-100 transition-transform">
-              <InvoicePreview invoice={invoice} isLoggedIn={true} />
+          <div className="border-running xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
+            <div className="w-full overflow-x-auto bg-zinc-50 dark:bg-zinc-950 rounded-[5px] p-px flex justify-center [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
+              <div className="transform origin-top scale-[0.6] sm:scale-75 lg:scale-90 xl:scale-100 transition-transform">
+                <InvoicePreview invoice={invoice} isLoggedIn={true} />
+              </div>
             </div>
           </div>
         </div>

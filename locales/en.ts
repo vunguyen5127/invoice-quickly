@@ -24,7 +24,7 @@ export const en = {
   lineItems: "Line Items",
   description: "Description",
   qty: "Qty",
-  rate: "Rate",
+  rate: "Amount",
   itemDescription: "Item description",
   addItem: "Add Item",
   subtotal: "Subtotal",

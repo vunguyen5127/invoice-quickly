@@ -23,7 +23,7 @@ export async function getUserCompanies() {
   return data;
 }
 
-export async function createCompany(companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string }) {
+export async function createCompany(companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean }) {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return null;
@@ -38,7 +38,12 @@ export async function createCompany(companyData: { name: string; email: string; 
       phone: companyData.phone,
       logo_url: companyData.logo,
       signature_url: companyData.signatureUrl,
-      signer_name: companyData.signerName
+      signer_name: companyData.signerName,
+      default_currency: companyData.defaultCurrency || 'USD',
+      default_notes: companyData.defaultNotes || '',
+      default_terms: companyData.defaultTerms || '',
+      show_notes: companyData.showNotes ?? true,
+      show_terms: companyData.showTerms ?? true,
     }])
     .select()
     .single();
@@ -50,7 +55,7 @@ export async function createCompany(companyData: { name: string; email: string; 
   return data;
 }
 
-export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string }) {
+export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean }) {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return null;
@@ -64,10 +69,15 @@ export async function updateCompany(companyId: string, companyData: { name: stri
       phone: companyData.phone,
       logo_url: companyData.logo,
       signature_url: companyData.signatureUrl,
-      signer_name: companyData.signerName
+      signer_name: companyData.signerName,
+      default_currency: companyData.defaultCurrency,
+      default_notes: companyData.defaultNotes,
+      default_terms: companyData.defaultTerms,
+      show_notes: companyData.showNotes,
+      show_terms: companyData.showTerms,
     })
     .eq("id", companyId)
-    .eq("user_id", session.user.id) // Ensure user owns the company
+    .eq("user_id", session.user.id)
     .select()
     .single();
 
