@@ -74,8 +74,8 @@ export const initialInvoiceState: InvoiceState = {
   taxRate: 0,
   discount: 0,
   discountType: 'percentage',
-  notes: "Thank you for subscribing to InvoiceQuickly! Your growth is our priority.",
-  terms: "Paid via subscription billing.\nQuestions? Contact support@InvoiceQuickly.net",
+  notes: "",
+  terms: "",
   currency: "USD",
   signature: "",
   signatureName: ""

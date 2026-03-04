@@ -18,7 +18,7 @@ interface InvoiceFormProps {
   initialTermsOpen?: boolean;
 }
 
-export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNotesOpen = false, initialTermsOpen = false }: InvoiceFormProps) {
+export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNotesOpen = true, initialTermsOpen = true }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
@@ -141,6 +141,15 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
   const [isNotesOpen, setIsNotesOpen] = useState(initialNotesOpen);
   const [isTermsOpen, setIsTermsOpen] = useState(initialTermsOpen);
   const [isSignatureOpen, setIsSignatureOpen] = useState(false);
+
+  // Sync accordion states with props when they change (e.g. after company data loads)
+  useEffect(() => {
+    setIsNotesOpen(initialNotesOpen);
+  }, [initialNotesOpen]);
+
+  useEffect(() => {
+    setIsTermsOpen(initialTermsOpen);
+  }, [initialTermsOpen]);
 
   const inputBaseClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
@@ -537,52 +546,58 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
 
           <div className="space-y-4 pt-2">
             {/* Notes Accordion */}
-            <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
-              <button 
-                className="w-full flex items-center justify-between p-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
-                onClick={() => setIsNotesOpen(!isNotesOpen)}
-              >
-                {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addNotes}</span>}
-                {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
-              </button>
-              {isNotesOpen && (
-                <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
-                  <fieldset className={fieldsetClass}>
-                    <legend className={legendClass}>{t.notes}</legend>
-                    <textarea 
-                      className={`${inputInnerClass} min-h-[80px] resize-y mt-1`} 
-                      value={invoice.notes} 
-                      onChange={(e) => handleRootChange("notes", e.target.value)}
-                      placeholder={t.notesPlaceholder}
-                    />
-                  </fieldset>
-                </div>
-              )}
-            </div>
+            {initialNotesOpen && (
+              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
+                <button 
+                  className="w-full flex items-center justify-between p-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
+                  onClick={() => setIsNotesOpen(!isNotesOpen)}
+                  type="button"
+                >
+                  {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addNotes}</span>}
+                  {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
+                </button>
+                {isNotesOpen && (
+                  <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
+                    <fieldset className={fieldsetClass}>
+                      <legend className={legendClass}>{t.notes}</legend>
+                      <textarea 
+                        className={`${inputInnerClass} min-h-[80px] resize-y mt-1`} 
+                        value={invoice.notes} 
+                        onChange={(e) => handleRootChange("notes", e.target.value)}
+                        placeholder={t.notesPlaceholder}
+                      />
+                    </fieldset>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Terms Accordion */}
-            <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
-              <button 
-                className="w-full flex items-center justify-between p-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
-                onClick={() => setIsTermsOpen(!isTermsOpen)}
-              >
-                {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addTerms}</span>}
-                {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
-              </button>
-              {isTermsOpen && (
-                <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
-                  <fieldset className={fieldsetClass}>
-                    <legend className={legendClass}>{t.termsConditions}</legend>
-                    <textarea 
-                      className={`${inputInnerClass} min-h-[80px] resize-y mt-1`} 
-                      value={invoice.terms} 
-                      onChange={(e) => handleRootChange("terms", e.target.value)}
-                      placeholder={t.termsPlaceholder}
-                    />
-                  </fieldset>
-                </div>
-              )}
-            </div>
+            {initialTermsOpen && (
+              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
+                <button 
+                  className="w-full flex items-center justify-between p-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
+                  onClick={() => setIsTermsOpen(!isTermsOpen)}
+                  type="button"
+                >
+                  {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addTerms}</span>}
+                  {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
+                </button>
+                {isTermsOpen && (
+                  <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
+                    <fieldset className={fieldsetClass}>
+                      <legend className={legendClass}>{t.termsConditions}</legend>
+                      <textarea 
+                        className={`${inputInnerClass} min-h-[80px] resize-y mt-1`} 
+                        value={invoice.terms} 
+                        onChange={(e) => handleRootChange("terms", e.target.value)}
+                        placeholder={t.termsPlaceholder}
+                      />
+                    </fieldset>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Signature Accordion */}
             <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
