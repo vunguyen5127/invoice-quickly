@@ -60,6 +60,7 @@ export const tr = {
   companyLogoField: "Şirket Logosu",
   billingEmailField: "Fatura E-postası",
   phoneField: "Telefon Numarası",
+  invalidPhone: "Invalid phone number",
   addressField: "Şirket Adresi",
   cancel: "İptal",
   saveChanges: "Değişiklikleri Kaydet",

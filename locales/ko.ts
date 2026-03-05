@@ -60,6 +60,7 @@ export const ko = {
   companyLogoField: "회사 로고",
   billingEmailField: "청구용 이메일",
   phoneField: "전화번호",
+  invalidPhone: "Invalid phone number",
   addressField: "회사 주소",
   cancel: "취소",
   saveChanges: "변경 사항 저장",

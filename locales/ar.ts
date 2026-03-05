@@ -60,6 +60,7 @@ export const ar = {
   companyLogoField: "شعار الشركة",
   billingEmailField: "بريد الفوترة",
   phoneField: "رقم الهاتف",
+  invalidPhone: "Invalid phone number",
   addressField: "عنوان الشركة",
   cancel: "إلغاء",
   saveChanges: "حفظ التغييرات",

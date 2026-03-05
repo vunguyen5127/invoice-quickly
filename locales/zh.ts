@@ -60,6 +60,7 @@ export const zh = {
   companyLogoField: "公司图标",
   billingEmailField: "账单电子邮件",
   phoneField: "电话号码",
+  invalidPhone: "Invalid phone number",
   addressField: "公司地址",
   cancel: "取消",
   saveChanges: "保存更改",

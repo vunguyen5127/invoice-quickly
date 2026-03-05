@@ -60,6 +60,7 @@ export const ja = {
   companyLogoField: "会社のロゴ",
   billingEmailField: "請求用メールアドレス",
   phoneField: "電話番号",
+  invalidPhone: "Invalid phone number",
   addressField: "会社の住所",
   cancel: "キャンセル",
   saveChanges: "変更を保存",

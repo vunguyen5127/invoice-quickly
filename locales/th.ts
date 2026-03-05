@@ -60,6 +60,7 @@ export const th = {
   companyLogoField: "โลโก้บริษัท",
   billingEmailField: "อีเมลเรียกเก็บเงิน",
   phoneField: "หมายเลขโทรศัพท์",
+  invalidPhone: "Invalid phone number",
   addressField: "ที่อยู่บริษัท",
   cancel: "ยกเลิก",
   saveChanges: "บันทึกการเปลี่ยนแปลง",

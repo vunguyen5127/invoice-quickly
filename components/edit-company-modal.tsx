@@ -84,7 +84,10 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
     const isPhoneValid = !phone || phoneRegex.test(phone.replace(/\s/g, ''));
     setIsValidPhone(isPhoneValid);
-    if (!isPhoneValid) return;
+    if (!isPhoneValid) {
+      setTab("company");
+      return;
+    }
 
     setIsSubmitting(true);
     const updated = await updateCompany(initialData.id, {
@@ -180,18 +183,23 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                 </fieldset>
  
                 <div className="grid grid-cols-2 gap-2">
-                  <fieldset className={`${fs} ${!isValidPhone ? 'border-red-500 dark:border-red-500' : ''}`}>
-                    <legend className={`${lg} ${!isValidPhone ? 'text-red-500' : ''}`}>{t.phoneField}</legend>
-                    <input 
-                      value={phone} 
-                      onChange={e => {
-                        setPhone(e.target.value);
-                        setIsValidPhone(true);
-                      }} 
-                      className={ic} 
-                      placeholder="+1 (555) 000-0000" 
-                    />
-                  </fieldset>
+                  <div>
+                    <fieldset className={`${fs} ${!isValidPhone ? 'border-red-500 dark:border-red-500' : ''}`}>
+                      <legend className={`${lg} ${!isValidPhone ? 'text-red-500' : ''}`}>{t.phoneField}</legend>
+                      <input 
+                        value={phone} 
+                        onChange={e => {
+                          setPhone(e.target.value);
+                          setIsValidPhone(true);
+                        }} 
+                        className={ic} 
+                        placeholder="+1 (555) 000-0000" 
+                      />
+                    </fieldset>
+                    {!isValidPhone && (
+                      <p className="text-[11px] text-red-500 mt-1 px-1">{t.invalidPhone || 'Invalid phone number'}</p>
+                    )}
+                  </div>
                   <fieldset className={fs}>
                     <legend className={lg}>{t.currency}</legend>
                     <select value={defaultCurrency} onChange={e => setDefaultCurrency(e.target.value)} className={`${ic} py-0.5`}>

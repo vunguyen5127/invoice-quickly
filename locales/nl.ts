@@ -60,6 +60,7 @@ export const nl = {
   companyLogoField: "Bedrijfslogo",
   billingEmailField: "Facturatie e-mail",
   phoneField: "Telefoonnummer",
+  invalidPhone: "Invalid phone number",
   addressField: "Bedrijfsadres",
   cancel: "Annuleren",
   saveChanges: "Wijzigingen opslaan",

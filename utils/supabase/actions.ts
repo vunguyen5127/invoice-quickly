@@ -53,3 +53,41 @@ function calculateTotals(invoice: InvoiceState) {
   
   return { subTotal, taxAmount, total };
 }
+
+export async function updateInvoiceInSupabase(invoiceId: string, invoice: InvoiceState) {
+  if (!supabase) {
+    throw new Error("Supabase is not configured. Missing environment variables.");
+  }
+
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (!session?.user) {
+    throw new Error("You must be logged in to update an invoice.");
+  }
+
+  const { subTotal, taxAmount, total } = calculateTotals(invoice);
+
+  const { data, error } = await supabase
+    .from('invoices')
+    .update({
+      invoice_number: invoice.details.invoiceNumber,
+      client_name: invoice.client.name,
+      seller_info: invoice.company,
+      client_info: invoice.client,
+      items: invoice.items,
+      subtotal: subTotal,
+      tax: taxAmount,
+      total_amount: total,
+      currency: invoice.currency,
+      data: invoice,
+    })
+    .eq('id', invoiceId)
+    .select();
+
+  if (error) {
+    console.error("Error updating invoice:", error);
+    throw error;
+  }
+
+  return data;
+}

@@ -60,6 +60,7 @@ export const ru = {
   companyLogoField: "Логотип компании",
   billingEmailField: "Email для счетов",
   phoneField: "Номер телефона",
+  invalidPhone: "Invalid phone number",
   addressField: "Адрес компании",
   cancel: "Отмена",
   saveChanges: "Сохранить изменения",

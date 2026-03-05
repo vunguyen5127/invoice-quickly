@@ -60,6 +60,7 @@ export const id = {
   companyLogoField: "Logo Perusahaan",
   billingEmailField: "Email Penagihan",
   phoneField: "Nomor Telepon",
+  invalidPhone: "Invalid phone number",
   addressField: "Alamat Perusahaan",
   cancel: "Batal",
   saveChanges: "Simpan Perubahan",

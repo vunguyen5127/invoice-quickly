@@ -33,7 +33,7 @@ export function SiteHeader() {
   }, []);
 
   // Hide global header on editor pages so they can render their own custom sticky header
-  if (pathname === '/generator' || pathname.includes('/new')) {
+  if (pathname === '/generator' || pathname.includes('/new') || pathname.includes('/edit')) {
     return null;
   }
 

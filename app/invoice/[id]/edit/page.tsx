@@ -3,34 +3,31 @@
 import React, { useState, useEffect } from "react";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
-import { initialInvoiceState, InvoiceState } from "@/types/invoice";
+import { InvoiceState, initialInvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Save, Loader2, Receipt, Printer, ChevronRight } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById, getNextInvoiceNumber } from "@/app/dashboard/actions";
-import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
+import { getInvoiceById } from "../actions";
+import { updateInvoiceInSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
 import { use } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 
-export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
+export default function EditInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
   const resolvedParams = use(params);
   const [invoice, setInvoice] = useState<InvoiceState>(initialInvoiceState);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [companyName, setCompanyName] = useState("");
-  const [initialNotesOpen, setInitialNotesOpen] = useState(false);
-  const [initialTermsOpen, setInitialTermsOpen] = useState(false);
+  const [companyId, setCompanyId] = useState<string | null>(null);
   const router = useRouter();
 
-  // Load company data on mount and pre-fill the invoice state
   useEffect(() => {
-    const loadCompanyAndSetInvoice = async () => {
+    const loadInvoice = async () => {
       if (!supabase) return;
       
       const { data: { session } } = await supabase.auth.getSession();
@@ -39,58 +36,20 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         return;
       }
 
-      const companyData = await getCompanyById(resolvedParams.id);
-      if (!companyData) {
-        alert("Company not found");
+      const data = await getInvoiceById(resolvedParams.id);
+      if (!data) {
+        alert("Invoice not found");
         router.push("/dashboard");
         return;
       }
-      setCompanyName(companyData.name);
 
-      // Try to get user info for signatureName
-      let defaultSignatureName = "";
-      if (companyData.signer_name) {
-        defaultSignatureName = companyData.signer_name;
-      } else if (session?.user) {
-        defaultSignatureName = session.user.user_metadata?.name || session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || "";
-      }
-
-      // Pre-fill the invoice seller info with the company's data
-      const companyDetailsString = [companyData.name, companyData.address, companyData.email, companyData.phone]
-        .filter(Boolean)
-        .join(", ");
-        
-      const nextInvoiceNumber = await getNextInvoiceNumber(resolvedParams.id);
-        
-      setInvoice((prev) => ({
-        ...prev,
-        company: {
-          name: companyDetailsString,
-          email: "",
-          address: "",
-          phone: "",
-          logo: companyData.logo_url || prev.company.logo,
-        },
-        details: {
-          ...prev.details,
-          invoiceNumber: nextInvoiceNumber,
-        },
-        signatureName: prev.signatureName || defaultSignatureName,
-        signature: companyData.signature_url || prev.signature,
-        currency: companyData.default_currency || prev.currency,
-        notes: companyData.default_notes || prev.notes,
-        terms: companyData.default_terms || prev.terms,
-        showNotes: companyData.show_notes ?? true,
-        showTerms: companyData.show_terms ?? true,
-      }));
-
-      setInitialNotesOpen(companyData.show_notes ?? true);
-      setInitialTermsOpen(companyData.show_terms ?? true);
-
+      const { _companyId, ...invoiceData } = data;
+      setCompanyId(_companyId || null);
+      setInvoice(invoiceData as InvoiceState);
       setLoading(false);
     };
 
-    loadCompanyAndSetInvoice();
+    loadInvoice();
   }, [router, resolvedParams.id]);
 
   const handleDownload = async () => {
@@ -102,8 +61,6 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   const handlePrint = () => {
     window.print();
   };
-
-
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -117,8 +74,12 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
     }
 
     try {
-      await saveInvoiceToSupabase(invoice, resolvedParams.id);
-      router.push(`/company/${resolvedParams.id}`);
+      await updateInvoiceInSupabase(resolvedParams.id, invoice);
+      if (companyId) {
+        router.push(`/company/${companyId}`);
+      } else {
+        router.push("/dashboard");
+      }
     } catch (e: any) {
       alert("Error saving invoice. Please check your config.");
       console.error(e);
@@ -142,7 +103,6 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           <Link href="/dashboard" className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
             <Receipt className="h-6 w-6 text-blue-600 dark:text-blue-500" />
             <span className="hidden sm:inline-block">InvoiceQuickly</span>
-            {companyName && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 ml-1 truncate max-w-[120px]">{companyName}</span>}
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
@@ -173,11 +133,15 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
             {t.dashboard}
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
-          <Link href={`/company/${resolvedParams.id}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
-            {companyName || t.company}
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
-          <span className="text-zinc-700 dark:text-zinc-200 font-medium">{t.newInvoice}</span>
+          {companyId && (
+            <>
+              <Link href={`/company/${companyId}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
+                {invoice.company.name || t.company}
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+            </>
+          )}
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium">Edit #{invoice.details.invoiceNumber}</span>
         </nav>
 
         <div className="flex flex-col xl:flex-row gap-8 pb-32 xl:pb-20">
@@ -185,10 +149,10 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           {/* Left Column: Form */}
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
             <div className="flex items-center justify-between h-10">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.createInvoice}</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Edit Invoice</h2>
             </div>
             <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 mt-[3px]">
-              <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={resolvedParams.id} />
+              <InvoiceForm invoice={invoice} setInvoice={setInvoice} />
             </div>
           </div>
 
@@ -209,24 +173,23 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
 
         </div>
 
-        {/* Mobile Sticky Bottom Bar */}
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-none pb-safe">
-          <button 
+        {/* Mobile bottom bar */}
+        <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 p-4 flex gap-3 z-50">
+          <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors disabled:opacity-75"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-medium text-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-75"
           >
-            <Save className="w-5 h-5" /> {isSaving ? t.saving : t.save}
+            <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
-          <button 
+          <button
             onClick={handleDownload}
             disabled={isGenerating}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-medium text-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
           >
-            <Download className="w-5 h-5" /> {isGenerating ? t.wait : t.download}
+            <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>
         </div>
-
       </div>
     </div>
   );

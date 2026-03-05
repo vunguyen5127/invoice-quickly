@@ -60,6 +60,7 @@ export const fi = {
   companyLogoField: "Yrityksen logo",
   billingEmailField: "Laskutussähköposti",
   phoneField: "Puhelinnumero",
+  invalidPhone: "Invalid phone number",
   addressField: "Yrityksen osoite",
   cancel: "Peruuta",
   saveChanges: "Tallenna muutokset",

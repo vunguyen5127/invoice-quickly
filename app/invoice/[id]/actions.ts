@@ -1,7 +1,7 @@
 import { supabase } from "@/utils/supabase/client";
 import { InvoiceState } from "@/types/invoice";
 
-export async function getInvoiceById(id: string): Promise<InvoiceState | null> {
+export async function getInvoiceById(id: string): Promise<(InvoiceState & { _companyId?: string }) | null> {
   if (!supabase) return null;
   
   const { data: { session } } = await supabase.auth.getSession();
@@ -9,7 +9,7 @@ export async function getInvoiceById(id: string): Promise<InvoiceState | null> {
 
   const { data, error } = await supabase
     .from("invoices")
-    .select("data")
+    .select("data, company_id")
     .eq("id", id)
     .single();
 
@@ -18,9 +18,10 @@ export async function getInvoiceById(id: string): Promise<InvoiceState | null> {
     return null;
   }
 
-  // Handle parsing to InvoiceState based on the upcoming DB schema logic
   if (data.data) {
-    return data.data as InvoiceState;
+    const invoiceState = data.data as InvoiceState;
+    invoiceState.id = id;
+    return { ...invoiceState, _companyId: data.company_id };
   }
   
   return null;

@@ -60,6 +60,7 @@ export const hi = {
   companyLogoField: "कंपनी का लोगो",
   billingEmailField: "बिलिंग ईमेल",
   phoneField: "फोन नंबर",
+  invalidPhone: "Invalid phone number",
   addressField: "कंपनी का पता",
   cancel: "रद्द करें",
   saveChanges: "परिवर्तन सहेजें",

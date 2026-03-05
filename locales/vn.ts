@@ -62,6 +62,7 @@ export const vn: Translations = {
   companyLogoField: "Logo Công Ty",
   billingEmailField: "Email Thanh Toán",
   phoneField: "Số Điện Thoại",
+  invalidPhone: "Số điện thoại không hợp lệ",
   addressField: "Địa Chỉ Công Ty",
   cancel: "Hủy",
   saveChanges: "Lưu Thay Đổi",

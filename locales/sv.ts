@@ -60,6 +60,7 @@ export const sv = {
   companyLogoField: "Företagslogotyp",
   billingEmailField: "Fakturerings-e-post",
   phoneField: "Telefonnummer",
+  invalidPhone: "Invalid phone number",
   addressField: "Företagsadress",
   cancel: "Avbryt",
   saveChanges: "Spara ändringar",

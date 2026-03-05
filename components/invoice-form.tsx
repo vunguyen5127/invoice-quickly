@@ -526,7 +526,6 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
           <div className="space-y-4 pt-2">
             {/* Notes Accordion */}
-            {invoice.showNotes && (
               <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
                 <div className="w-full flex items-center justify-between p-3.5 bg-zinc-50/50 dark:bg-zinc-800/20">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -568,10 +567,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   </div>
                 )}
               </div>
-            )}
 
             {/* Terms Accordion */}
-            {invoice.showTerms && (
               <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
                 <div className="w-full flex items-center justify-between p-3.5 bg-zinc-50/50 dark:bg-zinc-800/20">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -613,7 +610,6 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   </div>
                 )}
               </div>
-            )}
 
             {/* Signature Accordion */}
             <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
@@ -670,18 +666,20 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     </div>
                   </div>
 
-                  <div>
-                    <fieldset className={fieldsetClass}>
-                      <legend className={legendClass}>{t.printName}</legend>
-                      <input 
-                        type="text" 
-                        className={`${inputInnerClass} pb-1`} 
-                        value={invoice.signatureName || ''} 
-                        onChange={(e) => handleRootChange('signatureName', e.target.value)}
-                        placeholder="e.g., John Doe"
-                      />
-                    </fieldset>
-                  </div>
+                  {invoice.signature && (
+                    <div>
+                      <fieldset className={fieldsetClass}>
+                        <legend className={legendClass}>{t.printName}</legend>
+                        <input 
+                          type="text" 
+                          className={`${inputInnerClass} pb-1`} 
+                          value={invoice.signatureName || ''} 
+                          onChange={(e) => handleRootChange('signatureName', e.target.value)}
+                          placeholder="e.g., John Doe"
+                        />
+                      </fieldset>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

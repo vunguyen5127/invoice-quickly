@@ -60,6 +60,7 @@ export const da = {
   companyLogoField: "Firmalogo",
   billingEmailField: "Fakturerings e-mail",
   phoneField: "Telefonnummer",
+  invalidPhone: "Invalid phone number",
   addressField: "Firmaadresse",
   cancel: "Annuller",
   saveChanges: "Gem ændringer",

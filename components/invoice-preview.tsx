@@ -156,14 +156,12 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
 
         {/* Signature Area */}
         <div className="mt-8 flex justify-end">
-           {invoice.signature || invoice.signatureName ? (
+           {invoice.signature ? (
              <div className="flex flex-col items-center">
-                {invoice.signature && (
-                  <div className="mb-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain mix-blend-multiply" />
-                  </div>
-                )}
+                <div className="mb-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain mix-blend-multiply" />
+                </div>
                 {invoice.signatureName && (
                   <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
                 )}
