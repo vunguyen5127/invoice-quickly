@@ -48,18 +48,12 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
     >
       <div 
         id="invoice-capture-area" 
-        className="w-full bg-white flex flex-col font-mono text-zinc-900 relative" 
+        className="w-full bg-white flex flex-col text-zinc-900 relative" 
         style={{ 
           minHeight: "297mm",    // A4 height
           padding: "16mm 16mm",  // Standard margins
         }}
       >
-        {!isLoggedIn && (
-          <div className="absolute top-8 right-8 rotate-12 opacity-10 pointer-events-none select-none border-4 border-zinc-900 px-4 py-2 text-2xl font-black uppercase tracking-tighter">
-            Sample Preview
-          </div>
-        )}
-        
         {/* Top Company Logo/Name Row */}
         <div className="flex justify-between items-start mb-8">
            <div className="space-y-1">
@@ -93,13 +87,13 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
            {/* Invoice Details Block */}
            <div className="text-right">
               <div className="inline-grid grid-cols-[auto_auto] gap-x-4 gap-y-1 text-left">
-                <span className="font-bold whitespace-nowrap">Invoice #</span>
+                <span className="font-bold whitespace-nowrap">{t.invoiceNumber} #</span>
                 <span className="text-zinc-600 whitespace-nowrap">{invoice.details.invoiceNumber}</span>
                 
-                <span className="font-bold whitespace-nowrap">Invoice Date</span>
+                <span className="font-bold whitespace-nowrap">{t.issueDate}</span>
                 <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.issueDate)}</span>
                 
-                <span className="font-bold whitespace-nowrap">Due Date</span>
+                <span className="font-bold whitespace-nowrap">{t.dueDate}</span>
                 <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.dueDate)}</span>
               </div>
            </div>
@@ -110,10 +104,10 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
           <table className="w-full border-collapse border border-zinc-300">
             <thead>
               <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
-                <th className="w-16 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Qty</th>
-                <th className="py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">Description</th>
-                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">Amount</th>
-                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">Total</th>
+                <th className="w-16 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.qty}</th>
+                <th className="py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.description}</th>
+                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.rate}</th>
+                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.lineTotal || "Total"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-300">
@@ -132,31 +126,26 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
           <div className="flex justify-end mt-0">
             <div className="w-[calc(22rem+2px)]">
               <div className="flex">
-                <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Subtotal</div>
+                <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.subtotal}</div>
                 <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
               </div>
 
-              {invoice.taxRate > 0 ? (
+              {invoice.taxRate > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Sales Tax {invoice.taxRate.toFixed(1)}%</div>
-                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
-                </div>
-              ) : !isLoggedIn && (
-                <div className="flex opacity-50">
-                  <div className="flex-1 py-3 px-4 text-right font-medium text-[12px] italic">Tax calculated by payment provider</div>
-                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">0.00</div>
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.tax} {invoice.taxRate.toFixed(1)}%</div>
+                   <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
                 </div>
               )}
 
               {invoice.discount > 0 && (
                 <div className="flex text-red-600">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">Discount</div>
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.discount}</div>
                   <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
                 </div>
               )}
 
               <div className="flex">
-                <div className="flex-1 py-4 px-4 text-right font-black text-[14px] uppercase tracking-tighter">TOTAL</div>
+                <div className="flex-1 py-4 px-4 text-right font-black text-[14px] tracking-tighter">{t.totalDue}</div>
                 <div className="w-40 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
                   {symbol}{formatAmount(total)}
                 </div>
@@ -181,35 +170,28 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
              </div>
            ) : (
              <p className="text-[11px] text-zinc-400 italic max-w-[200px] text-right">
-                This invoice is generated electronically and is valid without a signature.
+                {t.electronicSignature || "This invoice is generated electronically and is valid without a signature."}
              </p>
            )}
         </div>
 
         {/* Footer Notes & Terms - Bottom of Page */}
         <div className="mt-auto pt-16">
-          {invoice.notes && (
+          {invoice.notes && invoice.showNotes && (
             <div className="mb-6">
-              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">Notes</p>
+              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">{t.notes}</p>
               <p className="text-[13px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
             </div>
           )}
-          {invoice.terms && (
+          {invoice.terms && invoice.showTerms && (
             <div className="mb-8">
-              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">Terms & Conditions</p>
+              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">{t.termsConditions}</p>
               <p className="text-[13px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
             </div>
           )}
         </div>
 
-        {/* App Watermark */}
-        {!isLoggedIn && (
-           <div className="text-center pb-6 mt-12 bg-white">
-             <span className="text-[10px] font-medium text-zinc-300 pointer-events-none select-none italic">
-               {t.watermark}
-             </span>
-           </div>
-        )}
+
       </div>
     </div>
   );

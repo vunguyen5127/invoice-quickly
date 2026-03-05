@@ -3,8 +3,31 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { en, Translations } from "@/locales/en";
 import { vn } from "@/locales/vn";
+import { ar } from "@/locales/ar";
+import { zh } from "@/locales/zh";
+import { da } from "@/locales/da";
+import { nl } from "@/locales/nl";
+import { fi } from "@/locales/fi";
+import { fr } from "@/locales/fr";
+import { de } from "@/locales/de";
+import { hi } from "@/locales/hi";
+import { id } from "@/locales/id";
+import { it } from "@/locales/it";
+import { ja } from "@/locales/ja";
+import { ko } from "@/locales/ko";
+import { no } from "@/locales/no";
+import { pl } from "@/locales/pl";
+import { pt } from "@/locales/pt";
+import { ru } from "@/locales/ru";
+import { es } from "@/locales/es";
+import { sv } from "@/locales/sv";
+import { th } from "@/locales/th";
+import { tr } from "@/locales/tr";
 
-type LanguageCode = "EN" | "VN" | string; // Allow other strings but only provide full translations for EN/VN right now
+type LanguageCode = 
+  | "EN" | "VN" | "AR" | "ZH" | "DA" | "NL" | "FI" | "FR" | "DE" | "HI" 
+  | "ID" | "IT" | "JA" | "KO" | "NO" | "PL" | "PT" | "RU" | "ES" | "SV" 
+  | "TH" | "TR";
 
 interface LanguageContextType {
   lang: LanguageCode;
@@ -15,6 +38,26 @@ interface LanguageContextType {
 const dictionaries: Record<string, Translations> = {
   EN: en,
   VN: vn,
+  AR: ar,
+  ZH: zh,
+  DA: da,
+  NL: nl,
+  FI: fi,
+  FR: fr,
+  DE: de,
+  HI: hi,
+  ID: id,
+  IT: it,
+  JA: ja,
+  KO: ko,
+  NO: no,
+  PL: pl,
+  PT: pt,
+  RU: ru,
+  ES: es,
+  SV: sv,
+  TH: th,
+  TR: tr,
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -27,9 +70,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
     const saved = localStorage.getItem("iq_language");
-    if (saved) {
-      setLang(saved);
-    }
+      setLang(saved as LanguageCode);
   }, []);
 
   const handleSetLang = (code: LanguageCode) => {

@@ -10,11 +10,14 @@ import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
 import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2 } from "lucide-react";
 import Link from "next/link";
+import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
   const [invoice, setInvoice] = useState<InvoiceState | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -52,14 +55,17 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
 
   const handleShare = async () => {
     try {
+      const { id } = await params;
+      const shareUrl = `${window.location.origin}/share/${id}`;
+      
       if (navigator.share) {
         await navigator.share({
           title: `Invoice #${invoice?.details.invoiceNumber}`,
           text: 'Here is my invoice.',
-          url: window.location.href,
+          url: shareUrl,
         });
       } else {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(shareUrl);
         alert("Link copied to clipboard!");
       }
     } catch (err) {
@@ -67,15 +73,15 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     }
   };
 
-  const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete this invoice?")) {
-      const { id } = await params;
-      const success = await deleteInvoice(id);
-      if (success) {
-        router.push("/dashboard");
-      } else {
-        alert("Failed to delete invoice");
-      }
+  const confirmDelete = async () => {
+    setIsDeleting(true);
+    const { id } = await params;
+    const success = await deleteInvoice(id);
+    if (success) {
+      router.push("/dashboard");
+    } else {
+      alert("Failed to delete invoice");
+      setIsDeleting(false);
     }
   };
 
@@ -122,7 +128,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
 
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <button
-            onClick={handleDelete}
+            onClick={() => setShowDeleteModal(true)}
             className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 font-medium transition-colors border border-red-200 dark:border-red-900/30"
           >
             <Trash2 className="w-4 h-4" /> <span className="hidden sm:inline">Delete</span>
@@ -151,6 +157,14 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           <InvoicePreview invoice={invoice} />
         </div>
       </div>
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDelete}
+        title="Delete Invoice?"
+        message="Are you sure you want to delete this invoice? This action cannot be undone."
+        isProcessing={isDeleting}
+      />
     </div>
   );
 }

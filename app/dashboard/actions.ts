@@ -23,7 +23,7 @@ export async function getUserCompanies() {
   return data;
 }
 
-export async function createCompany(companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean }) {
+export async function createCompany(companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return null;
@@ -44,6 +44,8 @@ export async function createCompany(companyData: { name: string; email: string; 
       default_terms: companyData.defaultTerms || '',
       show_notes: companyData.showNotes ?? true,
       show_terms: companyData.showTerms ?? true,
+      default_tax: companyData.defaultTax || 0,
+      default_discount: companyData.defaultDiscount || 0,
     }])
     .select()
     .single();
@@ -55,7 +57,7 @@ export async function createCompany(companyData: { name: string; email: string; 
   return data;
 }
 
-export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean }) {
+export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
   if (!supabase) return null;
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return null;
@@ -75,6 +77,8 @@ export async function updateCompany(companyId: string, companyData: { name: stri
       default_terms: companyData.defaultTerms,
       show_notes: companyData.showNotes,
       show_terms: companyData.showTerms,
+      default_tax: companyData.defaultTax,
+      default_discount: companyData.defaultDiscount,
     })
     .eq("id", companyId)
     .eq("user_id", session.user.id)
@@ -154,4 +158,39 @@ export async function deleteInvoice(id: string) {
     return false;
   }
   return true;
+}
+
+export async function getNextInvoiceNumber(companyId: string): Promise<string> {
+  if (!supabase) return "INV-" + new Date().getFullYear() + "-001";
+
+  const { data, error } = await supabase
+    .from("invoices")
+    .select("invoice_number")
+    .eq("company_id", companyId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  const currentYear = new Date().getFullYear();
+
+  if (error || !data) {
+    return `INV-${currentYear}-001`;
+  }
+
+  const lastNumber = data.invoice_number;
+  // Expected format: INV-YYYY-XXX
+  const match = lastNumber.match(/INV-(\d{4})-(\d+)/);
+
+  if (match) {
+    const year = parseInt(match[1]);
+    const index = parseInt(match[2]);
+
+    if (year === currentYear) {
+      const nextIndex = (index + 1).toString().padStart(3, "0");
+      return `INV-${currentYear}-${nextIndex}`;
+    }
+  }
+
+  // Fallback or new year
+  return `INV-${currentYear}-001`;
 }

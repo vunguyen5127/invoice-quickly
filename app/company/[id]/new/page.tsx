@@ -8,14 +8,16 @@ import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Save, Loader2, Receipt, Printer, Share2, ChevronRight } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById } from "@/app/dashboard/actions";
+import { getCompanyById, getNextInvoiceNumber } from "@/app/dashboard/actions";
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
 import { use } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useLanguage();
   const resolvedParams = use(params);
   const [invoice, setInvoice] = useState<InvoiceState>(initialInvoiceState);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -58,6 +60,8 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         .filter(Boolean)
         .join(", ");
         
+      const nextInvoiceNumber = await getNextInvoiceNumber(resolvedParams.id);
+        
       setInvoice((prev) => ({
         ...prev,
         company: {
@@ -67,11 +71,17 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           phone: "",
           logo: companyData.logo_url || prev.company.logo,
         },
+        details: {
+          ...prev.details,
+          invoiceNumber: nextInvoiceNumber,
+        },
         signatureName: prev.signatureName || defaultSignatureName,
         signature: companyData.signature_url || prev.signature,
         currency: companyData.default_currency || prev.currency,
         notes: companyData.default_notes || prev.notes,
         terms: companyData.default_terms || prev.terms,
+        showNotes: companyData.show_notes ?? true,
+        showTerms: companyData.show_terms ?? true,
       }));
 
       setInitialNotesOpen(companyData.show_notes ?? true);
@@ -94,20 +104,8 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   };
 
   const handleShare = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: `Invoice #${invoice.details.invoiceNumber}`,
-          text: 'Here is my invoice.',
-          url: window.location.href,
-        });
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("Link copied to clipboard!");
-      }
-    } catch (err) {
-      console.error("Error sharing", err);
-    }
+    alert("Please save the invoice first to generate a shareable public link.");
+    handleSave();
   };
 
   const handleSave = async () => {
@@ -155,21 +153,21 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
                 onClick={handleShare}
                 className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
               >
-                <Share2 className="w-4 h-4" /> <span className="hidden lg:inline">Share</span>
+                <Share2 className="w-4 h-4" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button 
                 onClick={handleSave}
                 disabled={isSaving}
                 className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors disabled:opacity-75"
               >
-                <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? "Saving..." : "Save"}</span>
+                <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button 
                 onClick={handleDownload}
                 disabled={isGenerating}
                 className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
               >
-                <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? "Wait..." : "Download"}</span>
+                <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
             </div>
             <ThemeToggle />
@@ -181,14 +179,14 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-sm mb-6">
           <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
-            Dashboard
+            {t.dashboard}
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
           <Link href={`/company/${resolvedParams.id}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
-            {companyName || "Company"}
+            {companyName || t.company}
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
-          <span className="text-zinc-700 dark:text-zinc-200 font-medium">New Invoice</span>
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium">{t.newInvoice}</span>
         </nav>
 
         <div className="flex flex-col xl:flex-row gap-8 pb-32 xl:pb-20">
@@ -196,17 +194,17 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           {/* Left Column: Form */}
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
             <div className="flex items-center justify-between h-10">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Create Invoice</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.createInvoice}</h2>
             </div>
             <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 mt-[3px]">
-              <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={resolvedParams.id} initialNotesOpen={initialNotesOpen} initialTermsOpen={initialTermsOpen} />
+              <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={resolvedParams.id} />
             </div>
           </div>
 
         {/* Right Column: Preview */}
         <div className="w-full xl:w-1/2 flex flex-col gap-6">
           <div className="flex items-center justify-between h-10">
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Live Preview</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
           </div>
           
           <div className="border-running xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
@@ -227,14 +225,14 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
             disabled={isSaving}
             className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors disabled:opacity-75"
           >
-            <Save className="w-5 h-5" /> {isSaving ? "Saving..." : "Save"}
+            <Save className="w-5 h-5" /> {isSaving ? t.saving : t.save}
           </button>
           <button 
             onClick={handleDownload}
             disabled={isGenerating}
             className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
           >
-            <Download className="w-5 h-5" /> {isGenerating ? "Wait..." : "Download"}
+            <Download className="w-5 h-5" /> {isGenerating ? t.wait : t.download}
           </button>
         </div>
 

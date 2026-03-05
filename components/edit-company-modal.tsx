@@ -24,6 +24,8 @@ interface EditCompanyModalProps {
     default_terms?: string;
     show_notes?: boolean;
     show_terms?: boolean;
+    default_tax?: number;
+    default_discount?: number;
   } | null;
 }
 
@@ -42,6 +44,9 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
   const [defaultTerms, setDefaultTerms] = useState("");
   const [showNotes, setShowNotes] = useState(true);
   const [showTerms, setShowTerms] = useState(true);
+  const [defaultTax, setDefaultTax] = useState(0);
+  const [defaultDiscount, setDefaultDiscount] = useState(0);
+  const [isValidPhone, setIsValidPhone] = useState(true);
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const logoInputRef = React.useRef<HTMLInputElement>(null);
@@ -63,6 +68,8 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
       setDefaultTerms(initialData.default_terms || "Payment is due within 30 days of invoice date.\nPlease make payment to the bank account listed above.\nFor questions, please contact us at the email above.");
       setShowNotes(initialData.show_notes ?? true);
       setShowTerms(initialData.show_terms ?? true);
+      setDefaultTax(initialData.default_tax || 0);
+      setDefaultDiscount(initialData.default_discount || 0);
       setLogo((initialData as any).logo_url || undefined);
     }
     setTab("company");
@@ -73,10 +80,17 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
+
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    const isPhoneValid = !phone || phoneRegex.test(phone.replace(/\s/g, ''));
+    setIsValidPhone(isPhoneValid);
+    if (!isPhoneValid) return;
+
     setIsSubmitting(true);
     const updated = await updateCompany(initialData.id, {
       name, email, address, phone, logo, signatureUrl, signerName,
       defaultCurrency, defaultNotes, defaultTerms, showNotes, showTerms,
+      defaultTax, defaultDiscount,
     });
     setIsSubmitting(false);
     if (updated) { onSuccess(updated); onClose(); }
@@ -114,8 +128,8 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
 
         {/* Tabs */}
         <div className="flex px-5 mt-3 border-b border-zinc-100 dark:border-zinc-800">
-          <button type="button" className={tabBtn(tab === "company")} onClick={() => setTab("company")}>Company</button>
-          <button type="button" className={tabBtn(tab === "defaults")} onClick={() => setTab("defaults")}>Invoice Defaults</button>
+          <button type="button" className={tabBtn(tab === "company")} onClick={() => setTab("company")}>{t.company}</button>
+          <button type="button" className={tabBtn(tab === "defaults")} onClick={() => setTab("defaults")}>{t.invoiceDefaults}</button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -139,32 +153,47 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                   {/* Logo */}
                   <div className="w-[110px] flex-shrink-0 relative">
                     {logo ? (
-                      <div className="relative w-full h-[110px] rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 flex items-center justify-center group">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={logo} alt="Logo" className="max-w-full max-h-full object-contain" />
-                        <button type="button" onClick={() => setLogo(undefined)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-all shadow">
-                          <X className="w-3 h-3" />
+                      <div className="relative w-full h-[110px] group transition-all">
+                        <div className="w-full h-full rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 flex items-center justify-center overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={logo} alt="Logo" className="w-full h-full object-cover" />
+                        </div>
+                        <button type="button" onClick={() => setLogo(undefined)} className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all shadow-md z-10">
+                          <X className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     ) : (
                       <div onClick={() => logoInputRef.current?.click()} className="w-full h-[110px] rounded-[5px] border border-zinc-200 dark:border-zinc-700 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-blue-50/50 dark:bg-zinc-900">
-                        <div className="w-10 h-10 bg-[#00c2ff] rounded-[5px] flex items-center justify-center text-white">
+                        <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center text-white">
                           <Building2 className="w-6 h-6" />
                         </div>
-                        <span className="text-[10px] text-zinc-400 mt-1">Logo</span>
+                        <span className="text-[10px] text-zinc-400 mt-1">{t.companyLogo}</span>
                       </div>
                     )}
                     <input type="file" accept="image/*" className="hidden" ref={logoInputRef} onChange={handleImageUpload} />
                   </div>
                 </div>
 
+                <fieldset className={fs}>
+                  <legend className={lg}>{t.addressField}</legend>
+                  <textarea rows={2} value={address} onChange={e => setAddress(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="123 Business St, City, Country" />
+                </fieldset>
+ 
                 <div className="grid grid-cols-2 gap-2">
-                  <fieldset className={fs}>
-                    <legend className={lg}>{t.phoneField}</legend>
-                    <input value={phone} onChange={e => setPhone(e.target.value)} className={ic} placeholder="+1 (555) 000-0000" />
+                  <fieldset className={`${fs} ${!isValidPhone ? 'border-red-500 dark:border-red-500' : ''}`}>
+                    <legend className={`${lg} ${!isValidPhone ? 'text-red-500' : ''}`}>{t.phoneField}</legend>
+                    <input 
+                      value={phone} 
+                      onChange={e => {
+                        setPhone(e.target.value);
+                        setIsValidPhone(true);
+                      }} 
+                      className={ic} 
+                      placeholder="+1 (555) 000-0000" 
+                    />
                   </fieldset>
                   <fieldset className={fs}>
-                    <legend className={lg}>Currency</legend>
+                    <legend className={lg}>{t.currency}</legend>
                     <select value={defaultCurrency} onChange={e => setDefaultCurrency(e.target.value)} className={`${ic} py-0.5`}>
                       {CURRENCIES.map(c => (
                         <option key={c.code} value={c.code}>
@@ -175,14 +204,20 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                   </fieldset>
                 </div>
 
-                <fieldset className={fs}>
-                  <legend className={lg}>{t.addressField}</legend>
-                  <textarea rows={2} value={address} onChange={e => setAddress(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="123 Business St, City, Country" />
-                </fieldset>
+                <div className="grid grid-cols-2 gap-2">
+                  <fieldset className={fs}>
+                    <legend className={lg}>{t.taxRate} (%)</legend>
+                    <input type="number" value={defaultTax || ''} onChange={e => setDefaultTax(Number(e.target.value))} className={ic} placeholder="0" />
+                  </fieldset>
+                  <fieldset className={fs}>
+                    <legend className={lg}>{t.discount}</legend>
+                    <input type="number" value={defaultDiscount || ''} onChange={e => setDefaultDiscount(Number(e.target.value))} className={ic} placeholder="0" />
+                  </fieldset>
+                </div>
 
                 {/* Signature */}
                 <div>
-                  <p className="text-[11px] font-medium text-zinc-400 mb-1.5">Signature</p>
+                  <p className="text-[11px] font-medium text-zinc-400 mb-1.5">{t.signature}</p>
                   {signatureUrl ? (
                     <div className="relative h-20 rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-center p-1 group">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -194,11 +229,11 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                   ) : (
                     <div className="flex items-center gap-2">
                       <button type="button" onClick={() => document.getElementById('sig-upload-edit')?.click()} className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
-                        <Upload className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">Upload</span>
+                        <Upload className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.upload}</span>
                       </button>
-                      <span className="text-[11px] text-zinc-400">or</span>
+                      <span className="text-[11px] text-zinc-400">{t.or}</span>
                       <button type="button" onClick={() => setIsSignatureModalOpen(true)} className="flex-1 h-14 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
-                        <PenTool className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">Draw</span>
+                        <PenTool className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.draw}</span>
                       </button>
                       <input id="sig-upload-edit" type="file" accept="image/*" className="hidden" onChange={e => {
                         const file = e.target.files?.[0];
@@ -213,7 +248,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                 </div>
 
                 <fieldset className={fs}>
-                  <legend className={lg}>Signer Name</legend>
+                  <legend className={lg}>{t.signerNameField}</legend>
                   <input value={signerName} onChange={e => setSignerName(e.target.value)} className={ic} placeholder="John Doe" />
                 </fieldset>
               </>
@@ -223,24 +258,24 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
             {tab === "defaults" && (
               <>
                 <fieldset className={fs}>
-                  <legend className={lg}>Default Notes</legend>
+                  <legend className={lg}>{t.defaultNotesField}</legend>
                   <textarea rows={3} value={defaultNotes} onChange={e => setDefaultNotes(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="Thank you for your business!" />
                 </fieldset>
 
                 <fieldset className={fs}>
-                  <legend className={lg}>Default Terms & Conditions</legend>
+                  <legend className={lg}>{t.defaultTermsField}</legend>
                   <textarea rows={3} value={defaultTerms} onChange={e => setDefaultTerms(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="Payment due within 30 days." />
                 </fieldset>
 
                 <div className="flex flex-col gap-2 pt-1 border-t border-zinc-100 dark:border-zinc-800">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 pt-2">Visibility on New Invoices</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 pt-2">{t.visibilityHeading}</p>
                   <label className="flex items-center gap-2.5 cursor-pointer select-none text-[13px] text-zinc-700 dark:text-zinc-300">
                     <input type="checkbox" checked={showNotes} onChange={e => setShowNotes(e.target.checked)} className="w-4 h-4 accent-blue-500" />
-                    Show Notes section
+                    {t.showNotesLabel}
                   </label>
                   <label className="flex items-center gap-2.5 cursor-pointer select-none text-[13px] text-zinc-700 dark:text-zinc-300">
                     <input type="checkbox" checked={showTerms} onChange={e => setShowTerms(e.target.checked)} className="w-4 h-4 accent-blue-500" />
-                    Show Terms & Conditions section
+                    {t.showTermsLabel}
                   </label>
                 </div>
               </>

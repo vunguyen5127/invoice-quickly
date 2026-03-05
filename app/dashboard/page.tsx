@@ -9,12 +9,15 @@ import { Loader2, Trash2, Plus, Building2, ArrowRight, PenTool } from "lucide-re
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
+import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function Dashboard() {
   const [companies, setCompanies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<any | null>(null);
+  const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -35,16 +38,22 @@ export default function Dashboard() {
     loadData();
   }, [router]);
 
-  const handleDelete = async (e: React.MouseEvent, id: string) => {
+  const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault(); // Prevent navigating to company link
-    if (confirm("Are you sure you want to delete this company and ALL its invoices? This cannot be undone.")) {
-      const success = await deleteCompany(id);
-      if (success) {
-        setCompanies(companies.filter((c) => c.id !== id));
-      } else {
-        alert("Failed to delete company");
-      }
+    setCompanyToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!companyToDelete) return;
+    setIsDeleting(true);
+    const success = await deleteCompany(companyToDelete);
+    if (success) {
+      setCompanies(companies.filter((c) => c.id !== companyToDelete));
+    } else {
+      alert("Failed to delete company");
     }
+    setIsDeleting(false);
+    setCompanyToDelete(null);
   };
 
   const handleCompanyCreated = (newCompany: any) => {
@@ -76,13 +85,16 @@ export default function Dashboard() {
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Businesses</h1>
           <p className="text-zinc-500 mt-1">Select a company to manage its invoices</p>
         </div>
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Add Company
-        </button>
+        <div className="flex items-center gap-2">
+
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Add Company
+          </button>
+        </div>
       </div>
 
       {companies.length === 0 ? (
@@ -120,7 +132,7 @@ export default function Dashboard() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-2xl rounded-full -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
                 <div className="flex justify-between items-start mb-6 relative">
-                  <div className="w-14 h-14 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-800/50 rounded-[5px] flex items-center justify-center border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm group-hover:scale-105 transition-transform duration-300 overflow-hidden bg-white">
+                  <div className="w-14 h-14 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-800/50 rounded-full flex items-center justify-center border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm group-hover:scale-105 transition-transform duration-300 overflow-hidden bg-white">
                     {company.logo_url ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
@@ -137,7 +149,7 @@ export default function Dashboard() {
                       <PenTool className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={(e) => handleDelete(e, company.id)}
+                      onClick={(e) => handleDeleteClick(e, company.id)}
                       className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-xl transition-all"
                       title="Delete Company"
                     >
@@ -184,6 +196,15 @@ export default function Dashboard() {
           onSuccess={handleCompanyUpdated}
         />
       )}
+
+      <ConfirmModal
+        isOpen={!!companyToDelete}
+        onClose={() => setCompanyToDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete Company?"
+        message="Are you sure you want to delete this company? All invoices associated with it will also be permanently deleted. This action cannot be undone."
+        isProcessing={isDeleting}
+      />
     </div>
   );
 }

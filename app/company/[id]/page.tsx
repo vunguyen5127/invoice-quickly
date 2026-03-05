@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool } from "lucide-react";
 import Link from "next/link";
 import { EditCompanyModal } from "@/components/edit-company-modal";
+import { ConfirmModal } from "@/components/confirm-modal";
 import { use } from "react";
 
 export default function CompanyDashboardPage({ params }: { params: Promise<{ id: string }> }) {
@@ -16,6 +17,8 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [invoiceToDelete, setInvoiceToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,15 +47,21 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     loadData();
   }, [router, resolvedParams.id]);
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this invoice?")) {
-      const success = await deleteInvoice(id);
-      if (success) {
-        setInvoices(invoices.filter((inv) => inv.id !== id));
-      } else {
-        alert("Failed to delete invoice");
-      }
+  const handleDeleteClick = (id: string) => {
+    setInvoiceToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!invoiceToDelete) return;
+    setIsDeleting(true);
+    const success = await deleteInvoice(invoiceToDelete);
+    if (success) {
+      setInvoices(invoices.filter((inv) => inv.id !== invoiceToDelete));
+    } else {
+      alert("Failed to delete invoice");
     }
+    setIsDeleting(false);
+    setInvoiceToDelete(null);
   };
 
   const handleCompanyUpdated = (updatedCompany: any) => {
@@ -87,8 +96,13 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center border border-zinc-200 dark:border-zinc-700">
-              <Building2 className="w-5 h-5 text-zinc-500" />
+            <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden bg-white">
+              {company.logo_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
+              ) : (
+                <Building2 className="w-5 h-5 text-zinc-500" />
+              )}
             </div>
             <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{company.name}</h1>
             <button
@@ -122,7 +136,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
               href={`/company/${resolvedParams.id}/new`}
               className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
-              Crate your first invoice &rarr;
+              Create your first invoice &rarr;
             </Link>
           </div>
         ) : (
@@ -162,7 +176,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           <Eye className="w-4 h-4" />
                         </Link>
                         <button
-                          onClick={() => handleDelete(inv.id)}
+                          onClick={() => handleDeleteClick(inv.id)}
                           className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
                           title="Delete Invoice"
                         >
@@ -183,6 +197,15 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         initialData={company}
         onClose={() => setIsEditModalOpen(false)}
         onSuccess={handleCompanyUpdated}
+      />
+
+      <ConfirmModal
+        isOpen={!!invoiceToDelete}
+        onClose={() => setInvoiceToDelete(null)}
+        onConfirm={confirmDelete}
+        title="Delete Invoice?"
+        message="Are you sure you want to delete this invoice? This action cannot be undone."
+        isProcessing={isDeleting}
       />
     </div>
   );

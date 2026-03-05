@@ -45,7 +45,7 @@ export function LanguageToggle() {
   }, []);
 
   const selectLang = (code: string) => {
-    setLang(code);
+    setLang(code as any);
     setIsOpen(false);
   };
 
@@ -53,7 +53,7 @@ export function LanguageToggle() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center rounded-[5px] p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="inline-flex items-center justify-center rounded-full p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
         aria-label="Select language"
         title="Select language"
         aria-expanded={isOpen}

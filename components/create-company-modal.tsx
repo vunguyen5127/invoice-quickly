@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { createCompany } from "@/app/dashboard/actions";
-import { X, Loader2, Building2, Upload, PenTool } from "lucide-react";
+import { X, Loader2, Upload, Building2, Plus, PenTool } from "lucide-react";
 import { SignaturePadModal } from "./signature-pad-modal";
+import { CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
 
 interface CreateCompanyModalProps {
@@ -21,6 +22,10 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
   const [logo, setLogo] = useState<string | undefined>(undefined);
   const [signerName, setSignerName] = useState("");
   const [signatureUrl, setSignatureUrl] = useState<string | undefined>(undefined);
+  const [defaultCurrency, setDefaultCurrency] = useState("USD");
+  const [defaultTax, setDefaultTax] = useState(0);
+  const [defaultDiscount, setDefaultDiscount] = useState(0);
+  const [isValidPhone, setIsValidPhone] = useState(true);
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const logoInputRef = React.useRef<HTMLInputElement>(null);
@@ -35,8 +40,14 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     e.preventDefault();
     if (!name.trim()) return;
 
+    // Basic phone validation: allow empty OR require basic digits/plus/space/dash
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    const isPhoneValid = !phone || phoneRegex.test(phone.replace(/\s/g, ''));
+    setIsValidPhone(isPhoneValid);
+    if (!isPhoneValid) return;
+
     setIsSubmitting(true);
-    const newCompany = await createCompany({ name, email, address, phone, logo, signatureUrl, signerName });
+    const newCompany = await createCompany({ name, email, address, phone, logo, signatureUrl, signerName, defaultCurrency, defaultTax, defaultDiscount });
     setIsSubmitting(false);
 
     if (newCompany) {
@@ -48,6 +59,8 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
       setLogo(undefined);
       setSignerName("");
       setSignatureUrl(undefined);
+      setDefaultTax(0);
+      setDefaultDiscount(0);
       onClose();
     } else {
       alert("Failed to create company. Please try again.");
@@ -112,18 +125,58 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                   placeholder="billing@acme.com"
                 />
               </fieldset>
-              
-              <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.phoneField}</legend>
-                <input
-                  id="phone"
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className={inputInnerClass}
-                  placeholder="+1 (555) 000-0000"
-                />
-              </fieldset>
+                            <fieldset className={`${fieldsetClass} ${!isValidPhone ? 'border-red-500 dark:border-red-500' : ''}`}>
+                  <legend className={`${legendClass} ${!isValidPhone ? 'text-red-500' : ''}`}>{t.phoneField}</legend>
+                  <input
+                    id="phone"
+                    type="text"
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                      setIsValidPhone(true);
+                    }}
+                    className={inputInnerClass}
+                    placeholder="+1 (555) 000-0000"
+                  />
+                </fieldset>
+
+                <fieldset className={fieldsetClass}>
+                  <legend className={legendClass}>{t.currency}</legend>
+                  <select 
+                    value={defaultCurrency} 
+                    onChange={e => setDefaultCurrency(e.target.value)} 
+                    className={`${inputInnerClass} py-0.5 bg-transparent`}
+                  >
+                    {CURRENCIES.map(c => (
+                      <option key={c.code} value={c.code} className="bg-white dark:bg-zinc-900">
+                        {c.code} ({c.symbol})
+                      </option>
+                    ))}
+                  </select>
+                </fieldset>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <fieldset className={fieldsetClass}>
+                    <legend className={legendClass}>{t.taxRate} (%)</legend>
+                    <input 
+                      type="number" 
+                      value={defaultTax || ''} 
+                      onChange={e => setDefaultTax(Number(e.target.value))} 
+                      className={inputInnerClass} 
+                      placeholder="0" 
+                    />
+                  </fieldset>
+                  <fieldset className={fieldsetClass}>
+                    <legend className={legendClass}>{t.discount}</legend>
+                    <input 
+                      type="number" 
+                      value={defaultDiscount || ''} 
+                      onChange={e => setDefaultDiscount(Number(e.target.value))} 
+                      className={inputInnerClass} 
+                      placeholder="0" 
+                    />
+                  </fieldset>
+                </div>
             </div>
 
             {/* Square Logo Upload */}
@@ -132,15 +185,17 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                 {t.companyLogoField || "Company Logo"}
               </span>
               {logo ? (
-                <div className="relative w-full h-[132px] rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 flex items-center justify-center p-0 group transition-all shadow-sm">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={logo} alt="Logo" className="max-w-full max-h-full object-contain" />
+                <div className="relative w-full h-[132px] group transition-all">
+                  <div className="w-full h-full rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 flex items-center justify-center p-0 shadow-sm overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={logo} alt="Logo" className="w-full h-full object-cover" />
+                  </div>
                   <button 
                     type="button"
                     onClick={() => setLogo(undefined)}
-                    className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all shadow-md z-10"
+                    className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all shadow-md z-10"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 </div>
               ) : (
@@ -148,7 +203,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                   onClick={() => logoInputRef.current?.click()}
                   className="w-full h-[132px] rounded-[5px] border border-zinc-200 dark:border-zinc-700 flex flex-col items-center justify-center cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900 shadow-sm"
                 >
-                  <div className="w-12 h-12 bg-[#00c2ff] rounded-[5px] flex items-center justify-center text-white shadow-sm hover:scale-105 transition-transform">
+                  <div className="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center text-white shadow-sm hover:scale-105 transition-transform">
                     <Building2 className="w-7 h-7" />
                   </div>
                 </div>

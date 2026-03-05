@@ -29,6 +29,7 @@ export interface ClientDetails {
 }
 
 export interface InvoiceState {
+  id?: string;
   company: CompanyDetails;
   client: ClientDetails;
   details: InvoiceDetails;
@@ -41,6 +42,8 @@ export interface InvoiceState {
   currency: string;
   signature?: string;
   signatureName?: string;
+  showNotes: boolean;
+  showTerms: boolean;
 }
 
 export const CURRENCIES = [
@@ -103,5 +106,7 @@ export const initialInvoiceState: InvoiceState = {
   terms: "",
   currency: "USD",
   signature: "",
-  signatureName: ""
+  signatureName: "",
+  showNotes: true,
+  showTerms: true
 };

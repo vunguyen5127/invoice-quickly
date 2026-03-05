@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { InvoiceState, InvoiceItem } from "@/types/invoice";
+import { InvoiceState, InvoiceItem, CURRENCIES } from "@/types/invoice";
 import { Plus, Trash2, Upload, X, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
@@ -14,11 +14,9 @@ interface InvoiceFormProps {
   invoice: InvoiceState;
   setInvoice: React.Dispatch<React.SetStateAction<InvoiceState>>;
   defaultCompanyId?: string;
-  initialNotesOpen?: boolean;
-  initialTermsOpen?: boolean;
 }
 
-export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNotesOpen = true, initialTermsOpen = true }: InvoiceFormProps) {
+export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
@@ -59,7 +57,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
            logo: comp.logo_url || prev.company.logo,
         },
         signatureName: comp.signer_name || prev.signatureName,
-        signature: comp.signature_url || prev.signature
+        signature: comp.signature_url || prev.signature,
+        currency: comp.default_currency || prev.currency,
+        notes: comp.default_notes || prev.notes,
+        terms: comp.default_terms || prev.terms,
+        showNotes: comp.show_notes ?? true,
+        showTerms: comp.show_terms ?? true,
+        taxRate: comp.default_tax || 0,
+        discount: comp.default_discount || 0,
       }));
     }
     setSelectedCompanyId(selectedId);
@@ -94,7 +99,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
           try {
             const start = format(parseISO(item.billingStart), 'MMM dd, yyyy');
             const end = format(parseISO(item.billingEnd), 'MMM dd, yyyy');
-            item.description = `${baseDesc} — ${start} to ${end}`;
+            item.description = `${baseDesc} — ${start} ${t.to} ${end}`;
           } catch (e) {
             // Ignore invalid dates
           }
@@ -138,18 +143,18 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
 
   // Accordion states
-  const [isNotesOpen, setIsNotesOpen] = useState(initialNotesOpen);
-  const [isTermsOpen, setIsTermsOpen] = useState(initialTermsOpen);
+  const [isNotesOpen, setIsNotesOpen] = useState(true);
+  const [isTermsOpen, setIsTermsOpen] = useState(true);
   const [isSignatureOpen, setIsSignatureOpen] = useState(false);
 
   // Sync accordion states with props when they change (e.g. after company data loads)
   useEffect(() => {
-    setIsNotesOpen(initialNotesOpen);
-  }, [initialNotesOpen]);
+    setIsNotesOpen(invoice.showNotes);
+  }, [invoice.showNotes]);
 
   useEffect(() => {
-    setIsTermsOpen(initialTermsOpen);
-  }, [initialTermsOpen]);
+    setIsTermsOpen(invoice.showTerms);
+  }, [invoice.showTerms]);
 
   const inputBaseClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
@@ -220,9 +225,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
                 <div className="w-full h-full flex flex-col">
                   <textarea 
                     placeholder={`${t.companyName}, ${t.yourAddress}, ${t.yourEmail}, ${t.companyPhone}`}
-                    className={`${inputInnerClass} flex-1 resize-none min-h-[90px] mt-1 pr-2`} 
+                    className={`${inputInnerClass} flex-1 resize-none h-[72px] mt-1 pr-2 leading-snug`} 
                     value={invoice.company.name} 
                     onChange={(e) => handleSectionChange('company', 'name', e.target.value)}
+                    rows={3}
                   />
                 </div>
               </fieldset>
@@ -250,20 +256,22 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
               
               <div className="w-[130px] h-[130px] ml-auto md:mx-0">
                 {invoice.company.logo ? (
-                  <div className="relative w-[130px] h-[130px] rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 group transition-all shadow-sm">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={invoice.company.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
+                  <div className="relative w-[130px] h-[130px] group transition-all">
+                    <div className="w-full h-full rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={invoice.company.logo} alt="Logo" className="w-full h-full object-cover" />
+                    </div>
                     <button 
                       onClick={() => handleSectionChange('company', 'logo', undefined)}
-                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all shadow-md"
+                      className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all shadow-md z-10"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 ) : (
                   <div 
                     onClick={() => logoInputRef.current?.click()}
-                    className="w-[130px] h-[130px] rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-400 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all bg-zinc-50 hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400"
+                    className="w-[130px] h-[130px] rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-400 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all bg-zinc-50 hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 overflow-hidden"
                   >
                     <div className="p-2.5 bg-white dark:bg-zinc-800 rounded-full shadow-sm border border-zinc-100 dark:border-zinc-700 group-hover:scale-110 transition-transform">
                       <Upload className="w-4 h-4" />
@@ -393,52 +401,24 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
                 </div>
               </div>
 
-              {/* Description & Billing Period */}
+              {/* Description */}
               <div className="md:col-span-6 order-1 md:order-2">
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-1">
-                    <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">{t.description}</span>
-                    <div className="relative group/desc">
-                      <input 
-                        type="text" 
-                        placeholder="e.g. Seller Growth Plan (Monthly) — Billing period: Mar 03–Apr 03"
-                        className="w-full h-10 px-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                        value={item.description}
-                        maxLength={120}
-                        onChange={(e) => handleItemChange(index, "description", e.target.value)}
-                        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
-                      />
-                      <div className="absolute top-[-18px] right-0 opacity-0 group-focus-within/desc:opacity-100 transition-opacity">
-                        <span className={`text-[10px] font-bold ${item.description.length >= 110 ? 'text-amber-500' : 'text-zinc-400'}`}>
-                          {item.description.length}/120
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1">
-                      <div className="relative h-8">
-                        <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
-                        <input 
-                          type="date"
-                          className="w-full h-full pl-8 pr-2 bg-white/50 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 rounded-md text-[11px] font-medium text-zinc-600 dark:text-zinc-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/10 transition-all hover:bg-white dark:hover:bg-zinc-950"
-                          value={item.billingStart || ''}
-                          onChange={(e) => handleItemChange(index, "billingStart", e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <span className="text-zinc-300 dark:text-zinc-700 text-xs font-bold">to</span>
-                    <div className="flex-1">
-                      <div className="relative h-8">
-                        <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
-                        <input 
-                          type="date"
-                          className="w-full h-full pl-8 pr-2 bg-white/50 dark:bg-zinc-950/50 border border-zinc-200 dark:border-zinc-800 rounded-md text-[11px] font-medium text-zinc-600 dark:text-zinc-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/10 transition-all hover:bg-white dark:hover:bg-zinc-950"
-                          value={item.billingEnd || ''}
-                          onChange={(e) => handleItemChange(index, "billingEnd", e.target.value)}
-                        />
-                      </div>
+                <div className="flex flex-col gap-1">
+                  <span className="md:hidden text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">{t.description}</span>
+                  <div className="relative group/desc">
+                    <input 
+                      type="text" 
+                      placeholder="e.g. Seller Growth Plan (Monthly)"
+                      className="w-full h-10 px-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      value={item.description}
+                      maxLength={120}
+                      onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
+                    />
+                    <div className="absolute top-[-18px] right-0 opacity-0 group-focus-within/desc:opacity-100 transition-opacity">
+                      <span className={`text-[10px] font-bold ${item.description.length >= 110 ? 'text-amber-500' : 'text-zinc-400'}`}>
+                        {item.description.length}/120
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -499,11 +479,11 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
                 value={invoice.currency}
                 onChange={(e) => handleRootChange("currency", e.target.value)}
               >
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="GBP">GBP (£)</option>
-                <option value="AUD">AUD ($)</option>
-                <option value="CAD">CAD ($)</option>
+                {CURRENCIES.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.code} ({c.symbol})
+                  </option>
+                ))}
               </select>
             </fieldset>
             
@@ -537,7 +517,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
                     onChange={(e) => handleRootChange("discountType", e.target.value as 'fixed' | 'percentage')}
                   >
                     <option value="percentage">%</option>
-                    <option value="fixed">{invoice.currency.charAt(0) === 'U' ? '$' : 'Amt'}</option>
+                    <option value="fixed">{t.fixed}</option>
                   </select>
                 </div>
               </fieldset>
@@ -546,16 +526,34 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
 
           <div className="space-y-4 pt-2">
             {/* Notes Accordion */}
-            {initialNotesOpen && (
+            {invoice.showNotes && (
               <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
-                <button 
-                  className="w-full flex items-center justify-between p-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
-                  onClick={() => setIsNotesOpen(!isNotesOpen)}
-                  type="button"
-                >
-                  {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addNotes}</span>}
-                  {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
-                </button>
+                <div className="w-full flex items-center justify-between p-3.5 bg-zinc-50/50 dark:bg-zinc-800/20">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <label className="flex items-center gap-2 cursor-pointer shrink-0" onClick={(e) => e.stopPropagation()}>
+                      <input 
+                        type="checkbox" 
+                        checked={invoice.showNotes} 
+                        onChange={(e) => handleRootChange("showNotes", e.target.checked)}
+                        className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      />
+                    </label>
+                    <button 
+                      type="button"
+                      onClick={() => setIsNotesOpen(!isNotesOpen)} 
+                      className="flex-1 text-left text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
+                    >
+                      {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs font-medium">{t.addNotes}</span>}
+                    </button>
+                  </div>
+                  <button 
+                    type="button"
+                    onClick={() => setIsNotesOpen(!isNotesOpen)}
+                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                  >
+                    {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
+                  </button>
+                </div>
                 {isNotesOpen && (
                   <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
                     <fieldset className={fieldsetClass}>
@@ -573,16 +571,34 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
             )}
 
             {/* Terms Accordion */}
-            {initialTermsOpen && (
+            {invoice.showTerms && (
               <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
-                <button 
-                  className="w-full flex items-center justify-between p-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
-                  onClick={() => setIsTermsOpen(!isTermsOpen)}
-                  type="button"
-                >
-                  {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addTerms}</span>}
-                  {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
-                </button>
+                <div className="w-full flex items-center justify-between p-3.5 bg-zinc-50/50 dark:bg-zinc-800/20">
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <label className="flex items-center gap-2 cursor-pointer shrink-0" onClick={(e) => e.stopPropagation()}>
+                      <input 
+                        type="checkbox" 
+                        checked={invoice.showTerms} 
+                        onChange={(e) => handleRootChange("showTerms", e.target.checked)}
+                        className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      />
+                    </label>
+                    <button 
+                      type="button"
+                      onClick={() => setIsTermsOpen(!isTermsOpen)} 
+                      className="flex-1 text-left text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
+                    >
+                      {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs font-medium">{t.addTerms}</span>}
+                    </button>
+                  </div>
+                  <button 
+                    type="button"
+                    onClick={() => setIsTermsOpen(!isTermsOpen)}
+                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                  >
+                    {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
+                  </button>
+                </div>
                 {isTermsOpen && (
                   <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
                     <fieldset className={fieldsetClass}>
@@ -630,7 +646,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
                             className="flex-1 max-w-[160px] min-w-[80px] h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors bg-white hover:bg-blue-50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600"
                           >
                             <Upload className="w-5 h-5 flex-shrink-0" />
-                            <span className="text-[10px] uppercase font-semibold tracking-wider truncate px-1 text-center w-full">Upload</span>
+                            <span className="text-[10px] uppercase font-semibold tracking-wider truncate px-1 text-center w-full">{t.upload}</span>
                           </div>
                           
                           <div className="flex items-center justify-center text-sm font-medium text-zinc-400 flex-shrink-0">OR</div>
@@ -640,7 +656,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, initialNote
                             className="flex-1 max-w-[160px] min-w-[80px] h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors bg-white hover:bg-blue-50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600"
                           >
                             <PenTool className="w-5 h-5 flex-shrink-0" />
-                            <span className="text-[10px] uppercase font-semibold tracking-wider truncate px-1 text-center w-full">Draw</span>
+                            <span className="text-[10px] uppercase font-semibold tracking-wider truncate px-1 text-center w-full">{t.draw}</span>
                           </div>
                         </div>
                       )}
