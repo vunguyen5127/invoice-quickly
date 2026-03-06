@@ -5,7 +5,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-[calc(100vh-64px)] overflow-hidden">
       {/* Hero Section */}
-      <section className="relative px-4 pt-20 pb-32 sm:pt-32 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
+      <section className="relative px-4 py-12 sm:py-16 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
         {/* Background Gradients */}
         <div className="absolute inset-x-0 top-0 -z-10 transform-gpu overflow-hidden blur-3xl pointer-events-none sm:top-[-20rem]">
           <div className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 dark:opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem] blur-3xl" />
