@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/contexts/language-context";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
+import { LogUserSession } from "@/components/log-user-session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -71,6 +72,7 @@ const notoThai = Noto_Sans_Thai({
   display: "swap",
 });
 
+
 export const metadata: Metadata = {
   title: "InvoiceQuickly - Professional Invoice Generator",
   description: "Create and download professional invoices in seconds.",
@@ -88,6 +90,7 @@ export default function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <LanguageProvider>
+            <LogUserSession />
             <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
               <SiteHeader />
               <main className="flex-1">

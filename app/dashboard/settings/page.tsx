@@ -66,7 +66,7 @@ export default function SettingsPage() {
       <div className={sectionClass}>
         <div className={headerClass}>
           <User className="w-4 h-4 text-blue-500" />
-          {t.company || "Profile"}
+          {"Profile"}
         </div>
         <div className="p-6 flex items-center gap-4">
           <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-pink-500 text-white border-2 border-white dark:border-zinc-800 text-2xl font-black shadow-lg">
@@ -140,6 +140,21 @@ export default function SettingsPage() {
              <div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
           </div>
         </div>
+        
+        {user?.email === "vunguyencapital@gmail.com" && (
+          <Link href="/admin" className={itemClass}>
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                <Shield className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-indigo-900 dark:text-indigo-100">Admin Panel</p>
+                <p className="text-xs text-indigo-700/70 dark:text-indigo-400/70">View system login logs and statistics</p>
+              </div>
+            </div>
+            <ChevronLeft className="w-4 h-4 text-zinc-400 rotate-180" />
+          </Link>
+        )}
         <button 
           onClick={handleLogout}
           className="w-full px-6 py-4 flex items-center gap-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors border-t border-zinc-50 dark:border-zinc-800/50"

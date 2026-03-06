@@ -4,6 +4,7 @@ import { useEffect, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { logUserLogin } from "@/utils/login-logger";
 
 function LoginContent() {
   const router = useRouter();
@@ -24,8 +25,11 @@ function LoginContent() {
     // Auth state listener handles redirect after OAuth flow returns to this page
     if (supabase) {
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        (_event, session) => {
+        (event, session) => {
           if (session) {
+            if (event === "SIGNED_IN") {
+              logUserLogin();
+            }
             router.push(redirectPath);
           }
         }

@@ -5,15 +5,18 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/contexts/language-context";
-import { Receipt, Settings } from "lucide-react";
+import { Receipt, Settings, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 import { supabase } from "@/utils/supabase/client";
+
+const ADMIN_EMAIL = "vunguyencapital@gmail.com";
 
 export function SiteHeader() {
   const { t } = useLanguage();
   const pathname = usePathname();
   const [hasUser, setHasUser] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   
   useEffect(() => {
     if (!supabase) return;
@@ -21,12 +24,14 @@ export function SiteHeader() {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       setHasUser(!!session?.user);
+      setUserEmail(session?.user?.email || null);
     };
     checkUser();
 
     // @ts-ignore
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setHasUser(!!session?.user);
+      setUserEmail(session?.user?.email || null);
     });
 
     return () => subscription?.unsubscribe();
