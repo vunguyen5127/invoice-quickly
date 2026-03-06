@@ -61,13 +61,31 @@ export default function LandingPage() {
         {/* See It In Action Section */}
         <div className="mt-20 sm:mt-24 relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 text-left">
           <div className="w-full md:w-3/5 order-2 md:order-1 relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 aspect-[16/10] flex items-center justify-center group">
-             {/* TODO: Add real generator-preview.png GIF or image later */}
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img 
-               src="/images/generator-preview.png" 
-               alt="Invoice Quickly Generator Live Preview" 
-               className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-[1.02]" 
-             />
+             {/* Placeholder UI showing invoice structure */}
+             <div className="w-full h-full bg-zinc-50 dark:bg-zinc-800/50 p-6 flex gap-6">
+                <div className="w-1/3 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-4 hidden md:flex flex-col gap-4">
+                  <div className="h-6 w-3/4 bg-zinc-200 dark:bg-zinc-800 rounded-md"></div>
+                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mt-4"></div>
+                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
+                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
+                  <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mt-auto"></div>
+                </div>
+                <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl p-8 flex flex-col">
+                  <div className="flex justify-between items-start border-b border-zinc-100 dark:border-zinc-800 pb-6 mb-6">
+                    <div>
+                      <div className="h-8 w-32 bg-zinc-200 dark:bg-zinc-800 rounded-md mb-2"></div>
+                      <div className="h-4 w-20 bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
+                    </div>
+                    <div className="h-12 w-12 bg-blue-100 dark:bg-blue-900/30 rounded-full"></div>
+                  </div>
+                  <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mb-3"></div>
+                  <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mb-3"></div>
+                  <div className="h-4 w-2/3 bg-zinc-100 dark:bg-zinc-800/50 rounded-md mb-6"></div>
+                  <div className="mt-auto flex justify-end">
+                    <div className="h-10 w-28 bg-blue-600 rounded-lg"></div>
+                  </div>
+                </div>
+             </div>
           </div>
           <div className="w-full md:w-2/5 order-1 md:order-2">
             <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">See it in action</h2>
