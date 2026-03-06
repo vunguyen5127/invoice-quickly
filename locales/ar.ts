@@ -99,4 +99,9 @@ export const ar = {
   showTermsLabel: "إظهار قسم الشروط والأحكام",
   or: "أو",
   draw: "رسم",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

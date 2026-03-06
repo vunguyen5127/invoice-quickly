@@ -99,4 +99,9 @@ export const tr = {
   showTermsLabel: "Şartlar ve Koşullar bölümünü göster",
   or: "veya",
   draw: "Çiz",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

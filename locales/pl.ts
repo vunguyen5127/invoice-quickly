@@ -99,4 +99,9 @@ export const pl = {
   showTermsLabel: "Pokaż sekcję regulaminu",
   or: "lub",
   draw: "Rysuj",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

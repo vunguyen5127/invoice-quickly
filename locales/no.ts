@@ -99,4 +99,9 @@ export const no = {
   showTermsLabel: "Vis vilkår og betingelser-seksjon",
   or: "eller",
   draw: "Tegn",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

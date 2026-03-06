@@ -99,4 +99,9 @@ export const nl = {
   showTermsLabel: "Sectie algemene voorwaarden tonen",
   or: "of",
   draw: "Tekenen",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

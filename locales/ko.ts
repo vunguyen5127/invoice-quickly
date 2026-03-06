@@ -99,4 +99,9 @@ export const ko = {
   showTermsLabel: "약관 섹션 표시",
   or: "또는",
   draw: "그리기",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

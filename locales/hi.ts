@@ -99,4 +99,9 @@ export const hi = {
   showTermsLabel: "नियम और शर्तें अनुभाग दिखाएं",
   or: "या",
   draw: "ड्रा करें",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

@@ -99,4 +99,9 @@ export const th = {
   showTermsLabel: "แสดงส่วนเงื่อนไขและข้อตกลง",
   or: "หรือ",
   draw: "วาด",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

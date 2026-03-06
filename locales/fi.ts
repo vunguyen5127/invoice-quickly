@@ -99,4 +99,9 @@ export const fi = {
   showTermsLabel: "Näytä sopimusehdot-osio",
   or: "tai",
   draw: "Piirrä",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

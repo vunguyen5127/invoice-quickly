@@ -99,4 +99,9 @@ export const id = {
   showTermsLabel: "Tampilkan bagian Syarat & Ketentuan",
   or: "atau",
   draw: "Gambar",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

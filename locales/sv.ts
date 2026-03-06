@@ -99,4 +99,9 @@ export const sv = {
   showTermsLabel: "Visa villkorsavsnitt",
   or: "eller",
   draw: "Rita",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

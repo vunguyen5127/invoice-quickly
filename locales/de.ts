@@ -99,4 +99,9 @@ export const de = {
   showTermsLabel: "AGB-Abschnitt anzeigen",
   or: "oder",
   draw: "Zeichnen",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

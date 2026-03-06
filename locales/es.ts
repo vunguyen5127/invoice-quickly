@@ -99,4 +99,9 @@ export const es = {
   showTermsLabel: "Mostrar sección de Términos y Condiciones",
   or: "o",
   draw: "Dibujar",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

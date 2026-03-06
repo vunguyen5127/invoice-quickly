@@ -99,4 +99,9 @@ export const ja = {
   showTermsLabel: "利用規約セクションを表示",
   or: "または",
   draw: "手書き",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

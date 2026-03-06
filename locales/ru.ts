@@ -99,4 +99,9 @@ export const ru = {
   showTermsLabel: "Показывать раздел условий и положений",
   or: "или",
   draw: "Рисовать",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };

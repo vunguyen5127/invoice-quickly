@@ -99,4 +99,9 @@ export const zh = {
   showTermsLabel: "显示条款与条件部分",
   or: "或",
   draw: "绘制",
+  settings: "Settings",
+  accountSettings: "Account Settings",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
 };
