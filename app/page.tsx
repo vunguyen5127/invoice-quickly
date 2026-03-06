@@ -53,6 +53,8 @@ export default function LandingPage() {
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" /> Unlimited invoices</span>
           <span className="hidden sm:inline-block text-zinc-300 dark:text-zinc-700">•</span>
           <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" /> No watermark</span>
+          <span className="hidden sm:inline-block text-zinc-300 dark:text-zinc-700">•</span>
+          <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" /> Instant PDF export</span>
         </div>
 
         {/* Social Proof Stats */}
@@ -63,7 +65,7 @@ export default function LandingPage() {
         </div>
         
         <p className="mt-6 text-sm text-zinc-400 dark:text-zinc-500 font-medium text-center tracking-wide">
-          No credit card • No hidden limits
+          No watermark • No credit card • No hidden limits
         </p>
 
         {/* See It In Action Section */}
