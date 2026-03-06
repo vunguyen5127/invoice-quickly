@@ -70,31 +70,15 @@ export default function LandingPage() {
 
         {/* See It In Action Section */}
         <div className="mt-20 sm:mt-24 relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 text-left">
-          <div className="w-full md:w-3/5 order-2 md:order-1 flex flex-col gap-6">
-             {/* TODO: Generate and place real images in /public/images/ later */}
-             <div className="relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 group aspect-[16/10]">
+          <div className="w-full md:w-3/5 order-2 md:order-1 relative">
+             {/* Video Demo Container */}
+             <div className="relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-1 sm:p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 group aspect-[16/10] z-10 w-full hover:scale-[1.01] transition-transform duration-500 bg-white/50 backdrop-blur-sm">
                {/* eslint-disable-next-line @next/next/no-img-element */}
                <img 
-                 src="/images/generator-preview.png" 
-                 alt="Invoice Quickly Generator Live Preview" 
-                 className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-[1.02] bg-zinc-50 dark:bg-zinc-800"
+                 src="/videos/demo.webp" 
+                 alt="Invoice Quickly Demo Recording" 
+                 className="w-full h-full object-cover rounded-xl shadow-inner border border-zinc-200/50 dark:border-zinc-700/50"
                />
-               <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50 rounded-2xl">
-                 <span className="text-white text-sm md:text-base font-medium px-4 py-2 bg-black/50 rounded drop-shadow-md backdrop-blur-sm">Placeholder: /images/generator-preview.png</span>
-               </div>
-             </div>
-             
-             {/* Optional Second Demo Image (Dashboard) */}
-             <div className="relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-xl overflow-hidden ring-1 ring-zinc-900/5 group transform -rotate-1 md:rotate-1 md:-mt-32 md:-mr-12 hover:z-10 hover:rotate-0 transition-all duration-500 ease-out hidden sm:block aspect-[16/10]">
-               {/* eslint-disable-next-line @next/next/no-img-element */}
-               <img 
-                 src="/images/dashboard-preview.png" 
-                 alt="Invoice Quickly Dashboard Preview" 
-                 className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-[1.02] bg-zinc-50 dark:bg-zinc-800"
-               />
-               <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50 rounded-2xl">
-                 <span className="text-white text-sm md:text-base font-medium px-4 py-2 bg-black/50 rounded drop-shadow-md backdrop-blur-sm">Placeholder: /images/dashboard-preview.png</span>
-               </div>
              </div>
           </div>
           <div className="w-full md:w-2/5 order-1 md:order-2">
