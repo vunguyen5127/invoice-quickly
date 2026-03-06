@@ -47,9 +47,13 @@ export default function LandingPage() {
           </Link>
         </div>
         
-        <p className="mt-6 text-sm sm:text-base text-zinc-500 dark:text-zinc-400 font-medium max-w-lg text-balance">
-          No signup needed • Unlimited invoices • No watermark • Instant PDF export
-        </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-4 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+          <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" /> No signup needed</span>
+          <span className="hidden sm:inline-block text-zinc-300 dark:text-zinc-700">•</span>
+          <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" /> Unlimited invoices</span>
+          <span className="hidden sm:inline-block text-zinc-300 dark:text-zinc-700">•</span>
+          <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500" /> No watermark</span>
+        </div>
 
         {/* Social Proof Stats */}
         <div className="mt-16 flex flex-wrap justify-center gap-x-12 gap-y-6">
@@ -58,8 +62,8 @@ export default function LandingPage() {
           <StatItem value="100%" label="Free to Use" />
         </div>
         
-        <p className="mt-8 text-xs sm:text-sm text-zinc-400 dark:text-zinc-500 font-medium text-center">
-          No watermark • No hidden limits • No credit card
+        <p className="mt-6 text-sm text-zinc-400 dark:text-zinc-500 font-medium text-center tracking-wide">
+          No credit card • No hidden limits
         </p>
 
         {/* See It In Action Section */}
