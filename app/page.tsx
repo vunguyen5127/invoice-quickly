@@ -57,34 +57,38 @@ export default function LandingPage() {
           <StatItem value="20+" label="Languages Supported" />
           <StatItem value="100%" label="Free to Use" />
         </div>
+        
+        <p className="mt-8 text-xs sm:text-sm text-zinc-400 dark:text-zinc-500 font-medium text-center">
+          No watermark • No hidden limits • No credit card
+        </p>
 
         {/* See It In Action Section */}
         <div className="mt-20 sm:mt-24 relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 text-left">
-          <div className="w-full md:w-3/5 order-2 md:order-1 relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 aspect-[16/10] flex items-center justify-center group">
-             {/* Placeholder UI showing invoice structure */}
-             <div className="w-full h-full bg-zinc-50 dark:bg-zinc-800/50 p-6 flex gap-6">
-                <div className="w-1/3 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-4 hidden md:flex flex-col gap-4">
-                  <div className="h-6 w-3/4 bg-zinc-200 dark:bg-zinc-800 rounded-md"></div>
-                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mt-4"></div>
-                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
-                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
-                  <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mt-auto"></div>
-                </div>
-                <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl p-8 flex flex-col">
-                  <div className="flex justify-between items-start border-b border-zinc-100 dark:border-zinc-800 pb-6 mb-6">
-                    <div>
-                      <div className="h-8 w-32 bg-zinc-200 dark:bg-zinc-800 rounded-md mb-2"></div>
-                      <div className="h-4 w-20 bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
-                    </div>
-                    <div className="h-12 w-12 bg-blue-100 dark:bg-blue-900/30 rounded-full"></div>
-                  </div>
-                  <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mb-3"></div>
-                  <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mb-3"></div>
-                  <div className="h-4 w-2/3 bg-zinc-100 dark:bg-zinc-800/50 rounded-md mb-6"></div>
-                  <div className="mt-auto flex justify-end">
-                    <div className="h-10 w-28 bg-blue-600 rounded-lg"></div>
-                  </div>
-                </div>
+          <div className="w-full md:w-3/5 order-2 md:order-1 flex flex-col gap-6">
+             {/* TODO: Generate and place real images in /public/images/ later */}
+             <div className="relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 group">
+               {/* eslint-disable-next-line @next/next/no-img-element */}
+               <img 
+                 src="/images/generator-preview.png" 
+                 alt="Invoice Quickly Generator Live Preview" 
+                 className="w-full h-auto object-cover rounded-xl transition-transform duration-700 group-hover:scale-[1.02] bg-zinc-50 dark:bg-zinc-800"
+               />
+               <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50 rounded-2xl">
+                 <span className="text-white font-medium px-4 py-2 bg-black/50 rounded drop-shadow-md backdrop-blur-sm">Placeholder: Replace with /public/images/generator-preview.png</span>
+               </div>
+             </div>
+             
+             {/* Optional Second Demo Image (Dashboard) */}
+             <div className="relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-xl overflow-hidden ring-1 ring-zinc-900/5 group transform -rotate-1 md:rotate-1 md:-mt-12 md:mr-12 hover:z-10 hover:rotate-0 transition-all duration-500 ease-out hidden sm:block">
+               {/* eslint-disable-next-line @next/next/no-img-element */}
+               <img 
+                 src="/images/dashboard-preview.png" 
+                 alt="Invoice Quickly Dashboard Preview" 
+                 className="w-full h-auto object-cover rounded-xl transition-transform duration-700 group-hover:scale-[1.02] bg-zinc-50 dark:bg-zinc-800"
+               />
+               <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/50 rounded-2xl">
+                 <span className="text-white font-medium px-4 py-2 bg-black/50 rounded drop-shadow-md backdrop-blur-sm">Placeholder: Replace with /public/images/dashboard-preview.png</span>
+               </div>
              </div>
           </div>
           <div className="w-full md:w-2/5 order-1 md:order-2">
@@ -258,7 +262,8 @@ export default function LandingPage() {
             <div>
               <h4 className="text-sm font-semibold text-zinc-900 dark:text-white mb-4 uppercase tracking-wider">Resources</h4>
               <ul className="space-y-3 text-sm text-zinc-500 dark:text-zinc-400">
-                <li><Link href="/dashboard/settings" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Settings</Link></li>
+                <li><Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</Link></li>
                 <li><a href="mailto:support@invoicequickly.com" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact Support</a></li>
               </ul>
             </div>
