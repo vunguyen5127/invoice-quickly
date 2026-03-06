@@ -46,6 +46,10 @@ export default function LandingPage() {
             Sign In to Dashboard
           </Link>
         </div>
+        
+        <p className="mt-6 text-sm sm:text-base text-zinc-500 dark:text-zinc-400 font-medium max-w-lg text-balance">
+          No signup needed • Unlimited invoices • No watermark • Instant PDF export
+        </p>
 
         {/* Social Proof Stats */}
         <div className="mt-16 flex flex-wrap justify-center gap-x-12 gap-y-6">
@@ -54,45 +58,33 @@ export default function LandingPage() {
           <StatItem value="100%" label="Free to Use" />
         </div>
 
-        {/* Abstract Preview Image / Floating Card */}
-        <div className="mt-20 sm:mt-24 relative w-full max-w-5xl mx-auto drop-shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-50 dark:from-zinc-950 via-transparent to-transparent z-10 top-1/2"></div>
-          <div className="relative rounded-t-2xl sm:rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 backdrop-blur-3xl">
-            <div className="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-2">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-              </div>
-              <div className="flex-1 flex justify-center">
-                <div className="h-5 w-48 bg-zinc-100 dark:bg-zinc-800 rounded-md text-xs flex items-center justify-center text-zinc-400">invoicequickly.com/generator</div>
-              </div>
-            </div>
-            {/* Mockup inside representing invoice builder */}
-            <div className="bg-zinc-50 dark:bg-black w-full h-[400px] rounded-b-xl flex p-6 gap-6">
-               <div className="w-1/3 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-4 hidden md:flex flex-col gap-4">
-                  <div className="h-6 w-3/4 bg-zinc-200 dark:bg-zinc-800 rounded-md"></div>
-                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mt-4"></div>
-                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
-                  <div className="h-10 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md"></div>
-                  <div className="h-24 w-full bg-zinc-100 dark:bg-zinc-800/50 rounded-md mt-auto"></div>
-               </div>
-               <div className="flex-1 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl p-8 flex flex-col shadow-blue-500/5">
-                  <div className="flex justify-between items-start border-b border-zinc-100 dark:border-zinc-800 pb-6 mb-6">
-                    <div>
-                      <div className="h-8 w-32 bg-zinc-200 dark:bg-zinc-700 rounded-md mb-2"></div>
-                      <div className="h-4 w-20 bg-zinc-100 dark:bg-zinc-800 rounded-md"></div>
-                    </div>
-                    <div className="h-12 w-12 bg-blue-100 dark:bg-blue-900/30 rounded-full"></div>
-                  </div>
-                  <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800 rounded-md mb-3"></div>
-                  <div className="h-4 w-full bg-zinc-100 dark:bg-zinc-800 rounded-md mb-3"></div>
-                  <div className="h-4 w-2/3 bg-zinc-100 dark:bg-zinc-800 rounded-md mb-6"></div>
-                  <div className="mt-auto flex justify-end">
-                    <div className="h-10 w-28 bg-blue-600 rounded-lg"></div>
-                  </div>
-               </div>
-            </div>
+        {/* See It In Action Section */}
+        <div className="mt-20 sm:mt-24 relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 text-left">
+          <div className="w-full md:w-3/5 order-2 md:order-1 relative rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/50 p-2 shadow-2xl overflow-hidden ring-1 ring-zinc-900/5 aspect-[16/10] flex items-center justify-center group">
+             {/* TODO: Add real generator-preview.png GIF or image later */}
+             {/* eslint-disable-next-line @next/next/no-img-element */}
+             <img 
+               src="/images/generator-preview.png" 
+               alt="Invoice Quickly Generator Live Preview" 
+               className="w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-[1.02]" 
+             />
+          </div>
+          <div className="w-full md:w-2/5 order-1 md:order-2">
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">See it in action</h2>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <span className="text-zinc-600 dark:text-zinc-400"><strong>Live preview as you type</strong> — watch your invoice build instantly</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <span className="text-zinc-600 dark:text-zinc-400"><strong>One-click PDF download</strong> — perfectly formatted and print-ready</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <span className="text-zinc-600 dark:text-zinc-400"><strong>Share a public link</strong> with clients for easy and secure viewing</span>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -155,7 +147,7 @@ export default function LandingPage() {
              <FeatureCard 
               icon={<Shield className="w-6 h-6 text-emerald-500" />}
               title="Secure & Private"
-              description="Your invoices are protected with enterprise-grade security. Only you and your clients can access shared links."
+              description="Private share links are unguessable. You control what you share. We never sell your data."
             />
              <FeatureCard 
               icon={<FileText className="w-6 h-6 text-blue-500" />}
@@ -181,37 +173,51 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-24 bg-white dark:bg-zinc-900 relative z-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
+              Frequently Asked Questions
+            </h2>
+          </div>
+          <div className="space-y-4">
+            <FAQItem question="Is it really free forever?" answer="Yes — the generator is free to use with no credit card required." />
+            <FAQItem question="Do invoices have a watermark?" answer="No watermark on exported PDFs." />
+            <FAQItem question="Do I need to sign up?" answer="No. You can generate invoices without an account. Create an account only if you want dashboard history." />
+            <FAQItem question="Can I add tax, discounts, and multiple line items?" answer="Yes — supports line items and common invoice fields." />
+            <FAQItem question="How does sharing work?" answer="You can share a secure public link to your client (only people with the link can view)." />
+            <FAQItem question="Which languages are supported?" answer="Supports 20+ languages. You can switch language in the generator." />
+          </div>
+        </div>
+      </section>
+
       {/* Testimonial / CTA Banner */}
-      <section className="py-24 bg-white dark:bg-zinc-900 relative z-20 overflow-hidden">
+      <section className="py-24 bg-slate-50 dark:bg-zinc-950 relative z-20 overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-400/20 to-violet-400/20 dark:from-blue-600/10 dark:to-violet-600/10 rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6">
-            Ready to streamline your invoicing?
+          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white mb-6 text-balance">
+            Create your invoice in under 60 seconds
           </h2>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto">
-            Join thousands of freelancers, agencies, and small businesses who trust InvoiceQuickly for fast, beautiful invoicing.
+          <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto font-medium">
+            No signup needed • Unlimited invoices • No watermark • Instant PDF export
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
             <Link 
               href="/generator"
               className="group relative inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-semibold text-white transition-all bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full hover:from-blue-700 hover:to-indigo-700 hover:scale-105 shadow-xl shadow-blue-500/20 active:scale-95"
             >
-              Get Started — It&apos;s Free
+              Create Invoice Free
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
-          </div>
-          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-500" /> No signup needed</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-500" /> Unlimited invoices</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-green-500" /> Forever free</span>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 py-16">
+      <footer className="mt-auto border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
@@ -285,5 +291,23 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode, titl
         {description}
       </p>
     </div>
+  );
+}
+
+function FAQItem({ question, answer }: { question: string; answer: string }) {
+  return (
+    <details className="group bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 [&_summary::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer items-center justify-between gap-1.5 p-6 text-lg font-medium text-zinc-900 dark:text-white">
+        <h3 className="font-semibold">{question}</h3>
+        <span className="shrink-0 rounded-full bg-white dark:bg-zinc-900 p-1.5 text-zinc-900 dark:text-white sm:p-3 group-open:-rotate-45 transition-transform duration-300 shadow-sm border border-zinc-200 dark:border-zinc-800">
+          <svg xmlns="http://www.w3.org/2000/svg" className="size-5 shrink-0 transition duration-300 group-open:-rotate-45" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+          </svg>
+        </span>
+      </summary>
+      <div className="px-6 pb-6 text-zinc-600 dark:text-zinc-400">
+        <p className="leading-relaxed">{answer}</p>
+      </div>
+    </details>
   );
 }
