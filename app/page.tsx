@@ -27,12 +27,11 @@ export default function LandingPage() {
           </div>
 
           {/* H1 */}
-          <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-6xl md:leading-tight">
-            Get Paid Faster:{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 whitespace-nowrap">
-              Create Professional Invoices
-            </span>{" "}
-            in Seconds
+          <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-5xl lg:text-6xl leading-tight text-center">
+            Create Professional Invoices{" "}
+            <span className="text-blue-600 dark:text-blue-400">for Free</span>
+            <br className="hidden md:block" />
+            That Get You Paid Faster
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
