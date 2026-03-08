@@ -51,7 +51,6 @@ export const en = {
   watermark: "Created with InvoiceQuickly",
   samplePreview: "Sample Preview",
   taxDisclaimer: "Tax calculated by payment provider",
-  electronicSignature: "This invoice is generated electronically and is valid without a signature.",
   
   // Company Modals
   addNewCompany: "Add New Company",

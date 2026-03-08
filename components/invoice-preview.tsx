@@ -167,9 +167,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
                 )}
              </div>
            ) : (
-             <p className="text-[11px] text-zinc-400 italic max-w-[200px] text-right">
-                {t.electronicSignature || "This invoice is generated electronically and is valid without a signature."}
-             </p>
+             null
            )}
         </div>
 
