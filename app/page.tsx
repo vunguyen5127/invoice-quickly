@@ -27,11 +27,11 @@ export default function LandingPage() {
           </div>
 
           {/* H1 */}
-          <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-5xl lg:text-6xl leading-tight text-center">
+          <h1 className="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl lg:text-6xl text-center max-w-4xl mx-auto">
             Create Professional Invoices{" "}
             <span className="text-blue-600 dark:text-blue-400">for Free</span>
-            <br className="hidden md:block" />
-            That Get You Paid Faster
+            <br />
+            And Get Paid Faster
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
