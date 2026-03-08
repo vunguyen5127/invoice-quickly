@@ -73,16 +73,16 @@ export const getCurrencySymbol = (code: string) => {
 
 export const initialInvoiceState: InvoiceState = {
   company: {
-    name: "InvoiceQuicklyCorp, 123 Professional Way, San Francisco, CA 94105, billing@InvoiceQuickly.net, +1 (415) 555-0123",
-    email: "",
-    address: "",
-    phone: ""
+    name: "Bright Studio Design",
+    email: "hello@brightstudio.io",
+    address: "742 Evergreen Ave, Suite 200\nSan Francisco, CA 94107",
+    phone: "+1 (415) 555-0192"
   },
   client: {
-    name: "Globex Inc",
-    email: "accounts@globex.com",
-    address: "456 Corporate Blvd, Industry Town, IT 10001",
-    phone: "(555) 987-6543"
+    name: "Greenfield Properties LLC",
+    email: "ap@greenfieldproperties.com",
+    address: "1200 Market Street, Floor 8\nNew York, NY 10001",
+    phone: "(212) 555-0847"
   },
   details: {
     invoiceNumber: "INV-2026-001",
@@ -92,18 +92,28 @@ export const initialInvoiceState: InvoiceState = {
   items: [
     {
       id: "1",
-      description: "InvoiceQuicklySeller Growth Plan (Monthly) — Mar 03, 2026 to Apr 03, 2026",
+      description: "Website Redesign — Homepage + 5 inner pages",
       quantity: 1,
-      rate: 69.00,
-      billingStart: "2026-03-03",
-      billingEnd: "2026-04-03"
+      rate: 2500.00,
+    },
+    {
+      id: "2",
+      description: "Brand Identity Package — Logo, colors & typography",
+      quantity: 1,
+      rate: 1200.00,
+    },
+    {
+      id: "3",
+      description: "Monthly SEO & Analytics Service — March 2026",
+      quantity: 1,
+      rate: 450.00,
     }
   ],
-  taxRate: 0,
-  discount: 0,
+  taxRate: 10,
+  discount: 5,
   discountType: 'percentage',
-  notes: "",
-  terms: "",
+  notes: "Thank you for your business! We appreciate your prompt payment.",
+  terms: "Payment is due within 14 days of the invoice date. Late payments may incur a 1.5% monthly fee.",
   currency: "USD",
   signature: "",
   signatureName: "",
