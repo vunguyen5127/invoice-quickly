@@ -51,7 +51,6 @@ export const zh = {
   watermark: "由 InvoiceQuickly 创建",
   samplePreview: "示例预览",
   taxDisclaimer: "税费由支付服务商计算",
-  electronicSignature: "此发票为电子生成，无需签名即可生效。",
   
   // Company Modals
   addNewCompany: "添加新公司",

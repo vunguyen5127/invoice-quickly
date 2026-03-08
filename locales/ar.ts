@@ -51,7 +51,6 @@ export const ar = {
   watermark: "تم الإنشاء بواسطة InvoiceQuickly",
   samplePreview: "معاينة عينة",
   taxDisclaimer: "يتم احتساب الضريبة بواسطة مزود الدفع",
-  electronicSignature: "تم إنشاء هذه الفاتورة إلكترونياً وهي صالحة بدون توقيع.",
   
   // Company Modals
   addNewCompany: "إضافة شركة جديدة",

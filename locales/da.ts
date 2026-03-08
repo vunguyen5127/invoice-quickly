@@ -51,7 +51,6 @@ export const da = {
   watermark: "Oprettet med InvoiceQuickly",
   samplePreview: "Eksempelvisning",
   taxDisclaimer: "Moms beregnes af betalingsudbyderen",
-  electronicSignature: "Denne faktura er genereret elektronisk og er gyldig uden underskrift.",
   
   // Company Modals
   addNewCompany: "Tilføj nyt firma",

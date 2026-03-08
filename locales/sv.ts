@@ -51,7 +51,6 @@ export const sv = {
   watermark: "Skapad med InvoiceQuickly",
   samplePreview: "Exempelvisning",
   taxDisclaimer: "Moms beräknas av betalningsleverantören",
-  electronicSignature: "Denna faktura är elektroniskt genererad och giltig utan signatur.",
   
   // Company Modals
   addNewCompany: "Lägg till nytt företag",

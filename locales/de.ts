@@ -51,7 +51,6 @@ export const de = {
   watermark: "Erstellt mit InvoiceQuickly",
   samplePreview: "Beispiel-Vorschau",
   taxDisclaimer: "Steuer wird vom Zahlungsanbieter berechnet",
-  electronicSignature: "Diese Rechnung wurde elektronisch erstellt und ist ohne Unterschrift gültig.",
   
   // Company Modals
   addNewCompany: "Neue Firma hinzufügen",

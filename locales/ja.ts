@@ -51,7 +51,6 @@ export const ja = {
   watermark: "InvoiceQuickly で作成",
   samplePreview: "サンプルプレビュー",
   taxDisclaimer: "税金は決済プロバイダーによって計算されます",
-  electronicSignature: "この請求書は電子的に生成されており、署名なしで有効です。",
   
   // Company Modals
   addNewCompany: "新しい会社を追加",

@@ -51,7 +51,6 @@ export const es = {
   watermark: "Creado con InvoiceQuickly",
   samplePreview: "Vista Previa de Muestra",
   taxDisclaimer: "Impuesto calculado por el proveedor de pago",
-  electronicSignature: "Esta factura se genera electrónicamente y es válida sin firma.",
   
   // Company Modals
   addNewCompany: "Agregar Nueva Empresa",

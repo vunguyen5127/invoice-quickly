@@ -51,7 +51,6 @@ export const id = {
   watermark: "Dibuat dengan InvoiceQuickly",
   samplePreview: "Pratinjau Sampel",
   taxDisclaimer: "Pajak dihitung oleh penyedia pembayaran",
-  electronicSignature: "Faktur ini dibuat secara elektronik dan sah tanpa tanda tangan resmi.",
   
   // Company Modals
   addNewCompany: "Tambah Perusahaan Baru",

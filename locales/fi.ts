@@ -51,7 +51,6 @@ export const fi = {
   watermark: "Luotu InvoiceQuickly-sovelluksella",
   samplePreview: "Esimerkkinäkymä",
   taxDisclaimer: "Maksunvälittäjä laskee verot",
-  electronicSignature: "Tämä lasku on luotu sähköisesti ja se on pätevä ilman allekirjoitusta.",
   
   // Company Modals
   addNewCompany: "Lisää uusi yritys",

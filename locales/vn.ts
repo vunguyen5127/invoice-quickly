@@ -53,7 +53,6 @@ export const vn: Translations = {
   watermark: "Tạo bởi InvoiceQuickly",
   samplePreview: "Bản Xem Trước",
   taxDisclaimer: "Thuế được tính bởi đơn vị thanh toán",
-  electronicSignature: "Hóa đơn này được tạo điện tử và có giá trị mà không cần chữ ký.",
   
   // Company Modals
   addNewCompany: "Thêm Công Ty Mới",

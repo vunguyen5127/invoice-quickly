@@ -51,7 +51,6 @@ export const tr = {
   watermark: "InvoiceQuickly ile oluşturuldu",
   samplePreview: "Örnek Önizleme",
   taxDisclaimer: "Vergi, ödeme sağlayıcısı tarafından hesaplanır",
-  electronicSignature: "Bu fatura elektronik olarak oluşturulmuştur ve imzasız olarak geçerlidir.",
   
   // Company Modals
   addNewCompany: "Yeni Şirket Ekle",

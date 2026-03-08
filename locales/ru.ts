@@ -51,7 +51,6 @@ export const ru = {
   watermark: "Создано в InvoiceQuickly",
   samplePreview: "Предварительный просмотр",
   taxDisclaimer: "Налог рассчитывается платежным провайдером",
-  electronicSignature: "Этот счет сформирован в электронном виде и действителен без подписи.",
   
   // Company Modals
   addNewCompany: "Добавить новую компанию",

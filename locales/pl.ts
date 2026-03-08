@@ -51,7 +51,6 @@ export const pl = {
   watermark: "Utworzono w InvoiceQuickly",
   samplePreview: "Podgląd przykładowy",
   taxDisclaimer: "Podatek jest obliczany przez dostawcę usług płatniczych",
-  electronicSignature: "Faktura wygenerowana elektronicznie, ważna bez podpisu.",
   
   // Company Modals
   addNewCompany: "Dodaj nową firmę",

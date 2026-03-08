@@ -51,7 +51,6 @@ export const hi = {
   watermark: "InvoiceQuickly के साथ बनाया गया",
   samplePreview: "नमूना पूर्वावलोकन",
   taxDisclaimer: "कर की गणना भुगतान प्रदाता द्वारा की जाती है",
-  electronicSignature: "यह इनवॉइस इलेक्ट्रॉनिक रूप से तैयार किया गया है और बिना हस्ताक्षर के मान्य है।",
   
   // Company Modals
   addNewCompany: "नई कंपनी जोड़ें",

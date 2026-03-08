@@ -51,7 +51,6 @@ export const th = {
   watermark: "สร้างโดย InvoiceQuickly",
   samplePreview: "ตัวอย่างก่อนพิมพ์",
   taxDisclaimer: "ภาษีคำนวณโดยผู้ให้บริการชำระเงิน",
-  electronicSignature: "ใบแจ้งหนี้นี้สร้างขึ้นทางอิเล็กทรอนิกส์และมีผลสมบูรณ์โดยไม่ต้องมีลายเซ็นจริง",
   
   // Company Modals
   addNewCompany: "เพิ่มบริษัทใหม่",

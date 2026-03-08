@@ -51,7 +51,6 @@ export const pt = {
   watermark: "Criado com InvoiceQuickly",
   samplePreview: "Amostra de Visualização",
   taxDisclaimer: "Imposto calculado pelo fornecedor de pagamentos",
-  electronicSignature: "Esta fatura é gerada eletronicamente e é válida sem assinatura.",
   
   // Company Modals
   addNewCompany: "Adicionar Nova Empresa",

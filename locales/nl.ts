@@ -51,7 +51,6 @@ export const nl = {
   watermark: "Gemaakt met InvoiceQuickly",
   samplePreview: "Voorbeeldweergave",
   taxDisclaimer: "Btw berekend door betalingsprovider",
-  electronicSignature: "Deze factuur is elektronisch gegenereerd en geldig zonder handtekening.",
   
   // Company Modals
   addNewCompany: "Nieuw bedrijf toevoegen",

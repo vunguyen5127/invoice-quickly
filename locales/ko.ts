@@ -51,7 +51,6 @@ export const ko = {
   watermark: "InvoiceQuickly로 제작됨",
   samplePreview: "샘플 미리보기",
   taxDisclaimer: "세금은 결제 대행사에서 계산합니다",
-  electronicSignature: "이 청구서는 전자적으로 생성되었으며 서명 없이도 유효합니다.",
   
   // Company Modals
   addNewCompany: "새 회사 추가",
