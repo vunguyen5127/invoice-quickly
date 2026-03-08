@@ -159,9 +159,24 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
   const inputBaseClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
-  const fieldsetClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 pb-2 pt-0 transition-all focus-within:border-blue-600 dark:focus-within:border-blue-500 focus-within:border-2 hover:border-zinc-400 dark:hover:border-zinc-600 group min-w-0";
+  const fieldsetClass = "relative w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 pb-2 pt-0 transition-all focus-within:border-blue-600 dark:focus-within:border-blue-500 focus-within:border-2 hover:border-zinc-400 dark:hover:border-zinc-600 group min-w-0";
   const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-400 px-1 ml-[-4px] group-focus-within:text-blue-600 dark:group-focus-within:text-blue-500 transition-colors empty:hidden max-w-full block truncate";
-  const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none";
+  const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none pr-6";
+
+  const ClearBtn = ({ value, onClear }: { value: string; onClear: () => void }) => {
+    if (!value) return null;
+    return (
+      <button
+        type="button"
+        onClick={onClear}
+        className="absolute top-1.5 right-1.5 z-10 w-5 h-5 flex items-center justify-center rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+        tabIndex={-1}
+        aria-label="Clear"
+      >
+        <X className="w-3 h-3" />
+      </button>
+    );
+  };
 
   const sectionClass = "relative";
   const sectionTitleClass = "text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 pb-3 mb-6 border-b border-zinc-100 dark:border-zinc-800/60";
@@ -175,6 +190,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <fieldset className={fieldsetClass}>
             <legend className={legendClass}>{t.invoiceNumber}</legend>
+            <ClearBtn value={invoice.details.invoiceNumber} onClear={() => handleSectionChange('details', 'invoiceNumber', '')} />
             <input 
               type="text" 
               className={inputInnerClass} 
@@ -223,9 +239,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <fieldset className={`${fieldsetClass} flex-1`}>
                 <legend className={legendClass}>{`${t.companyName}, ${t.yourAddress}, ${t.yourEmail}, ${t.companyPhone}`}</legend>
                 <div className="w-full h-full flex flex-col">
+                  <ClearBtn value={invoice.company.name} onClear={() => handleSectionChange('company', 'name', '')} />
                   <textarea 
                     placeholder={`${t.companyName}, ${t.yourAddress}, ${t.yourEmail}, ${t.companyPhone}`}
-                    className={`${inputInnerClass} flex-1 resize-none h-[72px] mt-1 pr-2 leading-snug`} 
+                    className={`${inputInnerClass} flex-1 resize-none h-[72px] mt-1 pr-6 leading-snug`} 
                     value={invoice.company.name} 
                     onChange={(e) => handleSectionChange('company', 'name', e.target.value)}
                     rows={3}
@@ -305,6 +322,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             <div className="space-y-4">
               <fieldset className={fieldsetClass}>
                 <legend className={legendClass}>{t.clientName}</legend>
+                <ClearBtn value={invoice.client.name} onClear={() => handleSectionChange('client', 'name', '')} />
                 <input 
                   type="text" 
                   placeholder={t.clientName}
@@ -315,6 +333,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </fieldset>
               <fieldset className={fieldsetClass}>
                 <legend className={legendClass}>{t.clientEmail}</legend>
+                <ClearBtn value={invoice.client.email} onClear={() => handleSectionChange('client', 'email', '')} />
                 <input 
                   type="email" 
                   placeholder={t.clientEmail}
@@ -325,6 +344,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </fieldset>
               <fieldset className={fieldsetClass}>
                 <legend className={legendClass}>{t.clientPhone}</legend>
+                <ClearBtn value={invoice.client.phone} onClear={() => handleSectionChange('client', 'phone', '')} />
                 <input 
                   type="text" 
                   placeholder={t.clientPhone}
@@ -335,9 +355,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </fieldset>
               <fieldset className={fieldsetClass}>
                 <legend className={legendClass}>{t.clientAddress}</legend>
+                <ClearBtn value={invoice.client.address} onClear={() => handleSectionChange('client', 'address', '')} />
                 <textarea 
                   placeholder={t.clientAddress}
-                  className={`${inputInnerClass} min-h-[70px] resize-y mt-1`} 
+                  className={`${inputInnerClass} min-h-[70px] resize-y mt-1 pr-6`} 
                   value={invoice.client.address} 
                   onChange={(e) => handleSectionChange('client', 'address', e.target.value)}
                 />
