@@ -154,7 +154,6 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             </div>
           </div>
         </div>
-
         {/* Signature Area */}
         <div className="mt-8 flex justify-end">
            {(invoice.signature || invoice.signatureName) ? (
@@ -176,23 +175,21 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
            ) : null}
         </div>
 
-        {/* Footer Notes & Terms - Bottom of Page */}
+        {/* Footer Notes & Terms (Now pushed to bottom) */}
         <div className={`mt-auto ${compact ? 'pt-8 pb-4' : 'pt-16'}`}>
           {invoice.notes && invoice.showNotes && (
             <div className="mb-2">
               <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[10px] inline-block pr-8">{t.notes}</p>
-              <p className="text-[11px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
+              <p className="text-[10px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
             </div>
           )}
           {invoice.terms && invoice.showTerms && (
             <div className="mb-8">
               <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[10px] inline-block pr-8">{t.termsConditions}</p>
-              <p className="text-[11px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
+              <p className="text-[10px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
             </div>
           )}
         </div>
-
-
       </div>
     </div>
   );

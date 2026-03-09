@@ -370,14 +370,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
       {/* Items Section */}
       <div className={sectionClass}>
-        <div className="flex items-center justify-between mb-6 border-b border-zinc-100 dark:border-zinc-800/60 pb-3">
+        <div className="mb-6 border-b border-zinc-100 dark:border-zinc-800/60 pb-3">
           <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{t.lineItems}</h3>
-          <button 
-            onClick={addItem}
-            className="flex items-center gap-1.5 text-[13px] font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
-          >
-            <Plus className="w-4 h-4" /> {t.addItem}
-          </button>
         </div>
         
         {/* Header - Desktop Only */}
@@ -484,12 +478,20 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </div>
             </div>
           ))}
+          
+          <button 
+            type="button"
+            onClick={addItem}
+            className="w-full flex items-center justify-center gap-2 mt-4 py-3 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl text-[13px] font-semibold text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all group shadow-sm hover:shadow"
+          >
+            <Plus className="w-4 h-4 group-hover:scale-110 transition-transform" /> {t.addItem}
+          </button>
         </div>
       </div>
 
       {/* Totals & Notes Setup */}
       <div className={sectionClass}>
-        <h3 className={sectionTitleClass}>{t.notes} & {t.termsConditions}</h3>
+        <h3 className={sectionTitleClass}>{t.settings}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           <div className="space-y-4">
@@ -511,15 +513,26 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             <div className="grid grid-cols-2 gap-4">
               <fieldset className={fieldsetClass}>
                 <legend className={legendClass}>{t.taxRate}</legend>
-                <input 
-                  type="number" 
-                  className={inputInnerClass} 
-                  value={invoice.taxRate} 
-                  onChange={(e) => handleRootChange("taxRate", Number(e.target.value))}
-                  min="0"
-                  max="100"
-                  step="0.01"
-                />
+                <div className="flex relative">
+                  <input 
+                    type="number" 
+                    placeholder="0"
+                    className={`${inputInnerClass} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} 
+                    value={invoice.taxRate || ''} 
+                    onChange={(e) => handleRootChange("taxRate", e.target.value === '' ? 0 : Number(e.target.value))}
+                    onKeyDown={(e) => {
+                      if (['e', 'E', '+', '-', '.'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    min="0"
+                    max="100"
+                    step="1"
+                  />
+                  <div className="w-auto min-w-[50px] flex items-center justify-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 px-1 border-l border-zinc-200 dark:border-zinc-700 ml-2">
+                    %
+                  </div>
+                </div>
               </fieldset>
               
               <fieldset className={fieldsetClass}>
@@ -527,9 +540,15 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 <div className="flex relative">
                   <input 
                     type="number" 
-                    className={inputInnerClass} 
-                    value={invoice.discount} 
-                    onChange={(e) => handleRootChange("discount", Number(e.target.value))}
+                    placeholder="0"
+                    className={`${inputInnerClass} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} 
+                    value={invoice.discount || ''} 
+                    onChange={(e) => handleRootChange("discount", e.target.value === '' ? 0 : Number(e.target.value))}
+                    onKeyDown={(e) => {
+                      if (['e', 'E', '+', '-', '.'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
                     min="0"
                   />
                   <select
@@ -538,7 +557,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     onChange={(e) => handleRootChange("discountType", e.target.value as 'fixed' | 'percentage')}
                   >
                     <option value="percentage">%</option>
-                    <option value="fixed">{t.fixed}</option>
+                    <option value="fixed">{CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$'}</option>
                   </select>
                 </div>
               </fieldset>
@@ -650,7 +669,13 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={invoice.signature} alt="Signature" className="max-w-full max-h-full object-contain dark:invert" />
                           <button 
-                            onClick={() => handleRootChange("signature", undefined)}
+                            onClick={() => {
+                              setInvoice(prev => ({
+                                ...prev,
+                                signature: undefined,
+                                signatureName: ""
+                              }));
+                            }}
                             className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                           >
                             <X className="w-3 h-3" />

@@ -129,6 +129,6 @@ export const initialInvoiceState: InvoiceState = {
   currency: "USD",
   signature: "",
   signatureName: "",
-  showNotes: true,
-  showTerms: true
+  showNotes: false,
+  showTerms: false
 };

@@ -196,7 +196,7 @@ function CreateInvoiceContent() {
           </div>
 
           {/* Right Column: Preview */}
-          <div className="w-full xl:w-1/2">
+          <div className="w-full xl:w-1/2 xl:sticky xl:top-24">
             <div className="h-10 flex items-center mb-6">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
             </div>
