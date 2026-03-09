@@ -41,7 +41,7 @@ export default function LandingPage() {
           {/* CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
             <Link
-              href="/generator"
+              href="/generator?new=1"
               className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 hover:scale-105 hover:shadow-blue-500/50 active:scale-95"
             >
               Create Invoice Free
@@ -148,7 +148,7 @@ export default function LandingPage() {
                 ))}
               </ul>
               <Link
-                href="/generator"
+                href="/generator?new=1"
                 className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 hover:scale-105"
               >
                 Try it free
@@ -297,7 +297,7 @@ export default function LandingPage() {
               No signup needed • Unlimited invoices • No watermark • Instant PDF
             </p>
             <Link
-              href="/generator"
+              href="/generator?new=1"
               className="group inline-flex items-center gap-2 rounded-full bg-white text-slate-900 px-8 py-4 text-base font-bold shadow-lg transition-all hover:bg-slate-50 hover:-translate-y-1 hover:shadow-xl active:scale-95"
             >
               Create Invoice Free
@@ -323,7 +323,7 @@ export default function LandingPage() {
             <div>
               <h4 className="text-xs font-semibold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Product</h4>
               <ul className="space-y-2.5 text-sm text-slate-500 dark:text-zinc-400">
-                <li><Link href="/generator" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Invoice Generator</Link></li>
+                <li><Link href="/generator?new=1" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Invoice Generator</Link></li>
                 <li><Link href="/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</Link></li>
                 <li><a href="#features" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Features</a></li>
               </ul>

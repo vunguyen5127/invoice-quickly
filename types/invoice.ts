@@ -73,10 +73,10 @@ export const getCurrencySymbol = (code: string) => {
 
 export const initialInvoiceState: InvoiceState = {
   company: {
-    name: "Bright Studio Design",
-    email: "hello@brightstudio.io",
-    address: "742 Evergreen Ave, Suite 200\nSan Francisco, CA 94107",
-    phone: "+1 (415) 555-0192"
+    name: "Bright Studio Design, 742 Evergreen Ave Suite 200, San Francisco CA 94107, hello@brightstudio.io, +1 (415) 555-0192",
+    email: "",
+    address: "",
+    phone: ""
   },
   client: {
     name: "Greenfield Properties LLC",
@@ -92,25 +92,37 @@ export const initialInvoiceState: InvoiceState = {
   items: [
     {
       id: "1",
-      description: "Website Redesign — Homepage + 5 inner pages",
-      quantity: 1,
-      rate: 2500.00,
+      description: "Wireless Bluetooth Headphones",
+      quantity: 2,
+      rate: 49.99,
     },
     {
       id: "2",
-      description: "Brand Identity Package — Logo, colors & typography",
-      quantity: 1,
-      rate: 1200.00,
+      description: "USB-C Fast Charging Cable (2m)",
+      quantity: 5,
+      rate: 12.99,
     },
     {
       id: "3",
-      description: "Monthly SEO & Analytics Service — March 2026",
+      description: "Stainless Steel Water Bottle 750ml",
+      quantity: 3,
+      rate: 24.50,
+    },
+    {
+      id: "4",
+      description: "Organic Green Tea — 100 bags",
       quantity: 1,
-      rate: 450.00,
+      rate: 18.75,
+    },
+    {
+      id: "5",
+      description: "LED Desk Lamp with USB Port",
+      quantity: 2,
+      rate: 35.00,
     }
   ],
   taxRate: 10,
-  discount: 5,
+  discount: 0,
   discountType: 'percentage',
   notes: "Thank you for your business! We appreciate your prompt payment.",
   terms: "Payment is due within 14 days of the invoice date. Late payments may incur a 1.5% monthly fee.",

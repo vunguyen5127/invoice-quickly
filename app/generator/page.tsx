@@ -7,7 +7,7 @@ import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Save, Building2, X, Plus, Receipt, Printer, Share2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies } from "@/app/dashboard/actions";
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
@@ -30,16 +30,27 @@ export default function CreateInvoice() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isGuestSaveModalOpen, setIsGuestSaveModalOpen] = useState(false);
 
+  const searchParams = useSearchParams();
+
   // Load from localStorage on mount and prefill user name
   useEffect(() => {
     const initData = async () => {
       let draftInvoice = initialInvoiceState;
-      const savedDraft = localStorage.getItem("invoiceQuicklyDraft");
-      if (savedDraft) {
-        try {
-          draftInvoice = JSON.parse(savedDraft);
-        } catch (e) {
-          console.error("Failed to parse draft", e);
+      const isNew = searchParams.get("new") === "1";
+
+      if (isNew) {
+        // Coming from landing page CTA — always start fresh
+        localStorage.removeItem("invoiceQuicklyDraft");
+        // Clean URL without reloading
+        window.history.replaceState({}, "", "/generator");
+      } else {
+        const savedDraft = localStorage.getItem("invoiceQuicklyDraft");
+        if (savedDraft) {
+          try {
+            draftInvoice = JSON.parse(savedDraft);
+          } catch (e) {
+            console.error("Failed to parse draft", e);
+          }
         }
       }
 

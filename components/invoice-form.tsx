@@ -169,7 +169,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
       <button
         type="button"
         onClick={onClear}
-        className="absolute top-1.5 right-1.5 z-10 w-5 h-5 flex items-center justify-center rounded-full text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+        className="absolute -top-2 right-1 z-10 w-5 h-5 flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 border border-zinc-200 dark:border-zinc-700 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-sm"
         tabIndex={-1}
         aria-label="Clear"
       >
@@ -646,9 +646,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   <div>
                     <div className="flex items-start gap-4">
                       {invoice.signature ? (
-                        <div className="relative w-40 h-20 rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white flex items-center justify-center p-2 group shadow-sm transition-all">
+                        <div className="relative h-20 px-4 rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center group shadow-sm transition-all min-w-[160px]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={invoice.signature} alt="Signature" className="max-w-full max-h-full object-contain mix-blend-multiply" />
+                          <img src={invoice.signature} alt="Signature" className="max-w-full max-h-full object-contain dark:invert" />
                           <button 
                             onClick={() => handleRootChange("signature", undefined)}
                             className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"

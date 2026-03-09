@@ -8,9 +8,10 @@ import { useLanguage } from "@/contexts/language-context";
 interface InvoicePreviewProps {
   invoice: InvoiceState;
   isLoggedIn?: boolean;
+  compact?: boolean;
 }
 
-export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewProps) {
+export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }: InvoicePreviewProps) {
   const { t } = useLanguage();
   const symbol = getCurrencySymbol(invoice.currency);
 
@@ -50,7 +51,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
         id="invoice-capture-area" 
         className="w-full bg-white flex flex-col text-zinc-900 relative" 
         style={{ 
-          minHeight: "297mm",    // A4 height
+          minHeight: compact ? "auto" : "297mm",    // A4 height or auto
           padding: "16mm 16mm",  // Standard margins
         }}
       >
@@ -156,33 +157,37 @@ export function InvoicePreview({ invoice, isLoggedIn = false }: InvoicePreviewPr
 
         {/* Signature Area */}
         <div className="mt-8 flex justify-end">
-           {invoice.signature ? (
+           {(invoice.signature || invoice.signatureName) ? (
              <div className="flex flex-col items-center">
-                <div className="mb-2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain mix-blend-multiply" />
-                </div>
-                {invoice.signatureName && (
+                {invoice.signature ? (
+                  <div className="mb-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain dark:invert" />
+                  </div>
+                ) : invoice.signatureName ? (
+                  <div className="mb-2">
+                    <p className="text-4xl px-4 py-2 text-zinc-800 dark:text-zinc-200 font-medium" style={{ fontFamily: "'Brush Script MT', 'Caveat', 'Great Vibes', cursive", transform: "rotate(-2deg)" }}>{invoice.signatureName}</p>
+                  </div>
+                ) : null}
+                {invoice.signatureName && invoice.signature && (
                   <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
                 )}
              </div>
-           ) : (
-             null
-           )}
+           ) : null}
         </div>
 
         {/* Footer Notes & Terms - Bottom of Page */}
-        <div className="mt-auto pt-16">
+        <div className={`mt-auto ${compact ? 'pt-8 pb-4' : 'pt-16'}`}>
           {invoice.notes && invoice.showNotes && (
-            <div className="mb-6">
-              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">{t.notes}</p>
-              <p className="text-[13px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
+            <div className="mb-2">
+              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[10px] inline-block pr-8">{t.notes}</p>
+              <p className="text-[11px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
             </div>
           )}
           {invoice.terms && invoice.showTerms && (
             <div className="mb-8">
-              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[11px] inline-block pr-8">{t.termsConditions}</p>
-              <p className="text-[13px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
+              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[10px] inline-block pr-8">{t.termsConditions}</p>
+              <p className="text-[11px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
             </div>
           )}
         </div>
