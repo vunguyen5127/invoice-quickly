@@ -16,7 +16,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 
-export default function CreateInvoice() {
+function CreateInvoiceContent() {
   const { t } = useLanguage();
   const [invoice, setInvoice] = useState<InvoiceState>(initialInvoiceState);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -335,5 +335,13 @@ export default function CreateInvoice() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CreateInvoice() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center text-zinc-500">Loading editor...</div>}>
+      <CreateInvoiceContent />
+    </React.Suspense>
   );
 }
