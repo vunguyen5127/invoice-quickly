@@ -155,12 +155,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
       <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-6 transition-colors">
-        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Companies
+        <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
+        <span className="hidden sm:inline">Back to Companies</span>
+        <span className="sm:hidden">Back</span>
       </Link>
 
-      <div className="flex items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden bg-white">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="shrink-0 w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden bg-white">
             {company.logo_url ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
@@ -168,10 +170,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
               <Building2 className="w-5 h-5 text-zinc-500" />
             )}
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{company.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">{company.name}</h1>
           <button
              onClick={() => setIsEditModalOpen(true)}
-             className="p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+             className="shrink-0 p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
              title="Edit Company Details"
           >
             <PenTool className="w-4 h-4" />
@@ -179,7 +181,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         </div>
         <Link 
           href={`/company/${resolvedParams.id}/new`}
-          className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm whitespace-nowrap"
+          className="flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm whitespace-nowrap w-full sm:w-auto shrink-0"
         >
           <Plus className="w-4 h-4" />
           Create Invoice
