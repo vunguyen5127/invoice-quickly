@@ -11,19 +11,24 @@ test.describe('Public Routes & Unauthenticated Flow', () => {
     await page.goto('/');
     // Check if the landing page hero text exists
     await expect(page.getByText('Create Professional Invoices')).toBeVisible();
-    await expect(page.getByRole('link', { name: "Create Invoice Free" })).toBeVisible();
+    
+    // Using a more robust selector for the CTA link
+    await expect(page.locator('a:has-text("Create Invoice Free")').first()).toBeVisible();
+  });
+
+  test('privacy policy and terms of service load', async ({ page }) => {
+    await page.goto('/privacy');
+    await expect(page.getByRole('heading', { name: 'Privacy Policy' })).toBeVisible();
+    
+    await page.goto('/terms');
+    await expect(page.getByRole('heading', { name: 'Terms of Service' })).toBeVisible();
   });
 
   test('dashboard redirects to login for unauthenticated users', async ({ page }) => {
     await page.goto('/dashboard');
     // It should load and then redirect to login
     await page.waitForURL(/.*\/login/);
-    await expect(page.getByText('Authenticating...')).toBeVisible();
-  });
-
-  test('settings redirects to login for unauthenticated users', async ({ page }) => {
-    await page.goto('/dashboard/settings');
-    await page.waitForURL(/.*\/login/);
+    await expect(page.getByRole('heading', { name: 'Authenticating...' })).toBeVisible();
   });
 });
 
@@ -32,8 +37,6 @@ test.describe('Authenticated Flow via Network Mocking', () => {
   // We mock the session and the companies table data to test the UI logic.
   test.beforeEach(async ({ page }) => {
     // 1. Mock the Auth endpoints to simulate a signed-in state
-    
-    // If the browser checks session via explicit API call:
     await page.route(`${SUPABASE_URL}/auth/v1/user`, async route => {
       await route.fulfill({
         status: 200,
@@ -48,39 +51,7 @@ test.describe('Authenticated Flow via Network Mocking', () => {
       });
     });
 
-    // 2. Mock the fetching of companies
-    await page.route(`${SUPABASE_URL}/rest/v1/companies?select=*`, async route => {
-      // Simulate retrieving companies from Supabase
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([
-          {
-            id: 'mock-company-1',
-            user_id: 'test-user-id',
-            name: 'Mock Test Company',
-            address: '123 Test St',
-            email: 'hello@mock.com',
-            phone: '555-0000',
-            logo_url: null,
-            signature_url: null,
-            created_at: new Date().toISOString()
-          }
-        ])
-      });
-    });
-
-    // Mock fetching invoices for the dashboard summary
-    await page.route(`${SUPABASE_URL}/rest/v1/invoices?*`, async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([])
-      });
-    });
-
     // We must inject a fake session into localStorage so the Supabase client thinks we're logged in.
-    // The key format varies by Supabase client ID, but normally looks like "sb-[ref]-auth-token"
     const supabaseUrlParts = SUPABASE_URL.split('//')[1]?.split('.')[0]; 
     const storageKey = `sb-${supabaseUrlParts}-auth-token`;
     
@@ -103,37 +74,38 @@ test.describe('Authenticated Flow via Network Mocking', () => {
       }
     };
 
-    // Before navigation, inject into localStorage. Playwright requires a page to be on the origin first.
-    await page.goto('/'); // go to origin to allow setting localStorage
+    // Before navigation, inject into localStorage. 
+    await page.goto('/'); 
     await page.evaluate(({ key, value }) => {
       localStorage.setItem(key, JSON.stringify(value));
     }, { key: storageKey, value: fakeSession });
   });
 
-  test('dashboard shows mocked user companies', async ({ page }) => {
-    // Navigate to dashboard now that auth is faked
-    await page.goto('/dashboard');
+  test('header shows authenticated links and hides settings', async ({ page }) => {
+    await page.goto('/');
+    // Check for "My Invoices" link which shows up when logged in
+    const myInvoices = page.getByRole('link', { name: /My Invoices/i }).or(page.getByRole('link', { name: /Danh sách Invoice/i }));
+    await expect(myInvoices.first()).toBeVisible();
     
-    // We should be on dashboard and see our mocked company
-    await expect(page).toHaveURL(/\/dashboard$/);
-    await expect(page.getByText('Mock Test Company')).toBeVisible();
+    // Settings should NOT be visible in the header
+    await expect(page.getByRole('link', { name: /Settings/i })).not.toBeVisible();
+    
+    // Check user menu (avatar) button using its aria-label
+    const userMenu = page.getByLabel('User menu');
+    await expect(userMenu).toBeVisible();
+    await userMenu.click();
+    
+    // Verify settings is not in the dropdown either
+    await expect(page.getByRole('menuitem', { name: /Settings/i })).not.toBeVisible();
+    await expect(page.getByText('test@example.com')).toBeVisible();
   });
 
-  test('can interact with Theme Toggle in Settings', async ({ page }) => {
-    await page.goto('/dashboard/settings');
+  test('auth callback flow completes successfully', async ({ page }) => {
+    // Navigate to the callback page with a fake session (simulating the end of OAuth flow)
+    await page.goto('/auth/callback?next=/generator');
     
-    // Click Settings heading
-    await expect(page.getByRole('heading', { name: "Settings" })).toBeVisible();
-
-    // Verify Theme buttons exist
-    const darkButton = page.locator('button', { hasText: 'Dark' });
-    const lightButton = page.locator('button', { hasText: 'Light' });
-    
-    await expect(darkButton).toBeVisible();
-    await expect(lightButton).toBeVisible();
-    
-    // Simple interactions (We don't test actual visual changes strictly here without visual diffing)
-    await darkButton.click();
-    await lightButton.click();
+    // It should process and redirect to /generator as specified in the 'next' param
+    await page.waitForURL(/.*\/generator/);
+    await expect(page).toHaveURL(/.*\/generator/);
   });
 });

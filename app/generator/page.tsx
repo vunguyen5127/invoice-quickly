@@ -334,6 +334,7 @@ function CreateInvoiceContent() {
         <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-none pb-safe">
           <button
             onClick={handleShare}
+            aria-label="Share"
             className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors"
           >
             <Share2 className="w-4 h-4" /> {t.share}

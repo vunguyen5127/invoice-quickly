@@ -198,6 +198,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-4 flex gap-2 z-50">
           <button
             onClick={handleShare}
+            aria-label="Share"
             className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-medium text-sm bg-white border border-zinc-200 text-zinc-700 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 transition-all shadow-sm"
           >
             <Share2 className="w-4 h-4" /> {t.share}
