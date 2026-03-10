@@ -115,7 +115,8 @@ function CreateInvoiceContent() {
     }
 
     try {
-      const userCompanies = await getUserCompanies();
+      const token = session.access_token;
+      const userCompanies = await getUserCompanies(token);
       setCompanies(userCompanies);
       setIsSelectModalOpen(true);
     } catch (e) {
@@ -129,7 +130,9 @@ function CreateInvoiceContent() {
   const saveToCompany = async (companyId: string) => {
     setIsSaving(true);
     try {
-      await saveInvoiceToSupabase(invoice, companyId);
+      const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
+      if (!session) throw new Error("No session");
+      await saveInvoiceToSupabase(session.access_token, invoice, companyId);
       setIsSelectModalOpen(false);
       setShowSuccessModal(true);
     } catch (e: any) {

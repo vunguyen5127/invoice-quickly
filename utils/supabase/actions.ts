@@ -1,14 +1,27 @@
-import { supabase } from "./client";
+"use server";
+
+import { createClient } from "@supabase/supabase-js";
 import { InvoiceState } from "@/types/invoice";
 
-export async function saveInvoiceToSupabase(invoice: InvoiceState, companyId?: string) {
-  if (!supabase) {
-    throw new Error("Supabase is not configured. Missing environment variables.");
+function getServerSupabase(token: string) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    throw new Error("Missing Supabase environment variables");
   }
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    }
+  );
+}
 
-  const { data: { session } } = await supabase.auth.getSession();
+export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState, companyId?: string) {
+  const supabase = getServerSupabase(token);
+
+  const { data: { user } } = await supabase.auth.getUser();
   
-  if (!session?.user) {
+  if (!user) {
     throw new Error("You must be logged in to save an invoice.");
   }
 
@@ -18,7 +31,7 @@ export async function saveInvoiceToSupabase(invoice: InvoiceState, companyId?: s
     .from('invoices')
     .insert([
       {
-        user_id: session.user.id,
+        user_id: user.id,
         company_id: companyId || null,
         invoice_number: invoice.details.invoiceNumber,
         client_name: invoice.client.name, // Keeping this for the dashboard list
@@ -54,14 +67,12 @@ function calculateTotals(invoice: InvoiceState) {
   return { subTotal, taxAmount, total };
 }
 
-export async function updateInvoiceInSupabase(invoiceId: string, invoice: InvoiceState) {
-  if (!supabase) {
-    throw new Error("Supabase is not configured. Missing environment variables.");
-  }
+export async function updateInvoiceInSupabase(token: string, invoiceId: string, invoice: InvoiceState) {
+  const supabase = getServerSupabase(token);
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
   
-  if (!session?.user) {
+  if (!user) {
     throw new Error("You must be logged in to update an invoice.");
   }
 

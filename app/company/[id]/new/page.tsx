@@ -39,7 +39,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         return;
       }
 
-      const companyData = await getCompanyById(resolvedParams.id);
+      const companyData = await getCompanyById(session.access_token, resolvedParams.id);
       if (!companyData) {
         alert("Company not found");
         router.push("/dashboard");
@@ -55,12 +55,11 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         defaultSignatureName = session.user.user_metadata?.name || session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || "";
       }
 
-      // Pre-fill the invoice seller info with the company's data
       const companyDetailsString = [companyData.name, companyData.address, companyData.email, companyData.phone]
         .filter(Boolean)
         .join(", ");
         
-      const nextInvoiceNumber = await getNextInvoiceNumber(resolvedParams.id);
+      const nextInvoiceNumber = await getNextInvoiceNumber(session.access_token, resolvedParams.id);
         
       setInvoice((prev) => ({
         ...prev,
@@ -117,7 +116,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
     }
 
     try {
-      await saveInvoiceToSupabase(invoice, resolvedParams.id);
+      await saveInvoiceToSupabase(session.access_token, invoice, resolvedParams.id);
       router.push(`/company/${resolvedParams.id}`);
     } catch (e: any) {
       alert("Error saving invoice. Please check your config.");
@@ -198,7 +197,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
             <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
           </div>
           
-          <div className="border-running xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
+          <div className="xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
             <div className="w-full overflow-x-auto bg-zinc-50 dark:bg-zinc-950 rounded-[5px] p-px flex justify-center [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
               <div className="transform origin-top scale-[0.6] sm:scale-75 lg:scale-90 xl:scale-100 transition-transform">
                 <InvoicePreview invoice={invoice} isLoggedIn={true} />

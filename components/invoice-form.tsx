@@ -28,7 +28,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
       if (!session) return;
       
       try {
-        const companies = await getUserCompanies();
+        const companies = await getUserCompanies(session.access_token);
         setMyCompanies(companies);
       } catch (e) {
         console.error("Failed to fetch companies for auto-fill", e);

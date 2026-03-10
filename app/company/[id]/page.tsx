@@ -43,7 +43,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         return;
       }
 
-      const companyData = await getCompanyById(resolvedParams.id);
+      const companyData = await getCompanyById(session.access_token, resolvedParams.id);
       if (!companyData) {
         alert("Company not found");
         router.push("/dashboard");
@@ -51,7 +51,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       }
       setCompany(companyData);
 
-      const invoiceData = await getCompanyInvoices(resolvedParams.id);
+      const invoiceData = await getCompanyInvoices(session.access_token, resolvedParams.id);
       setInvoices(invoiceData);
       setLoading(false);
     };
@@ -126,11 +126,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const confirmDelete = async () => {
     if (!invoiceToDelete) return;
     setIsDeleting(true);
-    const success = await deleteInvoice(invoiceToDelete);
-    if (success) {
-      setInvoices(invoices.filter((inv) => inv.id !== invoiceToDelete));
-    } else {
-      alert("Failed to delete invoice");
+    const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
+    if (session) {
+      const success = await deleteInvoice(session.access_token, invoiceToDelete);
+      if (success) {
+        setInvoices(invoices.filter((inv) => inv.id !== invoiceToDelete));
+      } else {
+        alert("Failed to delete invoice");
+      }
     }
     setIsDeleting(false);
     setInvoiceToDelete(null);

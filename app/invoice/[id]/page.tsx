@@ -31,7 +31,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       }
 
       const { id } = await params;
-      const data = await getInvoiceById(id);
+      const data = await getInvoiceById(session.access_token, id);
       
       if (data) {
         setInvoice(data);
@@ -76,7 +76,20 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   const confirmDelete = async () => {
     setIsDeleting(true);
     const { id } = await params;
-    const success = await deleteInvoice(id);
+    
+    let token = "";
+    if (supabase) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) token = session.access_token;
+    }
+
+    if (!token) {
+      alert("Session expired");
+      setIsDeleting(false);
+      return;
+    }
+
+    const success = await deleteInvoice(token, id);
     if (success) {
       router.push("/dashboard");
     } else {

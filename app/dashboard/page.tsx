@@ -30,7 +30,7 @@ export default function Dashboard() {
         return;
       }
 
-      const data = await getUserCompanies();
+      const data = await getUserCompanies(session.access_token);
       setCompanies(data);
       setLoading(false);
     };
@@ -46,11 +46,14 @@ export default function Dashboard() {
   const confirmDelete = async () => {
     if (!companyToDelete) return;
     setIsDeleting(true);
-    const success = await deleteCompany(companyToDelete);
-    if (success) {
-      setCompanies(companies.filter((c) => c.id !== companyToDelete));
-    } else {
-      alert("Failed to delete company");
+    const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
+    if (session) {
+      const success = await deleteCompany(session.access_token, companyToDelete);
+      if (success) {
+        setCompanies(companies.filter((c) => c.id !== companyToDelete));
+      } else {
+        alert("Failed to delete company");
+      }
     }
     setIsDeleting(false);
     setCompanyToDelete(null);

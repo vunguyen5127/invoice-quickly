@@ -36,7 +36,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         return;
       }
 
-      const data = await getInvoiceById(resolvedParams.id);
+      const data = await getInvoiceById(session.access_token, resolvedParams.id);
       if (!data) {
         alert("Invoice not found");
         router.push("/dashboard");
@@ -74,7 +74,9 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
     }
 
     try {
-      await updateInvoiceInSupabase(resolvedParams.id, invoice);
+      const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
+      if (!session) throw new Error("No session");
+      await updateInvoiceInSupabase(session.access_token, resolvedParams.id, invoice);
       if (companyId) {
         router.push(`/company/${companyId}`);
       } else {
@@ -162,7 +164,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
             <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
           </div>
           
-          <div className="border-running xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
+          <div className="xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
             <div className="w-full overflow-x-auto bg-zinc-50 dark:bg-zinc-950 rounded-[5px] p-px flex justify-center [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
               <div className="transform origin-top scale-[0.6] sm:scale-75 lg:scale-90 xl:scale-100 transition-transform">
                 <InvoicePreview invoice={invoice} isLoggedIn={true} />

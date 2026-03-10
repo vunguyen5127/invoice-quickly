@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { createCompany } from "@/app/dashboard/actions";
 import { X, Loader2, PenTool, Upload, Building2, Plus } from "lucide-react";
+import { supabase } from "@/utils/supabase/client";
 import { SignaturePadModal } from "./signature-pad-modal";
 import { CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
@@ -54,7 +55,19 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     }
 
     setIsSubmitting(true);
-    const newCompany = await createCompany({
+    let sessionToken = "";
+    if (supabase) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) sessionToken = session.access_token;
+    }
+    
+    if (!sessionToken) {
+      alert("Session expired. Please log in again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const newCompany = await createCompany(sessionToken, {
       name, email, address, phone, logo, signatureUrl, signerName,
       defaultCurrency, defaultTax, defaultDiscount,
       defaultNotes, defaultTerms, showNotes, showTerms,

@@ -1,10 +1,25 @@
-import { supabase } from "@/utils/supabase/client";
+"use server";
 
-export async function getUserCompanies() {
-  if (!supabase) return [];
+import { createClient } from "@supabase/supabase-js";
+
+function getServerSupabase(token: string) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    throw new Error("Missing Supabase environment variables");
+  }
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    }
+  );
+}
+
+export async function getUserCompanies(token: string) {
+  const supabase = getServerSupabase(token);
   
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
 
   // Get companies and sum of their invoices if possible, or just raw companies for now
   const { data, error } = await supabase
@@ -23,15 +38,15 @@ export async function getUserCompanies() {
   return data;
 }
 
-export async function createCompany(companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
-  if (!supabase) return null;
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return null;
+export async function createCompany(token: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
+  const supabase = getServerSupabase(token);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
 
   const { data, error } = await supabase
     .from("companies")
     .insert([{
-      user_id: session.user.id,
+      user_id: user.id,
       name: companyData.name,
       email: companyData.email,
       address: companyData.address,
@@ -57,10 +72,10 @@ export async function createCompany(companyData: { name: string; email: string; 
   return data;
 }
 
-export async function updateCompany(companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
-  if (!supabase) return null;
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return null;
+export async function updateCompany(token: string, companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
+  const supabase = getServerSupabase(token);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
 
   const { data, error } = await supabase
     .from("companies")
@@ -81,7 +96,7 @@ export async function updateCompany(companyId: string, companyData: { name: stri
       default_discount: companyData.defaultDiscount,
     })
     .eq("id", companyId)
-    .eq("user_id", session.user.id)
+    .eq("user_id", user.id)
     .select()
     .single();
 
@@ -92,8 +107,8 @@ export async function updateCompany(companyId: string, companyData: { name: stri
   return data;
 }
 
-export async function deleteCompany(id: string) {
-  if (!supabase) return false;
+export async function deleteCompany(token: string, id: string) {
+  const supabase = getServerSupabase(token);
   
   // RLS will ensure user owns the company. Invoices should cascade delete if set up in DB, 
   // or we might need to delete them first depending on DB constraints.
@@ -109,11 +124,11 @@ export async function deleteCompany(id: string) {
   return true;
 }
 
-export async function getCompanyInvoices(companyId: string) {
-  if (!supabase) return [];
+export async function getCompanyInvoices(token: string, companyId: string) {
+  const supabase = getServerSupabase(token);
   
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) return [];
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
 
   const { data, error } = await supabase
     .from("invoices")
@@ -129,8 +144,8 @@ export async function getCompanyInvoices(companyId: string) {
   return data;
 }
 
-export async function getCompanyById(companyId: string) {
-  if (!supabase) return null;
+export async function getCompanyById(token: string, companyId: string) {
+  const supabase = getServerSupabase(token);
   const { data, error } = await supabase
     .from("companies")
     .select("*")
@@ -145,8 +160,8 @@ export async function getCompanyById(companyId: string) {
 }
 
 // Keeping the old one just in case 
-export async function deleteInvoice(id: string) {
-  if (!supabase) return false;
+export async function deleteInvoice(token: string, id: string) {
+  const supabase = getServerSupabase(token);
   
   const { error } = await supabase
     .from("invoices")
@@ -160,8 +175,8 @@ export async function deleteInvoice(id: string) {
   return true;
 }
 
-export async function getNextInvoiceNumber(companyId: string): Promise<string> {
-  if (!supabase) return "INV-" + new Date().getFullYear() + "-001";
+export async function getNextInvoiceNumber(token: string, companyId: string): Promise<string> {
+  const supabase = getServerSupabase(token);
 
   const { data, error } = await supabase
     .from("invoices")

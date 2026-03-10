@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { updateCompany } from "@/app/dashboard/actions";
 import { X, Loader2, PenTool, Upload, Building2 } from "lucide-react";
+import { supabase } from "@/utils/supabase/client";
 import { SignaturePadModal } from "./signature-pad-modal";
 import { InvoiceState, CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
@@ -90,7 +91,19 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
     }
 
     setIsSubmitting(true);
-    const updated = await updateCompany(initialData.id, {
+    let sessionToken = "";
+    if (supabase) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) sessionToken = session.access_token;
+    }
+    
+    if (!sessionToken) {
+      alert("Session expired. Please log in again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const updated = await updateCompany(sessionToken, initialData.id, {
       name, email, address, phone, logo, signatureUrl, signerName,
       defaultCurrency, defaultNotes, defaultTerms, showNotes, showTerms,
       defaultTax, defaultDiscount,
