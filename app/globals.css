@@ -156,6 +156,7 @@ body {
 }
 
 .border-running {
+  position: relative;
   overflow: hidden;
   border-radius: 5px;
   padding: 2px;
