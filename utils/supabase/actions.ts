@@ -5,6 +5,9 @@ import { InvoiceState } from "@/types/invoice";
 
 function getServerSupabase(token: string) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error("Server-side Supabase initialization failed: Missing env vars");
+    console.log("NEXT_PUBLIC_SUPABASE_URL:", process.env.NEXT_PUBLIC_SUPABASE_URL ? "Present" : "Missing");
+    console.log("NEXT_PUBLIC_SUPABASE_ANON_KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "Present" : "Missing");
     throw new Error("Missing Supabase environment variables");
   }
   return createClient(

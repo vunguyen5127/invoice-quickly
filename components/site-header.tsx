@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/contexts/language-context";
-import { Receipt, Settings, ShieldCheck } from "lucide-react";
+import { Receipt, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from 'react';
 import { supabase } from "@/utils/supabase/client";
@@ -58,13 +58,7 @@ export function SiteHeader() {
               >
                 {t.myInvoices}
               </Link>
-              <Link 
-                href="/dashboard/settings" 
-                className="p-2 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 bg-zinc-100 hover:bg-blue-50 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-700/50 transition-all flex items-center rounded-full shadow-sm mr-1 sm:mr-2"
-                title={t.settings}
-              >
-                <Settings className="h-4 w-4" />
-              </Link>
+
             </>
           )}
           <ThemeToggle />
