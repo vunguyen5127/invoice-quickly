@@ -47,10 +47,13 @@ export function AuthButton() {
       return;
     }
     
+    const currentPath = window.location.pathname;
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(currentPath)}`;
+    
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo,
         queryParams: {
           prompt: "select_account",
         },

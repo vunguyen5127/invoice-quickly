@@ -15,6 +15,10 @@ export default function AuthCallbackPage() {
         return;
       }
 
+      // Get 'next' from URL if it exists
+      const searchParams = new URLSearchParams(window.location.search);
+      const next = searchParams.get("next") || "/dashboard";
+
       // Check for session and redirect accordingly
       const { data: { session }, error } = await supabase.auth.getSession();
       
@@ -23,7 +27,7 @@ export default function AuthCallbackPage() {
       }
 
       if (session) {
-        router.push("/dashboard");
+        router.push(next);
       } else {
         router.push("/login");
       }
