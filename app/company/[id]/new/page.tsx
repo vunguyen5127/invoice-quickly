@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Save, Loader2, Receipt, Printer, ChevronRight } from "lucide-react";
+import { Download, Save, Loader2, Receipt, Printer, ChevronRight, Share2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getCompanyById, getNextInvoiceNumber } from "@/app/dashboard/actions";
@@ -102,7 +102,10 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
     window.print();
   };
 
-
+  const handleShare = async () => {
+    alert("Please save the invoice first to generate a shareable public link.");
+    handleSave();
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -209,20 +212,26 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         </div>
 
         {/* Mobile Sticky Bottom Bar */}
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-3 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-none pb-safe">
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-none pb-safe">
+          <button 
+            onClick={handleShare}
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors"
+          >
+            <Share2 className="w-4 h-4" /> {t.share}
+          </button>
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors disabled:opacity-75"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-75"
           >
-            <Save className="w-5 h-5" /> {isSaving ? t.saving : t.save}
+            <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button 
             onClick={handleDownload}
             disabled={isGenerating}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-75"
           >
-            <Download className="w-5 h-5" /> {isGenerating ? t.wait : t.download}
+            <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>
         </div>
 
