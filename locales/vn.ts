@@ -26,7 +26,7 @@ export const vn: Translations = {
   lineItems: "Danh Mục Sản Phẩm/Dịch Vụ",
   description: "Mô Tả",
   qty: "Số Lượng",
-  rate: "Thành Tiền",
+  rate: "Đơn Giá",
   itemDescription: "Mô tả sản phẩm dịch vụ",
   addItem: "Thêm Dòng",
   subtotal: "Tạm Tính",

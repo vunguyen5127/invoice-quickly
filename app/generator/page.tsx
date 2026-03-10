@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Save, Building2, X, Plus, Receipt, Printer, Share2 } from "lucide-react";
+import { FileDown, Download, Receipt, Send, Plus, ArrowRight, Share2, Save, MoreHorizontal, X, Building2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies } from "@/app/dashboard/actions";
@@ -14,6 +14,7 @@ import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
+import { SuccessModal } from '@/components/success-modal';
 import { useLanguage } from "@/contexts/language-context";
 
 function CreateInvoiceContent() {
@@ -29,6 +30,7 @@ function CreateInvoiceContent() {
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isGuestSaveModalOpen, setIsGuestSaveModalOpen] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -129,13 +131,23 @@ function CreateInvoiceContent() {
     try {
       await saveInvoiceToSupabase(invoice, companyId);
       setIsSelectModalOpen(false);
-      alert("Invoice saved to company!");
-      router.push(`/company/${companyId}`);
+      setShowSuccessModal(true);
     } catch (e: any) {
       alert("Error saving invoice.");
       console.error(e);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    // Since we saved it to a specific company, we redirect there to see it
+    if (companies.length === 1) {
+      router.push(`/company/${companies[0].id}`);
+    } else {
+      // Find which company it was saved to (we would need that state, or just go to home)
+      router.push('/dashboard'); // Redirect to dashboard or a more general page
     }
   };
 
@@ -152,27 +164,26 @@ function CreateInvoiceContent() {
           >
             <Receipt className="h-6 w-6 text-blue-600 dark:text-blue-500" />
             <span className="hidden sm:inline-block">InvoiceQuickly</span>
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 ml-1">{t.draft}</span>
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-colors shadow-sm"
               >
                 <Share2 className="w-4 h-4" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button
                 onClick={handleSaveClick}
                 disabled={isSaving}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors disabled:opacity-75"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors shadow-sm disabled:opacity-75"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
                 disabled={isGenerating}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm disabled:opacity-75"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -321,19 +332,26 @@ function CreateInvoiceContent() {
           <button
             onClick={handleSaveClick}
             disabled={isSaving}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition-colors disabled:opacity-75"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-75"
           >
-            <Save className="w-5 h-5" /> {isSaving ? t.saving : t.save}
+            <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button
             onClick={handleDownload}
             disabled={isGenerating}
-            className="flex-1 flex justify-center items-center gap-2 px-4 py-3 rounded-xl font-semibold shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-75"
           >
-            <Download className="w-5 h-5" /> {isGenerating ? t.wait : t.download}
+            <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>
         </div>
       </div>
+      
+      <SuccessModal 
+        isOpen={showSuccessModal}
+        onClose={handleSuccessModalClose}
+        title={t.invoiceTitle + " Saved!" || "Invoice Saved!"}
+        message="Your invoice has been successfully saved to your company dashboard."
+      />
     </div>
   );
 }

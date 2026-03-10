@@ -13,6 +13,22 @@ export const generatePDF = async (elementId: string, filename: string) => {
   document.documentElement.classList.remove("dark");
   document.documentElement.classList.add("light");
 
+  // Temporarily remove zoom from the preview wrapper to prevent cropping
+  let originalZoom = "";
+  const zoomWrapper = element.parentElement;
+  if (zoomWrapper && zoomWrapper.className.includes("zoom")) {
+    originalZoom = zoomWrapper.style.zoom || "";
+    zoomWrapper.style.zoom = "1";
+  }
+
+  // Temporarily force dimensions on the element to ensure it renders full A4 size on mobile
+  const originalWidth = element.style.width;
+  const originalMaxWidth = element.style.maxWidth;
+  const originalHeight = element.style.height;
+  element.style.width = "794px";
+  element.style.maxWidth = "794px";
+  element.style.height = "1123px";
+
   // Wait a tick for theme to apply
   await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -23,6 +39,13 @@ export const generatePDF = async (elementId: string, filename: string) => {
       quality: 1,
       backgroundColor: "#ffffff",
       pixelRatio: 2, // High resolution
+      canvasWidth: 794,
+      canvasHeight: 1123,
+      style: {
+        zoom: "1",
+        width: "794px",
+        height: "1123px"
+      }
     });
     
     // Create new PDF instance (portrait, millimeters, A4 size)
@@ -51,5 +74,12 @@ export const generatePDF = async (elementId: string, filename: string) => {
   } finally {
     // Restore everything
     document.documentElement.className = originalTheme;
+    if (zoomWrapper && zoomWrapper.className.includes("zoom")) {
+      zoomWrapper.style.zoom = originalZoom;
+    }
+    
+    element.style.width = originalWidth;
+    element.style.maxWidth = originalMaxWidth;
+    element.style.height = originalHeight;
   }
 };

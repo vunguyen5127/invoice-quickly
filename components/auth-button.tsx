@@ -155,7 +155,7 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="inline-flex items-center justify-center gap-2 rounded-[5px] px-4 h-9 text-sm font-medium transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+      className="inline-flex items-center justify-center gap-2 rounded-[5px] px-4 h-9 text-sm font-medium transition-colors bg-blue-600 hover:bg-blue-700 text-white shadow-sm shrink-0 whitespace-nowrap"
       aria-label="Sign in with Google"
     >
       <LogIn className="w-4 h-4" />
