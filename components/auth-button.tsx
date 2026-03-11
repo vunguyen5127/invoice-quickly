@@ -2,12 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { LogIn, LogOut, Loader2 } from "lucide-react";
+import { LogIn, LogOut, Loader2, Settings } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/utils/url";
+import { useLanguage } from "@/contexts/language-context";
+import Link from "next/link";
 
 export function AuthButton() {
+  const { t } = useLanguage();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
@@ -130,6 +133,14 @@ export function AuthButton() {
               </div>
               
               <div className="py-1 flex flex-col">
+                <Link
+                  href="/dashboard/settings"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full text-left px-4 py-2 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-2"
+                >
+                  <Settings className="w-4 h-4" />
+                  {t.settings}
+                </Link>
 
                 <button 
                   onClick={() => {
@@ -139,7 +150,7 @@ export function AuthButton() {
                   className="w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors flex items-center gap-2 border-t border-zinc-100 dark:border-zinc-800"
                 >
                   <LogOut className="w-4 h-4" />
-                  Sign out
+                  {t.signIn === "Sign In" ? "Sign out" : "Đăng xuất"}
                 </button>
               </div>
             </div>
@@ -156,7 +167,7 @@ export function AuthButton() {
       aria-label="Sign in with Google"
     >
       <LogIn className="w-4 h-4" />
-      <span>Sign In</span>
+      <span>{t.signIn}</span>
     </button>
   );
 }
