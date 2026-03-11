@@ -46,7 +46,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
-          <Receipt className="h-6 w-6 text-blue-600 dark:text-blue-500" />
+          <img src="/logo.png" alt="InvoiceQuickly Logo" className="h-10 w-10 object-contain" />
           <span>InvoiceQuickly</span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2 text-zinc-600 dark:text-zinc-400">
