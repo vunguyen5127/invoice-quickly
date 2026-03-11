@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { LogIn, LogOut, Loader2 } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getBaseUrl } from "@/utils/url";
 
 export function AuthButton() {
   const [user, setUser] = useState<User | null>(null);
@@ -48,7 +48,8 @@ export function AuthButton() {
     }
     
     const currentPath = window.location.pathname;
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(currentPath)}`;
+    const baseUrl = getBaseUrl();
+    const redirectTo = `${baseUrl}/auth/callback?next=${encodeURIComponent(currentPath)}`;
     
     await supabase.auth.signInWithOAuth({
       provider: "google",
