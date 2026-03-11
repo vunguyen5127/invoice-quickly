@@ -321,46 +321,27 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             </h4>
             <div className="space-y-4">
               <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.clientName}</legend>
-                <ClearBtn value={invoice.client.name} onClear={() => handleSectionChange('client', 'name', '')} />
-                <input 
-                  type="text" 
-                  placeholder={t.clientName}
-                  className={inputInnerClass} 
-                  value={invoice.client.name} 
-                  onChange={(e) => handleSectionChange('client', 'name', e.target.value)}
-                />
+                <legend className={legendClass}>{`${t.clientName}, ${t.clientAddress}, ${t.clientEmail}, ${t.clientPhone}`}</legend>
+                <div className="w-full h-full flex flex-col">
+                  <ClearBtn value={invoice.client.name} onClear={() => handleSectionChange('client', 'name', '')} />
+                  <textarea 
+                    placeholder={`${t.clientName}, ${t.clientAddress}, ${t.clientEmail}, ${t.clientPhone}`}
+                    className={`${inputInnerClass} resize-y h-[52px] min-h-[52px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
+                    value={invoice.client.name} 
+                    onChange={(e) => handleSectionChange('client', 'name', e.target.value)}
+                    rows={2}
+                  />
+                </div>
               </fieldset>
+              
               <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.clientEmail}</legend>
-                <ClearBtn value={invoice.client.email} onClear={() => handleSectionChange('client', 'email', '')} />
-                <input 
-                  type="email" 
-                  placeholder={t.clientEmail}
-                  className={inputInnerClass} 
-                  value={invoice.client.email} 
-                  onChange={(e) => handleSectionChange('client', 'email', e.target.value)}
-                />
-              </fieldset>
-              <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.clientPhone}</legend>
-                <ClearBtn value={invoice.client.phone} onClear={() => handleSectionChange('client', 'phone', '')} />
-                <input 
-                  type="text" 
-                  placeholder={t.clientPhone}
-                  className={inputInnerClass} 
-                  value={invoice.client.phone} 
-                  onChange={(e) => handleSectionChange('client', 'phone', e.target.value)}
-                />
-              </fieldset>
-              <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.clientAddress}</legend>
-                <ClearBtn value={invoice.client.address} onClear={() => handleSectionChange('client', 'address', '')} />
+                <legend className={legendClass}>{`${t.shipTo} ${t.clientPhone.includes('(') ? t.clientPhone.match(/\(.*\)/)?.[0] || '(Optional)' : '(Optional)'}`}</legend>
+                <ClearBtn value={invoice.client.shipTo || ""} onClear={() => handleSectionChange('client', 'shipTo', '')} />
                 <textarea 
-                  placeholder={t.clientAddress}
-                  className={`${inputInnerClass} min-h-[70px] resize-y mt-1 pr-6`} 
-                  value={invoice.client.address} 
-                  onChange={(e) => handleSectionChange('client', 'address', e.target.value)}
+                  className={`${inputInnerClass} resize-y h-[52px] min-h-[52px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
+                  value={invoice.client.shipTo || ""} 
+                  onChange={(e) => handleSectionChange('client', 'shipTo', e.target.value)}
+                  rows={2}
                 />
               </fieldset>
             </div>
@@ -510,57 +491,83 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </select>
             </fieldset>
             
-            <div className="grid grid-cols-2 gap-4">
-              <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.taxRate}</legend>
-                <div className="flex relative">
+            <div className="flex flex-col gap-4 max-w-[420px] ml-auto">
+              {/* Discount Row */}
+              <div className="grid grid-cols-[1fr_180px] items-center gap-5">
+                <input 
+                  className="bg-transparent border-none outline-none text-[14px] font-bold text-zinc-700 dark:text-zinc-200 text-right focus:ring-0 placeholder:opacity-50 hover:text-blue-600 transition-colors cursor-edit"
+                  value={invoice.discountLabel || t.discount}
+                  onChange={(e) => handleRootChange("discountLabel", e.target.value)}
+                  placeholder={t.discount}
+                  title="Click to edit label"
+                />
+                <div className="relative flex items-center h-11 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-full overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all shadow-sm">
                   <input 
                     type="number" 
                     placeholder="0"
-                    className={`${inputInnerClass} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} 
+                    className="w-full h-full bg-transparent pl-5 pr-1 text-center text-[15px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                    value={invoice.discount || ''} 
+                    onChange={(e) => handleRootChange("discount", e.target.value === '' ? 0 : Number(e.target.value))}
+                  />
+                  <div className="h-full border-l border-zinc-100 dark:border-zinc-800 flex items-center bg-zinc-50/50 dark:bg-zinc-900/50">
+                    <select
+                      className="bg-transparent outline-none text-[12px] font-bold text-zinc-500 dark:text-zinc-400 px-4 pr-6 cursor-pointer h-full appearance-none min-w-[60px] text-center"
+                      value={invoice.discountType}
+                      onChange={(e) => handleRootChange("discountType", e.target.value as 'fixed' | 'percentage')}
+                      style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23a1a1aa'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundPosition: `right 0.6rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `0.75em 0.75em` }}
+                    >
+                      <option value="percentage">%</option>
+                      <option value="fixed">{CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$'}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tax Row */}
+              <div className="grid grid-cols-[1fr_180px] items-center gap-5">
+                <input 
+                  className="bg-transparent border-none outline-none text-[14px] font-bold text-zinc-700 dark:text-zinc-200 text-right focus:ring-0 placeholder:opacity-50 hover:text-blue-600 transition-colors cursor-edit"
+                  value={invoice.taxLabel || t.tax}
+                  onChange={(e) => handleRootChange("taxLabel", e.target.value)}
+                  placeholder={t.tax}
+                  title="Click to edit label"
+                />
+                <div className="relative flex items-center h-11 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-full overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all shadow-sm">
+                  <input 
+                    type="number" 
+                    placeholder="0"
+                    className="w-full h-full bg-transparent pl-5 pr-1 text-center text-[15px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
                     value={invoice.taxRate || ''} 
                     onChange={(e) => handleRootChange("taxRate", e.target.value === '' ? 0 : Number(e.target.value))}
-                    onKeyDown={(e) => {
-                      if (['e', 'E', '+', '-', '.'].includes(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    min="0"
-                    max="100"
-                    step="1"
                   />
-                  <div className="w-auto min-w-[50px] flex items-center justify-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 px-1 border-l border-zinc-200 dark:border-zinc-700 ml-2">
+                  <div className="h-full w-[60px] border-l border-zinc-100 dark:border-zinc-800 flex items-center justify-center bg-zinc-50/50 dark:bg-zinc-900/50 text-[12px] font-bold text-zinc-400">
                     %
                   </div>
                 </div>
-              </fieldset>
-              
-              <fieldset className={fieldsetClass}>
-                <legend className={legendClass}>{t.discount}</legend>
-                <div className="flex relative">
+              </div>
+
+              {/* Shipping Row */}
+              <div className="grid grid-cols-[1fr_180px] items-center gap-5">
+                <input 
+                  className="bg-transparent border-none outline-none text-[14px] font-bold text-zinc-700 dark:text-zinc-200 text-right focus:ring-0 placeholder:opacity-50 hover:text-blue-600 transition-colors cursor-edit"
+                  value={invoice.shippingLabel || t.shipping}
+                  onChange={(e) => handleRootChange("shippingLabel", e.target.value)}
+                  placeholder={t.shipping}
+                  title="Click to edit label"
+                />
+                <div className="relative flex items-center h-11 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-full overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all shadow-sm">
+                   <div className="h-full w-[60px] border-r border-zinc-100 dark:border-zinc-800 flex items-center justify-center bg-zinc-50/50 dark:bg-zinc-900/50 text-[12px] font-bold text-zinc-400">
+                    {CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$'}
+                  </div>
                   <input 
                     type="number" 
                     placeholder="0"
-                    className={`${inputInnerClass} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} 
-                    value={invoice.discount || ''} 
-                    onChange={(e) => handleRootChange("discount", e.target.value === '' ? 0 : Number(e.target.value))}
-                    onKeyDown={(e) => {
-                      if (['e', 'E', '+', '-', '.'].includes(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    min="0"
+                    className="w-full h-full bg-transparent pr-5 pl-1 text-center text-[15px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                    value={invoice.shipping || ''} 
+                    onChange={(e) => handleRootChange("shipping", e.target.value === '' ? 0 : Number(e.target.value))}
                   />
-                  <select
-                    className="w-auto min-w-[50px] bg-transparent outline-none text-[14px] font-medium text-zinc-900 dark:text-zinc-100 px-1 border-l border-zinc-200 dark:border-zinc-700 ml-2"
-                    value={invoice.discountType}
-                    onChange={(e) => handleRootChange("discountType", e.target.value as 'fixed' | 'percentage')}
-                  >
-                    <option value="percentage">%</option>
-                    <option value="fixed">{CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$'}</option>
-                  </select>
                 </div>
-              </fieldset>
+              </div>
             </div>
           </div>
 

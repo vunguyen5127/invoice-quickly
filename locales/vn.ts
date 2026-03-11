@@ -2,8 +2,8 @@ import { Translations } from "./en";
 
 export const vn: Translations = {
   invoiceDetails: "Chi Tiết Hóa Đơn",
-  invoiceNumber: "Số Hóa Đơn",
-  issueDate: "Ngày Lập",
+  invoiceNumber: "Hóa Đơn",
+  issueDate: "Ngày",
   dueDate: "Hạn Thanh Toán",
   currency: "Tiền Tệ",
   billingInformation: "Thông Tin Thanh Toán",
@@ -23,6 +23,7 @@ export const vn: Translations = {
   clientEmail: "Email Khách Hàng",
   clientAddress: "Địa Chỉ Khách Hàng",
   clientPhone: "Số Điện Thoại Khách (Tùy Chọn)",
+  shipTo: "Giao Đến",
   lineItems: "Danh Mục Sản Phẩm/Dịch Vụ",
   description: "Mô Tả",
   qty: "Số Lượng",
@@ -32,6 +33,7 @@ export const vn: Translations = {
   subtotal: "Tạm Tính",
   taxRate: "Thuế Suất (%)",
   discount: "Giảm Giá",
+  shipping: "Phí Vận Chuyển",
   totalDue: "Tổng Cộng",
   notes: "Ghi Chú",
   addNotes: "Thêm Ghi Chú",

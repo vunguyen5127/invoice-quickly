@@ -15,7 +15,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
   const { t } = useLanguage();
   const symbol = getCurrencySymbol(invoice.currency);
 
-  const subTotal = invoice.items.reduce((acc, item) => acc + (item.quantity * item.rate), 0);
+  const subTotal = invoice.items.filter(item => item.description || item.quantity || item.rate).reduce((acc, item) => acc + (item.quantity * item.rate), 0);
   
   const discountAmount = invoice.discountType === 'percentage' 
     ? subTotal * (invoice.discount / 100) 
@@ -25,7 +25,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
   
   const taxAmount = afterDiscount * (invoice.taxRate / 100);
   
-  const total = afterDiscount + taxAmount;
+  const total = afterDiscount + taxAmount + (invoice.shipping || 0);
 
   const formatDate = (dateStr: string) => {
     try {
@@ -73,31 +73,46 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
            </div>
         </div>
 
-        {/* 2-Column Header Area */}
-        <div className="flex justify-between md:grid-cols-2 gap-4 mb-10 text-[13px]">
-           {/* Bill To */}
-           <div>
+        {/* 3-Column Header Area */}
+        <div className="flex gap-8 mb-10 text-[13px] items-start">
+           {/* Column 1: Bill To */}
+           <div className="flex-1 min-w-0">
              <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.billedTo || "Bill To"}</p>
-             <div className="text-zinc-600 space-y-0.5 leading-tight">
-               <p className="font-bold text-zinc-900 text-[15px]">{invoice.client.name}</p>
-               <p className="whitespace-pre-wrap">{invoice.client.address}</p>
-               <p>{invoice.client.email}</p>
+             <div className="text-zinc-600 space-y-0.5 leading-tight break-words">
+               <p className="font-bold text-zinc-900 text-[15px]">{invoice.client.name.split(/,|\n/)[0] || "-"}</p>
+               <div className="text-[13px] text-zinc-600">
+                  {invoice.client.name.split(/,|\n/).slice(1).map((line, idx) => (
+                    <p key={idx}>{line.trim()}</p>
+                  ))}
+               </div>
              </div>
            </div>
 
-           {/* Invoice Details Block */}
-           <div className="text-right">
-              <div className="inline-grid grid-cols-[auto_auto] gap-x-4 gap-y-1 text-left">
-                <span className="font-bold whitespace-nowrap">{t.invoiceNumber} #</span>
-                <span className="text-zinc-600 whitespace-nowrap">{invoice.details.invoiceNumber}</span>
+           {/* Column 2: Ship To (Middle Column) */}
+           <div className="flex-1 min-w-0">
+             {invoice.client.shipTo && (
+               <>
+                 <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.shipTo}</p>
+                 <div className="text-zinc-600 space-y-0.5 leading-tight break-words">
+                   <p className="whitespace-pre-wrap">{invoice.client.shipTo}</p>
+                 </div>
+               </>
+             )}
+           </div>
+
+           {/* Column 3: Invoice Details Block */}
+            <div className="flex-1 min-w-0 flex justify-end">
+              <div className="grid grid-cols-[auto_auto] gap-x-5 gap-y-2 text-left">
+                <span className="font-bold whitespace-nowrap">{t.invoiceNumber}:{"\u00A0"}</span>
+                <span className="text-zinc-600 whitespace-nowrap">#{invoice.details.invoiceNumber}</span>
                 
-                <span className="font-bold whitespace-nowrap">{t.issueDate}</span>
+                <span className="font-bold whitespace-nowrap">{t.issueDate}:{"\u00A0"}</span>
                 <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.issueDate)}</span>
                 
-                <span className="font-bold whitespace-nowrap">{t.dueDate}</span>
+                <span className="font-bold whitespace-nowrap">{t.dueDate}:{"\u00A0"}</span>
                 <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.dueDate)}</span>
               </div>
-           </div>
+            </div>
         </div>
 
         {/* Full Grid Table */}
@@ -131,17 +146,26 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
                 <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
               </div>
 
-              {invoice.taxRate > 0 && (
+              {(invoice.discount > 0 || invoice.discountLabel) && (
+                <div className="flex text-red-600">
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{invoice.discountLabel || t.discount}</div>
+                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
+                </div>
+              )}
+
+              {(invoice.taxRate > 0 || invoice.taxLabel) && (
                 <div className="flex">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.tax} {invoice.taxRate.toFixed(1)}%</div>
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
+                    {invoice.taxLabel || t.tax} {invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
+                  </div>
                    <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
                 </div>
               )}
 
-              {invoice.discount > 0 && (
-                <div className="flex text-red-600">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.discount}</div>
-                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
+              {(invoice.shipping > 0 || invoice.shippingLabel) && (
+                <div className="flex">
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{invoice.shippingLabel || t.shipping}</div>
+                   <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
                 </div>
               )}
 

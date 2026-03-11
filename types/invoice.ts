@@ -26,6 +26,7 @@ export interface ClientDetails {
   email: string;
   address: string;
   phone: string;
+  shipTo?: string;
 }
 
 export interface InvoiceState {
@@ -35,8 +36,12 @@ export interface InvoiceState {
   details: InvoiceDetails;
   items: InvoiceItem[];
   taxRate: number; // percentage
-  discount: number; // percentage or fixed (we will treat as fixed amount for simplicity, or percent depending on UI)
+  discount: number; // percentage or fixed
+  shipping: number;
   discountType: 'percentage' | 'fixed';
+  taxLabel?: string;
+  discountLabel?: string;
+  shippingLabel?: string;
   notes: string;
   terms: string;
   currency: string;
@@ -79,10 +84,10 @@ export const initialInvoiceState: InvoiceState = {
     phone: ""
   },
   client: {
-    name: "Greenfield Properties LLC",
-    email: "ap@greenfieldproperties.com",
-    address: "1200 Market Street, Floor 8\nNew York, NY 10001",
-    phone: "(212) 555-0847"
+    name: "Greenfield Properties LLC, 1200 Market Street, Floor 8 New York, NY 10001, ap@greenfieldproperties.com, (212) 555-0847",
+    email: "",
+    address: "",
+    phone: ""
   },
   details: {
     invoiceNumber: "INV-2026-001",
@@ -122,8 +127,12 @@ export const initialInvoiceState: InvoiceState = {
     }
   ],
   taxRate: 10,
+  taxLabel: "Tax",
   discount: 0,
+  discountLabel: "Discount",
   discountType: 'percentage',
+  shipping: 0,
+  shippingLabel: "Shipping",
   notes: "Thank you for your business! We appreciate your prompt payment.",
   terms: "Payment is due within 14 days of the invoice date. Late payments may incur a 1.5% monthly fee.",
   currency: "USD",
