@@ -21,6 +21,7 @@ export const zh = {
   clientEmail: "客户电子邮件",
   clientAddress: "客户地址",
   clientPhone: "客户电话（可选）",
+  shipTo: "收货地址",
   lineItems: "项目明细",
   description: "描述",
   qty: "数量",
@@ -30,6 +31,7 @@ export const zh = {
   subtotal: "小计",
   taxRate: "税率",
   discount: "折扣",
+  shipping: "运费",
   totalDue: "总计费用",
   notes: "备注",
   addNotes: "添加备注",
@@ -51,7 +53,7 @@ export const zh = {
   watermark: "由 InvoiceQuickly 创建",
   samplePreview: "示例预览",
   taxDisclaimer: "税费由支付服务商计算",
-  
+
   // Company Modals
   addNewCompany: "添加新公司",
   editCompany: "编辑公司",

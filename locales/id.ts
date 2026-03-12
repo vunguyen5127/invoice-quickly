@@ -21,6 +21,7 @@ export const id = {
   clientEmail: "Email Klien",
   clientAddress: "Alamat Klien",
   clientPhone: "Telepon Klien (Opsional)",
+  shipTo: "Kirim ke",
   lineItems: "Item Faktur",
   description: "Deskripsi",
   qty: "Jml",
@@ -30,6 +31,7 @@ export const id = {
   subtotal: "Subtotal",
   taxRate: "Tarif Pajak",
   discount: "Diskon",
+  shipping: "Pengiriman",
   totalDue: "Total Penagihan",
   notes: "Catatan",
   addNotes: "Tambah Catatan",
@@ -51,7 +53,7 @@ export const id = {
   watermark: "Dibuat dengan InvoiceQuickly",
   samplePreview: "Pratinjau Sampel",
   taxDisclaimer: "Pajak dihitung oleh penyedia pembayaran",
-  
+
   // Company Modals
   addNewCompany: "Tambah Perusahaan Baru",
   editCompany: "Ubah Perusahaan",

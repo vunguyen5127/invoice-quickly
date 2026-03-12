@@ -21,6 +21,7 @@ export const th = {
   clientEmail: "อีเมลลูกค้า",
   clientAddress: "ที่อยู่ลูกค้า",
   clientPhone: "โทรศัพท์ลูกค้า (ไม่บังคับ)",
+  shipTo: "จัดส่งไปที่",
   lineItems: "รายการ",
   description: "รายละเอียด",
   qty: "จำนวน",
@@ -30,6 +31,7 @@ export const th = {
   subtotal: "รวมสุทธิ",
   taxRate: "อัตราภาษี",
   discount: "ส่วนลด",
+  shipping: "ค่าจัดส่ง",
   totalDue: "ยอดรวมค้างชำระ",
   notes: "หมายเหตุ",
   addNotes: "เพิ่มหมายเหตุ",
@@ -51,7 +53,7 @@ export const th = {
   watermark: "สร้างโดย InvoiceQuickly",
   samplePreview: "ตัวอย่างก่อนพิมพ์",
   taxDisclaimer: "ภาษีคำนวณโดยผู้ให้บริการชำระเงิน",
-  
+
   // Company Modals
   addNewCompany: "เพิ่มบริษัทใหม่",
   editCompany: "แก้ไขบริษัท",

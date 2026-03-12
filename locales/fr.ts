@@ -21,6 +21,7 @@ export const fr = {
   clientEmail: "Email du Client",
   clientAddress: "Adresse du Client",
   clientPhone: "Téléphone du Client (Optionnel)",
+  shipTo: "Expédier à",
   lineItems: "Articles",
   description: "Description",
   qty: "Qté",
@@ -30,6 +31,7 @@ export const fr = {
   subtotal: "Sous-total",
   taxRate: "Taux de Taxe",
   discount: "Remise",
+  shipping: "Livraison",
   totalDue: "Total Dû",
   notes: "Notes",
   addNotes: "Ajouter des Notes",
@@ -51,7 +53,7 @@ export const fr = {
   watermark: "Créé avec InvoiceQuickly",
   samplePreview: "Aperçu de l'Échantillon",
   taxDisclaimer: "Taxe calculée par le prestataire de paiement",
-  
+
   // Company Modals
   addNewCompany: "Ajouter une Nouvelle Entreprise",
   editCompany: "Modifier l'Entreprise",

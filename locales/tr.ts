@@ -21,6 +21,7 @@ export const tr = {
   clientEmail: "Müşteri E-postası",
   clientAddress: "Müşteri Adresi",
   clientPhone: "Müşteri Telefonu (İsteğe bağlı)",
+  shipTo: "Gönderim Adresi",
   lineItems: "Fatura Kalemleri",
   description: "Açıklama",
   qty: "Adet",
@@ -30,6 +31,7 @@ export const tr = {
   subtotal: "Ara Toplam",
   taxRate: "Vergi Oranı",
   discount: "İndirim",
+  shipping: "Kargo",
   totalDue: "Toplam Tutar",
   notes: "Notlar",
   addNotes: "Not Ekle",
@@ -51,7 +53,7 @@ export const tr = {
   watermark: "InvoiceQuickly ile oluşturuldu",
   samplePreview: "Örnek Önizleme",
   taxDisclaimer: "Vergi, ödeme sağlayıcısı tarafından hesaplanır",
-  
+
   // Company Modals
   addNewCompany: "Yeni Şirket Ekle",
   editCompany: "Şirketi Düzenle",

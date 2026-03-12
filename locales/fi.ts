@@ -21,6 +21,7 @@ export const fi = {
   clientEmail: "Asiakkaan sähköposti",
   clientAddress: "Asiakkaan osoite",
   clientPhone: "Asiakkaan puhelin (valinnainen)",
+  shipTo: "Toimitusosoite",
   lineItems: "Laskun rivit",
   description: "Kuvaus",
   qty: "Määrä",
@@ -30,6 +31,7 @@ export const fi = {
   subtotal: "Välisumma",
   taxRate: "Verokanta",
   discount: "Alennus",
+  shipping: "Toimitusmaksu",
   totalDue: "Yhteensä maksettavaa",
   notes: "Muistiinpanot",
   addNotes: "Lisää muistiinpanoja",
@@ -51,7 +53,7 @@ export const fi = {
   watermark: "Luotu InvoiceQuickly-sovelluksella",
   samplePreview: "Esimerkkinäkymä",
   taxDisclaimer: "Maksunvälittäjä laskee verot",
-  
+
   // Company Modals
   addNewCompany: "Lisää uusi yritys",
   editCompany: "Muokkaa yritystä",

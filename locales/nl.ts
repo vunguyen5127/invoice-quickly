@@ -21,6 +21,7 @@ export const nl = {
   clientEmail: "E-mail klant",
   clientAddress: "Adres klant",
   clientPhone: "Telefoon klant (optioneel)",
+  shipTo: "Verzenden naar",
   lineItems: "Factuurregels",
   description: "Beschrijving",
   qty: "Aant.",
@@ -30,6 +31,7 @@ export const nl = {
   subtotal: "Subtotaal",
   taxRate: "Btw-tarief",
   discount: "Korting",
+  shipping: "Verzending",
   totalDue: "Totaalbedrag",
   notes: "Notities",
   addNotes: "Notities toevoegen",
@@ -51,7 +53,7 @@ export const nl = {
   watermark: "Gemaakt met InvoiceQuickly",
   samplePreview: "Voorbeeldweergave",
   taxDisclaimer: "Btw berekend door betalingsprovider",
-  
+
   // Company Modals
   addNewCompany: "Nieuw bedrijf toevoegen",
   editCompany: "Bedrijf bewerken",

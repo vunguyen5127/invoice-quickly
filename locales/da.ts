@@ -21,6 +21,7 @@ export const da = {
   clientEmail: "Kundens e-mail",
   clientAddress: "Kundens adresse",
   clientPhone: "Kundens telefon (valgfri)",
+  shipTo: "Send til",
   lineItems: "Linjeelementer",
   description: "Beskrivelse",
   qty: "Antal",
@@ -30,6 +31,7 @@ export const da = {
   subtotal: "Subtotal",
   taxRate: "Momssats",
   discount: "Rabat",
+  shipping: "Forsendelse",
   totalDue: "Total til betaling",
   notes: "Noter",
   addNotes: "Tilføj noter",
@@ -51,7 +53,7 @@ export const da = {
   watermark: "Oprettet med InvoiceQuickly",
   samplePreview: "Eksempelvisning",
   taxDisclaimer: "Moms beregnes af betalingsudbyderen",
-  
+
   // Company Modals
   addNewCompany: "Tilføj nyt firma",
   editCompany: "Rediger firma",

@@ -21,6 +21,7 @@ export const hi = {
   clientEmail: "ग्राहक का ईमेल",
   clientAddress: "ग्राहक का पता",
   clientPhone: "ग्राहक का फोन (वैकल्पिक)",
+  shipTo: "यहाँ भेजें",
   lineItems: "आइटम विवरण",
   description: "विवरण",
   qty: "मात्रा",
@@ -30,6 +31,7 @@ export const hi = {
   subtotal: "उप-कुल",
   taxRate: "कर की दर",
   discount: "छूट",
+  shipping: "शिपिंग",
   totalDue: "कुल देय",
   notes: "नोट्स",
   addNotes: "नोट्स जोड़ें",
@@ -51,7 +53,7 @@ export const hi = {
   watermark: "InvoiceQuickly के साथ बनाया गया",
   samplePreview: "नमूना पूर्वावलोकन",
   taxDisclaimer: "कर की गणना भुगतान प्रदाता द्वारा की जाती है",
-  
+
   // Company Modals
   addNewCompany: "नई कंपनी जोड़ें",
   editCompany: "कंपनी संपादित करें",

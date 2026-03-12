@@ -21,6 +21,7 @@ export const pl = {
   clientEmail: "Email klienta",
   clientAddress: "Adres klienta",
   clientPhone: "Telefon klienta (opcjonalnie)",
+  shipTo: "Wysyłka do",
   lineItems: "Pozycje faktury",
   description: "Opis",
   qty: "Ilość",
@@ -30,6 +31,7 @@ export const pl = {
   subtotal: "Suma częściowa",
   taxRate: "Stawka podatku",
   discount: "Rabat",
+  shipping: "Wysyłka",
   totalDue: "Łącznie do zapłaty",
   notes: "Notatki",
   addNotes: "Dodaj notatki",
@@ -51,7 +53,7 @@ export const pl = {
   watermark: "Utworzono w InvoiceQuickly",
   samplePreview: "Podgląd przykładowy",
   taxDisclaimer: "Podatek jest obliczany przez dostawcę usług płatniczych",
-  
+
   // Company Modals
   addNewCompany: "Dodaj nową firmę",
   editCompany: "Edytuj firmę",

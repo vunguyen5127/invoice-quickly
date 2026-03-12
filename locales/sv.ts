@@ -21,6 +21,7 @@ export const sv = {
   clientEmail: "Kundens e-post",
   clientAddress: "Kundens adress",
   clientPhone: "Kundens telefon (valfritt)",
+  shipTo: "Leverans till",
   lineItems: "Artiklar",
   description: "Beskrivning",
   qty: "Antal",
@@ -30,6 +31,7 @@ export const sv = {
   subtotal: "Subtotal",
   taxRate: "Skattesats",
   discount: "Rabatt",
+  shipping: "Frakt",
   totalDue: "Total att betala",
   notes: "Noteringar",
   addNotes: "Lägg till noteringar",
@@ -51,7 +53,7 @@ export const sv = {
   watermark: "Skapad med InvoiceQuickly",
   samplePreview: "Exempelvisning",
   taxDisclaimer: "Moms beräknas av betalningsleverantören",
-  
+
   // Company Modals
   addNewCompany: "Lägg till nytt företag",
   editCompany: "Redigera företag",

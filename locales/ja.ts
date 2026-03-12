@@ -21,6 +21,7 @@ export const ja = {
   clientEmail: "顧客のメールアドレス",
   clientAddress: "顧客の住所",
   clientPhone: "顧客の電話番号 (任意)",
+  shipTo: "配送先",
   lineItems: "項目一覧",
   description: "説明",
   qty: "数量",
@@ -30,6 +31,7 @@ export const ja = {
   subtotal: "小計",
   taxRate: "税率",
   discount: "割引",
+  shipping: "送料",
   totalDue: "合計金額",
   notes: "備考",
   addNotes: "備考を追加",
@@ -51,7 +53,7 @@ export const ja = {
   watermark: "InvoiceQuickly で作成",
   samplePreview: "サンプルプレビュー",
   taxDisclaimer: "税金は決済プロバイダーによって計算されます",
-  
+
   // Company Modals
   addNewCompany: "新しい会社を追加",
   editCompany: "会社を編集",

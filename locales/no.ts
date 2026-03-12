@@ -21,6 +21,7 @@ export const no = {
   clientEmail: "Kundens e-post",
   clientAddress: "Kundens adresse",
   clientPhone: "Kundens telefon (valgfritt)",
+  shipTo: "Send til",
   lineItems: "Fakturalinjer",
   description: "Beskrivelse",
   qty: "Antall",
@@ -30,6 +31,7 @@ export const no = {
   subtotal: "Subtotal",
   taxRate: "Momssats",
   discount: "Rabatt",
+  shipping: "Frakt",
   totalDue: "Total å betale",
   notes: "Notater",
   addNotes: "Legg til notater",
@@ -51,7 +53,7 @@ export const no = {
   watermark: "Opprettet med InvoiceQuickly",
   samplePreview: "Eksempelvisning",
   taxDisclaimer: "Moms beregnes av betalingsleverandøren",
-  
+
   // Company Modals
   addNewCompany: "Legg til nytt firma",
   editCompany: "Rediger firma",

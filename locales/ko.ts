@@ -21,6 +21,7 @@ export const ko = {
   clientEmail: "고객 이메일",
   clientAddress: "고객 주소",
   clientPhone: "고객 전화번호 (선택 사항)",
+  shipTo: "배송지",
   lineItems: "항목 목록",
   description: "설명",
   qty: "수량",
@@ -30,6 +31,7 @@ export const ko = {
   subtotal: "소계",
   taxRate: "세율",
   discount: "할인",
+  shipping: "배송비",
   totalDue: "총 합계",
   notes: "비고",
   addNotes: "비고 추가",
@@ -51,7 +53,7 @@ export const ko = {
   watermark: "InvoiceQuickly로 제작됨",
   samplePreview: "샘플 미리보기",
   taxDisclaimer: "세금은 결제 대행사에서 계산합니다",
-  
+
   // Company Modals
   addNewCompany: "새 회사 추가",
   editCompany: "회사 편집",

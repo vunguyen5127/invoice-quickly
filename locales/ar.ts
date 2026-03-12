@@ -21,6 +21,7 @@ export const ar = {
   clientEmail: "البريد الإلكتروني للعميل",
   clientAddress: "عنوان العميل",
   clientPhone: "هاتف العميل (اختياري)",
+  shipTo: "شحن إلى",
   lineItems: "بنود الفاتورة",
   description: "الوصف",
   qty: "الكمية",
@@ -30,6 +31,7 @@ export const ar = {
   subtotal: "المجموع الفرعي",
   taxRate: "نسبة الضريبة",
   discount: "الخصم",
+  shipping: "الشحن",
   totalDue: "إجمالي المستحق",
   notes: "ملاحظات",
   addNotes: "إضافة ملاحظات",
@@ -51,7 +53,7 @@ export const ar = {
   watermark: "تم الإنشاء بواسطة InvoiceQuickly",
   samplePreview: "معاينة عينة",
   taxDisclaimer: "يتم احتساب الضريبة بواسطة مزود الدفع",
-  
+
   // Company Modals
   addNewCompany: "إضافة شركة جديدة",
   editCompany: "تعديل الشركة",

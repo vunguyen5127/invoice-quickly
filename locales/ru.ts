@@ -21,6 +21,7 @@ export const ru = {
   clientEmail: "Email клиента",
   clientAddress: "Адрес клиента",
   clientPhone: "Телефон клиента (необязательно)",
+  shipTo: "Отправить по адресу",
   lineItems: "Позиции счета",
   description: "Описание",
   qty: "Кол-во",
@@ -30,6 +31,7 @@ export const ru = {
   subtotal: "Промежуточный итог",
   taxRate: "Налоговая ставка",
   discount: "Скидка",
+  shipping: "Доставка",
   totalDue: "Итого к оплате",
   notes: "Заметки",
   addNotes: "Добавить заметки",
@@ -51,7 +53,7 @@ export const ru = {
   watermark: "Создано в InvoiceQuickly",
   samplePreview: "Предварительный просмотр",
   taxDisclaimer: "Налог рассчитывается платежным провайдером",
-  
+
   // Company Modals
   addNewCompany: "Добавить новую компанию",
   editCompany: "Редактировать компанию",
