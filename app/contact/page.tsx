@@ -1,7 +1,19 @@
+"use client";
+
 import Link from "next/link";
-import { Mail, MessageSquare, Clock, ArrowRight } from "lucide-react";
+import { Mail, MessageSquare, Clock, ArrowRight, Copy, Check } from "lucide-react";
+import { useState } from "react";
 
 export default function ContactPage() {
+  const [copied, setCopied] = useState(false);
+  const email = "contact@invoice-quickly.com";
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
       <main className="container mx-auto px-4 py-20 max-w-5xl">
@@ -21,12 +33,32 @@ export default function ContactPage() {
             </div>
             <h3 className="text-xl font-bold mb-2">Email Us</h3>
             <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-6">The best way to reach us for any inquiries.</p>
-            <a 
-              href="mailto:contact@invoice-quickly.com" 
-              className="text-blue-600 font-bold hover:underline text-lg"
-            >
-              contact@invoice-quickly.com
-            </a>
+            
+            <div className="w-full flex flex-col items-center gap-3">
+              <a 
+                href={`mailto:${email}`} 
+                className="text-blue-600 font-bold hover:underline text-lg truncate w-full"
+                title="Send an email"
+              >
+                {email}
+              </a>
+              <button 
+                onClick={copyToClipboard}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors shadow-sm"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-500" />
+                    <span className="text-emerald-600 dark:text-emerald-400">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-4 h-4 text-zinc-500" />
+                    <span>Copy Email</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Response Time Card */}
