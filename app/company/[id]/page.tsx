@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById, getCompanyInvoices, deleteInvoice, duplicateInvoice } from "@/app/dashboard/actions";
+import { getCompanyById, getCompanyInvoices, deleteInvoice } from "@/app/dashboard/actions";
 import { format } from "date-fns";
 import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy } from "lucide-react";
 import Link from "next/link";
