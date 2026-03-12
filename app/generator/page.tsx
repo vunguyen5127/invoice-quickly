@@ -159,7 +159,7 @@ function CreateInvoiceContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
+      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
         <div className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
           <Link
             href="/"
