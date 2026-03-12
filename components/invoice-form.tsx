@@ -390,8 +390,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       type="number" 
                       className="w-full h-11 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[5px] text-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm transition-all"
                       value={item.quantity}
-                      onChange={(e) => handleItemChange(index, "quantity", Math.max(0, Number(e.target.value)))}
                       min="0"
+                      onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
                     />
                   </div>
 
@@ -410,6 +410,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       }}
                       onBlur={(e) => handleItemChange(index, "rate", Number(Number(e.target.value).toFixed(2)))}
                       min="0"
+                      onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
                       step="0.01"
                     />
                   </div>
@@ -477,8 +478,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     type="number" 
                     placeholder="0"
                     className="flex-1 min-w-0 bg-transparent pl-4 pr-1 text-center text-[15px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                    value={invoice.discount || ''} 
-                    onChange={(e) => handleRootChange("discount", e.target.value === '' ? 0 : Number(e.target.value))}
+                    value={invoice.discount || ''}
+                    onChange={(e) => handleRootChange("discount", Math.max(0, e.target.value === '' ? 0 : Number(e.target.value)))}
+                    min="0"
+                    onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
                   />
                   <div className="flex-shrink-0 w-16 h-full border-l border-zinc-200 dark:border-zinc-800">
                     <button
@@ -510,8 +513,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     type="number" 
                     placeholder="0"
                     className="flex-1 min-w-0 bg-transparent pl-4 pr-1 text-center text-[15px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                    value={invoice.taxRate || ''} 
-                    onChange={(e) => handleRootChange("taxRate", e.target.value === '' ? 0 : Number(e.target.value))}
+                    value={invoice.taxRate || ''}
+                    onChange={(e) => handleRootChange("taxRate", Math.max(0, e.target.value === '' ? 0 : Number(e.target.value)))}
+                    min="0"
+                    onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
                   />
                   <div className="flex-shrink-0 w-16 h-full border-l border-zinc-200 dark:border-zinc-800">
                     <button
@@ -543,8 +548,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     type="number" 
                     placeholder="0"
                     className="flex-1 min-w-0 bg-transparent pl-4 pr-1 text-center text-[15px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                    value={invoice.shipping || ''} 
-                    onChange={(e) => handleRootChange("shipping", e.target.value === '' ? 0 : Number(e.target.value))}
+                    value={invoice.shipping || ''}
+                    onChange={(e) => handleRootChange("shipping", Math.max(0, e.target.value === '' ? 0 : Number(e.target.value)))}
+                    min="0"
+                    onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
                   />
                   <div className="flex-shrink-0 w-16 h-full border-l border-zinc-200 dark:border-zinc-800 px-3 flex items-center justify-center text-[14px] font-bold text-zinc-500/50 select-none">
                     {CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$'}
