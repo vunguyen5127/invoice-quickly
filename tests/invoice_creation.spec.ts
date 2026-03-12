@@ -18,11 +18,11 @@ test.describe('Invoice Creation Flows', () => {
     await page.getByPlaceholder(/Client Email/i).or(page.getByPlaceholder(/Email khách hàng/i)).fill('client@test.com');
 
     // 3. Fill Line Item
-    const descriptionInput = page.getByPlaceholder('e.g. Seller Growth Plan (Monthly)');
+    const descriptionInput = page.getByPlaceholder(/Description of item\/service\.\.\./i);
     await expect(descriptionInput.first()).toBeVisible();
     await descriptionInput.first().fill('Test Service');
 
-    const rateInput = page.getByPlaceholder('0.00').first();
+    const rateInput = page.getByPlaceholder('0').first();
     await expect(rateInput).toBeVisible();
     await rateInput.fill('100');
 
@@ -75,10 +75,10 @@ test.describe('Invoice Creation Flows', () => {
     // 2. Fill Invoice Details
     await page.getByPlaceholder(/Client Name/i).or(page.getByPlaceholder(/Tên khách hàng/i)).fill('Authenticated Client');
     
-    const descriptionInput = page.getByPlaceholder('e.g. Seller Growth Plan (Monthly)');
+    const descriptionInput = page.getByPlaceholder(/Description of item\/service\.\.\./i);
     await descriptionInput.first().fill('Monthly Retainer');
 
-    const rateInput = page.getByPlaceholder('0.00').first();
+    const rateInput = page.getByPlaceholder('0').first();
     await rateInput.fill('500');
 
     // 3. Verify Save Button

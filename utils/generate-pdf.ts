@@ -21,55 +21,69 @@ export const generatePDF = async (elementId: string, filename: string) => {
     zoomWrapper.style.zoom = "1";
   }
 
-  // Temporarily force dimensions on the element to ensure it renders full A4 size on mobile
+  // Temporarily force dimensions on the element to ensure it renders full content
   const originalWidth = element.style.width;
   const originalMaxWidth = element.style.maxWidth;
   const originalHeight = element.style.height;
-  element.style.width = "794px";
-  element.style.maxWidth = "794px";
-  element.style.height = "1123px";
+  const originalMinHeight = element.style.minHeight;
+  
+  // A4 Reference Width in pixels at 96 DPI is ~794px
+  const targetWidth = 794;
+  element.style.width = `${targetWidth}px`;
+  element.style.maxWidth = `${targetWidth}px`;
+  element.style.height = "auto";
+  element.style.minHeight = "auto";
 
-  // Wait a tick for theme to apply
+  // Wait a tick for styles to apply and get the actual content height
   await new Promise((resolve) => setTimeout(resolve, 100));
+  const fullHeight = element.scrollHeight;
 
   try {
-    // We use html-to-image instead of html2canvas because it properly supports 
-    // modern CSS features like Tailwind v4's oklch() colors.
+    // We use html-to-image to capture the full content height
     const imgDataUrl = await toJpeg(element, {
-      quality: 1,
+      quality: 0.95,
       backgroundColor: "#ffffff",
-      pixelRatio: 2, // High resolution
-      canvasWidth: 794,
-      canvasHeight: 1123,
+      pixelRatio: 2, 
+      canvasWidth: targetWidth,
+      canvasHeight: fullHeight,
       style: {
         zoom: "1",
-        width: "794px",
-        height: "1123px"
+        width: `${targetWidth}px`,
+        height: `${fullHeight}px`
       }
     });
     
     // Create new PDF instance (portrait, millimeters, A4 size)
     const pdf = new jsPDF("p", "mm", "a4");
     
-    // Get PDF dimensions
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
-    // Calculate the dimensions of the image to fit the PDF
-    // Usually element is styled for A4, but we can do a ratio math just in case
-    const imgProps = pdf.getImageProperties(imgDataUrl);
-    const contentWidth = pdfWidth;
-    const contentHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    // Calculate how many A4 pages we need
+    // Ratio of pixels to mm (based on targetWidth fitting into pdfWidth)
+    const pxToMm = pdfWidth / targetWidth;
+    const contentHeightMm = fullHeight * pxToMm;
     
-    // Add the image to the PDF
-    pdf.addImage(imgDataUrl, "JPEG", 0, 0, contentWidth, contentHeight);
+    let heightLeft = contentHeightMm;
+    let position = 0;
+    
+    // Add the first page
+    pdf.addImage(imgDataUrl, "JPEG", 0, position, pdfWidth, contentHeightMm);
+    heightLeft -= pdfHeight;
+
+    // Add subsequent pages if needed
+    while (heightLeft > 0) {
+      position = heightLeft - contentHeightMm; // Shifting up
+      pdf.addPage();
+      pdf.addImage(imgDataUrl, "JPEG", 0, position, pdfWidth, contentHeightMm);
+      heightLeft -= pdfHeight;
+    }
     
     // Trigger the download
     pdf.save(`${filename}.pdf`);
   } catch (error) {
     console.error("Error generating PDF:", error);
-    // Fallback to print dialog if html2canvas fails (e.g. due to oklch colors in Tailwind v4)
-    alert("Could not generate PDF file directly. Opening print dialog instead. Please select 'Save to PDF'.");
+    alert("Could not generate PDF file directly. Opening print dialog instead.");
     window.print();
   } finally {
     // Restore everything
@@ -81,5 +95,6 @@ export const generatePDF = async (elementId: string, filename: string) => {
     element.style.width = originalWidth;
     element.style.maxWidth = originalMaxWidth;
     element.style.height = originalHeight;
+    element.style.minHeight = originalMinHeight;
   }
 };

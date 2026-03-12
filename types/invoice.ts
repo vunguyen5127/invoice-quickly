@@ -39,6 +39,7 @@ export interface InvoiceState {
   discount: number; // percentage or fixed
   shipping: number;
   discountType: 'percentage' | 'fixed';
+  taxType: 'percentage' | 'fixed';
   taxLabel?: string;
   discountLabel?: string;
   shippingLabel?: string;
@@ -131,6 +132,7 @@ export const initialInvoiceState: InvoiceState = {
   discount: 0,
   discountLabel: "Discount",
   discountType: 'percentage',
+  taxType: 'percentage',
   shipping: 0,
   shippingLabel: "Shipping",
   notes: "Thank you for your business! We appreciate your prompt payment.",

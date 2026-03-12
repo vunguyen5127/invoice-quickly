@@ -23,7 +23,9 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
     
   const afterDiscount = Math.max(0, subTotal - discountAmount);
   
-  const taxAmount = afterDiscount * (invoice.taxRate / 100);
+  const taxAmount = invoice.taxType === 'percentage'
+    ? afterDiscount * (invoice.taxRate / 100)
+    : invoice.taxRate;
   
   const total = afterDiscount + taxAmount + (invoice.shipping || 0);
 
@@ -120,19 +122,19 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
           <table className="w-full border-collapse border border-zinc-300">
             <thead>
               <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
-                <th className="w-16 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.qty}</th>
-                <th className="py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.description}</th>
-                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.rate}</th>
-                <th className="w-40 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.lineTotal || "Total"}</th>
+                <th className="py-2 px-3 text-left text-[12px] font-bold uppercase tracking-wider">{t.description}</th>
+                <th className="w-24 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.qty}</th>
+                <th className="w-32 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.rate}</th>
+                <th className="w-32 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.lineTotal || "Total"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-300">
               {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
                 <tr key={item.id} className="divide-x divide-zinc-300">
+                  <td className="py-3 px-3 text-left align-top whitespace-pre-wrap font-medium">{item.description || "-"}</td>
                   <td className="py-3 px-3 text-center align-top">{item.quantity}</td>
-                  <td className="py-3 px-3 text-left align-top whitespace-pre-wrap">{item.description || "-"}</td>
                   <td className="py-3 px-3 text-right align-top">{formatAmount(item.rate)}</td>
-                  <td className="py-3 px-3 text-right align-top font-bold">{formatAmount(item.quantity * item.rate)}</td>
+                  <td className="py-3 px-3 text-right align-top font-bold text-zinc-900">{formatAmount(item.quantity * item.rate)}</td>
                 </tr>
               ))}
             </tbody>
@@ -143,35 +145,37 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             <div className="w-[calc(22rem+2px)]">
               <div className="flex">
                 <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.subtotal}</div>
-                <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
+                <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
               </div>
 
-              {(invoice.discount > 0 || invoice.discountLabel) && (
-                <div className="flex text-red-600">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{invoice.discountLabel || t.discount}</div>
-                  <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
-                </div>
-              )}
-
-              {(invoice.taxRate > 0 || invoice.taxLabel) && (
+              {invoice.discount > 0 && (
                 <div className="flex">
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
-                    {invoice.taxLabel || t.tax} {invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
+                    {invoice.discountLabel || t.discount} {invoice.discountType === 'percentage' && invoice.discount > 0 ? `(${invoice.discount.toFixed(1)}%)` : ""}
                   </div>
-                   <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
+                  <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
                 </div>
               )}
 
-              {(invoice.shipping > 0 || invoice.shippingLabel) && (
+              {invoice.taxRate > 0 && (
+                <div className="flex">
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
+                    {invoice.taxLabel || t.tax} {invoice.taxType === 'percentage' && invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
+                  </div>
+                   <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
+                </div>
+              )}
+
+              {invoice.shipping > 0 && (
                 <div className="flex">
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{invoice.shippingLabel || t.shipping}</div>
-                   <div className="w-40 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
+                   <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
                 </div>
               )}
 
               <div className="flex">
                 <div className="flex-1 py-4 px-4 text-right font-black text-[14px] tracking-tighter">{t.totalDue}</div>
-                <div className="w-40 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
+                <div className="w-32 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
                   {symbol}{formatAmount(total)}
                 </div>
               </div>
@@ -180,19 +184,13 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
         </div>
         {/* Signature Area */}
         <div className="mt-8 flex justify-end">
-           {(invoice.signature || invoice.signatureName) ? (
+           {invoice.signature ? (
              <div className="flex flex-col items-center">
-                {invoice.signature ? (
-                  <div className="mb-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain dark:invert" />
-                  </div>
-                ) : invoice.signatureName ? (
-                  <div className="mb-2">
-                    <p className="text-4xl px-4 py-2 text-zinc-800 dark:text-zinc-200 font-medium" style={{ fontFamily: "'Brush Script MT', 'Caveat', 'Great Vibes', cursive", transform: "rotate(-2deg)" }}>{invoice.signatureName}</p>
-                  </div>
-                ) : null}
-                {invoice.signatureName && invoice.signature && (
+                <div className="mb-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain dark:invert" />
+                </div>
+                {invoice.signatureName && (
                   <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
                 )}
              </div>
