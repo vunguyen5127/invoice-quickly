@@ -142,7 +142,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
         <div className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
           <Link href="/dashboard" className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
-            <Receipt className="h-6 w-6 text-blue-600 dark:text-blue-500" />
+            <img src="/logo.png" alt="InvoiceQuickly Logo" className="h-8 w-8 object-contain" />
             <span className="hidden sm:inline-block">InvoiceQuickly</span>
             {companyName && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 ml-1 truncate max-w-[120px]">{companyName}</span>}
           </Link>

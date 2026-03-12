@@ -165,7 +165,7 @@ function CreateInvoiceContent() {
             href="/"
             className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
           >
-            <Receipt className="h-6 w-6 text-blue-600 dark:text-blue-500" />
+            <img src="/logo.png" alt="InvoiceQuickly Logo" className="h-8 w-8 object-contain" />
             <span className="hidden sm:inline-block">InvoiceQuickly</span>
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
