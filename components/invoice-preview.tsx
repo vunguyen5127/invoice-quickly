@@ -76,7 +76,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
         </div>
 
         {/* 3-Column Header Area */}
-        <div className="flex gap-8 mb-10 text-[13px] items-start">
+        <div className="flex gap-8 mb-8 text-[13px] items-start">
            {/* Column 1: Bill To */}
            <div className="flex-1 min-w-0">
              <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.billedTo || "Bill To"}</p>
@@ -123,9 +123,9 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             <thead>
               <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
                 <th className="py-2 px-3 text-left text-[12px] font-bold uppercase tracking-wider">{t.description}</th>
-                <th className="w-24 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.qty}</th>
-                <th className="w-32 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.rate}</th>
-                <th className="w-32 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.lineTotal || "Total"}</th>
+                <th className="w-20 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.qty}</th>
+                <th className="w-28 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.rate}</th>
+                <th className="w-28 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.lineTotal || "Total"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-300">
@@ -142,10 +142,10 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
 
           {/* Table Summary Section - Numeric Boxed Style */}
           <div className="flex justify-end mt-0">
-            <div className="w-[calc(22rem+2px)]">
+            <div className="w-[calc(19rem+2px)]">
               <div className="flex">
                 <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.subtotal}</div>
-                <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
+                <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
               </div>
 
               {invoice.discount > 0 && (
@@ -153,7 +153,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
                     {invoice.discountLabel || t.discount} {invoice.discountType === 'percentage' && invoice.discount > 0 ? `(${invoice.discount.toFixed(1)}%)` : ""}
                   </div>
-                  <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
+                  <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
                 </div>
               )}
 
@@ -162,20 +162,20 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
                     {invoice.taxLabel || t.tax} {invoice.taxType === 'percentage' && invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
                   </div>
-                   <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
+                   <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
                 </div>
               )}
 
               {invoice.shipping > 0 && (
                 <div className="flex">
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{invoice.shippingLabel || t.shipping}</div>
-                   <div className="w-32 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
+                   <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
                 </div>
               )}
 
               <div className="flex">
                 <div className="flex-1 py-4 px-4 text-right font-black text-[14px] tracking-tighter">{t.totalDue}</div>
-                <div className="w-32 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
+                <div className="w-28 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
                   {symbol}{formatAmount(total)}
                 </div>
               </div>
