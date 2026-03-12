@@ -106,9 +106,6 @@ export const metadata: Metadata = {
     "invoice pdf download free",
   ],
   metadataBase: new URL("https://invoicequickly.com"),
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
     siteName: "InvoiceQuickly",
@@ -143,6 +140,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519024554738216" crossOrigin="anonymous" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "InvoiceQuickly",
+              url: "https://invoicequickly.com",
+              logo: "https://invoicequickly.com/logo.png",
+              description: "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark.",
+              sameAs: [],
+            }),
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${beVietnam.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} antialiased`}

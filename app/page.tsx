@@ -200,7 +200,14 @@ export default function LandingPage() {
                 {/* Demo content */}
                 <div className="aspect-[16/10] relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/videos/demo.webp" alt="Invoice Quickly Generator Preview" className="w-full h-full object-cover" />
+                  <img
+                    src="/videos/demo.webp"
+                    alt="Free invoice generator online — InvoiceQuickly live preview showing PDF invoice creation with line items, tax, and instant download"
+                    className="w-full h-full object-cover"
+                    width={960}
+                    height={600}
+                    loading="eager"
+                  />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 to-transparent" />
                 </div>
               </div>
@@ -456,12 +463,12 @@ export default function LandingPage() {
                 download PDF invoices instantly.
               </p>
             </div>
-            <div>
+            <nav aria-label="Product links">
               <h4 className="text-xs font-semibold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Product</h4>
               <ul className="space-y-2.5 text-sm text-slate-500 dark:text-zinc-400">
                 <li>
                   <Link href="/generator?new=1" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    Invoice Generator
+                    Free Invoice Generator
                   </Link>
                 </li>
                 <li>
@@ -475,8 +482,8 @@ export default function LandingPage() {
                   </a>
                 </li>
               </ul>
-            </div>
-            <div>
+            </nav>
+            <nav aria-label="Resource links">
               <h4 className="text-xs font-semibold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Resources</h4>
               <ul className="space-y-2.5 text-sm text-slate-500 dark:text-zinc-400">
                 <li>
@@ -500,7 +507,7 @@ export default function LandingPage() {
                   </Link>
                 </li>
               </ul>
-            </div>
+            </nav>
           </div>
           <div className="pt-8 border-t border-slate-100 dark:border-zinc-800 text-center">
             <p className="text-slate-400 dark:text-zinc-600 text-sm">© {new Date().getFullYear()} InvoiceQuickly. All rights reserved.</p>
