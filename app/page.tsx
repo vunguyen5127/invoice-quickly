@@ -1,25 +1,101 @@
 import Link from "next/link";
-import {
-  ArrowRight, CheckCircle2, FileText, Zap, Shield,
-  Globe, Users, Sparkles, Send, CreditCard, Star
-} from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowRight, CheckCircle2, FileText, Zap, Shield, Globe, Users, Sparkles, Send, CreditCard, Star } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Free Invoice Generator Online — Create & Download PDF Invoices",
+  description:
+    "Use our free invoice generator to create professional PDF invoices online in seconds. No signup, no watermark. The best free online invoice generator for freelancers and small businesses.",
+  alternates: { canonical: "/" },
+};
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-[calc(100vh-64px)] overflow-x-hidden bg-white dark:bg-zinc-950">
+      {/* JSON-LD structured data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "InvoiceQuickly — Free Invoice Generator",
+            url: "https://invoicequickly.com",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Any",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+            },
+            description:
+              "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark. Generate invoices for free in 20+ languages.",
+            featureList: [
+              "Free PDF invoice generator",
+              "No signup required",
+              "No watermark",
+              "20+ languages supported",
+              "Live invoice preview",
+              "Instant PDF download",
+              "Shareable invoice links",
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Is InvoiceQuickly really a free invoice generator?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes — InvoiceQuickly is a completely free invoice generator with no credit card required. You can generate invoices for free forever with no watermark.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do I need to sign up to use this free online invoice generator?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. You can use our free invoice generator online without creating an account. Sign up only if you want to save invoice history and manage multiple companies.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Can I download a free PDF invoice?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes — our free PDF invoice generator lets you download perfectly formatted, print-ready PDF invoices with zero watermarks.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Does this free invoice generator add a watermark?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. There are zero watermarks on any exported PDF — regardless of whether you have an account. It is truly a free invoice generator with no catches.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
 
       {/* ══════════════════════════════════════════════
           1. HERO SECTION
       ══════════════════════════════════════════════ */}
       <section className="relative px-4 pt-16 pb-24 sm:px-6 lg:px-8 overflow-hidden">
-
         {/* Glow blobs */}
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
           <div className="h-[520px] w-[960px] rounded-full bg-gradient-to-br from-blue-400/25 via-indigo-300/15 to-violet-300/10 blur-3xl dark:from-blue-600/20 dark:via-indigo-500/10 dark:to-violet-600/10" />
         </div>
 
         <div className="max-w-4xl mx-auto text-center">
-
           {/* Badge */}
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-sm dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
             <Sparkles className="h-4 w-4" />
@@ -28,14 +104,13 @@ export default function LandingPage() {
 
           {/* H1 */}
           <h1 className="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl text-center max-w-4xl mx-auto">
-            Create Professional Invoices{" "}
-            <span className="text-blue-600 dark:text-blue-400">for Free</span>
+            Free Invoice Generator — <span className="text-blue-600 dark:text-blue-400">Create & Download PDF Invoices</span>
             <br />
-            And Get Paid Faster
+            Online in Seconds
           </h1>
 
           <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
-            The fastest way to create beautiful, PDF-ready invoices and share with clients — from one elegant dashboard.
+            The fastest free online invoice generator. Create beautiful, PDF-ready invoices and share with clients — no signup, no watermark.
           </p>
 
           {/* CTAs */}
@@ -60,7 +135,11 @@ export default function LandingPage() {
             {["No signup needed", "Unlimited invoices", "No watermark", "Instant PDF"].map((item) => (
               <span key={item} className="flex items-center gap-1.5">
                 <svg className="w-5 h-5 text-green-500 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 {item}
               </span>
@@ -70,16 +149,22 @@ export default function LandingPage() {
           {/* ── Trust badge: avatar group ── */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <div className="flex -space-x-3">
-              {["bg-gradient-to-br from-pink-400 to-rose-500","bg-gradient-to-br from-blue-400 to-indigo-500","bg-gradient-to-br from-amber-400 to-orange-500","bg-gradient-to-br from-emerald-400 to-teal-500"].map((grad, i) => (
-                <div key={i} className={`w-9 h-9 rounded-full ring-2 ring-white dark:ring-zinc-900 ${grad} flex items-center justify-center text-white text-xs font-bold shadow-sm`}>
-                  {["A","B","C","D"][i]}
+              {[
+                "bg-gradient-to-br from-pink-400 to-rose-500",
+                "bg-gradient-to-br from-blue-400 to-indigo-500",
+                "bg-gradient-to-br from-amber-400 to-orange-500",
+                "bg-gradient-to-br from-emerald-400 to-teal-500",
+              ].map((grad, i) => (
+                <div
+                  key={i}
+                  className={`w-9 h-9 rounded-full ring-2 ring-white dark:ring-zinc-900 ${grad} flex items-center justify-center text-white text-xs font-bold shadow-sm`}
+                >
+                  {["A", "B", "C", "D"][i]}
                 </div>
               ))}
             </div>
             <p className="text-sm text-slate-500 dark:text-zinc-400 font-medium">
-              Trusted by{" "}
-              <span className="text-slate-900 dark:text-white font-semibold">5,000+</span>{" "}
-              freelancers & small businesses
+              Trusted by <span className="text-slate-900 dark:text-white font-semibold">5,000+</span> freelancers & small businesses
             </p>
           </div>
 
@@ -100,7 +185,6 @@ export default function LandingPage() {
       <section className="py-20 bg-slate-50 dark:bg-zinc-900/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-
             {/* macOS mockup */}
             <div className="w-full lg:w-[58%] shrink-0 order-2 lg:order-1">
               <div className="rounded-2xl border border-slate-200/80 dark:border-zinc-700/70 shadow-2xl shadow-slate-900/15 overflow-hidden">
@@ -116,11 +200,7 @@ export default function LandingPage() {
                 {/* Demo content */}
                 <div className="aspect-[16/10] relative">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/videos/demo.webp"
-                    alt="Invoice Quickly Generator Preview"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="/videos/demo.webp" alt="Invoice Quickly Generator Preview" className="w-full h-full object-cover" />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 to-transparent" />
                 </div>
               </div>
@@ -129,7 +209,7 @@ export default function LandingPage() {
             {/* Copy */}
             <div className="w-full lg:w-[42%] order-1 lg:order-2">
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">Product walkthrough</p>
-              <h2 className="mb-5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">See it in action</h2>
+              <h2 className="mb-5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">See the free invoice generator in action</h2>
               <ul className="space-y-5 mb-8">
                 {[
                   { title: "Live preview as you type", desc: "Watch your invoice build instantly — no lag, no refresh." },
@@ -155,7 +235,6 @@ export default function LandingPage() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
-
           </div>
         </div>
       </section>
@@ -167,9 +246,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">Testimonials</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Loved by thousands of freelancers
-            </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Loved by thousands of freelancers</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -205,15 +282,28 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <p className="mb-2 text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest">How It Works</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Three steps to get paid.
-            </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Generate invoices for free in three steps.</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             <div className="hidden md:block absolute top-16 left-[calc(16.67%+1rem)] right-[calc(16.67%+1rem)] h-px bg-gradient-to-r from-blue-200 via-indigo-200 to-violet-200 dark:from-blue-800 dark:via-indigo-800 dark:to-violet-800" />
-            <StepCard number="01" title="Fill in your details" description="Enter your company info and client details. Our smart form auto-fills from your saved companies." icon={<FileText className="w-5 h-5" />} />
-            <StepCard number="02" title="Preview in real-time" description="See your invoice update live as you type. Adjust line items, taxes, and discounts instantly." icon={<Zap className="w-5 h-5" />} />
-            <StepCard number="03" title="Download or share" description="Export as a perfect PDF or share a public link with your client — one click is all it takes." icon={<Send className="w-5 h-5" />} />
+            <StepCard
+              number="01"
+              title="Fill in your details"
+              description="Enter your company info and client details. Our smart form auto-fills from your saved companies."
+              icon={<FileText className="w-5 h-5" />}
+            />
+            <StepCard
+              number="02"
+              title="Preview in real-time"
+              description="See your invoice update live as you type. Adjust line items, taxes, and discounts instantly."
+              icon={<Zap className="w-5 h-5" />}
+            />
+            <StepCard
+              number="03"
+              title="Download or share"
+              description="Export as a perfect PDF or share a public link with your client — one click is all it takes."
+              icon={<Send className="w-5 h-5" />}
+            />
           </div>
         </div>
       </section>
@@ -225,21 +315,49 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="mb-2 text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Features</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-              Everything you need to bill clients.
-            </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Everything you need in a free invoice generator.</h2>
             <p className="mt-4 text-lg text-slate-600 dark:text-zinc-400">
-              A streamlined experience designed to help you get paid faster — without the headache of complex accounting software.
+              A streamlined free online invoice generator designed to help you get paid faster — without the headache of complex accounting software.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <FeatureCard icon={<Zap className="w-6 h-6" />} iconColor="text-amber-500 bg-amber-50 dark:bg-amber-900/20" title="Lightning Fast" description="Live preview updates instantly as you type. See exactly what your client will see before you download." />
-            <FeatureCard icon={<Shield className="w-6 h-6" />} iconColor="text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20" title="Secure & Private" description="Private share links are unguessable. You control what you share. We never sell your data." />
-            <FeatureCard icon={<FileText className="w-6 h-6" />} iconColor="text-blue-600 bg-blue-50 dark:bg-blue-900/20" title="Print-Ready PDFs" description="Download perfectly formatted, high-resolution PDFs that look professional and print beautifully." />
-            <FeatureCard icon={<Globe className="w-6 h-6" />} iconColor="text-violet-600 bg-violet-50 dark:bg-violet-900/20" title="20+ Languages" description="Create invoices in any language — from English and Vietnamese to Arabic, Japanese, Chinese, and more." />
-            <FeatureCard icon={<Users className="w-6 h-6" />} iconColor="text-pink-600 bg-pink-50 dark:bg-pink-900/20" title="Multi-Company" description="Manage multiple businesses from a single dashboard. Each with its own branding, defaults, and invoice history." />
-            <FeatureCard icon={<CreditCard className="w-6 h-6" />} iconColor="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20" title="Auto Numbering" description="Smart invoice numbering (INV-2026-001) that automatically increments. Never duplicate a number again." />
+            <FeatureCard
+              icon={<Zap className="w-6 h-6" />}
+              iconColor="text-amber-500 bg-amber-50 dark:bg-amber-900/20"
+              title="Lightning Fast"
+              description="Live preview updates instantly as you type. See exactly what your client will see before you download."
+            />
+            <FeatureCard
+              icon={<Shield className="w-6 h-6" />}
+              iconColor="text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20"
+              title="Secure & Private"
+              description="Private share links are unguessable. You control what you share. We never sell your data."
+            />
+            <FeatureCard
+              icon={<FileText className="w-6 h-6" />}
+              iconColor="text-blue-600 bg-blue-50 dark:bg-blue-900/20"
+              title="Free PDF Invoice Generator"
+              description="Download perfectly formatted, high-resolution PDF invoices for free that look professional and print beautifully."
+            />
+            <FeatureCard
+              icon={<Globe className="w-6 h-6" />}
+              iconColor="text-violet-600 bg-violet-50 dark:bg-violet-900/20"
+              title="20+ Languages"
+              description="Create invoices in any language — from English and Vietnamese to Arabic, Japanese, Chinese, and more."
+            />
+            <FeatureCard
+              icon={<Users className="w-6 h-6" />}
+              iconColor="text-pink-600 bg-pink-50 dark:bg-pink-900/20"
+              title="Multi-Company"
+              description="Manage multiple businesses from a single dashboard. Each with its own branding, defaults, and invoice history."
+            />
+            <FeatureCard
+              icon={<CreditCard className="w-6 h-6" />}
+              iconColor="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20"
+              title="Auto Numbering"
+              description="Smart invoice numbering (INV-2026-001) that automatically increments. Never duplicate a number again."
+            />
           </div>
         </div>
       </section>
@@ -254,12 +372,30 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Common questions</h2>
           </div>
           <div className="space-y-3">
-            <FAQItem question="Is it really free forever?" answer="Yes — the generator is completely free with no credit card required. We offer paid plans for advanced dashboard features, but the core generator will always be free." />
-            <FAQItem question="Do invoices have a watermark?" answer="No. There are zero watermarks on any exported PDF — regardless of whether you have an account." />
-            <FAQItem question="Do I need to sign up?" answer="No. You can generate and download invoices without creating an account. Sign up only if you want to save history and manage multiple companies." />
-            <FAQItem question="Can I add tax, discounts, and multiple line items?" answer="Yes — the generator supports multiple line items, percentage or fixed discounts, and configurable tax rates. Notes and payment terms are also supported." />
-            <FAQItem question="How does sharing work?" answer="Generate a secure public link and share it directly with your client. Only people with the link can view the invoice." />
-            <FAQItem question="Which languages are supported?" answer="Over 20 languages including English, Vietnamese, Arabic (RTL), French, Spanish, German, Japanese, Chinese, and more." />
+            <FAQItem
+              question="Is this invoice generator really free forever?"
+              answer="Yes — our free invoice generator is completely free with no credit card required. You can generate invoices for free, download free PDF invoices, and share them online — forever. We offer paid plans for advanced dashboard features, but the core free online invoice generator will always be free."
+            />
+            <FAQItem
+              question="Does this free invoice generator add a watermark?"
+              answer="No. Our free PDF invoice generator never adds watermarks to any exported PDF — regardless of whether you have an account. You get clean, professional invoices every time."
+            />
+            <FAQItem
+              question="Do I need to sign up to use this free online invoice generator?"
+              answer="No. You can use our invoice generator free online without creating an account. Generate invoices for free and download PDF invoices instantly. Sign up only if you want to save history and manage multiple companies."
+            />
+            <FAQItem
+              question="Can I add tax, discounts, and multiple line items?"
+              answer="Yes — our free invoice generator supports multiple line items, percentage or fixed discounts, and configurable tax rates. Notes, shipping, and payment terms are also supported. Generate invoice for free with all the features you need."
+            />
+            <FAQItem
+              question="How does sharing work?"
+              answer="Generate a secure public link and share it directly with your client. Only people with the link can view the invoice."
+            />
+            <FAQItem
+              question="Which languages are supported?"
+              answer="Over 20 languages including English, Vietnamese, Arabic (RTL), French, Spanish, German, Japanese, Chinese, and more."
+            />
           </div>
         </div>
       </section>
@@ -269,12 +405,14 @@ export default function LandingPage() {
       ══════════════════════════════════════════════ */}
       <section className="py-12 px-4 relative z-20">
         <div className="relative mx-auto max-w-6xl rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 px-6 py-24 md:py-32 overflow-hidden text-center shadow-2xl">
-
           {/* Dot-grid overlay */}
           <div className="absolute inset-0 opacity-10 [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none" />
 
           {/* Floating invoice illustration (CSS-only, lightweight) */}
-          <div className="absolute right-8 top-1/2 -translate-y-1/2 w-56 lg:w-72 opacity-[0.07] pointer-events-none hidden lg:flex flex-col gap-2 text-white text-left select-none" aria-hidden="true">
+          <div
+            className="absolute right-8 top-1/2 -translate-y-1/2 w-56 lg:w-72 opacity-[0.07] pointer-events-none hidden lg:flex flex-col gap-2 text-white text-left select-none"
+            aria-hidden="true"
+          >
             <div className="h-5 w-28 rounded bg-white" />
             <div className="h-3 w-44 rounded bg-white mt-1" />
             <div className="h-px w-full bg-white/40 my-3" />
@@ -290,12 +428,9 @@ export default function LandingPage() {
 
           <div className="relative z-10 max-w-2xl mx-auto">
             <h2 className="text-3xl sm:text-5xl font-bold text-white mb-5 leading-tight">
-              Create your invoice in under{" "}
-              <span className="text-blue-400">60 seconds</span>
+              Generate your invoice for free in under <span className="text-blue-400">60 seconds</span>
             </h2>
-            <p className="text-lg text-slate-400 mb-10">
-              No signup needed • Unlimited invoices • No watermark • Instant PDF
-            </p>
+            <p className="text-lg text-slate-400 mb-10">Free invoice generator online • No signup • No watermark • Free PDF download</p>
             <Link
               href="/generator?new=1"
               className="group inline-flex items-center gap-2 rounded-full bg-white text-slate-900 px-8 py-4 text-base font-bold shadow-lg transition-all hover:bg-slate-50 hover:-translate-y-1 hover:shadow-xl active:scale-95"
@@ -317,35 +452,61 @@ export default function LandingPage() {
             <div className="md:col-span-2">
               <h3 className="text-base font-bold text-slate-900 dark:text-white mb-3">InvoiceQuickly</h3>
               <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
-                The free, fast, and beautiful invoice generator trusted by freelancers, agencies, and small businesses worldwide.
+                The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide. Generate invoices for free — create and
+                download PDF invoices instantly.
               </p>
             </div>
             <div>
               <h4 className="text-xs font-semibold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Product</h4>
               <ul className="space-y-2.5 text-sm text-slate-500 dark:text-zinc-400">
-                <li><Link href="/generator?new=1" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Invoice Generator</Link></li>
-                <li><Link href="/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dashboard</Link></li>
-                <li><a href="#features" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Features</a></li>
+                <li>
+                  <Link href="/generator?new=1" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    Invoice Generator
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <a href="#features" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    Features
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="text-xs font-semibold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Resources</h4>
               <ul className="space-y-2.5 text-sm text-slate-500 dark:text-zinc-400">
-                <li><Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About Us</Link></li>
-                <li><Link href="/privacy-policy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                <li><Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact Us</Link></li>
+                <li>
+                  <Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy-policy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                    Contact Us
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
           <div className="pt-8 border-t border-slate-100 dark:border-zinc-800 text-center">
-            <p className="text-slate-400 dark:text-zinc-600 text-sm">
-              © {new Date().getFullYear()} InvoiceQuickly. All rights reserved.
-            </p>
+            <p className="text-slate-400 dark:text-zinc-600 text-sm">© {new Date().getFullYear()} InvoiceQuickly. All rights reserved.</p>
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
@@ -361,9 +522,7 @@ function StatItem({ value, label }: { value: string; label: string }) {
   );
 }
 
-function TestimonialCard({ quote, name, role, avatar, initials }: {
-  quote: string; name: string; role: string; avatar: string; initials: string;
-}) {
+function TestimonialCard({ quote, name, role, avatar, initials }: { quote: string; name: string; role: string; avatar: string; initials: string }) {
   return (
     <div className="bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800 hover:shadow-md transition-shadow flex flex-col">
       {/* Stars */}
@@ -376,7 +535,9 @@ function TestimonialCard({ quote, name, role, avatar, initials }: {
       <p className="text-slate-700 dark:text-zinc-300 leading-relaxed mb-6 flex-1">&ldquo;{quote}&rdquo;</p>
       {/* Author */}
       <div className="flex items-center gap-3">
-        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatar} flex items-center justify-center text-white text-sm font-bold shrink-0 ring-2 ring-white dark:ring-zinc-800`}>
+        <div
+          className={`w-10 h-10 rounded-full bg-gradient-to-br ${avatar} flex items-center justify-center text-white text-sm font-bold shrink-0 ring-2 ring-white dark:ring-zinc-800`}
+        >
           {initials}
         </div>
         <div>

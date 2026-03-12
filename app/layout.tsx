@@ -84,8 +84,54 @@ const notoThai = Noto_Sans_Thai({
 });
 
 export const metadata: Metadata = {
-  title: "InvoiceQuickly - Professional Invoice Generator",
-  description: "Create and download professional invoices in seconds.",
+  title: {
+    default: "Free Invoice Generator Online — Create & Download PDF Invoices | InvoiceQuickly",
+    template: "%s | InvoiceQuickly",
+  },
+  description:
+    "Generate invoices for free with InvoiceQuickly — the free online invoice generator. Create professional PDF invoices in seconds, no signup required. Free forever, no watermark.",
+  keywords: [
+    "invoice generator free",
+    "free invoice generator",
+    "invoice generator online free",
+    "free online invoice generator",
+    "online free invoice generator",
+    "invoice generator for free",
+    "free invoice generators",
+    "generate invoice for free",
+    "free pdf invoice generator",
+    "invoice maker free",
+    "free invoice template",
+    "create invoice online",
+    "invoice pdf download free",
+  ],
+  metadataBase: new URL("https://invoicequickly.com"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "InvoiceQuickly",
+    title: "Free Invoice Generator Online — Create & Download PDF Invoices | InvoiceQuickly",
+    description: "Generate invoices for free with InvoiceQuickly. Create professional PDF invoices in seconds — no signup, no watermark, free forever.",
+    url: "https://invoicequickly.com",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Invoice Generator Online | InvoiceQuickly",
+    description: "Create and download professional PDF invoices for free. No signup, no watermark — the best free online invoice generator.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
