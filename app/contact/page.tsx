@@ -37,7 +37,7 @@ export default function ContactPage() {
             <div className="w-full flex flex-col items-center gap-3">
               <a 
                 href={`mailto:${email}`} 
-                className="text-blue-600 font-bold hover:underline text-lg truncate w-full"
+                className="text-blue-600 font-bold hover:underline text-lg whitespace-nowrap"
                 title="Send an email"
               >
                 {email}
