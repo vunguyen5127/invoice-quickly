@@ -118,7 +118,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
         </div>
 
         {/* Full Grid Table */}
-        <div className="mb-0 flex-1">
+        <div className="mb-0">
           <table className="w-full border-collapse border border-zinc-300">
             <thead>
               <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
@@ -183,7 +183,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
           </div>
         </div>
         {/* Signature Area */}
-        <div className="mt-8 flex justify-end">
+        <div className="mt-12 flex justify-end">
            {invoice.signature ? (
              <div className="flex flex-col items-center">
                 <div className="mb-2">

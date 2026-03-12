@@ -206,3 +206,5 @@ export async function getNextInvoiceNumber(token: string, companyId: string): Pr
   const nextIndex = (maxIndex + 1).toString().padStart(3, "0");
   return `INV-${currentYear}-${nextIndex}`;
 }
+
+

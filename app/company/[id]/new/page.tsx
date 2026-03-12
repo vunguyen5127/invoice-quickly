@@ -7,8 +7,9 @@ import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Save, Loader2, Receipt, Printer, ChevronRight, Share2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getCompanyById, getNextInvoiceNumber } from "@/app/dashboard/actions";
+import { getInvoiceById } from "@/app/invoice/[id]/actions";
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
 import { use } from "react";
@@ -27,6 +28,8 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   const [initialNotesOpen, setInitialNotesOpen] = useState(false);
   const [initialTermsOpen, setInitialTermsOpen] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const duplicateId = searchParams.get("duplicate");
 
   const canSave = invoice.client.name.trim().length > 0 && invoice.items.some(item => item.description.trim().length > 0);
 
@@ -63,6 +66,26 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         
       const nextInvoiceNumber = await getNextInvoiceNumber(session.access_token, resolvedParams.id);
         
+      let prefilledInvoice: any = null;
+      if (duplicateId) {
+        try {
+          prefilledInvoice = await getInvoiceById(session.access_token, duplicateId);
+        } catch (e) {
+          console.error("Failed to fetch invoice for duplication", e);
+        }
+      }
+
+      if (prefilledInvoice) {
+        setInvoice({
+          ...prefilledInvoice,
+          id: undefined,
+          details: {
+            ...prefilledInvoice.details,
+            invoiceNumber: nextInvoiceNumber,
+            issueDate: new Date().toISOString().split('T')[0],
+          },
+        });
+      } else {
       setInvoice((prev) => ({
         ...prev,
         company: {
@@ -88,6 +111,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         taxRate: companyData.default_tax || 0,
         discount: companyData.default_discount || 0,
       }));
+      }
 
       setInitialNotesOpen(companyData.show_notes ?? true);
       setInitialTermsOpen(companyData.show_terms ?? true);

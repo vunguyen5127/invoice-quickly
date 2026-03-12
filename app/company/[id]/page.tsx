@@ -3,9 +3,9 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById, getCompanyInvoices, deleteInvoice } from "@/app/dashboard/actions";
+import { getCompanyById, getCompanyInvoices, deleteInvoice, duplicateInvoice } from "@/app/dashboard/actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine } from "lucide-react";
+import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy } from "lucide-react";
 import Link from "next/link";
 import { EditCompanyModal } from "@/components/edit-company-modal";
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -138,6 +138,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     setIsDeleting(false);
     setInvoiceToDelete(null);
   };
+  
+  const handleDuplicate = (invoiceId: string) => {
+    router.push(`/company/${resolvedParams.id}/new?duplicate=${invoiceId}`);
+  };
 
   const handleCompanyUpdated = (updatedCompany: any) => {
     setCompany({ ...company, ...updatedCompany });
@@ -253,7 +257,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                       <td className="px-6 py-4 font-medium text-zinc-900 dark:text-zinc-100">
                         {inv.invoice_number}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 max-w-[200px] truncate" title={inv.client_name}>
                         {inv.client_name}
                       </td>
                       <td className="px-6 py-4 text-zinc-500">
@@ -271,6 +275,13 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           >
                             <PenLine className="w-4 h-4" />
                           </Link>
+                          <button
+                            onClick={() => handleDuplicate(inv.id)}
+                            className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                            title="Duplicate Invoice"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
                           <Link
                             href={`/invoice/${inv.id}`}
                             className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
