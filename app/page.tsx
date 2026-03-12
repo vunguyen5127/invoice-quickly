@@ -331,9 +331,10 @@ export default function LandingPage() {
             <div>
               <h4 className="text-xs font-semibold text-slate-900 dark:text-white mb-4 uppercase tracking-wider">Resources</h4>
               <ul className="space-y-2.5 text-sm text-slate-500 dark:text-zinc-400">
-                <li><Link href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About Us</Link></li>
+                <li><Link href="/privacy-policy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                <li><a href="mailto:support@invoicequickly.com" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact Support</a></li>
+                <li><Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact Us</Link></li>
               </ul>
             </div>
           </div>
