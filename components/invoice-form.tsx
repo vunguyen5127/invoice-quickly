@@ -347,9 +347,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
         </div>
       </div>
 
-      {/* Items Section */}
       <div className={sectionClass}>
-        <div className="mb-6 border-b border-zinc-100 dark:border-zinc-800/60 pb-3">
+        <div className="mb-6">
           <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
             <Package className="w-4 h-4 text-blue-500" />
             {t.lineItems}
