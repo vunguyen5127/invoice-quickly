@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Noto_Sans, Noto_Sans_JP, Noto_Sans_KR, Noto_Sans_SC, Noto_Sans_Arabic, Noto_Sans_Devanagari, Noto_Sans_Thai, Be_Vietnam_Pro } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Noto_Sans,
+  Noto_Sans_JP,
+  Noto_Sans_KR,
+  Noto_Sans_SC,
+  Noto_Sans_Arabic,
+  Noto_Sans_Devanagari,
+  Noto_Sans_Thai,
+  Be_Vietnam_Pro,
+} from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/contexts/language-context";
 import { SiteHeader } from "@/components/site-header";
@@ -72,7 +83,6 @@ const notoThai = Noto_Sans_Thai({
   display: "swap",
 });
 
-
 export const metadata: Metadata = {
   title: "InvoiceQuickly - Professional Invoice Generator",
   description: "Create and download professional invoices in seconds.",
@@ -85,6 +95,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519024554738216" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${beVietnam.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} antialiased`}
       >
@@ -93,9 +106,7 @@ export default function RootLayout({
             <LogUserSession />
             <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
               <SiteHeader />
-              <main className="flex-1">
-                {children}
-              </main>
+              <main className="flex-1">{children}</main>
             </div>
           </LanguageProvider>
         </ThemeProvider>
