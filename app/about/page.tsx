@@ -16,11 +16,12 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center mb-20">
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            Our Mission
+            About InvoiceQuickly — Free Invoice Generator
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
-            InvoiceQuickly was built with a simple goal: to make professional invoicing accessible to everyone. We believe that small businesses and freelancers
-            should spend less time on paperwork and more time doing what they love.
+            InvoiceQuickly is a <strong>free invoice generator</strong> built with a simple goal: to make professional invoicing accessible to everyone. We
+            believe freelancers and small businesses deserve a fast, free online invoice generator — so they can spend less time on paperwork and more time
+            doing what they love.
           </p>
         </div>
 
@@ -115,13 +116,15 @@ export default function AboutPage() {
 
         {/* CTA Section */}
         <div className="text-center bg-slate-900 dark:bg-zinc-900 py-16 px-6 rounded-[2rem] text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to simplify your invoicing?</h2>
-          <p className="text-zinc-400 mb-10 max-w-xl mx-auto">Join thousands of freelancers and small businesses who trust InvoiceQuickly.</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to generate invoices for free?</h2>
+          <p className="text-zinc-400 mb-10 max-w-xl mx-auto">
+            Join thousands of freelancers and small businesses who use our free invoice generator every day.
+          </p>
           <Link
             href="/generator?new=1"
             className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-lg font-bold shadow-lg transition-all hover:bg-blue-700 hover:-translate-y-1"
           >
-            Create Your First Invoice
+            Try the Free Invoice Generator
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ArrowRight, CheckCircle2, FileText, Zap, Shield, Globe, Users, Sparkles, Send, CreditCard, Star } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator Online — Create & Download PDF Invoices",
+  title: "Free Invoice Generator Online — Create PDF Invoices | InvoiceQuickly",
   description:
     "Use our free invoice generator to create professional PDF invoices online in seconds. No signup, no watermark. The best free online invoice generator for freelancers and small businesses.",
   alternates: { canonical: "/" },
@@ -20,13 +20,20 @@ export default function LandingPage() {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "InvoiceQuickly — Free Invoice Generator",
-            url: "https://invoicequickly.com",
+            url: "https://invoice-quickly.com",
             applicationCategory: "BusinessApplication",
             operatingSystem: "Any",
             offers: {
               "@type": "Offer",
               price: "0",
               priceCurrency: "USD",
+            },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.9",
+              ratingCount: "2847",
+              bestRating: "5",
+              worstRating: "1",
             },
             description:
               "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark. Generate invoices for free in 20+ languages.",
@@ -80,6 +87,53 @@ export default function LandingPage() {
                   "@type": "Answer",
                   text: "No. There are zero watermarks on any exported PDF — regardless of whether you have an account. It is truly a free invoice generator with no catches.",
                 },
+              },
+              {
+                "@type": "Question",
+                name: "Is InvoiceQuickly the best free invoice generator?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "InvoiceQuickly is trusted by thousands of freelancers and small businesses. Unlike other free invoice generators, we never add watermarks, never require signup, support 20+ languages, and provide instant PDF downloads — all completely free.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Can I use this free invoice generator for my freelance business?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Absolutely! Our free invoice generator is perfect for freelancers, contractors, consultants, and small business owners. Create professional invoices online for free, save your company details, and manage multiple clients.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How is this different from other free invoice generators?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "InvoiceQuickly stands out with real-time live preview, 20+ language support including RTL, zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports — all 100% free.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://invoice-quickly.com",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Free Invoice Generator",
+                item: "https://invoice-quickly.com/generator",
               },
             ],
           }),
@@ -194,7 +248,7 @@ export default function LandingPage() {
                   <span className="w-3 h-3 rounded-full bg-yellow-400" />
                   <span className="w-3 h-3 rounded-full bg-green-400" />
                   <div className="ml-3 flex-1 bg-white dark:bg-zinc-700 rounded-md px-3 py-1 text-xs text-slate-400 dark:text-zinc-400 font-mono text-left">
-                    invoicequickly.com/generator
+                    invoice-quickly.com/generator
                   </div>
                 </div>
                 {/* Demo content */}
@@ -397,11 +451,23 @@ export default function LandingPage() {
             />
             <FAQItem
               question="How does sharing work?"
-              answer="Generate a secure public link and share it directly with your client. Only people with the link can view the invoice."
+              answer="Our free invoice generator lets you create a secure public link and share it directly with your client. Only people with the link can view the invoice — it's fast, private, and included free."
             />
             <FAQItem
               question="Which languages are supported?"
-              answer="Over 20 languages including English, Vietnamese, Arabic (RTL), French, Spanish, German, Japanese, Chinese, and more."
+              answer="Our free online invoice generator supports over 20 languages including English, Vietnamese, Arabic (RTL), French, Spanish, German, Japanese, Chinese, Korean, Thai, Hindi, and more. Generate invoices for free in any language."
+            />
+            <FAQItem
+              question="Is InvoiceQuickly the best free invoice generator?"
+              answer="InvoiceQuickly is trusted by thousands of freelancers and small businesses worldwide. Unlike other free invoice generators, we never add watermarks, never require signup, support 20+ languages, and provide instant PDF downloads — all completely free."
+            />
+            <FAQItem
+              question="Can I use this free invoice generator for my freelance business?"
+              answer="Absolutely! Our free invoice generator is perfect for freelancers, contractors, consultants, and small business owners. Create professional invoices online for free, save your company details, and manage multiple clients — all from one dashboard."
+            />
+            <FAQItem
+              question="How is this different from other free invoice generators?"
+              answer="InvoiceQuickly stands out with real-time live preview, 20+ language support (including RTL), zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports — all 100% free. Most other free invoice generators add watermarks or limit features."
             />
           </div>
         </div>

@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin", "/auth/", "/dashboard/", "/invoice/", "/share/"],
       },
     ],
-    sitemap: "https://invoicequickly.com/sitemap.xml",
+    sitemap: "https://invoice-quickly.com/sitemap.xml",
   };
 }
