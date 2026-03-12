@@ -27,6 +27,8 @@ function CreateInvoiceContent() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const canSave = invoice.client.name.trim().length > 0 && invoice.items.some(item => item.description.trim().length > 0);
+
   const [companies, setCompanies] = useState<any[]>([]);
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -201,15 +203,15 @@ function CreateInvoiceContent() {
               </button>
               <button
                 onClick={handleSaveClick}
-                disabled={isSaving}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors shadow-sm disabled:opacity-75"
+                disabled={isSaving || !canSave}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
-                disabled={isGenerating}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm disabled:opacity-75"
+                disabled={isGenerating || !canSave}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -384,15 +386,15 @@ function CreateInvoiceContent() {
           </button>
           <button
             onClick={handleSaveClick}
-            disabled={isSaving}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-75"
+            disabled={isSaving || !canSave}
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
           >
             <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button
             onClick={handleDownload}
-            disabled={isGenerating}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-75"
+            disabled={isGenerating || !canSave}
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
           >
             <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>

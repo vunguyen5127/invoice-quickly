@@ -28,6 +28,8 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   const [initialTermsOpen, setInitialTermsOpen] = useState(false);
   const router = useRouter();
 
+  const canSave = invoice.client.name.trim().length > 0 && invoice.items.some(item => item.description.trim().length > 0);
+
   // Load company data on mount and pre-fill the invoice state
   useEffect(() => {
     const loadCompanyAndSetInvoice = async () => {
@@ -70,6 +72,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           phone: "",
           logo: companyData.logo_url || prev.company.logo,
         },
+        client: { name: "", email: "", address: "", phone: "" },
         items: [{ id: "1", description: "", quantity: 1, rate: 0 }],
         details: {
           ...prev.details,
@@ -153,15 +156,15 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
             <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
               <button 
                 onClick={handleSave}
-                disabled={isSaving}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-75"
+                disabled={isSaving || !canSave}
+                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button 
                 onClick={handleDownload}
-                disabled={isGenerating}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+                disabled={isGenerating || !canSave}
+                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -185,7 +188,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           <span className="text-zinc-700 dark:text-zinc-200 font-medium">{t.newInvoice}</span>
         </nav>
 
-        <div className="flex flex-col xl:flex-row gap-8 pb-32 xl:pb-20">
+        <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
           
           {/* Left Column: Form */}
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
@@ -198,14 +201,13 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           </div>
 
         {/* Right Column: Preview */}
-        <div className="w-full xl:w-1/2 flex flex-col gap-6">
-          <div className="flex items-center justify-between h-10">
+        <div className="w-full xl:w-1/2 xl:sticky xl:top-24">
+          <div className="flex items-center justify-between h-10 mb-6">
             <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
           </div>
-          
-          <div className="xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
-            <div className="w-full overflow-x-auto bg-zinc-50 dark:bg-zinc-950 rounded-[5px] p-px flex justify-center [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-              <div className="transform origin-top scale-[0.6] sm:scale-75 lg:scale-90 xl:scale-100 transition-transform">
+          <div className="w-full rounded-[5px] ring-2 ring-blue-400/50">
+            <div className="w-full bg-zinc-50 dark:bg-zinc-950 rounded-[5px] overflow-hidden [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
+              <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top transition-all">
                 <InvoicePreview invoice={invoice} isLoggedIn={true} />
               </div>
             </div>
@@ -225,15 +227,15 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           </button>
           <button 
             onClick={handleSave}
-            disabled={isSaving}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-75"
+            disabled={isSaving || !canSave}
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
           >
             <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button 
             onClick={handleDownload}
-            disabled={isGenerating}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-75"
+            disabled={isGenerating || !canSave}
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
           >
             <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>

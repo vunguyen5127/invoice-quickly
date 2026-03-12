@@ -59,7 +59,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
       >
         {/* Top Company Logo/Name Row */}
         <div className="flex justify-between items-start mb-8">
-           <div className="space-y-1">
+           <div className="space-y-1 flex-1 min-w-0">
              <h2 className="text-2xl font-black tracking-tighter uppercase">{invoice.company.name.split(/,|\n/)[0]}</h2>
              <div className="text-[12px] text-zinc-500 max-w-xs">
                 {invoice.company.name.split(/,|\n/).slice(1).map((line, idx) => (
@@ -67,12 +67,12 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
                 ))}
              </div>
            </div>
-           <div className="shrink-0">
-             {invoice.company.logo && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={invoice.company.logo} alt="Company Logo" className="max-w-[120px] max-h-[50px] object-contain mix-blend-multiply" />
-            )}
-           </div>
+           {invoice.company.logo && (
+             <div className="shrink-0 ml-6">
+               {/* eslint-disable-next-line @next/next/no-img-element */}
+               <img src={invoice.company.logo} alt="Company Logo" className="max-w-[160px] max-h-[70px] object-contain rounded-sm" />
+             </div>
+           )}
         </div>
 
         {/* 3-Column Header Area */}

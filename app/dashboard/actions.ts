@@ -134,6 +134,7 @@ export async function getCompanyInvoices(token: string, companyId: string) {
     .from("invoices")
     .select("*")
     .eq("company_id", companyId)
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -165,7 +166,7 @@ export async function deleteInvoice(token: string, id: string) {
   
   const { error } = await supabase
     .from("invoices")
-    .delete()
+    .update({ deleted_at: new Date().toISOString() })
     .eq("id", id);
 
   if (error) {
@@ -177,35 +178,31 @@ export async function deleteInvoice(token: string, id: string) {
 
 export async function getNextInvoiceNumber(token: string, companyId: string): Promise<string> {
   const supabase = getServerSupabase(token);
+  const currentYear = new Date().getFullYear();
 
   const { data, error } = await supabase
     .from("invoices")
     .select("invoice_number")
     .eq("company_id", companyId)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .single();
+    .is("deleted_at", null);
 
-  const currentYear = new Date().getFullYear();
-
-  if (error || !data) {
+  if (error || !data || data.length === 0) {
     return `INV-${currentYear}-001`;
   }
 
-  const lastNumber = data.invoice_number;
-  // Expected format: INV-YYYY-XXX
-  const match = lastNumber.match(/INV-(\d{4})-(\d+)/);
-
-  if (match) {
-    const year = parseInt(match[1]);
-    const index = parseInt(match[2]);
-
-    if (year === currentYear) {
-      const nextIndex = (index + 1).toString().padStart(3, "0");
-      return `INV-${currentYear}-${nextIndex}`;
+  // Find the highest index across all invoice numbers for the current year
+  let maxIndex = 0;
+  for (const row of data) {
+    const match = row.invoice_number?.match(/INV-(\d{4})-(\d+)/);
+    if (match) {
+      const year = parseInt(match[1]);
+      const index = parseInt(match[2]);
+      if (year === currentYear && index > maxIndex) {
+        maxIndex = index;
+      }
     }
   }
 
-  // Fallback or new year
-  return `INV-${currentYear}-001`;
+  const nextIndex = (maxIndex + 1).toString().padStart(3, "0");
+  return `INV-${currentYear}-${nextIndex}`;
 }
