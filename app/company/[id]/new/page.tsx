@@ -70,6 +70,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           phone: "",
           logo: companyData.logo_url || prev.company.logo,
         },
+        items: [{ id: "1", description: "", quantity: 1, rate: 0 }],
         details: {
           ...prev.details,
           invoiceNumber: nextInvoiceNumber,
@@ -77,10 +78,12 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         signatureName: prev.signatureName || defaultSignatureName,
         signature: companyData.signature_url || prev.signature,
         currency: companyData.default_currency || prev.currency,
-        notes: companyData.default_notes || prev.notes,
-        terms: companyData.default_terms || prev.terms,
+        notes: companyData.default_notes || "",
+        terms: companyData.default_terms || "",
         showNotes: companyData.show_notes ?? true,
         showTerms: companyData.show_terms ?? true,
+        taxRate: companyData.default_tax || 0,
+        discount: companyData.default_discount || 0,
       }));
 
       setInitialNotesOpen(companyData.show_notes ?? true);
