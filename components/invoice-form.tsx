@@ -242,10 +242,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   <ClearBtn value={invoice.company.name} onClear={() => handleSectionChange('company', 'name', '')} />
                   <textarea 
                     placeholder={`${t.companyName}, ${t.yourAddress}, ${t.yourEmail}, ${t.companyPhone}`}
-                    className={`${inputInnerClass} flex-1 resize-none h-[72px] mt-1 pr-6 leading-snug`} 
+                    className={`${inputInnerClass} flex-1 resize-none h-[52px] mt-1 pr-6 leading-snug`} 
                     value={invoice.company.name} 
                     onChange={(e) => handleSectionChange('company', 'name', e.target.value)}
-                    rows={3}
+                    rows={2}
                   />
                 </div>
               </fieldset>
