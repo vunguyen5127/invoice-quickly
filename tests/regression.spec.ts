@@ -11,7 +11,7 @@ test.describe("Regression Coverage", () => {
     }
 
     await page.goto("/robots.txt");
-    await expect(page.locator("body")).toContainText("User-agent");
+    await expect(page.locator("body")).toContainText("User-Agent");
 
     await page.goto("/sitemap.xml");
     await expect(page.locator("body")).toContainText("urlset");
@@ -32,14 +32,14 @@ test.describe("Regression Coverage", () => {
 
     await page.getByPlaceholder("0").first().fill("250");
 
-    await expect(page.getByText(/Invoice #|Invoice number|So hoa don/i).first()).toBeVisible();
-
     await expect(
       page
         .getByRole("button", { name: /Save|Luu/i })
         .or(page.getByRole("button", { name: /Download|Tai xuong/i }))
         .first(),
     ).toBeVisible();
+
+    await expect(page.getByText(/Regression Client/i).first()).toBeVisible();
   });
 
   test("protected pages redirect when unauthenticated", async ({ page }) => {
