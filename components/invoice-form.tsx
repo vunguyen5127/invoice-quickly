@@ -439,7 +439,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
       </div>
 
       <div className={sectionClass}>
-        <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+        <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-5 flex items-center gap-2">
           <Settings className="w-4 h-4 text-blue-500" />
           {t.settings}
         </h3>
