@@ -4,10 +4,10 @@ import { Receipt, ArrowLeft } from "lucide-react";
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-      <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-            <Receipt className="h-6 w-6 text-blue-600" />
+            <img src="/logo.png" alt="InvoiceQuickly Logo" className="h-8 w-8 object-contain" />
             <span>InvoiceQuickly</span>
           </Link>
           <Link href="/" className="text-sm font-medium hover:text-blue-600 transition-colors flex items-center gap-1">

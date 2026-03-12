@@ -252,7 +252,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             </div>
 
             {/* Right Column: Dropdown + Logo Upload */}
-            <div className="w-full md:w-[130px] flex-shrink-0 flex flex-col gap-3">
+            <div className="w-full md:w-[100px] flex-shrink-0 flex flex-col gap-3">
               {myCompanies.length > 0 ? (
                 <div className="h-[32px]">
                   <select 
@@ -271,9 +271,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 <div className="h-[32px] hidden md:block" />
               )}
               
-              <div className="w-[130px] h-[130px] ml-auto md:mx-0">
+              <div className="w-[100px] h-[100px] ml-auto md:mx-0">
                 {invoice.company.logo ? (
-                  <div className="relative w-[130px] h-[130px] group transition-all">
+                  <div className="relative w-[100px] h-[100px] group transition-all">
                     <div className="w-full h-full rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={invoice.company.logo} alt="Logo" className="w-full h-full object-cover" />
@@ -288,7 +288,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 ) : (
                   <div 
                     onClick={() => logoInputRef.current?.click()}
-                    className="w-[130px] h-[130px] rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-400 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all bg-zinc-50 hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 overflow-hidden"
+                    className="w-[100px] h-[100px] rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-400 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all bg-zinc-50 hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 overflow-hidden"
                   >
                     <div className="p-2.5 bg-white dark:bg-zinc-800 rounded-full shadow-sm border border-zinc-100 dark:border-zinc-700 group-hover:scale-110 transition-transform">
                       <Upload className="w-4 h-4" />
@@ -357,8 +357,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
         
         <div className="w-full">
           <div className="w-full">
-            {/* Header - Always Visible */}
-            <div className="grid grid-cols-24 gap-[1px] py-2 text-[12px] font-bold text-zinc-900 bg-zinc-100 dark:bg-zinc-800/50 rounded-[5px] items-center mb-[1px] pr-8 uppercase tracking-wider">
+            {/* Header - Hidden on Mobile */}
+            <div className="hidden md:grid grid-cols-24 gap-[1px] py-2 text-[12px] font-bold text-zinc-900 bg-zinc-100 dark:bg-zinc-800/50 rounded-[5px] items-center mb-[1px] pr-8 uppercase tracking-wider">
               <div className="col-span-16 pl-5">{t.description}</div>
               <div className="col-span-3 text-center">{t.qty}</div>
               <div className="col-span-5 text-center">{t.rate}</div>
@@ -368,14 +368,17 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               {invoice.items.map((item, index) => (
                 <div 
                   key={item.id} 
-                  className="relative grid grid-cols-24 gap-[1px] items-center group pr-8"
+                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-4 md:p-0 md:pr-8 bg-zinc-50/50 md:bg-transparent rounded-xl md:rounded-none border md:border-none border-zinc-200/60 dark:border-zinc-800/60 mb-3 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
                 >
+                  {/* Item Label for Mobile */}
+                  <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">{t.description}</div>
+                  
                   {/* Description (Item) Boxed */}
-                  <div className="col-span-16">
+                  <div className="w-full md:col-span-16">
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className="w-full h-11 pl-5 pr-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[5px] text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-sans shadow-sm"
+                      className="w-full h-11 pl-4 md:pl-5 pr-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] md:rounded-[5px] text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-sans shadow-sm"
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
@@ -383,41 +386,46 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     />
                   </div>
 
-                  {/* Qty (Quantity) Boxed */}
-                  <div className="col-span-3">
-                    <input 
-                      type="number" 
-                      className="w-full h-11 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[5px] text-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm transition-all"
-                      value={item.quantity}
-                      min="0"
-                      onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
-                    />
+                  <div className="flex gap-3 w-full md:contents">
+                    {/* Qty (Quantity) Boxed */}
+                    <div className="flex-1 md:col-span-3">
+                      <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-1">{t.qty}</div>
+                      <input 
+                        type="number" 
+                        className="w-full h-11 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] md:rounded-[5px] text-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm transition-all"
+                        value={item.quantity}
+                        min="0"
+                        onChange={(e) => handleItemChange(index, "quantity", Number(e.target.value))}
+                        onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
+                      />
+                    </div>
+
+                    {/* Rate Boxed */}
+                    <div className="flex-[2] md:col-span-5">
+                      <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-1">{t.rate}</div>
+                      <input 
+                        type="number" 
+                        placeholder="0.00"
+                        className="w-full h-11 px-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] md:rounded-[5px] text-left text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm"
+                        value={item.rate || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val === '' || /^\d*\.?\d{0,2}$/.test(val)) {
+                            handleItemChange(index, "rate", val === '' ? 0 : Number(val));
+                          }
+                        }}
+                        onBlur={(e) => handleItemChange(index, "rate", Number(Number(e.target.value).toFixed(2)))}
+                        min="0"
+                        onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
+                        step="0.01"
+                      />
+                    </div>
                   </div>
 
-                  {/* Rate Boxed */}
-                  <div className="col-span-5">
-                    <input 
-                      type="number" 
-                      placeholder="0.00"
-                      className="w-full h-11 px-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[5px] text-left text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm"
-                      value={item.rate || ''}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val === '' || /^\d*\.?\d{0,2}$/.test(val)) {
-                          handleItemChange(index, "rate", val === '' ? 0 : Number(val));
-                        }
-                      }}
-                      onBlur={(e) => handleItemChange(index, "rate", Number(Number(e.target.value).toFixed(2)))}
-                      min="0"
-                      onKeyDown={(e) => ["-", "+", "e"].includes(e.key) && e.preventDefault()}
-                      step="0.01"
-                    />
-                  </div>
-
-                  {/* Delete Icon - Absolute positioned on the far right */}
+                  {/* Delete Icon - absolute on desktop, positioned in card for mobile */}
                   <button 
                     onClick={() => removeItem(item.id)}
-                    className="absolute -right-[5px] top-1/2 -translate-y-1/2 p-2 text-zinc-400 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                    className="absolute right-2 top-2 md:-right-[5px] md:top-1/2 md:-translate-y-1/2 p-2 text-zinc-400 hover:text-red-500 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100"
                     aria-label="Remove item"
                     title="Remove item"
                   >
