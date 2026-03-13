@@ -52,10 +52,10 @@ export function SiteHeader() {
         <Link
           href="/"
           className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
-          aria-label="InvoiceQuickly — Free Invoice Generator"
+          aria-label="Invoice-Quickly — Free Invoice Generator"
         >
-          <img src="/logo.svg" alt="InvoiceQuickly Logo — Free Online Invoice Generator" className="h-8 w-8 object-contain" width={32} height={32} />
-          <span>InvoiceQuickly</span>
+          <img src="/logo.svg" alt="Invoice-Quickly Logo — Free Online Invoice Generator" className="h-8 w-8 object-contain" width={32} height={32} />
+          <span>Invoice-Quickly</span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2 text-zinc-600 dark:text-zinc-400">
           {hasUser && (
