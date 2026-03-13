@@ -48,13 +48,13 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
-      <nav aria-label="Main navigation" className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
+      <nav aria-label="Main navigation" className="container flex h-12 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
         <Link
           href="/"
-          className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
+          className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
           aria-label="InvoiceQuickly — Free Invoice Generator"
         >
-          <img src="/logo.svg" alt="InvoiceQuickly Logo — Free Online Invoice Generator" className="h-10 w-10 object-contain" width={40} height={40} />
+          <img src="/logo.svg" alt="InvoiceQuickly Logo — Free Online Invoice Generator" className="h-8 w-8 object-contain" width={32} height={32} />
           <span>InvoiceQuickly</span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2 text-zinc-600 dark:text-zinc-400">
