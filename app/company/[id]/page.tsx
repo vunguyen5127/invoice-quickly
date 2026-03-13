@@ -172,7 +172,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="shrink-0 w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden bg-white">
+          <div className="shrink-0 w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-[5px] flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden bg-white shadow-sm">
             {company.logo_url ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
@@ -191,14 +191,15 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         </div>
         <Link 
           href={`/company/${resolvedParams.id}/new`}
-          className="flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm whitespace-nowrap w-full sm:w-auto shrink-0"
+          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm whitespace-nowrap w-full sm:w-auto shrink-0"
         >
           <Plus className="w-4 h-4" />
-          Create Invoice
+          <span className="hidden sm:inline">Create Invoice</span>
+          <span className="sm:hidden">New Invoice</span>
         </Link>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-[5px] overflow-hidden shadow-sm">
         {/* Header with search */}
         <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">

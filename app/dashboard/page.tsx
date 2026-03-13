@@ -90,13 +90,13 @@ export default function Dashboard() {
           <p className="text-zinc-500 mt-1">Select a company to manage its invoices</p>
         </div>
         <div className="flex items-center gap-2">
-
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
-            Add Company
+            <span className="hidden sm:inline">Add Company</span>
+            <span className="sm:hidden">Add</span>
           </button>
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function Dashboard() {
           </p>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 ring-1 ring-black/10 dark:ring-white/10 relative z-10"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 ring-1 ring-black/10 dark:ring-white/10 relative z-10"
           >
             Create Company <ArrowRight className="w-4 h-4 ml-1" />
           </button>
@@ -124,7 +124,6 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {companies.map((company) => {
             const invoicesCount = company.invoices?.length || 0;
-            const totalRevenue = company.invoices?.reduce((acc: number, inv: any) => acc + Number(inv.total_amount), 0) || 0;
 
             return (
               <Link 
@@ -148,14 +147,14 @@ export default function Dashboard() {
                     <Tooltip content="Edit Company" position="left">
                       <button
                         onClick={(e) => handleEdit(e, company)}
-                        className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-xl transition-all"
+                        className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-[5px] transition-all"
                       >
                         <Settings className="w-4.5 h-4.5" />
                       </button>
                     </Tooltip>
                     <button
                       onClick={(e) => handleDeleteClick(e, company.id)}
-                      className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-xl transition-all"
+                      className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-[5px] transition-all"
                       title="Delete Company"
                     >
                       <Trash2 className="w-4 h-4" />

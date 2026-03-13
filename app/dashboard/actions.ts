@@ -22,8 +22,9 @@ export async function getUserCompanies(token: string) {
     .from("companies")
     .select(`
       *,
-      invoices (id, total_amount)
+      invoices (id)
     `)
+    .is("invoices.deleted_at", null)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -125,7 +126,7 @@ export async function getCompanyInvoices(token: string, companyId: string) {
   // RLS handles authorization based on the Bearer token
   const { data, error } = await supabase
     .from("invoices")
-    .select("*")
+    .select("id, invoice_number, client_name, created_at, total_amount, currency")
     .eq("company_id", companyId)
     .is("deleted_at", null)
     .order("created_at", { ascending: false });
