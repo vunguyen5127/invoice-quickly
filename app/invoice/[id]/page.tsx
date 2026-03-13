@@ -140,7 +140,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
                 {invoice.client?.name ? invoice.client.name.replace(/\n/g, ', ') : ""}
               </p>
               {invoice.client?.name && (
-                <div className="absolute top-full left-0 mt-2 w-max max-w-[280px] p-2.5 bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-zinc-700">
+                <div className="absolute top-full left-0 mt-2 w-max max-w-[280px] p-2.5 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-zinc-200 dark:border-zinc-700">
                   {invoice.client.name}
                 </div>
               )}
