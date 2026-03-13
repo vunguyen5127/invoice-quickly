@@ -17,7 +17,7 @@ test.describe("Public Routes & Unauthenticated Flow", () => {
   });
 
   test("privacy policy and terms of service load", async ({ page }) => {
-    await page.goto("/privacy");
+    await page.goto("/privacy-policy");
     await expect(page.getByRole("heading", { name: "Privacy Policy" })).toBeVisible();
 
     await page.goto("/terms");
