@@ -75,8 +75,8 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
            )}
         </div>
 
-        {/* 3-Column Header Area */}
-        <div className="flex gap-8 mb-8 text-[13px] items-start">
+        {/* 3-Column Header Area - Uses grid for horizontal stability */}
+        <div className="grid grid-cols-3 gap-8 mb-8 text-[13px] items-start">
            {/* Column 1: Bill To */}
            <div className="flex-1 min-w-0">
              <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.billedTo || "Bill To"}</p>
