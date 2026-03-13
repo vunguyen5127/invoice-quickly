@@ -131,11 +131,20 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+          <div className="min-w-0 max-w-full">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">
               Invoice #{invoice.details.invoiceNumber}
             </h1>
-            <p className="text-sm text-zinc-500">{invoice.client.name}</p>
+            <div className="group relative inline-block max-w-full mt-0.5">
+              <p className="text-sm text-zinc-500 truncate max-w-[250px] sm:max-w-[350px] md:max-w-[500px] cursor-default">
+                {invoice.client?.name ? invoice.client.name.replace(/\n/g, ', ') : ""}
+              </p>
+              {invoice.client?.name && (
+                <div className="absolute top-full left-0 mt-2 w-max max-w-[280px] p-2.5 bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-zinc-700">
+                  {invoice.client.name}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
