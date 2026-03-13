@@ -13,7 +13,7 @@ import Link from "next/link";
 import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
-  const [invoice, setInvoice] = useState<InvoiceState | null>(null);
+  const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -126,7 +126,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div className="flex items-center gap-4">
           <Link
-            href="/dashboard"
+            href={invoice._companyId ? `/company/${invoice._companyId}` : "/dashboard"}
             className="p-2 -ml-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:text-white dark:hover:bg-zinc-800 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
