@@ -11,6 +11,7 @@ import { InvoiceState } from "@/types/invoice";
 import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2 } from "lucide-react";
 import Link from "next/link";
 import { ConfirmModal } from "@/components/confirm-modal";
+import { Tooltip } from "@/components/tooltip";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
   const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string }) | null>(null);
@@ -135,23 +136,18 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
             <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">
               Invoice #{invoice.details.invoiceNumber}
             </h1>
-            <div className="group relative inline-block max-w-full mt-0.5">
+            <Tooltip content={invoice.client?.name || ""} position="bottom">
               <p className="text-sm text-zinc-500 truncate max-w-[250px] sm:max-w-[350px] md:max-w-[500px] cursor-default">
                 {invoice.client?.name ? invoice.client.name.replace(/\n/g, ', ') : ""}
               </p>
-              {invoice.client?.name && (
-                <div className="absolute top-full left-0 mt-2 w-max max-w-[280px] px-2 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-[11px] font-medium rounded shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-pre-wrap leading-relaxed">
-                  {invoice.client.name}
-                </div>
-              )}
-            </div>
+            </Tooltip>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <button
             onClick={() => setShowDeleteModal(true)}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 font-medium transition-colors border border-red-200 dark:border-red-900/30"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 rounded-[5px] hover:bg-red-100 dark:hover:bg-red-900/40 font-medium transition-colors border border-red-200 dark:border-red-900/30"
           >
             <Trash2 className="w-4 h-4" /> <span className="hidden sm:inline">Delete</span>
           </button>
@@ -159,15 +155,15 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           
           <button 
             onClick={handleShare}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium transition-colors border border-zinc-200 dark:border-zinc-800 shadow-sm"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 rounded-[5px] hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium transition-colors border border-zinc-200 dark:border-zinc-800 shadow-sm"
           >
             <Share2 className="w-4 h-4" /> <span className="hidden sm:inline">Share</span>
           </button>
           
-          <button
+          <button 
             onClick={handleDownload}
             disabled={isGenerating}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors disabled:opacity-75 shadow-sm"
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm"
           >
             <Download className="w-4 h-4" /> <span className="hidden sm:inline">{isGenerating ? "Gen..." : "Download"}</span>
           </button>

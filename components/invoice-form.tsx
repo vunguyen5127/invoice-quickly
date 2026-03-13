@@ -9,6 +9,7 @@ import { SignaturePadModal } from "./signature-pad-modal";
 import { useLanguage } from "@/contexts/language-context";
 import { getUserCompanies } from "@/app/dashboard/actions";
 import { supabase } from "@/utils/supabase/client";
+import { Tooltip } from "./tooltip";
 
 interface InvoiceFormProps {
   invoice: InvoiceState;
@@ -423,14 +424,15 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   </div>
 
                   {/* Delete Icon - absolute on desktop, positioned in card for mobile */}
-                  <button 
-                    onClick={() => removeItem(item.id)}
-                    className="absolute right-2 top-2 md:-right-[5px] md:top-1/2 md:-translate-y-1/2 p-2 text-zinc-400 hover:text-red-500 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100"
-                    aria-label="Remove item"
-                    title="Remove item"
-                  >
-                    <X className="w-5 h-5 border border-zinc-200 dark:border-zinc-700/50 rounded-full p-1 shadow-sm bg-white dark:bg-zinc-800" />
-                  </button>
+                  <Tooltip content="Remove item" position="left">
+                    <button 
+                      onClick={() => removeItem(item.id)}
+                      className="absolute right-2 top-2 md:-right-[5px] md:top-1/2 md:-translate-y-1/2 p-2 text-zinc-400 hover:text-red-500 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100"
+                      aria-label="Remove item"
+                    >
+                      <X className="w-5 h-5 border border-zinc-200 dark:border-zinc-700/50 rounded-full p-1 shadow-sm bg-white dark:bg-zinc-800" />
+                    </button>
+                  </Tooltip>
                 </div>
               ))}
             </div>
@@ -592,7 +594,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   <button 
                     type="button"
                     onClick={() => setIsNotesOpen(!isNotesOpen)}
-                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
                   >
                     {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
                   </button>
@@ -635,7 +637,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   <button 
                     type="button"
                     onClick={() => setIsTermsOpen(!isTermsOpen)}
-                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded transition-colors"
+                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
                   >
                     {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
                   </button>
@@ -658,7 +660,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             {/* Signature Accordion */}
             <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
               <button 
-                className="w-full h-11 flex items-center justify-between px-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
+                className="w-full h-11 flex items-center justify-between px-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors rounded-[5px]"
                 onClick={() => setIsSignatureOpen(!isSignatureOpen)}
               >
                 {t.signature} {(invoice.signature || invoice.signatureName) && !isSignatureOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addSignature}</span>}
@@ -680,7 +682,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                                 signatureName: ""
                               }));
                             }}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-[5px] p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                           >
                             <X className="w-3 h-3" />
                           </button>

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Globe, Check } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
+import { Tooltip } from "./tooltip";
 
 const languages = [
   { code: "EN", name: "English" },
@@ -51,16 +52,17 @@ export function LanguageToggle() {
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center rounded-full p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-        aria-label="Select language"
-        title="Select language"
-        aria-expanded={isOpen}
-      >
-        <Globe className="w-5 h-5" />
-        <span className="sr-only">Select language</span>
-      </button>
+      <Tooltip content="Select language" position="bottom">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="inline-flex items-center justify-center rounded-[5px] p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Select language"
+          aria-expanded={isOpen}
+        >
+          <Globe className="w-5 h-5" />
+          <span className="sr-only">Select language</span>
+        </button>
+      </Tooltip>
 
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-48 rounded-[5px] bg-white dark:bg-zinc-900 shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">

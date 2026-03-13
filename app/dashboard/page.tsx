@@ -5,8 +5,9 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenTool } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, Settings } from "lucide-react";
 import Link from "next/link";
+import { Tooltip } from "@/components/tooltip";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -144,13 +145,14 @@ export default function Dashboard() {
                     )}
                   </div>
                   <div className="flex items-center gap-1 z-10 transition-opacity">
-                    <button
-                      onClick={(e) => handleEdit(e, company)}
-                      className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-xl transition-all"
-                      title="Edit Company"
-                    >
-                      <PenTool className="w-4 h-4" />
-                    </button>
+                    <Tooltip content="Edit Company" position="left">
+                      <button
+                        onClick={(e) => handleEdit(e, company)}
+                        className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-xl transition-all"
+                      >
+                        <Settings className="w-4.5 h-4.5" />
+                      </button>
+                    </Tooltip>
                     <button
                       onClick={(e) => handleDeleteClick(e, company.id)}
                       className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-xl transition-all"

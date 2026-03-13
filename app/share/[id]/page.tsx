@@ -55,7 +55,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
         <p className="text-zinc-500 mb-8">This invoice either doesn't exist or has been deleted.</p>
         <Link 
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors"
         >
           Create Your Own Invoice
         </Link>
@@ -79,7 +79,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
             <button
               onClick={handleDownload}
               disabled={isGenerating}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors disabled:opacity-75 shadow-sm"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors disabled:opacity-75 shadow-sm"
             >
               <Download className="w-4 h-4" /> <span>{isGenerating ? "Generating..." : "Download PDF"}</span>
             </button>
@@ -87,7 +87,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
         </div>
 
         {/* Invoice Container */}
-        <div className="w-full overflow-x-auto rounded-2xl shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10 dark:shadow-none bg-zinc-200/50 dark:bg-zinc-900/80 p-2 sm:p-8 flex justify-center">
+        <div className="w-full overflow-x-auto rounded-[5px] shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10 dark:shadow-none bg-zinc-200/50 dark:bg-zinc-900/80 p-2 sm:p-8 flex justify-center">
           <div className="transform origin-top transition-transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100">
             {/* We pass a forced dummy language translation to preview safely if needed, but it should inherit from context */}
             <InvoicePreview invoice={invoice} />

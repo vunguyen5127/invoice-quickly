@@ -197,21 +197,21 @@ function CreateInvoiceContent() {
             <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-colors shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-[5px] font-medium text-sm border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-colors shadow-sm"
               >
                 <Share2 className="w-4 h-4" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button
                 onClick={handleSaveClick}
                 disabled={isSaving || !canSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center gap-2 px-4 py-2 rounded-[5px] font-medium text-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center gap-2 px-4 py-2 rounded-[5px] font-medium text-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -281,7 +281,7 @@ function CreateInvoiceContent() {
                       <button
                         key={c.id}
                         onClick={() => saveToCompany(c.id)}
-                        className="w-full text-left p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all flex items-center gap-3"
+                        className="w-full text-left p-4 border border-zinc-200 dark:border-zinc-800 rounded-[5px] hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all flex items-center gap-3"
                       >
                         <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
                           <Building2 className="w-5 h-5 text-zinc-500" />
@@ -298,7 +298,7 @@ function CreateInvoiceContent() {
                           setIsSelectModalOpen(false);
                           setIsCreateModalOpen(true);
                         }}
-                        className="w-full p-4 border border-zinc-200 border-dashed dark:border-zinc-800 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-blue-600 hover:border-blue-500 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all flex items-center justify-center gap-2"
+                        className="w-full p-4 border border-zinc-200 border-dashed dark:border-zinc-800 rounded-[5px] text-zinc-600 dark:text-zinc-400 hover:text-blue-600 hover:border-blue-500 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all flex items-center justify-center gap-2"
                       >
                         <Plus className="w-4 h-4" /> {t.createNewCompany}
                       </button>
@@ -323,7 +323,7 @@ function CreateInvoiceContent() {
         {/* Guest Save Modal */}
         {isGuestSaveModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-            <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden ring-1 ring-zinc-200 dark:ring-zinc-800 animate-in zoom-in-95 duration-200 p-8 text-center relative">
+            <div className="bg-white dark:bg-zinc-900 rounded-[5px] shadow-2xl w-full max-w-md overflow-hidden ring-1 ring-zinc-200 dark:ring-zinc-800 animate-in zoom-in-95 duration-200 p-8 text-center relative">
               <button
                 onClick={() => setIsGuestSaveModalOpen(false)}
                 className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"

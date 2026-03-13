@@ -99,10 +99,11 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     reader.readAsDataURL(file);
   };
 
-  const tabBtn = (active: boolean) =>
-    `flex-1 py-2 text-[13px] font-semibold transition-colors ${active
-      ? "text-blue-600 border-b-2 border-blue-500"
-      : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 border-b-2 border-transparent"}`;
+    const tabBtn = (active: boolean) => `flex-1 py-2 text-sm font-semibold transition-all rounded-[5px] ${
+      active 
+        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10" 
+        : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+    }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm animate-in fade-in duration-200">
@@ -114,7 +115,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
             <Plus className="w-4 h-4 text-blue-500" />
             {t.addNewCompany}
           </h2>
-          <button onClick={onClose} className="p-1 rounded text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+          <button onClick={onClose} className="p-1 rounded-[5px] text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>

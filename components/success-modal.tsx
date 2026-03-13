@@ -37,7 +37,7 @@ export function SuccessModal({ isOpen, onClose, title = "Success", message }: Su
 
             <button
               onClick={onClose}
-              className="w-full mt-2 py-2.5 px-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium rounded-xl hover:bg-zinc-800 dark:hover:bg-white/90 transition-colors"
+              className="w-full mt-2 py-2.5 px-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-medium rounded-[5px] hover:bg-zinc-800 dark:hover:bg-white/90 transition-colors"
             >
               Close
             </button>

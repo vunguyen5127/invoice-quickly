@@ -49,14 +49,14 @@ export function ConfirmModal({
             <button
               onClick={onClose}
               disabled={isProcessing}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl font-medium text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-[5px] font-medium text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
               disabled={isProcessing}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl font-medium text-sm text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm disabled:opacity-75 flex items-center justify-center min-w-[100px]"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-[5px] font-medium text-sm text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm disabled:opacity-75 flex items-center justify-center min-w-[100px]"
             >
               {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Delete"}
             </button>
