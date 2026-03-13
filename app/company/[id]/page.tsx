@@ -160,7 +160,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
       <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-6 transition-colors">
         <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
         <span className="hidden sm:inline">Back to Companies</span>

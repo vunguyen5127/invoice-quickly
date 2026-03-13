@@ -62,7 +62,7 @@ export function SiteHeader() {
             <>
               <Link
                 href="/dashboard"
-                className="text-[13px] font-semibold text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 bg-zinc-100 hover:bg-blue-50 dark:bg-zinc-800/50 dark:hover:bg-zinc-800 border border-zinc-200/50 dark:border-zinc-700/50 transition-all hidden sm:flex items-center rounded-full px-4 py-1.5 mr-1 sm:mr-2 shadow-sm"
+                className="text-[13px] font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80 transition-all hidden sm:flex items-center rounded-full px-4 py-1.5 mr-1"
               >
                 {t.myInvoices}
               </Link>

@@ -48,7 +48,7 @@ export default function SettingsPage() {
   const itemClass = "px-6 py-4 flex items-center justify-between border-b last:border-0 border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors";
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="container mx-auto px-4 sm:px-8 py-8 max-w-2xl">
       <div className="mb-8 flex items-center gap-4">
         <Link 
           href="/dashboard"

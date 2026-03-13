@@ -122,7 +122,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-5xl">
+    <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div className="flex items-center gap-4">
           <Link
@@ -140,7 +140,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
                 {invoice.client?.name ? invoice.client.name.replace(/\n/g, ', ') : ""}
               </p>
               {invoice.client?.name && (
-                <div className="absolute top-full left-0 mt-2 w-max max-w-[280px] p-2.5 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 text-xs rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-pre-wrap leading-relaxed border border-zinc-200 dark:border-zinc-700">
+                <div className="absolute top-full left-0 mt-2 w-max max-w-[280px] px-2 py-1.5 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-[11px] font-medium rounded shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-pre-wrap leading-relaxed">
                   {invoice.client.name}
                 </div>
               )}

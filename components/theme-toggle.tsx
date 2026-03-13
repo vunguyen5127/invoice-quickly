@@ -18,7 +18,7 @@ export function ThemeToggle() {
         <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-slate-400" />
         <span className="sr-only">Toggle theme</span>
       </button>
-      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max px-2 py-1 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 text-[10px] font-bold rounded shadow-md border border-zinc-200 dark:border-zinc-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-nowrap">
+      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max px-2 py-1 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-[10px] font-bold rounded shadow-lg ring-1 ring-zinc-900/5 dark:ring-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none whitespace-nowrap">
         {theme === "light" ? "Dark Mode" : "Light Mode"}
       </div>
     </div>

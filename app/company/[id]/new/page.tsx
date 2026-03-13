@@ -170,10 +170,10 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
       <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
-        <div className="container flex h-16 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
-            <img src="/logo.svg" alt="InvoiceQuickly Logo" className="h-8 w-8 object-contain" />
-            <span className="hidden sm:inline-block">InvoiceQuickly</span>
+        <div className="container flex h-12 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
+          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
+            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 object-contain" />
+            <span className="hidden sm:inline-block">Invoice-Quickly</span>
             {companyName && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 ml-1 truncate max-w-[120px]">{companyName}</span>}
           </Link>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -198,7 +198,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           </div>
         </div>
       </header>
-      <div className="container mx-auto px-4 py-8 max-w-[1600px] flex-1">
+      <div className="container mx-auto px-4 sm:px-8 py-8 max-w-[1600px] flex-1">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-sm mb-6">
           <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
