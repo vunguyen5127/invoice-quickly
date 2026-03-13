@@ -137,6 +137,6 @@ test.describe('Invoice Creation Flows', () => {
 
     // 6. Mobile Visibility Check (Regression fix validation)
     await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.getByRole('link', { name: /InvoiceQuickly/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Invoice-?Quickly/i })).toBeVisible();
   });
 });
