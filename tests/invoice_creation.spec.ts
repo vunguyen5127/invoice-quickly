@@ -90,9 +90,8 @@ test.describe('Invoice Creation Flows', () => {
     await page.goto('/generator');
 
     // 1. Fill Sender & Client Details
-    await page.getByPlaceholder(/Your Company Name/i).or(page.getByPlaceholder(/Tên công ty của bạn/i)).fill('My Global Corp');
-    await page.getByPlaceholder(/Your Name/i).or(page.getByPlaceholder(/Tên của bạn/i)).fill('John Doe');
-    await page.getByPlaceholder(/Client Name/i).or(page.getByPlaceholder(/Tên khách hàng/i)).fill('Mega Client Inc.');
+    await page.getByPlaceholder(/Company Name/i).or(page.getByPlaceholder(/Tên công ty/i)).first().fill('My Global Corp\n123 Business Way\njohn@globalcorp.com');
+    await page.getByPlaceholder(/Client Name/i).or(page.getByPlaceholder(/Tên khách hàng/i)).first().fill('Mega Client Inc.\n456 Tech Park\nbilling@megaclient.com');
     
     // 2. Fill Line Items (Add a second one)
     const descInputs = page.getByPlaceholder(/Description of item\/service\.\.\./i);
@@ -110,22 +109,23 @@ test.describe('Invoice Creation Flows', () => {
     await descInputs.nth(1).fill('SEO Optimization');
     await rateInputs.nth(2).fill('50'); // Assuming second item rate/qty
 
-    // 3. Enable and Fill Tax, Discount, Shipping
-    const addTaxBtn = page.getByRole('button', { name: /Add Tax/i }).or(page.getByRole('button', { name: /Thêm thuế/i }));
-    await addTaxBtn.click();
-    await page.getByPlaceholder(/Tax %/i).or(page.getByPlaceholder(/Thuế %/i)).fill('10');
-
-    const addDiscountBtn = page.getByRole('button', { name: /Add Discount/i }).or(page.getByRole('button', { name: /Thêm giảm giá/i }));
-    await addDiscountBtn.click();
-    await page.getByPlaceholder(/Discount %/i).or(page.getByPlaceholder(/Giảm giá %/i)).fill('5');
-
-    const addShippingBtn = page.getByRole('button', { name: /Add Shipping/i }).or(page.getByRole('button', { name: /Thêm phí vận chuyển/i }));
-    await addShippingBtn.click();
-    await page.getByPlaceholder(/Shipping Amount/i).or(page.getByPlaceholder(/Phí vận chuyển/i)).fill('15');
+    // 3. Fill Tax, Discount, Shipping
+    const amountInputs = page.getByPlaceholder('0');
+    await amountInputs.nth(0).fill('5');  // Discount
+    await amountInputs.nth(1).fill('10'); // Tax
+    await amountInputs.nth(2).fill('15'); // Shipping
 
     // 4. Fill Notes & Terms
-    await page.getByPlaceholder(/Notes - any relevant information not already covered/i).or(page.getByPlaceholder(/Ghi chú - bất kỳ thông tin liên quan nào chưa được đề cập/i)).fill('Thank you for your business.');
-    await page.getByPlaceholder(/Terms and conditions/i).or(page.getByPlaceholder(/Điều khoản và điều kiện/i)).fill('Please pay within 30 days.');
+    // Enable them first if they are not enabled
+    const checkboxes = page.getByRole('checkbox');
+    if (!(await checkboxes.nth(0).isChecked())) await checkboxes.nth(0).check();
+    if (!(await checkboxes.nth(1).isChecked())) await checkboxes.nth(1).check();
+
+    // Now fill the textareas. Since they might have pre-filled demo data, we clear and fill.
+    // In the Settings section, we have 2 textareas for Notes and Terms.
+    const textareas = page.locator('div.border.bg-white\\/50 textarea');
+    await textareas.nth(0).fill('Thank you for your business.');
+    await textareas.nth(1).fill('Please pay within 30 days.');
 
     // 5. Verify Preview Updates
     await expect(page.getByText('My Global Corp').first()).toBeVisible();
