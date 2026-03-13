@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { LanguageToggle } from "@/components/language-toggle";
+import { PlanBadge } from "@/components/plan-badge";
 import { useLanguage } from "@/contexts/language-context";
 import { Receipt, ShieldCheck, LayoutDashboard, ChevronDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -29,6 +30,10 @@ export function SiteHeader() {
       } = await supabase.auth.getSession();
       setHasUser(!!session?.user);
       setUserEmail(session?.user?.email || null);
+      if (session?.access_token) {
+        const ent = await getUserEntitlements(session.access_token);
+        setUserPlan(ent.plan);
+      }
     };
     checkUser();
 

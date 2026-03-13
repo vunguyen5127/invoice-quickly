@@ -4,17 +4,13 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
+import { getUserEntitlements } from "@/utils/entitlements";
 import { format } from "date-fns";
 import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { Tooltip } from "@/components/tooltip";
-import dynamic from "next/dynamic";
-import { DashboardSkeleton } from "@/components/dashboard-skeleton";
-import { useLanguage } from "@/contexts/language-context";
-
-const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then(mod => mod.CreateCompanyModal));
-const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
-const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
+import { CreateCompanyModal } from "@/components/create-company-modal";
+import { EditCompanyModal } from "@/components/edit-company-modal";
+import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function Dashboard() {
   const [companies, setCompanies] = useState<any[]>([]);
@@ -26,7 +22,6 @@ export default function Dashboard() {
   const [editingCompany, setEditingCompany] = useState<any | null>(null);
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const { t } = useLanguage();
   const router = useRouter();
 
   const PAGE_SIZE = 12;
@@ -41,12 +36,10 @@ export default function Dashboard() {
       return;
     }
 
-    const result = await getUserCompanies(session.access_token, currentPage, PAGE_SIZE);
-    setCompanies(result.data || []);
-    setTotalCount(result.totalCount);
-    setLoading(false);
-    if (showRefreshLoader) setIsRefreshing(false);
-  };
+      const data = await getUserCompanies(session.access_token);
+      setCompanies(data);
+      setLoading(false);
+    };
 
   useEffect(() => {
     loadData(loading ? false : true);
@@ -101,7 +94,7 @@ export default function Dashboard() {
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm"
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">Add Company</span>
@@ -261,6 +254,12 @@ export default function Dashboard() {
         title="Delete Company?"
         message="Are you sure you want to delete this company? All invoices associated with it will also be permanently deleted. This action cannot be undone."
         isProcessing={isDeleting}
+      />
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        trigger="company_limit"
       />
     </div>
   );

@@ -200,7 +200,7 @@ DO NOT BUILD:
 - Team access
 - Multi-user per company
 - Subscription
-- Stripe billing
+- Paddle billing
 - Complex accounting
 
 Keep it:

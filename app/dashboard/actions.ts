@@ -85,6 +85,16 @@ export async function createCompany(token: string, companyData: { name: string; 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
+  // ── Entitlement guard: check company limit ──
+  const { getUserEntitlements, getUserCompanyCount } = await import("@/utils/entitlements");
+  const entitlements = await getUserEntitlements(token);
+  if (entitlements.maxCompanies !== null) {
+    const companyCount = await getUserCompanyCount(token);
+    if (companyCount >= entitlements.maxCompanies) {
+      return { error: "COMPANY_LIMIT_REACHED" };
+    }
+  }
+
   const { data, error } = await supabase
     .from("companies")
     .insert([{

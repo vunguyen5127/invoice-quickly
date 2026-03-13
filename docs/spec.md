@@ -250,7 +250,7 @@ MVP LIMITS (IMPORTANT)
 
 DO NOT IMPLEMENT:
 - Subscription
-- Stripe billing
+- Paddle billing
 - Teams
 - Multi-language
 - Analytics

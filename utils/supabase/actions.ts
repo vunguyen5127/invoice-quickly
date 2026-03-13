@@ -28,6 +28,16 @@ export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState
     throw new Error("You must be logged in to save an invoice.");
   }
 
+  // ── Entitlement guard: check monthly invoice limit ──
+  const { getUserEntitlements, getMonthlyInvoiceCount } = await import("@/utils/entitlements");
+  const entitlements = await getUserEntitlements(token);
+  if (entitlements.maxInvoicesPerMonth !== null) {
+    const monthlyCount = await getMonthlyInvoiceCount(token, user.id);
+    if (monthlyCount >= entitlements.maxInvoicesPerMonth) {
+      throw new Error("INVOICE_LIMIT_REACHED");
+    }
+  }
+
   const { subTotal, taxAmount, total } = calculateTotals(invoice);
 
   const { data, error } = await supabase
