@@ -21,12 +21,12 @@ test.describe("Regression Coverage", () => {
     await page.goto("/generator");
 
     await page
-      .getByPlaceholder(/Client Name|Ten khach hang/i)
+      .getByPlaceholder(/Client Name/i)
       .first()
       .fill("Regression Client");
 
     await page
-      .getByPlaceholder(/Description of item\/service|Mo ta/i)
+      .getByPlaceholder(/Description of item\/service/i)
       .first()
       .fill("Monthly support");
 
@@ -34,8 +34,8 @@ test.describe("Regression Coverage", () => {
 
     await expect(
       page
-        .getByRole("button", { name: /Save|Luu/i })
-        .or(page.getByRole("button", { name: /Download|Tai xuong/i }))
+        .getByRole("button", { name: /Save/i })
+        .or(page.getByRole("button", { name: /Download/i }))
         .first(),
     ).toBeVisible();
 

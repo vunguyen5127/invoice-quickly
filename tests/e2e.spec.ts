@@ -86,7 +86,7 @@ test.describe("Authenticated Flow via Network Mocking", () => {
   test("header shows authenticated links and hides settings", async ({ page }) => {
     await page.goto("/");
     // Check for "My Invoices" link which shows up when logged in
-    const myInvoices = page.getByRole("link", { name: /My Invoices/i }).or(page.getByRole("link", { name: /Danh sách Invoice/i }));
+    const myInvoices = page.getByRole("link", { name: /My Invoices/i });
     await expect(myInvoices.first()).toBeVisible();
 
     // Settings should NOT be visible in the header

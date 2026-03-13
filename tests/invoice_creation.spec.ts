@@ -11,11 +11,11 @@ test.describe('Invoice Creation Flows', () => {
     await page.waitForURL(/.*\/generator/);
 
     // Ensure the form is loaded
-    await expect(page.getByRole('heading', { name: /Invoice Details/i }).or(page.getByRole('heading', { name: /Chi tiết Invoice/i }))).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Invoice Details/i })).toBeVisible();
 
     // 2. Fill Client Details
-    await page.getByPlaceholder(/Client Name/i).or(page.getByPlaceholder(/Tên khách hàng/i)).fill('Test Client');
-    await page.getByPlaceholder(/Client Email/i).or(page.getByPlaceholder(/Email khách hàng/i)).fill('client@test.com');
+    await page.getByPlaceholder(/Client Name/i).fill('Test Client');
+    await page.getByPlaceholder(/Client Email/i).fill('client@test.com');
 
     // 3. Fill Line Item
     const descriptionInput = page.getByPlaceholder(/Description of item\/service\.\.\./i);
@@ -27,7 +27,7 @@ test.describe('Invoice Creation Flows', () => {
     await rateInput.fill('100');
 
     // 4. Verify Preview
-    await expect(page.getByRole('heading', { name: /Live Preview/i }).or(page.getByRole('heading', { name: /Xem trước/i }))).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Live Preview/i })).toBeVisible();
 
     // 5. Check Action Buttons based on Viewport
     const isMobile = page.viewportSize()!.width < 640;
@@ -37,14 +37,14 @@ test.describe('Invoice Creation Flows', () => {
       const shareBtn = page.getByLabel('Share');
       await expect(shareBtn).toBeVisible();
       
-      const downloadBtn = page.getByRole('button', { name: /Download/i }).or(page.getByRole('button', { name: /Tải xuống/i }));
+      const downloadBtn = page.getByRole('button', { name: /Download/i });
       await expect(downloadBtn).toBeVisible();
     } else {
       // Desktop header buttons
-      const shareBtn = page.getByRole('button', { name: /Share/i }).or(page.getByRole('button', { name: /Chia sẻ/i }));
+      const shareBtn = page.getByRole('button', { name: /Share/i });
       await expect(shareBtn).toBeVisible();
       
-      const downloadBtn = page.getByRole('button', { name: /Download/i }).or(page.getByRole('button', { name: /Tải xuống/i }));
+      const downloadBtn = page.getByRole('button', { name: /Download/i });
       await expect(downloadBtn).toBeVisible();
     }
   });
@@ -73,7 +73,7 @@ test.describe('Invoice Creation Flows', () => {
     await page.goto('/generator');
     
     // 2. Fill Invoice Details
-    await page.getByPlaceholder(/Client Name/i).or(page.getByPlaceholder(/Tên khách hàng/i)).fill('Authenticated Client');
+    await page.getByPlaceholder(/Client Name/i).fill('Authenticated Client');
     
     const descriptionInput = page.getByPlaceholder(/Description of item\/service\.\.\./i);
     await descriptionInput.first().fill('Monthly Retainer');
@@ -82,7 +82,7 @@ test.describe('Invoice Creation Flows', () => {
     await rateInput.fill('500');
 
     // 3. Verify Save Button
-    const saveBtn = page.getByRole('button', { name: /Save/i }).or(page.getByRole('button', { name: /Lưu/i }));
+    const saveBtn = page.getByRole('button', { name: /Save/i });
     await expect(saveBtn).toBeVisible();
   });
 
@@ -90,8 +90,8 @@ test.describe('Invoice Creation Flows', () => {
     await page.goto('/generator');
 
     // 1. Fill Sender & Client Details
-    await page.getByPlaceholder(/Company Name/i).or(page.getByPlaceholder(/Tên công ty/i)).first().fill('My Global Corp\n123 Business Way\njohn@globalcorp.com');
-    await page.getByPlaceholder(/Client Name/i).or(page.getByPlaceholder(/Tên khách hàng/i)).first().fill('Mega Client Inc.\n456 Tech Park\nbilling@megaclient.com');
+    await page.getByPlaceholder(/Company Name/i).first().fill('My Global Corp\n123 Business Way\njohn@globalcorp.com');
+    await page.getByPlaceholder(/Client Name/i).first().fill('Mega Client Inc.\n456 Tech Park\nbilling@megaclient.com');
     
     // 2. Fill Line Items (Add a second one)
     const descInputs = page.getByPlaceholder(/Description of item\/service\.\.\./i);
@@ -103,7 +103,7 @@ test.describe('Invoice Creation Flows', () => {
     await rateInputs.nth(0).fill('100'); // Assuming Rate or Quantity for first item
 
     // Add another line item
-    const addLineItemBtn = page.getByRole('button', { name: /Add Item/i }).or(page.getByRole('button', { name: /Thêm mục/i }));
+    const addLineItemBtn = page.getByRole('button', { name: /Add Item/i });
     await addLineItemBtn.click();
     
     await descInputs.nth(1).fill('SEO Optimization');
