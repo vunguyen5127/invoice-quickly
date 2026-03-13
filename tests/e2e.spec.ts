@@ -7,7 +7,7 @@ import { test, expect } from "@playwright/test";
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://wvugwussemvlmupmpwcq.supabase.co";
 
 test.describe("Public Routes & Unauthenticated Flow", () => {
-  test("home page loads correctly", async ({ page }) => {
+  test("Home Page Loads Correctly", async ({ page }) => {
     await page.goto("/");
     // Check if the landing hero heading exists (copy may evolve)
     await expect(page.getByRole("heading", { name: /Free Invoice Generator|Create .* PDF Invoices/i }).first()).toBeVisible();
@@ -16,7 +16,7 @@ test.describe("Public Routes & Unauthenticated Flow", () => {
     await expect(page.locator('a:has-text("Create Invoice Free")').first()).toBeVisible();
   });
 
-  test("privacy policy and terms of service load", async ({ page }) => {
+  test("Privacy Policy and Terms of Service Load Successfully", async ({ page }) => {
     await page.goto("/privacy-policy");
     await expect(page.getByRole("heading", { name: "Privacy Policy" })).toBeVisible();
 
@@ -24,7 +24,7 @@ test.describe("Public Routes & Unauthenticated Flow", () => {
     await expect(page.getByRole("heading", { name: "Terms of Service" })).toBeVisible();
   });
 
-  test("dashboard redirects to login for unauthenticated users", async ({ page }) => {
+  test("Dashboard Redirects Unauthenticated Users to Login", async ({ page }) => {
     await page.goto("/dashboard");
     // It should load and then redirect to login
     await page.waitForURL(/.*\/login/);
@@ -83,7 +83,7 @@ test.describe("Authenticated Flow via Network Mocking", () => {
     );
   });
 
-  test("header shows authenticated links and hides settings", async ({ page }) => {
+  test("Header Displays Authenticated Links and Hides Settings", async ({ page }) => {
     await page.goto("/");
     // Check for "My Invoices" link which shows up when logged in
     const myInvoices = page.getByRole("link", { name: /My Invoices/i });
@@ -102,7 +102,7 @@ test.describe("Authenticated Flow via Network Mocking", () => {
     await expect(page.getByText("test@example.com")).toBeVisible();
   });
 
-  test("auth callback flow completes successfully", async ({ page }) => {
+  test("Authentication Callback Flow Completes Successfully", async ({ page }) => {
     // Navigate to the callback page with a fake session (simulating the end of OAuth flow)
     await page.goto("/auth/callback?next=/generator");
 

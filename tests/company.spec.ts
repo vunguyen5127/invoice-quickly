@@ -36,7 +36,7 @@ test.describe('Company and Invoice Management UI', () => {
     }, { key: storageKey, value: fakeSession });
   });
 
-  test('can see dashboard and open create company modal', async ({ page }) => {
+  test('Dashboard Displays Correctly and Opens Create Company Modal', async ({ page }) => {
     await page.goto('/dashboard');
     
     // Heading should be "Businesses"
@@ -52,7 +52,7 @@ test.describe('Company and Invoice Management UI', () => {
     await expect(page.getByPlaceholder('Acme Corp')).toBeVisible();
   });
 
-  test('mobile share button is visible on generator', async ({ page }) => {
+  test('Mobile Share Button is Visible on Generator Page', async ({ page }) => {
     // Force mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/generator');

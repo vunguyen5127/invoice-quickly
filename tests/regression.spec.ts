@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { mockSupabaseUser, seedAuthenticatedSession } from "./helpers/auth";
 
 test.describe("Regression Coverage", () => {
-  test("public pages load", async ({ page }) => {
+  test("Public Pages Load Successfully", async ({ page }) => {
     const pages = ["/", "/about", "/contact", "/privacy", "/privacy-policy", "/terms", "/generator"];
 
     for (const route of pages) {
@@ -17,7 +17,7 @@ test.describe("Regression Coverage", () => {
     await expect(page.locator("body")).toContainText("urlset");
   });
 
-  test("generator supports basic create flow", async ({ page }) => {
+  test("Generator Supports Basic Invoice Creation Flow", async ({ page }) => {
     await page.goto("/generator");
 
     await page
@@ -42,7 +42,7 @@ test.describe("Regression Coverage", () => {
     await expect(page.getByText(/Regression Client/i).first()).toBeVisible();
   });
 
-  test("protected pages redirect when unauthenticated", async ({ page }) => {
+  test("Protected Pages Redirect Unauthenticated Users", async ({ page }) => {
     const protectedRoutes = ["/dashboard", "/dashboard/settings", "/admin"];
 
     for (const route of protectedRoutes) {
@@ -52,7 +52,7 @@ test.describe("Regression Coverage", () => {
     }
   });
 
-  test("authenticated session can open dashboard and settings", async ({ page }) => {
+  test("Authenticated Session Accesses Dashboard and Settings", async ({ page }) => {
     await mockSupabaseUser(page);
     await seedAuthenticatedSession(page);
 

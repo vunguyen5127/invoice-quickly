@@ -4,7 +4,7 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://wvugwussem
 
 test.describe('Invoice Creation Flows', () => {
 
-  test('Free User Flow: Can create and prepare an invoice for download', async ({ page }) => {
+  test('Free User Flow: Creates and Prepares an Invoice for Download', async ({ page }) => {
     // 1. Visit landing page and go to generator
     await page.goto('/');
     await page.locator('a:has-text("Create Invoice Free")').first().click();
@@ -49,7 +49,7 @@ test.describe('Invoice Creation Flows', () => {
     }
   });
 
-  test('Authenticated Flow: Can create and save an invoice from a company', async ({ page }) => {
+  test('Authenticated Flow: Creates and Saves an Invoice from a Company', async ({ page }) => {
     // 1. Setup fake session
     const supabaseUrlParts = SUPABASE_URL.split('//')[1]?.split('.')[0]; 
     const storageKey = `sb-${supabaseUrlParts}-auth-token`;
@@ -86,7 +86,7 @@ test.describe('Invoice Creation Flows', () => {
     await expect(saveBtn).toBeVisible();
   });
 
-  test('Comprehensive Flow: Can create an invoice with all fields, tax, discount, shipping, notes, and terms', async ({ page }) => {
+  test('Comprehensive Flow: Creates an Invoice with All Optional Fields', async ({ page }) => {
     await page.goto('/generator');
 
     // 1. Fill Sender & Client Details
