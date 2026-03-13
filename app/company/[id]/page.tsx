@@ -43,15 +43,18 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         return;
       }
 
-      const companyData = await getCompanyById(session.access_token, resolvedParams.id);
+      const [companyData, invoiceData] = await Promise.all([
+        getCompanyById(session.access_token, resolvedParams.id),
+        getCompanyInvoices(session.access_token, resolvedParams.id)
+      ]);
+
       if (!companyData) {
         alert("Company not found");
         router.push("/dashboard");
         return;
       }
+      
       setCompany(companyData);
-
-      const invoiceData = await getCompanyInvoices(session.access_token, resolvedParams.id);
       setInvoices(invoiceData);
       setLoading(false);
     };

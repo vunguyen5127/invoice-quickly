@@ -17,11 +17,7 @@ function getServerSupabase(token: string) {
 
 export async function getUserCompanies(token: string) {
   const supabase = getServerSupabase(token);
-  
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return [];
-
-  // Get companies and sum of their invoices if possible, or just raw companies for now
+  // RLS handles the user filtering based on the session token
   const { data, error } = await supabase
     .from("companies")
     .select(`
@@ -126,10 +122,7 @@ export async function deleteCompany(token: string, id: string) {
 
 export async function getCompanyInvoices(token: string, companyId: string) {
   const supabase = getServerSupabase(token);
-  
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return [];
-
+  // RLS handles authorization based on the Bearer token
   const { data, error } = await supabase
     .from("invoices")
     .select("*")
