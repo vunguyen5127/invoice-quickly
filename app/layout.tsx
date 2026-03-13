@@ -148,7 +148,7 @@ export default function RootLayout({
               "@type": "Organization",
               name: "InvoiceQuickly",
               url: "https://invoice-quickly.com",
-              logo: "https://invoice-quickly.com/logo.png",
+              logo: "https://invoice-quickly.com/logo.svg",
               description: "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark.",
               sameAs: [],
             }),

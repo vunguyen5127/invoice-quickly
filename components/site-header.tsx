@@ -54,7 +54,7 @@ export function SiteHeader() {
           className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
           aria-label="InvoiceQuickly — Free Invoice Generator"
         >
-          <img src="/logo.png" alt="InvoiceQuickly Logo — Free Online Invoice Generator" className="h-10 w-10 object-contain" width={40} height={40} />
+          <img src="/logo.svg" alt="InvoiceQuickly Logo — Free Online Invoice Generator" className="h-10 w-10 object-contain" width={40} height={40} />
           <span>InvoiceQuickly</span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2 text-zinc-600 dark:text-zinc-400">

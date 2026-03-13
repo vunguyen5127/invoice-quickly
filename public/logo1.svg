@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <!-- Lightning bolt path to match the original Vercel/NextJS style Zap -->
+    <path id="bolt" d="M 160 12 L 80 102 L 125 102 L 95 180 L 175 90 L 130 90 Z" />
+    
+    <!-- Mask to create strict transparent padding around the lightning bolt -->
+    <mask id="boltMask">
+      <rect width="192" height="192" fill="white" />
+      <use href="#bolt" fill="black" stroke="black" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+    </mask>
+  </defs>
+
+  <!-- #0070f3 is the vibrant brand blue standard -->
+  <g mask="url(#boltMask)" stroke="#0070f3" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- Main document body border -->
+    <rect x="24" y="20" width="128" height="152" rx="10" />
+    
+    <!-- Inner top box -->
+    <rect x="46" y="44" width="60" height="24" rx="2" />
+    
+    <!-- Horizontal text lines matching standard invoice icon look -->
+    <line x1="46" y1="92" x2="130" y2="92" />
+    <line x1="46" y1="112" x2="130" y2="112" />
+    <line x1="46" y1="132" x2="130" y2="132" />
+    <line x1="46" y1="152" x2="110" y2="152" />
+    
+  </g>
+  
+  <!-- Right-bottom solid square matching original -->
+  <rect x="124" y="146" width="14" height="14" rx="2" fill="#0070f3" stroke="none" mask="url(#boltMask)" />
+
+  <!-- Final lightning bolt overlay -->
+  <use href="#bolt" fill="#0070f3" stroke="#0070f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
