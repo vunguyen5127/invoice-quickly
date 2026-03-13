@@ -7,8 +7,11 @@ import { getCompanyById, getCompanyInvoices, deleteInvoice } from "@/app/dashboa
 import { format } from "date-fns";
 import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy } from "lucide-react";
 import Link from "next/link";
-import { EditCompanyModal } from "@/components/edit-company-modal";
-import { ConfirmModal } from "@/components/confirm-modal";
+import dynamic from "next/dynamic";
+import { InvoicesSkeleton } from "@/components/invoices-skeleton";
+
+const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
+const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { use } from "react";
 import { getCurrencySymbol } from "@/types/invoice";
 
@@ -155,11 +158,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   );
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
-    );
+    return <InvoicesSkeleton />;
   }
 
   return (

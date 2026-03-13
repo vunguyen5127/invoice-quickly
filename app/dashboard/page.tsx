@@ -8,9 +8,12 @@ import { format } from "date-fns";
 import { Loader2, Trash2, Plus, Building2, ArrowRight, Settings } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
-import { CreateCompanyModal } from "@/components/create-company-modal";
-import { EditCompanyModal } from "@/components/edit-company-modal";
-import { ConfirmModal } from "@/components/confirm-modal";
+import dynamic from "next/dynamic";
+import { DashboardSkeleton } from "@/components/dashboard-skeleton";
+
+const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then(mod => mod.CreateCompanyModal));
+const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
+const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 
 export default function Dashboard() {
   const [companies, setCompanies] = useState<any[]>([]);
@@ -75,11 +78,7 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   return (

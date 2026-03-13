@@ -8,6 +8,7 @@ import { InvoiceState } from "@/types/invoice";
 import { Download, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 
 export default function ShareInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const [invoice, setInvoice] = useState<InvoiceState | null>(null);
@@ -41,11 +42,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
-    );
+    return <InvoiceViewSkeleton />;
   }
 
   if (!invoice) {

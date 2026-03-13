@@ -15,6 +15,7 @@ import { use } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
+import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 
 export default function EditInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
@@ -110,11 +111,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
   };
 
   if (loading) {
-     return (
-        <div className="flex justify-center items-center min-h-[50vh]">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-        </div>
-      );
+     return <InvoiceEditSkeleton />;
   }
 
   return (

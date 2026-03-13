@@ -12,10 +12,13 @@ import { getUserCompanies } from "@/app/dashboard/actions";
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
 import { getBaseUrl } from "@/utils/url";
-import { CreateCompanyModal } from "@/components/create-company-modal";
+import dynamic from "next/dynamic";
+import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
+
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
-import { SuccessModal } from "@/components/success-modal";
+const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then(mod => mod.CreateCompanyModal));
+const SuccessModal = dynamic(() => import("@/components/success-modal").then(mod => mod.SuccessModal));
 import { useLanguage } from "@/contexts/language-context";
 
 function CreateInvoiceContent() {
@@ -413,7 +416,7 @@ function CreateInvoiceContent() {
 
 export default function CreateInvoice() {
   return (
-    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center text-zinc-500">Loading editor...</div>}>
+    <React.Suspense fallback={<InvoiceEditSkeleton />}>
       <CreateInvoiceContent />
     </React.Suspense>
   );

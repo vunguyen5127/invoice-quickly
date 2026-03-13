@@ -10,7 +10,10 @@ import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
 import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2 } from "lucide-react";
 import Link from "next/link";
-import { ConfirmModal } from "@/components/confirm-modal";
+import dynamic from "next/dynamic";
+import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
+
+const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { Tooltip } from "@/components/tooltip";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
@@ -100,11 +103,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
-    );
+    return <InvoiceViewSkeleton />;
   }
 
   if (!invoice) {
