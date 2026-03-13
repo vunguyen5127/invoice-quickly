@@ -62,10 +62,10 @@ export function SiteHeader() {
             <>
               <Link
                 href="/dashboard"
-                className="text-[13px] font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80 transition-all hidden sm:flex items-center gap-2 rounded-[5px] px-3 py-1.5 mr-1"
+                className="text-[13px] font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80 transition-all flex items-center gap-2 rounded-[5px] px-3 py-1.5 mr-1"
               >
                 <LayoutDashboard className="w-4 h-4" />
-                {t.myInvoices}
+                <span className="hidden sm:inline">{t.myInvoices}</span>
               </Link>
             </>
           )}
