@@ -84,15 +84,31 @@ export default function OgImage() {
       <div
         style={{
           display: "flex",
-          gap: "32px",
+          gap: "30px",
           color: "#60a5fa",
           fontSize: "18px",
           fontWeight: 600,
+          alignItems: "center",
         }}
       >
-        <span>✓ Free PDF Download</span>
-        <span>✓ No Watermark</span>
-        <span>✓ 20+ Languages</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span>Free PDF Download</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span>No Watermark</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          <span>20+ Languages</span>
+        </div>
       </div>
     </div>,
     { ...size },
