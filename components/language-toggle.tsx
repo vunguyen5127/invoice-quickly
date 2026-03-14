@@ -5,7 +5,7 @@ import { Globe, Check } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { Tooltip } from "./tooltip";
 
-const languages = [
+export const languages = [
   { code: "EN", name: "English" },
   { code: "AR", name: "العربية" },
   { code: "ZH", name: "中文 (Chinese)" },
@@ -55,7 +55,7 @@ export function LanguageToggle() {
       <Tooltip content="Select language" position="bottom">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex items-center justify-center rounded-[5px] p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="hidden sm:inline-flex items-center justify-center rounded-[5px] p-2 h-9 w-9 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="Select language"
           aria-expanded={isOpen}
         >

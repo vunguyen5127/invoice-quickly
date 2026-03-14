@@ -107,4 +107,7 @@ export const vn: Translations = {
   light: "Sáng",
   dark: "Tối",
   system: "Hệ thống",
+  settings_preferences: "Tùy chọn",
+  language: "Ngôn ngữ",
+  language_preference_desc: "Chọn ngôn ngữ hiển thị ưa thích của bạn",
 };

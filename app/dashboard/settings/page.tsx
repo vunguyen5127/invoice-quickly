@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { ThemeToggle, ThemeSelector } from "@/components/theme-toggle";
+import { languages } from "@/components/language-toggle";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 
 export default function SettingsPage() {
-  const { t, lang } = useLanguage();
+  const { t, lang, setLang } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
@@ -91,7 +92,7 @@ export default function SettingsPage() {
       <div className={sectionClass}>
         <div className={headerClass}>
           <Monitor className="w-4 h-4 text-emerald-500" />
-           Preferences
+           {t.settings_preferences || "Preferences"}
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
@@ -99,11 +100,19 @@ export default function SettingsPage() {
                <Globe className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Language</p>
-              <p className="text-xs text-zinc-500">Choose your preferred display language</p>
+              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{t.language || "Language"}</p>
+              <p className="text-xs text-zinc-500">{t.language_preference_desc || "Choose your preferred display language"}</p>
             </div>
           </div>
-          <p className="text-sm font-bold text-blue-600">{lang}</p>
+          <select 
+            value={lang} 
+            onChange={(e) => setLang(e.target.value as any)}
+            className="text-sm font-bold text-blue-600 bg-transparent border-none focus:ring-0 cursor-pointer outline-none"
+          >
+            {languages.map(l => (
+              <option key={l.code} value={l.code}>{l.name}</option>
+            ))}
+          </select>
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">

@@ -105,6 +105,9 @@ export const en = {
   light: "Light",
   dark: "Dark",
   system: "System",
+  settings_preferences: "Preferences",
+  language: "Language",
+  language_preference_desc: "Choose your preferred display language",
 };
 
 export type Translations = typeof en;
