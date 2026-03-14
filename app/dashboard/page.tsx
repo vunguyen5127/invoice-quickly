@@ -5,11 +5,12 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenTool } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
+import { useLanguage } from "@/contexts/language-context";
 
 const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then(mod => mod.CreateCompanyModal));
 const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const [editingCompany, setEditingCompany] = useState<any | null>(null);
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { t } = useLanguage();
   const router = useRouter();
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export default function Dashboard() {
     <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Businesses</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">{t.myInvoices}</h1>
           <p className="text-zinc-500 mt-1">Select a company to manage its invoices</p>
         </div>
         <div className="flex items-center gap-2">
@@ -152,7 +154,7 @@ export default function Dashboard() {
                         onClick={(e) => handleEdit(e, company)}
                         className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-[5px] transition-all"
                       >
-                        <PenTool className="w-4.5 h-4.5" />
+                        <PenLine className="w-4.5 h-4.5" />
                       </button>
                     </Tooltip>
                     <Tooltip content="Delete Company" position="left">

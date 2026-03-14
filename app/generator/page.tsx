@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { FileDown, Download, Receipt, Send, Plus, ArrowRight, Share2, Save, MoreHorizontal, X, Building2 } from "lucide-react";
+import { FileDown, Download, Receipt, Send, Plus, ArrowRight, Share2, Save, MoreHorizontal, X, Building2, LayoutDashboard } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies } from "@/app/dashboard/actions";
@@ -203,7 +203,7 @@ function CreateInvoiceContent() {
                   href="/dashboard"
                   className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150"
                 >
-                  <Receipt className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.myInvoices}</span>
+                  <LayoutDashboard className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.myInvoices}</span>
                 </Link>
               )}
               <button

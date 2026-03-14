@@ -183,7 +183,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                  onClick={() => setIsEditModalOpen(true)}
                  className="p-1 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
               >
-                <PenTool className="w-3.5 h-3.5" />
+                <PenLine className="w-3.5 h-3.5" />
               </button>
             </Tooltip>
           </div>
