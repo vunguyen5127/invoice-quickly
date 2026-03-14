@@ -196,31 +196,33 @@ function CreateInvoiceContent() {
             <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 object-contain" />
             <span>Invoice-Quickly</span>
           </Link>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2 mr-1">
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-4 py-2 rounded-[5px] font-medium text-sm border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 transition-colors shadow-sm"
+                className="flex items-center justify-center gap-2 px-4 h-9 rounded-[5px] font-medium text-sm bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all shadow-sm border border-zinc-200 dark:border-zinc-800"
               >
                 <Share2 className="w-4 h-4" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button
                 onClick={handleSaveClick}
                 disabled={isSaving || !canSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-[5px] font-medium text-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center justify-center gap-2 px-4 h-9 rounded-[5px] font-medium text-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-50 shadow-sm"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-[5px] font-medium text-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center justify-center gap-2 px-4 h-9 rounded-[5px] font-medium text-sm bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all disabled:opacity-50 shadow-sm"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
             </div>
-            <ThemeToggle />
-            <AuthButton />
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <AuthButton />
+            </div>
           </div>
         </div>
       </header>
@@ -228,7 +230,7 @@ function CreateInvoiceContent() {
       <div className="container mx-auto px-4 sm:px-8 py-8 max-w-[1600px] flex-1">
         <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
           {/* Left Column: Form */}
-          <div className="w-full xl:w-1/2">
+          <div className="flex-1">
             <div className="h-10 flex items-center mb-6">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.editor}</h2>
             </div>
@@ -238,13 +240,13 @@ function CreateInvoiceContent() {
           </div>
 
           {/* Right Column: Preview */}
-          <div className="w-full xl:w-1/2 xl:sticky xl:top-24">
+          <div className="flex-1 xl:sticky xl:top-12">
             <div className="h-10 flex items-center mb-6">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
             </div>
             <div className="w-full rounded-[5px] ring-2 ring-blue-400/50">
               <div className="w-full bg-zinc-50 dark:bg-zinc-950 rounded-[5px] overflow-hidden [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-                <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top transition-all">
+                <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top-left transition-all">
                   <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
                 </div>
               </div>
