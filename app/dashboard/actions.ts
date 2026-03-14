@@ -17,22 +17,46 @@ function getServerSupabase(token: string) {
 
 export async function getUserCompanies(token: string) {
   const supabase = getServerSupabase(token);
-  // RLS handles the user filtering based on the session token
-  const { data, error } = await supabase
+  
+  // Fetch companies for the user
+  const { data: companies, error: compError } = await supabase
     .from("companies")
-    .select(`
-      *,
-      invoices (id)
-    `)
-    .is("invoices.deleted_at", null)
+    .select("id, name, email, logo_url, created_at")
     .order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Error fetching companies:", error);
+  if (compError) {
+    console.error("Error fetching companies:", compError);
     return [];
   }
 
-  return data;
+  if (!companies || companies.length === 0) return [];
+
+  // Fetch only the company_id for all non-deleted invoices belonging to these companies
+  // This is much faster than joining full invoice rows
+  const companyIds = companies.map(c => c.id);
+  const { data: invoices, error: invError } = await supabase
+    .from("invoices")
+    .select("company_id")
+    .in("company_id", companyIds)
+    .is("deleted_at", null);
+
+  if (invError) {
+    console.error("Error fetching invoice counts:", invError);
+    // Continue with companies but zero counts
+    return companies.map(c => ({ ...c, invoices: [] }));
+  }
+
+  // Group counts by company_id
+  const countMap = (invoices || []).reduce((acc: Record<string, number>, curr) => {
+    acc[curr.company_id] = (acc[curr.company_id] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Return companies with a mocked invoices array length for compatibility
+  return companies.map(c => ({
+    ...c,
+    invoices: new Array(countMap[c.id] || 0).fill(null)
+  }));
 }
 
 export async function createCompany(token: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {

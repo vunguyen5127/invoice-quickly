@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, Settings } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, PenTool } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
@@ -25,21 +25,25 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
+    let isMounted = true;
     const loadData = async () => {
       if (!supabase) return;
       
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        router.push("/login?redirect=/dashboard");
+        if (isMounted) router.push("/login?redirect=/dashboard");
         return;
       }
 
       const data = await getUserCompanies(session.access_token);
-      setCompanies(data);
-      setLoading(false);
+      if (isMounted) {
+        setCompanies(data);
+        setLoading(false);
+      }
     };
 
     loadData();
+    return () => { isMounted = false; };
   }, [router]);
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
@@ -148,7 +152,7 @@ export default function Dashboard() {
                         onClick={(e) => handleEdit(e, company)}
                         className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-[5px] transition-all"
                       >
-                        <Settings className="w-4.5 h-4.5" />
+                        <PenTool className="w-4.5 h-4.5" />
                       </button>
                     </Tooltip>
                     <Tooltip content="Delete Company" position="left">
