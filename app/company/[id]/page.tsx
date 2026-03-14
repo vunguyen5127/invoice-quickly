@@ -15,11 +15,12 @@ const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal")
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { use } from "react";
 import { getCurrencySymbol } from "@/types/invoice";
+import { useLanguage } from "@/contexts/language-context";
 
 type SortField = "invoice_number" | "client_name" | "created_at" | "total_amount";
 type SortDir = "asc" | "desc";
 
-const ITEMS_PER_PAGE = 10;
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export default function CompanyDashboardPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -29,6 +30,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [invoiceToDelete, setInvoiceToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { t } = useLanguage();
   const router = useRouter();
 
   // Search, Sort, Pagination state
@@ -36,6 +38,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     const loadData = async () => {
@@ -106,10 +109,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   }, [invoices, searchQuery, sortField, sortDir]);
 
   // Pagination
-  const totalPages = Math.max(1, Math.ceil(filteredInvoices.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(1, Math.ceil(filteredInvoices.length / itemsPerPage));
   const paginatedInvoices = filteredInvoices.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   // Reset to page 1 when search changes
@@ -164,39 +167,34 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
-      <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-6 transition-colors">
-        <ArrowLeft className="w-4 h-4 mr-1 sm:mr-2" />
-        <span className="hidden sm:inline">Back to Companies</span>
-        <span className="sm:hidden">Back</span>
-      </Link>
-
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="shrink-0 w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-[5px] flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden bg-white shadow-sm">
-            {company.logo_url ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
-            ) : (
-              <Building2 className="w-5 h-5 text-zinc-500" />
-            )}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        {/* Breadcrumb & Company Info */}
+        <nav className="flex items-center gap-1.5 text-sm">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+            {t.dashboard}
+          </Link>
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          <div className="flex items-center gap-2 group">
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[300px]">
+              {company.name}
+            </span>
+            <Tooltip content="Edit Company Details">
+              <button
+                 onClick={() => setIsEditModalOpen(true)}
+                 className="p-1 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
+              >
+                <PenTool className="w-3.5 h-3.5" />
+              </button>
+            </Tooltip>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">{company.name}</h1>
-          <Tooltip content="Edit Company Details" position="right">
-            <button
-               onClick={() => setIsEditModalOpen(true)}
-               className="shrink-0 p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-            >
-              <PenTool className="w-4 h-4" />
-            </button>
-          </Tooltip>
-        </div>
+        </nav>
+
         <Link 
           href={`/company/${resolvedParams.id}/new`}
-          className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm whitespace-nowrap w-full sm:w-auto shrink-0"
+          className="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] whitespace-nowrap shrink-0"
         >
           <Plus className="w-4 h-4" />
-          <span className="hidden sm:inline">Create Invoice</span>
-          <span className="sm:hidden">New Invoice</span>
+          <span>Create Invoice</span>
         </Link>
       </div>
 
@@ -208,15 +206,32 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             <span className="ml-2 text-sm font-normal text-zinc-400">({filteredInvoices.length})</span>
           </h2>
           {invoices.length > 0 && (
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-              <input
-                type="text"
-                placeholder="Search invoices..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
-              />
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+              <div className="flex items-center gap-2 text-sm text-zinc-500 w-full sm:w-auto">
+                <span className="whitespace-nowrap">Show:</span>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all cursor-pointer"
+                >
+                  {PAGE_SIZE_OPTIONS.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <input
+                  type="text"
+                  placeholder="Search invoices..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                />
+              </div>
             </div>
           )}
         </div>
@@ -317,7 +332,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             {totalPages > 1 && (
               <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-between">
                 <p className="text-sm text-zinc-500">
-                  Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredInvoices.length)} of {filteredInvoices.length}
+                  Showing {((currentPage - 1) * itemsPerPage) + 1}–{Math.min(currentPage * itemsPerPage, filteredInvoices.length)} of {filteredInvoices.length}
                 </p>
                 <div className="flex items-center gap-1">
                   <button

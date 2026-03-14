@@ -8,15 +8,17 @@ import { deleteInvoice } from "@/app/dashboard/actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
-import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2 } from "lucide-react";
+import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { Tooltip } from "@/components/tooltip";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useLanguage();
   const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -123,49 +125,56 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <div className="flex items-center gap-4">
-          <Link
-            href={invoice._companyId ? `/company/${invoice._companyId}` : "/dashboard"}
-            className="p-2 -ml-2 text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:text-white dark:hover:bg-zinc-800 rounded-lg transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-sm">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+            {t.dashboard}
           </Link>
-          <div className="min-w-0 max-w-full">
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">
-              Invoice #{invoice.details.invoiceNumber}
-            </h1>
-            <Tooltip content={invoice.client?.name || ""} position="bottom">
-              <p className="text-sm text-zinc-500 truncate max-w-[250px] sm:max-w-[350px] md:max-w-[500px] cursor-default">
-                {invoice.client?.name ? invoice.client.name.replace(/\n/g, ', ') : ""}
-              </p>
-            </Tooltip>
-          </div>
-        </div>
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          {invoice._companyId && (
+            <>
+              <Link href={`/company/${invoice._companyId}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
+                {invoice.company.name || t.company}
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+            </>
+          )}
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[160px]">
+            Invoice #{invoice.details.invoiceNumber}
+          </span>
+        </nav>
 
-        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-          <button
-            onClick={() => setShowDeleteModal(true)}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 rounded-[5px] hover:bg-red-100 dark:hover:bg-red-900/40 font-medium transition-colors border border-red-200 dark:border-red-900/30"
-          >
-            <Trash2 className="w-4 h-4" /> <span className="hidden sm:inline">Delete</span>
-          </button>
+        <div className="flex items-center gap-2 w-full sm:w-auto md:justify-end">
+          <Tooltip content="Delete Invoice">
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="p-2.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors border border-transparent hover:border-red-100 dark:hover:border-red-900/30"
+            >
+              <Trash2 className="w-5 h-5" />
+            </button>
+          </Tooltip>
           
+          <Tooltip content="Share Invoice">
+            <button 
+              onClick={handleShare}
+              className="p-2.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors border border-transparent hover:border-blue-100 dark:hover:border-blue-900/30"
+            >
+              <Share2 className="w-5 h-5" />
+            </button>
+          </Tooltip>
           
-          <button 
-            onClick={handleShare}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 rounded-[5px] hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium transition-colors border border-zinc-200 dark:border-zinc-800 shadow-sm"
-          >
-            <Share2 className="w-4 h-4" /> <span className="hidden sm:inline">Share</span>
-          </button>
-          
-          <button 
-            onClick={handleDownload}
-            disabled={isGenerating}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm"
-          >
-            <Download className="w-4 h-4" /> <span className="hidden sm:inline">{isGenerating ? "Gen..." : "Download"}</span>
-          </button>
+          <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800 mx-1 hidden sm:block" />
+
+          <Tooltip content={isGenerating ? "Generating..." : "Download PDF"}>
+            <button 
+              onClick={handleDownload}
+              disabled={isGenerating}
+              className="p-2.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors border border-transparent hover:border-blue-100 dark:hover:border-blue-900/30 disabled:opacity-50"
+            >
+              {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+            </button>
+          </Tooltip>
         </div>
       </div>
 
