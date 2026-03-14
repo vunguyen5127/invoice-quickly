@@ -424,15 +424,17 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   </div>
 
                   {/* Delete Icon - absolute on desktop, positioned in card for mobile */}
-                  <Tooltip content="Remove item" position="left">
-                    <button 
-                      onClick={() => removeItem(item.id)}
-                      className="absolute right-2 top-2 md:-right-[5px] md:top-1/2 md:-translate-y-1/2 p-2 text-zinc-400 hover:text-red-500 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 focus:opacity-100"
-                      aria-label="Remove item"
-                    >
-                      <X className="w-5 h-5 border border-zinc-200 dark:border-zinc-700/50 rounded-full p-1 shadow-sm bg-white dark:bg-zinc-800" />
-                    </button>
-                  </Tooltip>
+                  <div className="absolute right-2 top-2 md:-right-2 md:top-1/2 md:-translate-y-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10">
+                    <Tooltip content="Remove item" position="left">
+                      <button 
+                        onClick={() => removeItem(item.id)}
+                        className="p-2 text-zinc-400 hover:text-red-500 transition-all focus:opacity-100"
+                        aria-label="Remove item"
+                      >
+                        <X className="w-5 h-5 border border-zinc-200 dark:border-zinc-700/50 rounded-full p-1 shadow-sm bg-white dark:bg-zinc-800" />
+                      </button>
+                    </Tooltip>
+                  </div>
                 </div>
               ))}
             </div>
