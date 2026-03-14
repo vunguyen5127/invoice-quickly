@@ -104,5 +104,14 @@ export const fi = {
   system: "Järjestelmä",
   settings_preferences: "Asetukset",
   language: "Kieli",
-  language_preference_desc: "Valitse haluamasi kieli",
+  language_preference_desc: "Valitse haluamasi näyttökieli",
+  // Footer
+  footerLinkProduct: "Product",
+  footerLinkResources: "Resources",
+  footerLinkAbout: "About Us",
+  footerLinkPrivacy: "Privacy Policy",
+  footerLinkTerms: "Terms of Service",
+  footerLinkContact: "Contact Us",
+  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerRightsReserved: "All rights reserved.",
 };

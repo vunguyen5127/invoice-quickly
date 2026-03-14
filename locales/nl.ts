@@ -104,5 +104,14 @@ export const nl = {
   system: "Systeem",
   settings_preferences: "Voorkeuren",
   language: "Taal",
-  language_preference_desc: "Kies uw voorkeurstaal",
+  language_preference_desc: "Kies uw gewenste weergavetaal",
+  // Footer
+  footerLinkProduct: "Product",
+  footerLinkResources: "Resources",
+  footerLinkAbout: "About Us",
+  footerLinkPrivacy: "Privacy Policy",
+  footerLinkTerms: "Terms of Service",
+  footerLinkContact: "Contact Us",
+  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerRightsReserved: "All rights reserved.",
 };

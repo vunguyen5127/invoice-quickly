@@ -104,5 +104,14 @@ export const th = {
   system: "ตามระบบ",
   settings_preferences: "ความชอบ",
   language: "ภาษา",
-  language_preference_desc: "เลือกภาษาที่ต้องการให้แสดงผล",
+  language_preference_desc: "เลือกภาษาที่แสดงที่คุณต้องการ",
+  // Footer
+  footerLinkProduct: "Product",
+  footerLinkResources: "Resources",
+  footerLinkAbout: "About Us",
+  footerLinkPrivacy: "Privacy Policy",
+  footerLinkTerms: "Terms of Service",
+  footerLinkContact: "Contact Us",
+  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerRightsReserved: "All rights reserved.",
 };

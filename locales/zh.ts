@@ -105,4 +105,13 @@ export const zh = {
   settings_preferences: "首选项",
   language: "语言",
   language_preference_desc: "选择您的首选显示语言",
+  // Footer
+  footerLinkProduct: "Product",
+  footerLinkResources: "Resources",
+  footerLinkAbout: "About Us",
+  footerLinkPrivacy: "Privacy Policy",
+  footerLinkTerms: "Terms of Service",
+  footerLinkContact: "Contact Us",
+  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerRightsReserved: "All rights reserved.",
 };

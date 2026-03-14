@@ -110,4 +110,13 @@ export const vn: Translations = {
   settings_preferences: "Tùy chọn",
   language: "Ngôn ngữ",
   language_preference_desc: "Chọn ngôn ngữ hiển thị ưa thích của bạn",
+  // Footer
+  footerLinkProduct: "Sản phẩm",
+  footerLinkResources: "Tài nguyên",
+  footerLinkAbout: "Về chúng tôi",
+  footerLinkPrivacy: "Chính sách bảo mật",
+  footerLinkTerms: "Điều khoản dịch vụ",
+  footerLinkContact: "Liên hệ",
+  footerTagline: "Trình tạo hóa đơn trực tuyến miễn phí tốt nhất được các freelancer và doanh nghiệp nhỏ trên toàn thế giới tin dùng.",
+  footerRightsReserved: "Bảo lưu mọi quyền.",
 };

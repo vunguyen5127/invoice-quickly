@@ -104,5 +104,14 @@ export const ru = {
   system: "Системная",
   settings_preferences: "Предпочтения",
   language: "Язык",
-  language_preference_desc: "Выберите предпочтительный язык отображения",
+  language_preference_desc: "Выберите предпочтительный язык интерфейса",
+  // Footer
+  footerLinkProduct: "Product",
+  footerLinkResources: "Resources",
+  footerLinkAbout: "About Us",
+  footerLinkPrivacy: "Privacy Policy",
+  footerLinkTerms: "Terms of Service",
+  footerLinkContact: "Contact Us",
+  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerRightsReserved: "All rights reserved.",
 };

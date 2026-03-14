@@ -108,6 +108,15 @@ export const en = {
   settings_preferences: "Preferences",
   language: "Language",
   language_preference_desc: "Choose your preferred display language",
+  // Footer
+  footerLinkProduct: "Product",
+  footerLinkResources: "Resources",
+  footerLinkAbout: "About Us",
+  footerLinkPrivacy: "Privacy Policy",
+  footerLinkTerms: "Terms of Service",
+  footerLinkContact: "Contact Us",
+  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerRightsReserved: "All rights reserved.",
 };
 
 export type Translations = typeof en;

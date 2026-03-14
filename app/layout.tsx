@@ -16,6 +16,7 @@ import { LanguageProvider } from "@/contexts/language-context";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 import { LogUserSession } from "@/components/log-user-session";
+import { SiteFooter } from "@/components/site-footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -164,6 +165,7 @@ export default function RootLayout({
             <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
               <SiteHeader />
               <main className="flex-1">{children}</main>
+              <SiteFooter />
             </div>
           </LanguageProvider>
         </ThemeProvider>
