@@ -1,6 +1,35 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
+/**
+ * @openapi
+ * /api/cron/keep-alive:
+ *   get:
+ *     summary: Ping Supabase to keep the project active
+ *     description: This endpoint is called by a cron job to prevent the Supabase project from going into hibernation.
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully pinged Supabase
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 latestLogAt:
+ *                   type: string
+ *                 totalLogs:
+ *                   type: integer
+ *       401:
+ *         description: Unauthorized - missing or invalid CRON_SECRET
+ *       500:
+ *         description: Internal Server Error - Supabase configuration missing or other error
+ */
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
