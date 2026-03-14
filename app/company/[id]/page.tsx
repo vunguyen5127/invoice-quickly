@@ -7,6 +7,7 @@ import { getCompanyById, getCompanyInvoices, deleteInvoice } from "@/app/dashboa
 import { format } from "date-fns";
 import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy } from "lucide-react";
 import Link from "next/link";
+import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
 import { InvoicesSkeleton } from "@/components/invoices-skeleton";
 
@@ -180,13 +181,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             )}
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">{company.name}</h1>
-          <button
-             onClick={() => setIsEditModalOpen(true)}
-             className="shrink-0 p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-             title="Edit Company Details"
-          >
-            <PenTool className="w-4 h-4" />
-          </button>
+          <Tooltip content="Edit Company Details" position="right">
+            <button
+               onClick={() => setIsEditModalOpen(true)}
+               className="shrink-0 p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+            >
+              <PenTool className="w-4 h-4" />
+            </button>
+          </Tooltip>
         </div>
         <Link 
           href={`/company/${resolvedParams.id}/new`}
@@ -239,66 +241,70 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
               <table className="w-full text-left text-sm whitespace-nowrap">
                 <thead className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
                   <tr>
-                    <th className="px-6 py-4 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
+                    <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
                       Invoice Number <SortIcon field="invoice_number" />
                     </th>
-                    <th className="px-6 py-4 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
+                    <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
                       Client <SortIcon field="client_name" />
                     </th>
-                    <th className="px-6 py-4 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
+                    <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
                       Date Created <SortIcon field="created_at" />
                     </th>
-                    <th className="px-6 py-4 font-medium text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
+                    <th className="px-6 py-2.5 font-medium text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
                       Amount <SortIcon field="total_amount" />
                     </th>
-                    <th className="px-6 py-4 font-medium text-right">Actions</th>
+                    <th className="px-6 py-2.5 font-medium text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10">
                   {paginatedInvoices.map((inv) => (
-                    <tr key={inv.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-                      <td className="px-6 py-4 font-medium text-zinc-900 dark:text-zinc-100">
+                    <tr key={inv.id} className="even:bg-zinc-50/50 dark:even:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
+                      <td className="px-6 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
                         {inv.invoice_number}
                       </td>
-                      <td className="px-6 py-4 max-w-[200px] truncate" title={inv.client_name}>
+                      <td className="px-6 py-2.5 max-w-[200px] truncate" title={inv.client_name}>
                         {inv.client_name}
                       </td>
-                      <td className="px-6 py-4 text-zinc-500">
+                      <td className="px-6 py-2.5 text-zinc-500">
                         {format(new Date(inv.created_at), "MMM dd, yyyy")}
                       </td>
-                      <td className="px-6 py-4 font-medium text-right">
+                      <td className="px-6 py-2.5 font-medium text-right">
                         {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toFixed(2)}
                       </td>
-                      <td className="px-6 py-4 text-right">
+                      <td className="px-6 py-2.5 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          <Link
-                            href={`/invoice/${inv.id}/edit`}
-                            className="p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors"
-                            title="Edit Invoice"
-                          >
-                            <PenLine className="w-4 h-4" />
-                          </Link>
-                          <button
-                            onClick={() => handleDuplicate(inv.id)}
-                            className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
-                            title="Duplicate Invoice"
-                          >
-                            <Copy className="w-4 h-4" />
-                          </button>
-                          <Link
-                            href={`/invoice/${inv.id}`}
-                            className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
-                            title="View Invoice"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteClick(inv.id)}
-                            className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
-                            title="Delete Invoice"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <Tooltip content="Edit Invoice">
+                            <Link
+                              href={`/invoice/${inv.id}/edit`}
+                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors"
+                            >
+                              <PenLine className="w-4 h-4" />
+                            </Link>
+                          </Tooltip>
+                          <Tooltip content="Duplicate Invoice">
+                            <button
+                              onClick={() => handleDuplicate(inv.id)}
+                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                            >
+                              <Copy className="w-4 h-4" />
+                            </button>
+                          </Tooltip>
+                          <Tooltip content="View Invoice">
+                            <Link
+                              href={`/invoice/${inv.id}`}
+                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Link>
+                          </Tooltip>
+                          <Tooltip content="Delete Invoice">
+                            <button
+                              onClick={() => handleDeleteClick(inv.id)}
+                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </Tooltip>
                         </div>
                       </td>
                     </tr>

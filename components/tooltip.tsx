@@ -39,7 +39,7 @@ export function Tooltip({
 
   return (
     <div 
-      className="relative inline-block group"
+      className="relative inline-flex group"
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
       onFocus={showTooltip}

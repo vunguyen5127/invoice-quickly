@@ -151,13 +151,14 @@ export default function Dashboard() {
                         <Settings className="w-4.5 h-4.5" />
                       </button>
                     </Tooltip>
-                    <button
-                      onClick={(e) => handleDeleteClick(e, company.id)}
-                      className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-[5px] transition-all"
-                      title="Delete Company"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    <Tooltip content="Delete Company" position="left">
+                      <button
+                        onClick={(e) => handleDeleteClick(e, company.id)}
+                        className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-[5px] transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </Tooltip>
                   </div>
                 </div>
                 
