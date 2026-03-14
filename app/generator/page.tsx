@@ -198,9 +198,18 @@ function CreateInvoiceContent() {
           </Link>
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-1.5 bg-zinc-100/80 dark:bg-zinc-800/50 rounded-xl p-1">
+              {isLoggedIn && (
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150"
+                >
+                  <Receipt className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.myInvoices}</span>
+                </Link>
+              )}
               <button
                 onClick={handleShare}
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150"
+                disabled={!canSave}
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none"
               >
                 <Share2 className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
