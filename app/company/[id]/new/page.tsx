@@ -17,6 +17,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 
+import { CreateInvoiceSkeleton } from "@/components/create-invoice-skeleton";
+
 export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
   const resolvedParams = use(params);
@@ -160,11 +162,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   };
 
   if (loading) {
-     return (
-        <div className="flex justify-center items-center min-h-[50vh]">
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-        </div>
-      );
+     return <CreateInvoiceSkeleton />;
   }
 
   return (
