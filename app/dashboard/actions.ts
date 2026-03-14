@@ -15,24 +15,28 @@ function getServerSupabase(token: string) {
   );
 }
 
-export async function getUserCompanies(token: string) {
+export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
   const supabase = getServerSupabase(token);
   
-  // Fetch companies for the user
-  const { data: companies, error: compError } = await supabase
+  // Calculate range
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  // Fetch companies for the user with count
+  const { data: companies, error: compError, count } = await supabase
     .from("companies")
-    .select("id, name, email, logo_url, created_at")
-    .order("created_at", { ascending: false });
+    .select("id, name, email, logo_url, created_at", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (compError) {
     console.error("Error fetching companies:", compError);
-    return [];
+    return { data: [], totalCount: 0 };
   }
 
-  if (!companies || companies.length === 0) return [];
+  if (!companies || companies.length === 0) return { data: [], totalCount: count || 0 };
 
-  // Fetch only the company_id for all non-deleted invoices belonging to these companies
-  // This is much faster than joining full invoice rows
+  // Fetch only the company_id for all non-deleted invoices belonging to THESE paginated companies
   const companyIds = companies.map(c => c.id);
   const { data: invoices, error: invError } = await supabase
     .from("invoices")
@@ -42,8 +46,10 @@ export async function getUserCompanies(token: string) {
 
   if (invError) {
     console.error("Error fetching invoice counts:", invError);
-    // Continue with companies but zero counts
-    return companies.map(c => ({ ...c, invoices: [] }));
+    return { 
+      data: companies.map(c => ({ ...c, invoices: [] })), 
+      totalCount: count || 0 
+    };
   }
 
   // Group counts by company_id
@@ -53,10 +59,12 @@ export async function getUserCompanies(token: string) {
   }, {});
 
   // Return companies with a mocked invoices array length for compatibility
-  return companies.map(c => ({
+  const data = companies.map(c => ({
     ...c,
     invoices: new Array(countMap[c.id] || 0).fill(null)
   }));
+
+  return { data, totalCount: count || 0 };
 }
 
 export async function createCompany(token: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
@@ -145,22 +153,50 @@ export async function deleteCompany(token: string, id: string) {
   return true;
 }
 
-export async function getCompanyInvoices(token: string, companyId: string) {
+export async function getCompanyInvoices(
+  token: string, 
+  companyId: string, 
+  options: { 
+    page?: number; 
+    pageSize?: number; 
+    search?: string; 
+    sortField?: string; 
+    sortDir?: "asc" | "desc";
+  } = {}
+) {
   const supabase = getServerSupabase(token);
-  // RLS handles authorization based on the Bearer token
-  const { data, error } = await supabase
+  const { page = 1, pageSize = 10, search = "", sortField = "created_at", sortDir = "desc" } = options;
+  
+  // Calculate range
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  let query = supabase
     .from("invoices")
-    .select("id, invoice_number, client_name, created_at, total_amount, currency")
+    .select("id, invoice_number, client_name, created_at, total_amount, currency", { count: "exact" })
     .eq("company_id", companyId)
-    .is("deleted_at", null)
-    .order("created_at", { ascending: false });
+    .is("deleted_at", null);
+
+  // Apply search filtering if provided
+  if (search.trim()) {
+    // In Supabase, we can use or() for multiple columns, but for complex searches 
+    // it's often better to use ilike on specific columns or text search.
+    // For now, let's keep it simple with iLike on invoice_number and client_name
+    query = query.or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
+  }
+
+  // Apply sorting
+  query = query.order(sortField, { ascending: sortDir === "asc" });
+
+  // Apply range for pagination
+  const { data, error, count } = await query.range(from, to);
 
   if (error) {
     console.error("Error fetching company invoices:", error);
-    return [];
+    return { data: [], totalCount: 0 };
   }
 
-  return data;
+  return { data: data || [], totalCount: count || 0 };
 }
 
 export async function getCompanyById(token: string, companyId: string) {

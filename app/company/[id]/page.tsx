@@ -26,7 +26,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const resolvedParams = use(params);
   const [company, setCompany] = useState<any>(null);
   const [invoices, setInvoices] = useState<any[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [invoiceToDelete, setInvoiceToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -35,13 +37,43 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
 
   // Search, Sort, Pagination state
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  // Debounce search query
   useEffect(() => {
-    const loadData = async () => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setCurrentPage(1); // Reset to first page on search
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const loadInvoices = async (showRefreshLoader = false) => {
+    if (!supabase) return;
+    if (showRefreshLoader) setIsRefreshing(true);
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+
+    const result = await getCompanyInvoices(session.access_token, resolvedParams.id, {
+      page: currentPage,
+      pageSize: itemsPerPage,
+      search: debouncedSearch,
+      sortField,
+      sortDir
+    });
+
+    setInvoices(result.data);
+    setTotalCount(result.totalCount);
+    if (showRefreshLoader) setIsRefreshing(false);
+  };
+
+  useEffect(() => {
+    const initLoad = async () => {
       if (!supabase) return;
       
       const { data: { session } } = await supabase.auth.getSession();
@@ -50,10 +82,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         return;
       }
 
-      const [companyData, invoiceData] = await Promise.all([
-        getCompanyById(session.access_token, resolvedParams.id),
-        getCompanyInvoices(session.access_token, resolvedParams.id)
-      ]);
+      const companyData = await getCompanyById(session.access_token, resolvedParams.id);
 
       if (!companyData) {
         alert("Company not found");
@@ -62,63 +91,21 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       }
       
       setCompany(companyData);
-      setInvoices(invoiceData);
+      await loadInvoices();
       setLoading(false);
     };
 
-    loadData();
+    initLoad();
   }, [router, resolvedParams.id]);
 
-  // Filtered + sorted invoices
-  const filteredInvoices = useMemo(() => {
-    let result = invoices;
-
-    // Search
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (inv) =>
-          inv.invoice_number?.toLowerCase().includes(q) ||
-          inv.client_name?.toLowerCase().includes(q) ||
-          String(inv.total_amount).includes(q)
-      );
-    }
-
-    // Sort
-    result = [...result].sort((a, b) => {
-      let valA = a[sortField];
-      let valB = b[sortField];
-
-      if (sortField === "total_amount") {
-        valA = Number(valA) || 0;
-        valB = Number(valB) || 0;
-      } else if (sortField === "created_at") {
-        valA = new Date(valA).getTime();
-        valB = new Date(valB).getTime();
-      } else {
-        valA = String(valA || "").toLowerCase();
-        valB = String(valB || "").toLowerCase();
-      }
-
-      if (valA < valB) return sortDir === "asc" ? -1 : 1;
-      if (valA > valB) return sortDir === "asc" ? 1 : -1;
-      return 0;
-    });
-
-    return result;
-  }, [invoices, searchQuery, sortField, sortDir]);
-
-  // Pagination
-  const totalPages = Math.max(1, Math.ceil(filteredInvoices.length / itemsPerPage));
-  const paginatedInvoices = filteredInvoices.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Reset to page 1 when search changes
+  // Handle updates to paging/sorting/searching
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, sortField, sortDir]);
+    if (!loading) {
+      loadInvoices(true);
+    }
+  }, [currentPage, itemsPerPage, debouncedSearch, sortField, sortDir]);
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / itemsPerPage));
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -127,6 +114,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       setSortField(field);
       setSortDir("asc");
     }
+    setCurrentPage(1);
   };
 
   const handleDeleteClick = (id: string) => {
@@ -203,7 +191,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
             Invoices
-            <span className="ml-2 text-sm font-normal text-zinc-400">({filteredInvoices.length})</span>
+            <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
           </h2>
           {invoices.length > 0 && (
             <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
@@ -236,7 +224,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           )}
         </div>
 
-        {invoices.length === 0 ? (
+        {invoices.length === 0 && !debouncedSearch ? (
           <div className="p-12 text-center">
             <p className="text-zinc-500 mb-4">No invoices created for this company yet.</p>
             <Link 
@@ -246,126 +234,137 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
               Create your first invoice &rarr;
             </Link>
           </div>
-        ) : filteredInvoices.length === 0 ? (
-          <div className="p-12 text-center">
-            <p className="text-zinc-500">No invoices match &quot;{searchQuery}&quot;</p>
-          </div>
         ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm whitespace-nowrap">
-                <thead className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
-                  <tr>
-                    <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
-                      Invoice Number <SortIcon field="invoice_number" />
-                    </th>
-                    <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
-                      Client <SortIcon field="client_name" />
-                    </th>
-                    <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
-                      Date Created <SortIcon field="created_at" />
-                    </th>
-                    <th className="px-6 py-2.5 font-medium text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
-                      Amount <SortIcon field="total_amount" />
-                    </th>
-                    <th className="px-6 py-2.5 font-medium text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10">
-                  {paginatedInvoices.map((inv) => (
-                    <tr key={inv.id} className="even:bg-zinc-50/50 dark:even:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
-                      <td className="px-6 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
-                        {inv.invoice_number}
-                      </td>
-                      <td className="px-6 py-2.5 max-w-[200px] truncate" title={inv.client_name}>
-                        {inv.client_name}
-                      </td>
-                      <td className="px-6 py-2.5 text-zinc-500">
-                        {format(new Date(inv.created_at), "MMM dd, yyyy")}
-                      </td>
-                      <td className="px-6 py-2.5 font-medium text-right">
-                        {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toFixed(2)}
-                      </td>
-                      <td className="px-6 py-2.5 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Tooltip content="Edit Invoice">
-                            <Link
-                              href={`/invoice/${inv.id}/edit`}
-                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors"
-                            >
-                              <PenLine className="w-4 h-4" />
-                            </Link>
-                          </Tooltip>
-                          <Tooltip content="Duplicate Invoice">
-                            <button
-                              onClick={() => handleDuplicate(inv.id)}
-                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
-                            >
-                              <Copy className="w-4 h-4" />
-                            </button>
-                          </Tooltip>
-                          <Tooltip content="View Invoice">
-                            <Link
-                              href={`/invoice/${inv.id}`}
-                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
-                            >
-                              <Eye className="w-4 h-4" />
-                            </Link>
-                          </Tooltip>
-                          <Tooltip content="Delete Invoice">
-                            <button
-                              onClick={() => handleDeleteClick(inv.id)}
-                              className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </Tooltip>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-between">
-                <p className="text-sm text-zinc-500">
-                  Showing {((currentPage - 1) * itemsPerPage) + 1}–{Math.min(currentPage * itemsPerPage, filteredInvoices.length)} of {filteredInvoices.length}
-                </p>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
-                        currentPage === page
-                          ? "bg-blue-600 text-white shadow-sm"
-                          : "text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    disabled={currentPage === totalPages}
-                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
+          <div className="relative">
+            {isRefreshing && (
+              <div className="absolute inset-0 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-[1px] z-10 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
               </div>
             )}
-          </>
+            
+            {invoices.length === 0 && debouncedSearch ? (
+              <div className="p-12 text-center">
+                <p className="text-zinc-500">No invoices match &quot;{searchQuery}&quot;</p>
+              </div>
+            ) : (
+              <>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm whitespace-nowrap">
+                    <thead className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
+                      <tr>
+                        <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
+                          Invoice Number <SortIcon field="invoice_number" />
+                        </th>
+                        <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
+                          Client <SortIcon field="client_name" />
+                        </th>
+                        <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
+                          Date Created <SortIcon field="created_at" />
+                        </th>
+                        <th className="px-6 py-2.5 font-medium text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
+                          Amount <SortIcon field="total_amount" />
+                        </th>
+                        <th className="px-6 py-2.5 font-medium text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10">
+                      {invoices.map((inv: any) => (
+                        <tr key={inv.id} className="even:bg-zinc-50/50 dark:even:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
+                          <td className="px-6 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
+                            {inv.invoice_number}
+                          </td>
+                          <td className="px-6 py-2.5 max-w-[200px] truncate" title={inv.client_name}>
+                            {inv.client_name}
+                          </td>
+                          <td className="px-6 py-2.5 text-zinc-500">
+                            {format(new Date(inv.created_at), "MMM dd, yyyy")}
+                          </td>
+                          <td className="px-6 py-2.5 font-medium text-right">
+                            {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toFixed(2)}
+                          </td>
+                          <td className="px-6 py-2.5 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <Tooltip content="Edit Invoice">
+                                <Link
+                                  href={`/invoice/${inv.id}/edit`}
+                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors"
+                                >
+                                  <PenLine className="w-4 h-4" />
+                                </Link>
+                              </Tooltip>
+                              <Tooltip content="Duplicate Invoice">
+                                <button
+                                  onClick={() => handleDuplicate(inv.id)}
+                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                                >
+                                  <Copy className="w-4 h-4" />
+                                </button>
+                              </Tooltip>
+                              <Tooltip content="View Invoice">
+                                <Link
+                                  href={`/invoice/${inv.id}`}
+                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </Link>
+                              </Tooltip>
+                              <Tooltip content="Delete Invoice">
+                                <button
+                                  onClick={() => handleDeleteClick(inv.id)}
+                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </Tooltip>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-between">
+                    <p className="text-sm text-zinc-500">
+                      Showing {((currentPage - 1) * itemsPerPage) + 1}–{Math.min(currentPage * itemsPerPage, totalCount)} of {totalCount}
+                    </p>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                        disabled={currentPage === 1 || isRefreshing}
+                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                            currentPage === page
+                              ? "bg-blue-600 text-white shadow-sm"
+                              : "text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
+                          } disabled:opacity-50`}
+                          disabled={isRefreshing}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                      <button
+                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                        disabled={currentPage === totalPages || isRefreshing}
+                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         )}
       </div>
 

@@ -142,8 +142,8 @@ function CreateInvoiceContent() {
 
     try {
       const token = session.access_token;
-      const userCompanies = await getUserCompanies(token);
-      setCompanies(userCompanies);
+      const result = await getUserCompanies(session.access_token);
+      setCompanies(result.data || []);
       setIsSelectModalOpen(true);
     } catch (e) {
       console.error(e);

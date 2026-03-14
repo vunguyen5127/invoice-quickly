@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
@@ -18,7 +18,10 @@ const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod
 
 export default function Dashboard() {
   const [companies, setCompanies] = useState<any[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<any | null>(null);
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
@@ -26,27 +29,28 @@ export default function Dashboard() {
   const { t } = useLanguage();
   const router = useRouter();
 
+  const PAGE_SIZE = 12;
+
+  const loadData = async (showRefreshLoader = false) => {
+    if (!supabase) return;
+    if (showRefreshLoader) setIsRefreshing(true);
+    
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/login?redirect=/dashboard");
+      return;
+    }
+
+    const result = await getUserCompanies(session.access_token, currentPage, PAGE_SIZE);
+    setCompanies(result.data || []);
+    setTotalCount(result.totalCount);
+    setLoading(false);
+    if (showRefreshLoader) setIsRefreshing(false);
+  };
+
   useEffect(() => {
-    let isMounted = true;
-    const loadData = async () => {
-      if (!supabase) return;
-      
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        if (isMounted) router.push("/login?redirect=/dashboard");
-        return;
-      }
-
-      const data = await getUserCompanies(session.access_token);
-      if (isMounted) {
-        setCompanies(data);
-        setLoading(false);
-      }
-    };
-
-    loadData();
-    return () => { isMounted = false; };
-  }, [router]);
+    loadData(loading ? false : true);
+  }, [router, currentPage]);
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault(); // Prevent navigating to company link
@@ -126,7 +130,13 @@ export default function Dashboard() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="relative">
+          {isRefreshing && (
+            <div className="absolute inset-0 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-3xl">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+            </div>
+          )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {companies.map((company) => {
             const invoicesCount = company.invoices?.length || 0;
 
@@ -189,6 +199,46 @@ export default function Dashboard() {
               </Link>
             )
           })}
+          </div>
+        </div>
+      )}
+
+      {/* Pagination */}
+      {!loading && totalCount > PAGE_SIZE && (
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-100 dark:border-zinc-800 pt-8">
+          <p className="text-sm text-zinc-500">
+            Showing {((currentPage - 1) * PAGE_SIZE) + 1}–{Math.min(currentPage * PAGE_SIZE, totalCount)} of {totalCount} businesses
+          </p>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1 || isRefreshing}
+              className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            {Array.from({ length: Math.ceil(totalCount / PAGE_SIZE) }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                disabled={isRefreshing}
+                className={`w-10 h-10 rounded-lg text-sm font-bold transition-all ${
+                  currentPage === page
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                    : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                } disabled:opacity-50`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(Math.ceil(totalCount / PAGE_SIZE), prev + 1))}
+              disabled={currentPage === Math.ceil(totalCount / PAGE_SIZE) || isRefreshing}
+              className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="w-5 h-5 rotate-180 sm:rotate-0" />
+            </button>
+          </div>
         </div>
       )}
 
