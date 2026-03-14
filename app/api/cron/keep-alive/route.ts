@@ -31,6 +31,7 @@ import { NextResponse } from "next/server";
  *         description: Internal Server Error - Supabase configuration missing or other error
  */
 export async function GET(request: Request) {
+  console.log("Cron job [keep-alive] triggered at:", new Date().toISOString());
   const authHeader = request.headers.get('authorization');
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new NextResponse('Unauthorized', { status: 401 });
