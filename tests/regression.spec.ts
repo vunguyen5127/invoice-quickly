@@ -57,7 +57,7 @@ test.describe("Regression Coverage", () => {
     await seedAuthenticatedSession(page);
 
     await page.goto("/dashboard");
-    await expect(page.getByRole("heading", { name: /Businesses/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /My Invoices/i })).toBeVisible();
 
     await page.goto("/dashboard/settings");
     await expect(page.getByRole("heading", { name: /Settings/i })).toBeVisible();

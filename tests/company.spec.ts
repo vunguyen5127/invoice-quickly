@@ -39,8 +39,8 @@ test.describe('Company and Invoice Management UI', () => {
   test('Dashboard Displays Correctly and Opens Create Company Modal', async ({ page }) => {
     await page.goto('/dashboard');
     
-    // Heading should be "Businesses"
-    await expect(page.getByRole('heading', { name: /Businesses/i })).toBeVisible();
+    // Heading should be "My Invoices"
+    await expect(page.getByRole('heading', { name: /My Invoices/i })).toBeVisible();
     
     // Click "Create Company" button
     const createBtn = page.getByRole('button', { name: /Create Company/i });
