@@ -17,8 +17,8 @@ import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
-const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then(mod => mod.CreateCompanyModal));
-const SuccessModal = dynamic(() => import("@/components/success-modal").then(mod => mod.SuccessModal));
+const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then((mod) => mod.CreateCompanyModal));
+const SuccessModal = dynamic(() => import("@/components/success-modal").then((mod) => mod.SuccessModal));
 import { useLanguage } from "@/contexts/language-context";
 
 function CreateInvoiceContent() {
@@ -30,7 +30,7 @@ function CreateInvoiceContent() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const canSave = invoice.client.name.trim().length > 0 && invoice.items.some(item => item.description.trim().length > 0);
+  const canSave = invoice.client.name.trim().length > 0 && invoice.items.some((item) => item.description.trim().length > 0);
 
   const [companies, setCompanies] = useState<any[]>([]);
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
@@ -187,39 +187,40 @@ function CreateInvoiceContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
-        <div className="container flex h-12 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
+      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
+        <div className="container flex h-14 items-center justify-between px-4 sm:px-6 max-w-[1600px] mx-auto">
           <Link
             href="/"
-            className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
+            className="flex items-center gap-2.5 font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80"
           >
-            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 object-contain" />
-            <span>Invoice-Quickly</span>
+            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
+            <span className="hidden sm:inline">Invoice-Quickly</span>
           </Link>
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-2 mr-1">
+            <div className="hidden sm:flex items-center gap-1.5 bg-zinc-100/80 dark:bg-zinc-800/50 rounded-xl p-1">
               <button
                 onClick={handleShare}
-                className="flex items-center justify-center gap-2 px-4 h-9 rounded-[5px] font-medium text-sm bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all shadow-sm border border-zinc-200 dark:border-zinc-800"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150"
               >
-                <Share2 className="w-4 h-4" /> <span className="hidden lg:inline">{t.share}</span>
+                <Share2 className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button
                 onClick={handleSaveClick}
                 disabled={isSaving || !canSave}
-                className="flex items-center justify-center gap-2 px-4 h-9 rounded-[5px] font-medium text-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-50 shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-semibold text-[13px] bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
               >
-                <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
+                <Save className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="flex items-center justify-center gap-2 px-4 h-9 rounded-[5px] font-medium text-sm bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all disabled:opacity-50 shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-semibold text-[13px] bg-zinc-800 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 active:bg-zinc-900 dark:active:bg-zinc-200 transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
               >
-                <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
+                <Download className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0.5" />
+            <div className="flex items-center gap-0.5">
               <ThemeToggle />
               <AuthButton />
             </div>
@@ -240,7 +241,7 @@ function CreateInvoiceContent() {
           </div>
 
           {/* Right Column: Preview */}
-          <div className="flex-1 xl:sticky xl:top-12">
+          <div className="flex-1 xl:sticky xl:top-14">
             <div className="h-10 flex items-center mb-6">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
             </div>
@@ -381,25 +382,25 @@ function CreateInvoiceContent() {
         )}
 
         {/* Mobile Sticky Bottom Bar */}
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-none pb-safe">
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 px-4 py-3 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-200/80 dark:border-zinc-800/80 flex items-center gap-2 z-50 shadow-[0_-2px_16px_rgba(0,0,0,0.06)] dark:shadow-[0_-2px_16px_rgba(0,0,0,0.3)] pb-safe">
           <button
             onClick={handleShare}
             aria-label="Share"
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors"
+            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-medium text-[13px] bg-white dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:scale-[0.97] transition-all duration-150"
           >
             <Share2 className="w-4 h-4" /> {t.share}
           </button>
           <button
             onClick={handleSaveClick}
             disabled={isSaving || !canSave}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-semibold text-[13px] bg-emerald-500 text-white hover:bg-emerald-600 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm shadow-emerald-500/25"
           >
             <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button
             onClick={handleDownload}
             disabled={isGenerating || !canSave}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-semibold text-[13px] bg-zinc-800 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
           >
             <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>

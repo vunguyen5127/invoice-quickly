@@ -47,31 +47,30 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
-      <nav aria-label="Main navigation" className="container flex h-12 items-center justify-between px-4 sm:px-8 max-w-7xl mx-auto">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
+      <nav aria-label="Main navigation" className="container flex h-14 items-center justify-between px-4 sm:px-6 max-w-7xl mx-auto">
         <Link
           href="/"
-          className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80"
+          className="flex items-center gap-2.5 font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80"
           aria-label="Invoice-Quickly — Free Invoice Generator"
         >
-          <img src="/logo.svg" alt="Invoice-Quickly Logo — Free Online Invoice Generator" className="h-8 w-8 object-contain" width={32} height={32} />
+          <img src="/logo.svg" alt="Invoice-Quickly Logo — Free Online Invoice Generator" className="h-7 w-7 object-contain" width={28} height={28} />
           <span>Invoice-Quickly</span>
         </Link>
-        <div className="flex items-center gap-1 sm:gap-2 text-zinc-600 dark:text-zinc-400">
+        <div className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
           {hasUser && (
-            <>
-              <Link
-                href="/dashboard"
-                className="text-[13px] font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80 transition-all flex items-center gap-2 rounded-[5px] px-3 py-1.5 mr-1"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                <span className="hidden sm:inline">{t.myInvoices}</span>
-              </Link>
-            </>
+            <Link
+              href="/dashboard"
+              className="text-[13px] font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-all duration-150 flex items-center gap-1.5 rounded-lg px-3 py-1.5 mr-1"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.myInvoices}</span>
+            </Link>
           )}
+          {hasUser && <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />}
           <ThemeToggle />
           <LanguageToggle />
-          <div className="ml-1 sm:ml-2">
+          <div className="ml-1">
             <AuthButton />
           </div>
         </div>
