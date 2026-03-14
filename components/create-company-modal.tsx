@@ -99,10 +99,10 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     reader.readAsDataURL(file);
   };
 
-    const tabBtn = (active: boolean) => `flex-1 py-2 text-sm font-semibold transition-all rounded-[5px] ${
+  const tabBtn = (active: boolean) => `flex-1 py-2 text-[14px] font-bold transition-all border-b-2 ${
       active 
-        ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white shadow-sm ring-1 ring-zinc-900/5 dark:ring-white/10" 
-        : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+        ? "border-blue-500 text-blue-600 dark:text-blue-400" 
+        : "border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:border-zinc-200 dark:hover:border-zinc-700"
     }`;
 
   return (
@@ -120,10 +120,12 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="flex px-5 mt-3 border-b border-zinc-100 dark:border-zinc-800">
-          <button type="button" className={tabBtn(tab === "company")} onClick={() => setTab("company")}>{t.company}</button>
-          <button type="button" className={tabBtn(tab === "defaults")} onClick={() => setTab("defaults")}>{t.invoiceDefaults}</button>
+        {/* Tabs - Classic Underline Style */}
+        <div className="px-5 mt-4">
+          <div className="flex border-b border-zinc-100 dark:border-zinc-800">
+            <button type="button" className={tabBtn(tab === "company")} onClick={() => setTab("company")}>{t.company}</button>
+            <button type="button" className={tabBtn(tab === "defaults")} onClick={() => setTab("defaults")}>{t.invoiceDefaults}</button>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -231,7 +233,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                         <Upload className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.upload}</span>
                       </button>
                       <span className="text-[11px] text-zinc-400">{t.or}</span>
-                      <button type="button" onClick={() => setIsSignatureModalOpen(true)} className="flex-1 h-14 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
+                      <button type="button" onClick={() => setIsSignatureModalOpen(true)} className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
                         <PenTool className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.draw}</span>
                       </button>
                       <input id="sig-upload-create" type="file" accept="image/*" className="hidden" onChange={e => {

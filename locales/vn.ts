@@ -44,7 +44,7 @@ export const vn: Translations = {
   signature: "Chữ Ký",
   addSignature: "Thêm Chữ Ký",
   authorizedSignature: "Chữ Ký Ủy Quyền",
-  printName: "Họ và Tên",
+  printName: "Tên người ký",
   date: "Ngày Ký",
   // Preview specific
   invoiceTitle: "HÓA ĐƠN",

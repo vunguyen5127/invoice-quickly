@@ -43,7 +43,7 @@ export const en = {
   signature: "Signature",
   addSignature: "Add Signature",
   authorizedSignature: "Authorized Signature",
-  printName: "Print Name",
+  printName: "Signer Name",
   date: "Date",
   // Preview specific
   invoiceTitle: "INVOICE",
