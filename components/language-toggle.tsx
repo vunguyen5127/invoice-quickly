@@ -71,7 +71,7 @@ export function LanguageToggle() {
               <button
                 key={l.code}
                 onClick={() => selectLang(l.code)}
-                className={`w-full text-left px-4 py-2 text-[13px] flex items-center justify-between transition-colors duration-150 ${
+                className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between transition-colors duration-150 ${
                   lang === l.code
                     ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 font-semibold"
                     : "text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"

@@ -119,15 +119,15 @@ export function AuthButton() {
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
             <div className="absolute right-0 top-full mt-2 w-52 rounded-xl bg-white dark:bg-zinc-900 shadow-lg shadow-zinc-900/10 dark:shadow-black/30 ring-1 ring-zinc-200/80 dark:ring-zinc-800 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2">
               <div className="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800">
-                <p className="text-[13px] text-zinc-900 dark:text-white font-semibold truncate">{user.user_metadata?.name || user.email}</p>
-                <p className="text-xs text-zinc-400 dark:text-zinc-500 truncate mt-0.5">{user.email}</p>
+                <p className="text-sm text-zinc-900 dark:text-white font-semibold truncate">{user.user_metadata?.name || user.email}</p>
+                <p className="text-[11px] text-zinc-400 dark:text-zinc-500 truncate mt-0.5 font-medium">{user.email}</p>
               </div>
 
               <div className="py-1 flex flex-col">
                 <Link
                   href="/dashboard/settings"
                   onClick={() => setIsOpen(false)}
-                  className="w-full text-left px-4 py-2.5 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors duration-150 flex items-center gap-2.5 text-[13px]"
+                  className="w-full text-left px-4 py-2.5 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors duration-150 flex items-center gap-3 text-sm font-medium"
                 >
                   <Settings className="w-4 h-4" />
                   {t.settings}
@@ -138,7 +138,7 @@ export function AuthButton() {
                     setIsOpen(false);
                     handleLogout();
                   }}
-                  className="w-full text-left px-4 py-2.5 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors duration-150 flex items-center gap-2.5 text-[13px] border-t border-zinc-100 dark:border-zinc-800"
+                  className="w-full text-left px-4 py-2.5 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors duration-150 flex items-center gap-3 text-sm font-medium border-t border-zinc-100 dark:border-zinc-800"
                 >
                   <LogOut className="w-4 h-4" />
                   {t.signIn === "Sign In" ? "Sign out" : "Đăng xuất"}

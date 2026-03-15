@@ -96,21 +96,24 @@ test.describe('Invoice Creation Flows', () => {
     // 2. Fill Line Items (Add a second one)
     const descInputs = page.getByPlaceholder(/Description of item\/service\.\.\./i);
     await descInputs.nth(0).fill('Web Development');
-    const rateInputs = page.getByPlaceholder('0');
-    // The first placeholder '0' might be quantity or rate, usually rate is second if quantity is first, but based on existing test, rate is first placeholder '0'. Wait, let's look at the existing test: "const rateInput = page.getByPlaceholder('0').first();". It might just be the first '0' placeholder.
-    // Let's use more specific selectors if possible or just rely on DOM order.
-    // In invoice-form.tsx line items usually have Quality/Rate.
-    await rateInputs.nth(0).fill('100'); // Assuming Rate or Quantity for first item
+    
+    // Use '0.00' placeholder for Rate
+    const rateInputs = page.getByPlaceholder('0.00');
+    await rateInputs.nth(0).fill('100');
 
     // Add another line item
     const addLineItemBtn = page.getByRole('button', { name: /Add Item/i });
     await addLineItemBtn.click();
     
     await descInputs.nth(1).fill('SEO Optimization');
-    await rateInputs.nth(2).fill('50'); // Assuming second item rate/qty
+    // For the second item, rateInputs should now have 2 elements
+    await rateInputs.nth(1).fill('50');
 
-    // 3. Fill Tax, Discount, Shipping
-    const amountInputs = page.getByPlaceholder('0');
+    // 3. Fill Discount, Tax, Shipping
+    // These have '0' as placeholder but are in the Settings section
+    // Use more specific locators to target them
+    const settingsSection = page.locator('div:has(> h3:has-text("Settings"))');
+    const amountInputs = settingsSection.getByPlaceholder('0');
     await amountInputs.nth(0).fill('5');  // Discount
     await amountInputs.nth(1).fill('10'); // Tax
     await amountInputs.nth(2).fill('15'); // Shipping
@@ -137,6 +140,6 @@ test.describe('Invoice Creation Flows', () => {
 
     // 6. Mobile Visibility Check (Regression fix validation)
     await page.setViewportSize({ width: 375, height: 667 });
-    await expect(page.getByRole('link', { name: /Invoice-?Quickly/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Invoice-?Quickly/i }).first()).toBeVisible();
   });
 });
