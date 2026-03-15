@@ -498,12 +498,12 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <button
                       type="button"
                       onClick={() => handleRootChange("discountType", invoice.discountType === 'percentage' ? 'fixed' : 'percentage')}
-                      className="w-full h-full px-4 flex items-center justify-between text-zinc-400 hover:text-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all"
+                      className="w-full h-full px-2 flex items-center justify-center gap-1.5 text-zinc-400 hover:text-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all"
                     >
                       <span className="text-[14px] font-bold text-zinc-500">
                         {invoice.discountType === 'percentage' ? '%' : (CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$')}
                       </span>
-                      <RefreshCw className="w-4 h-4" />
+                      <RefreshCw className="w-4 h-4 ml-0.5" />
                     </button>
                   </div>
                 </div>
@@ -533,12 +533,12 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <button
                       type="button"
                       onClick={() => handleRootChange("taxType", invoice.taxType === 'percentage' ? 'fixed' : 'percentage')}
-                      className="w-full h-full px-4 flex items-center justify-between text-zinc-400 hover:text-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all"
+                      className="w-full h-full px-2 flex items-center justify-center gap-1.5 text-zinc-400 hover:text-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all"
                     >
                       <span className="text-[14px] font-bold text-zinc-500">
                         {invoice.taxType === 'percentage' ? '%' : (CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$')}
                       </span>
-                      <RefreshCw className="w-4 h-4" />
+                      <RefreshCw className="w-4 h-4 ml-0.5" />
                     </button>
                   </div>
                 </div>
