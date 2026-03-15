@@ -119,4 +119,14 @@ export const ja: Translations = {
   footerLinkContact: "お問い合わせ",
   footerTagline: "世界中のフリーランサー、代理店、小規模企業に信頼されている最高の無料オンライン請求書作成ツール。",
   footerRightsReserved: "全著作権所有。",
+
+  // Footer additional
+  noWatermark: "透かしなし",
+  instantPdf: "即時PDF",
+  templates: "テンプレート",
+  viewAllHub: "すべてのハブを表示",
+  template_invoice: "請求書テンプレート",
+  template_pdf: "PDF請求書ジェネレーター",
+  template_excel: "Excelからのアップグレード",
+  template_free: "100％無料",
 };

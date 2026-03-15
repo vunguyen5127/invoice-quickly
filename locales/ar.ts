@@ -119,4 +119,14 @@ export const ar: Translations = {
   footerLinkContact: "اتصل بنا",
   footerTagline: "أفضل مولد فواتير مجاني عبر الإنترنت يثق به المستقلون والوكالات والشركات الصغيرة في جميع أنحاء العالم.",
   footerRightsReserved: "كل الحقوق محفوظة.",
+
+  // Footer additional
+  noWatermark: "بدون علامة مائية",
+  instantPdf: "بي دي إف فوري",
+  templates: "قوالب",
+  viewAllHub: "عرض كل المركز",
+  template_invoice: "قوالب الفاتورة",
+  template_pdf: "مولد فاتورة PDF",
+  template_excel: "الترقية من إكسل",
+  template_free: "مجاني 100٪",
 };

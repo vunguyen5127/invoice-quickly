@@ -119,4 +119,14 @@ export const hi: Translations = {
   footerLinkContact: "हमसे संपर्क करें",
   footerTagline: "दुनिया भर के फ्रीलांसरों, एजेंसियों और छोटे व्यवसायों द्वारा विश्वसनीय सबसे अच्छा मुफ्त ऑनलाइन चालान जनरेटर।",
   footerRightsReserved: "सर्वाधिकार सुरक्षित।",
+
+  // Footer additional
+  noWatermark: "कोई वाटरमार्क नहीं",
+  instantPdf: "तत्काल पीडीएफ",
+  templates: "टेम्प्लेट",
+  viewAllHub: "सभी हब देखें",
+  template_invoice: "चालान टेम्प्लेट",
+  template_pdf: "चेक पीडीएफ जनरेटर",
+  template_excel: "एक्सेल से अपग्रेड करें",
+  template_free: "100% नि: शुल्क",
 };

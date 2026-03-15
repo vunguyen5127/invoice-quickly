@@ -117,6 +117,25 @@ export const en = {
   footerLinkContact: "Contact Us",
   footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
   footerRightsReserved: "All rights reserved.",
+
+  // Footer additional
+  noWatermark: "No Watermark",
+  instantPdf: "Instant PDF",
+  templates: "Templates",
+  viewAllHub: "View All Hub",
+  template_invoice: "Invoice Templates",
+  template_pdf: "PDF Invoice Generator",
+  template_excel: "Upgrade from Excel",
+  template_free: "100% Forever",
 };
 
-export type Translations = typeof en;
+export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templates' | 'viewAllHub' | 'template_invoice' | 'template_pdf' | 'template_excel' | 'template_free'> & {
+  noWatermark?: string;
+  instantPdf?: string;
+  templates?: string;
+  viewAllHub?: string;
+  template_invoice?: string;
+  template_pdf?: string;
+  template_excel?: string;
+  template_free?: string;
+};

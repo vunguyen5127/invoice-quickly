@@ -119,4 +119,14 @@ export const de: Translations = {
   footerLinkContact: "Kontakt",
   footerTagline: "Der beste kostenlose Online-Rechnungsgenerator, dem Freiberufler, Agenturen und kleine Unternehmen weltweit vertrauen.",
   footerRightsReserved: "Alle Rechte vorbehalten.",
+
+  // Footer additional
+  noWatermark: "Ohne Wasserzeichen",
+  instantPdf: "Sofortige PDF",
+  templates: "Vorlagen",
+  viewAllHub: "Gesamten Hub anzeigen",
+  template_invoice: "Rechnungsvorlagen",
+  template_pdf: "PDF-Rechnungsgenerator",
+  template_excel: "Upgrade von Excel",
+  template_free: "100 % Kostenlos",
 };

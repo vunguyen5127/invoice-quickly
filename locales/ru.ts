@@ -119,4 +119,14 @@ export const ru: Translations = {
   footerLinkContact: "Связаться с нами",
   footerTagline: "Лучший бесплатный онлайн-генератор инвойсов, которому доверяют фрилансеры, агентства и малые предприятия по всему миру.",
   footerRightsReserved: "Все права защищены.",
+
+  // Footer additional
+  noWatermark: "Без водяных знаков",
+  instantPdf: "Мгновенный PDF",
+  templates: "Шаблоны",
+  viewAllHub: "Показать весь центр",
+  template_invoice: "Шаблоны счетов",
+  template_pdf: "Генератор счетов PDF",
+  template_excel: "Обновление из Excel",
+  template_free: "100% Бесплатно",
 };

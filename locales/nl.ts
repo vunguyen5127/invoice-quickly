@@ -119,4 +119,14 @@ export const nl: Translations = {
   footerLinkContact: "Contact",
   footerTagline: "De beste gratis online factuurgenerator die wordt vertrouwd door freelancers, bureaus en kleine bedrijven wereldwijd.",
   footerRightsReserved: "Alle rechten voorbehouden.",
+
+  // Footer additional
+  noWatermark: "Geen watermerk",
+  instantPdf: "Directe PDF",
+  templates: "Sjablonen",
+  viewAllHub: "Bekijk de hele Hub",
+  template_invoice: "Factuursjablonen",
+  template_pdf: "PDF Factuurgenerator",
+  template_excel: "Upgraden vanuit Excel",
+  template_free: "100% Gratis",
 };

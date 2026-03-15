@@ -119,4 +119,14 @@ export const fr: Translations = {
   footerLinkContact: "Contactez-nous",
   footerTagline: "Le meilleur générateur de factures en ligne gratuit, approuvé par les indépendants, les agences et les petites entreprises du monde entier.",
   footerRightsReserved: "Tous droits réservés.",
+
+  // Footer additional
+  noWatermark: "Sans filigrane",
+  instantPdf: "PDF instantané",
+  templates: "Modèles",
+  viewAllHub: "Voir tout le centre",
+  template_invoice: "Modèles de Facture",
+  template_pdf: "Générateur de Factures PDF",
+  template_excel: "Mise à niveau depuis Excel",
+  template_free: "100 % Gratuit",
 };

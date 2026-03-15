@@ -151,7 +151,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
               {invoice.discount > 0 && (
                 <div className="flex">
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
-                    {invoice.discountLabel || t.discount} {invoice.discountType === 'percentage' && invoice.discount > 0 ? `(${invoice.discount.toFixed(1)}%)` : ""}
+                    {(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount} {invoice.discountType === 'percentage' && invoice.discount > 0 ? `(${invoice.discount.toFixed(1)}%)` : ""}
                   </div>
                   <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
                 </div>
@@ -160,7 +160,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
               {invoice.taxRate > 0 && (
                 <div className="flex">
                   <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
-                    {invoice.taxLabel || t.tax} {invoice.taxType === 'percentage' && invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
+                    {(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax} {invoice.taxType === 'percentage' && invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
                   </div>
                    <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
                 </div>
@@ -168,7 +168,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
 
               {invoice.shipping > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{invoice.shippingLabel || t.shipping}</div>
+                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}</div>
                    <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
                 </div>
               )}

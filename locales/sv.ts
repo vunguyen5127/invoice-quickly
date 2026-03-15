@@ -119,4 +119,14 @@ export const sv: Translations = {
   footerLinkContact: "Kontakta oss",
   footerTagline: "Den bästa gratis online-faktureringsgeneratorn som litas på av frilansare, byråer och småföretag över hela världen.",
   footerRightsReserved: "Alla rättigheter förbehållna.",
+
+  // Footer additional
+  noWatermark: "Inget vattenstämpel",
+  instantPdf: "Omedelbar PDF",
+  templates: "Mallar",
+  viewAllHub: "Visa hela hubben",
+  template_invoice: "Fakturamallar",
+  template_pdf: "PDF-fakturagenerator",
+  template_excel: "Uppgradera från Excel",
+  template_free: "100 % Gratis",
 };

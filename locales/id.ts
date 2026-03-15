@@ -119,4 +119,14 @@ export const id: Translations = {
   footerLinkContact: "Hubungi Kami",
   footerTagline: "Pembuat faktur online gratis terbaik yang dipercaya oleh freelancer, agen, dan bisnis kecil di seluruh dunia.",
   footerRightsReserved: "Seluruh hak cipta.",
+
+  // Footer additional
+  noWatermark: "Tanpa Tanda Air",
+  instantPdf: "PDF Instan",
+  templates: "Templat",
+  viewAllHub: "Lihat Semua Hub",
+  template_invoice: "Templat Faktur",
+  template_pdf: "Pembuat Faktur PDF",
+  template_excel: "Tingkatkan dari Excel",
+  template_free: "100% Gratis",
 };

@@ -479,7 +479,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 <div className="h-11 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center px-4 transition-all">
                   <input 
                     className="w-full bg-transparent border-none outline-none text-[14px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
-                    value={invoice.discountLabel || t.discount}
+                    value={(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount}
                     onChange={(e) => handleRootChange("discountLabel", e.target.value)}
                     placeholder={t.discount}
                   />
@@ -514,7 +514,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 <div className="h-11 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center px-4 transition-all">
                   <input 
                     className="w-full bg-transparent border-none outline-none text-[14px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
-                    value={invoice.taxLabel || t.tax}
+                    value={(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax}
                     onChange={(e) => handleRootChange("taxLabel", e.target.value)}
                     placeholder={t.tax}
                   />
@@ -549,7 +549,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 <div className="h-11 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center px-4 transition-all">
                   <input 
                     className="w-full bg-transparent border-none outline-none text-[14px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
-                    value={invoice.shippingLabel || t.shipping}
+                    value={(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}
                     onChange={(e) => handleRootChange("shippingLabel", e.target.value)}
                     placeholder={t.shipping}
                   />

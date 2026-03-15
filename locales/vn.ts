@@ -119,4 +119,14 @@ export const vn: Translations = {
   footerLinkContact: "Liên hệ",
   footerTagline: "Trình tạo hóa đơn trực tuyến miễn phí tốt nhất được các freelancer và doanh nghiệp nhỏ trên toàn thế giới tin dùng.",
   footerRightsReserved: "Bảo lưu mọi quyền.",
+
+  // Footer additional
+  noWatermark: "Không có Watermark",
+  instantPdf: "PDF Tức Thì",
+  templates: "Mẫu Hóa Đơn",
+  viewAllHub: "Xem Tất Cả Trợ Giúp",
+  template_invoice: "Mẫu Hóa Đơn",
+  template_pdf: "Trình Tạo Hóa Đơn PDF",
+  template_excel: "Nâng Cấp Từ Excel",
+  template_free: "Miễn Phí 100%",
 };

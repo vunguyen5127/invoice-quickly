@@ -119,4 +119,14 @@ export const fi: Translations = {
   footerLinkContact: "Ota yhteyttä",
   footerTagline: "Paras ilmainen online-laskun luoja, johon freelancerit, toimistot ja pienyritykset luottavat ympäri maailmaa.",
   footerRightsReserved: "Kaikki oikeudet pidätetään.",
+
+  // Footer additional
+  noWatermark: "Ei vesileimaa",
+  instantPdf: "Välitön PDF",
+  templates: "Mallit",
+  viewAllHub: "Näytä kaikki keskukset",
+  template_invoice: "Laskupohjat",
+  template_pdf: "PDF-laskutusgeneraattori",
+  template_excel: "Päivitä Excelistä",
+  template_free: "100 % Ilmainen",
 };

@@ -119,4 +119,14 @@ export const pl: Translations = {
   footerLinkContact: "Kontakt",
   footerTagline: "Najlepszy darmowy generator faktur online, któremu ufają freelancerzy, agencje i małe firmy na całym świecie.",
   footerRightsReserved: "Wszelkie prawa zastrzeżone.",
+
+  // Footer additional
+  noWatermark: "Brak znaku wodnego",
+  instantPdf: "Błyskawiczny PDF",
+  templates: "Szablony",
+  viewAllHub: "Rozwiń cały hub",
+  template_invoice: "Szablony Faktur",
+  template_pdf: "Generator Faktur PDF",
+  template_excel: "Aktualizacja z programu Excel",
+  template_free: "100% Za Darmo",
 };

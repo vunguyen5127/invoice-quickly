@@ -119,4 +119,14 @@ export const ko: Translations = {
   footerLinkContact: "문의하기",
   footerTagline: "전 세계 프리랜서, 대행사 및 소규모 비즈니스가 신뢰하는 최고의 무료 온라인 인보이스 생성기입니다.",
   footerRightsReserved: "모든 권리 보유.",
+
+  // Footer additional
+  noWatermark: "워터마크 없음",
+  instantPdf: "즉시 PDF",
+  templates: "템플릿",
+  viewAllHub: "모든 허브 보기",
+  template_invoice: "인보이스 템플릿",
+  template_pdf: "PDF 인보이스 생성기",
+  template_excel: "엑셀에서 업그레이드",
+  template_free: "100% 무료",
 };

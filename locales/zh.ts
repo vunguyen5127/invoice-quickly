@@ -119,4 +119,14 @@ export const zh: Translations = {
   footerLinkContact: "联系我们",
   footerTagline: "深受全球自由职业者、代理机构和小型企业信任的最佳免费在线发票生成器。",
   footerRightsReserved: "版权所有。",
+
+  // Footer additional
+  noWatermark: "无水印",
+  instantPdf: "即时 PDF",
+  templates: "模板",
+  viewAllHub: "查看所有帮助中心",
+  template_invoice: "发票模板",
+  template_pdf: "PDF 发票生成器",
+  template_excel: "从 Excel 升级",
+  template_free: "100% 免费",
 };

@@ -119,4 +119,14 @@ export const pt: Translations = {
   footerLinkContact: "Contacte-nos",
   footerTagline: "O melhor gerador de faturas online gratuito, no qual confiam freelancers, agências e pequenas empresas em todo o mundo.",
   footerRightsReserved: "Todos os direitos reservados.",
+
+  // Footer additional
+  noWatermark: "Sem marca d'água",
+  instantPdf: "PDF instantâneo",
+  templates: "Modelos",
+  viewAllHub: "Ver todo o Hub",
+  template_invoice: "Modelos de Fatura",
+  template_pdf: "Gerador de Faturas PDF",
+  template_excel: "Atualizar do Excel",
+  template_free: "100% Grátis",
 };

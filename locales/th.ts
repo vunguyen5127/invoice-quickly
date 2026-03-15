@@ -119,4 +119,14 @@ export const th: Translations = {
   footerLinkContact: "ติดต่อเรา",
   footerTagline: "เครื่องมือสร้างใบแจ้งหนี้ออนไลน์ฟรีที่ดีที่สุดที่ได้รับความไว้วางใจจากฟรีแลนซ์ เอเจนซี่ และธุรกิจขนาดเล็กทั่วโลก",
   footerRightsReserved: "สงวนลิขสิทธิ์ทั้งหมด",
+
+  // Footer additional
+  noWatermark: "ไม่มีลายน้ำ",
+  instantPdf: "รับ PDF ทันที",
+  templates: "เทมเพลต",
+  viewAllHub: "ดูศูนย์รวมทั้งหมด",
+  template_invoice: "เทมเพลตใบแจ้งหนี้",
+  template_pdf: "เครื่องมือสร้างใบแจ้งหนี้ PDF",
+  template_excel: "อัปเกรดจาก Excel",
+  template_free: "ฟรี 100%",
 };

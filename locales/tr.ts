@@ -119,4 +119,14 @@ export const tr: Translations = {
   footerLinkContact: "Bize Ulaşın",
   footerTagline: "Dünya çapında freelancerlar, ajanslar ve küçük işletmeler tarafından güvenilen en iyi ücretsiz çevrimiçi fatura oluşturucu.",
   footerRightsReserved: "Tüm hakları saklıdır.",
+
+  // Footer additional
+  noWatermark: "Filigran yok",
+  instantPdf: "Anında PDF",
+  templates: "Şablonlar",
+  viewAllHub: "Tüm Merkezi Görüntüle",
+  template_invoice: "Fatura Şablonları",
+  template_pdf: "PDF Fatura Oluşturucu",
+  template_excel: "Excel'den Yükselt",
+  template_free: "%100 Ücretsiz",
 };

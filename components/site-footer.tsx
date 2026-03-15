@@ -10,6 +10,16 @@ export function SiteFooter() {
 
   const footerTemplates = marketingPages.filter(p => !p.slug.includes('guide')).slice(0, 4);
 
+  const getTranslatedBadge = (slug: string, badge: string) => {
+    switch(slug) {
+      case "invoice-template": return t.template_invoice || "Invoice Templates";
+      case "invoice-template-pdf": return t.template_pdf || "PDF Invoice Generator";
+      case "invoice-template-excel": return t.template_excel || "Upgrade from Excel";
+      case "free-invoice-template": return t.template_free || "100% Forever";
+      default: return badge.replace("Free ", "").replace(" Template", "");
+    }
+  };
+
   return (
     <footer className="border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,30 +35,30 @@ export function SiteFooter() {
             <div className="flex items-center gap-4 text-slate-400 dark:text-zinc-600">
               <div className="flex items-center gap-1.5 text-xs font-medium">
                 <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                No Watermark
+                {t.noWatermark}
               </div>
               <div className="flex items-center gap-1.5 text-xs font-medium">
                 <Zap className="w-4 h-4 text-amber-500" />
-                Instant PDF
+                {t.instantPdf}
               </div>
             </div>
           </div>
 
           <div>
             <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-5 uppercase tracking-wider">
-              Templates
+              {t.templates}
             </h4>
             <ul className="space-y-4 text-sm text-slate-500 dark:text-zinc-400 font-medium">
               {footerTemplates.map((page) => (
                 <li key={page.slug}>
                   <Link href={`/${page.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                    {page.hero.badge.replace("Free ", "").replace(" Template", "")}
+                    {getTranslatedBadge(page.slug, page.hero.badge)}
                   </Link>
                 </li>
               ))}
               <li>
                 <Link href="/how-to-write-an-invoice" className="text-blue-600 dark:text-blue-400 hover:underline">
-                  View All Hub
+                  {t.viewAllHub}
                 </Link>
               </li>
             </ul>
@@ -71,7 +81,7 @@ export function SiteFooter() {
               </li>
               <li>
                 <Link href="/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Sign In
+                  {t.signIn}
                 </Link>
               </li>
             </ul>

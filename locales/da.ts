@@ -119,4 +119,14 @@ export const da: Translations = {
   footerLinkContact: "Kontakt os",
   footerTagline: "Den bedste gratis online fakturagenerator betroet af freelancere, bureauer og små virksomheder verden over.",
   footerRightsReserved: "Alle rettigheder forbeholdes.",
+
+  // Footer additional
+  noWatermark: "Intet vandmærke",
+  instantPdf: "Øjeblikkelig PDF",
+  templates: "Skabeloner",
+  viewAllHub: "Se hele hubben",
+  template_invoice: "Fakturaskabeloner",
+  template_pdf: "PDF-fakturagenerator",
+  template_excel: "Opgradering fra Excel",
+  template_free: "100 % Gratis",
 };
