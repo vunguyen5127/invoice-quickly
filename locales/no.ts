@@ -1,4 +1,6 @@
-export const no = {
+import { Translations } from "./en";
+
+export const no: Translations = {
   invoiceDetails: "Fakturadetaljer",
   invoiceNumber: "Fakturanummer",
   issueDate: "Fakturadato",
@@ -36,7 +38,7 @@ export const no = {
   totalDue: "Total å betale",
   notes: "Notater",
   addNotes: "Legg til notater",
-  notesPlaceholder: "Takk for handelen!",
+  notesPlaceholder: "Takk for handlen!",
   termsConditions: "Vilkår og betingelser",
   addTerms: "Legg til vilkår",
   termsPlaceholder: "Betaling forfaller innen 30 dager...",
@@ -45,6 +47,7 @@ export const no = {
   authorizedSignature: "Autorisert signatur",
   printName: "Signerers navn",
   date: "Dato",
+  // Preview specific
   invoiceTitle: "FAKTURA",
   billedTo: "Fakturert til",
   dateOfIssue: "Fakturadato",
@@ -52,6 +55,8 @@ export const no = {
   watermark: "Opprettet med Invoice-Quickly",
   samplePreview: "Eksempelvisning",
   taxDisclaimer: "Moms beregnes av betalingsleverandøren",
+  
+  // Company Modals
   addNewCompany: "Legg til nytt firma",
   editCompany: "Rediger firma",
   companyNameField: "Firmenavn",
@@ -106,12 +111,12 @@ export const no = {
   language: "Språk",
   language_preference_desc: "Velg ditt foretrukne visningsspråk",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Produkt",
+  footerLinkResources: "Ressurser",
+  footerLinkAbout: "Om oss",
+  footerLinkPrivacy: "Personvernserklæring",
+  footerLinkTerms: "Vilkår for bruk",
+  footerLinkContact: "Kontakt oss",
+  footerTagline: "Den beste gratis online fakturageneratoren stolt brukt av frilansere, byråer og små bedrifter over hele verden.",
+  footerRightsReserved: "Alle rettigheter forbeholdt.",
 };

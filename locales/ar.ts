@@ -1,4 +1,6 @@
-export const ar = {
+import { Translations } from "./en";
+
+export const ar: Translations = {
   invoiceDetails: "تفاصيل الفاتورة",
   invoiceNumber: "رقم الفاتورة",
   issueDate: "تاريخ الإصدار",
@@ -45,6 +47,7 @@ export const ar = {
   authorizedSignature: "التوقيع المعتمد",
   printName: "اسم الموقع",
   date: "التاريخ",
+  // Preview specific
   invoiceTitle: "فاتورة",
   billedTo: "فاتورة إلى",
   dateOfIssue: "تاريخ الإصدار",
@@ -52,6 +55,8 @@ export const ar = {
   watermark: "تم الإنشاء بواسطة Invoice-Quickly",
   samplePreview: "معاينة عينة",
   taxDisclaimer: "يتم احتساب الضريبة بواسطة مزود الدفع",
+  
+  // Company Modals
   addNewCompany: "إضافة شركة جديدة",
   editCompany: "تعديل الشركة",
   companyNameField: "اسم الشركة",
@@ -67,7 +72,7 @@ export const ar = {
   fixed: "ثابت",
   myInvoices: "فواتيري",
   editor: "المحرر",
-  livePreview: "معاينة مباشرة",
+  livePreview: "معaينة مباشرة",
   share: "مشاركة",
   save: "حفظ",
   saving: "جاري الحفظ...",
@@ -106,12 +111,12 @@ export const ar = {
   language: "اللغة",
   language_preference_desc: "اختر لغة العرض المفضلة لديك",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "المنتج",
+  footerLinkResources: "المصادر",
+  footerLinkAbout: "حولنا",
+  footerLinkPrivacy: "سياسة الخصوصية",
+  footerLinkTerms: "شروط الخدمة",
+  footerLinkContact: "اتصل بنا",
+  footerTagline: "أفضل مولد فواتير مجاني عبر الإنترنت يثق به المستقلون والوكالات والشركات الصغيرة في جميع أنحاء العالم.",
+  footerRightsReserved: "كل الحقوق محفوظة.",
 };

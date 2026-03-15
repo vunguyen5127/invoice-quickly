@@ -1,4 +1,6 @@
-export const id = {
+import { Translations } from "./en";
+
+export const id: Translations = {
   invoiceDetails: "Detail Faktur",
   invoiceNumber: "Nomor Faktur",
   issueDate: "Tanggal Terbit",
@@ -45,6 +47,7 @@ export const id = {
   authorizedSignature: "Tanda Tangan Sah",
   printName: "Nama Penanda Tangan",
   date: "Tanggal",
+  // Preview specific
   invoiceTitle: "FAKTUR",
   billedTo: "Ditujukan ke",
   dateOfIssue: "Tanggal Terbit",
@@ -52,6 +55,8 @@ export const id = {
   watermark: "Dibuat dengan Invoice-Quickly",
   samplePreview: "Pratinjau Sampel",
   taxDisclaimer: "Pajak dihitung oleh penyedia pembayaran",
+  
+  // Company Modals
   addNewCompany: "Tambah Perusahaan Baru",
   editCompany: "Ubah Perusahaan",
   companyNameField: "Nama Perusahaan",
@@ -106,12 +111,12 @@ export const id = {
   language: "Bahasa",
   language_preference_desc: "Pilih bahasa tampilan pilihan Anda",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Produk",
+  footerLinkResources: "Sumber Daya",
+  footerLinkAbout: "Tentang Kami",
+  footerLinkPrivacy: "Kebijakan Privasi",
+  footerLinkTerms: "Ketentuan Layanan",
+  footerLinkContact: "Hubungi Kami",
+  footerTagline: "Pembuat faktur online gratis terbaik yang dipercaya oleh freelancer, agen, dan bisnis kecil di seluruh dunia.",
+  footerRightsReserved: "Seluruh hak cipta.",
 };

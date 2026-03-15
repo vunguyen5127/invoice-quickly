@@ -1,4 +1,6 @@
-export const ko = {
+import { Translations } from "./en";
+
+export const ko: Translations = {
   invoiceDetails: "청구서 상세",
   invoiceNumber: "청구서 번호",
   issueDate: "발행일",
@@ -45,6 +47,7 @@ export const ko = {
   authorizedSignature: "권한 있는 서명",
   printName: "서명자 이름",
   date: "날짜",
+  // Preview specific
   invoiceTitle: "청구서",
   billedTo: "청구 대상",
   dateOfIssue: "발행일",
@@ -52,6 +55,8 @@ export const ko = {
   watermark: "Invoice-Quickly로 제작됨",
   samplePreview: "샘플 미리보기",
   taxDisclaimer: "세금은 결제 대행사에서 계산합니다",
+  
+  // Company Modals
   addNewCompany: "새 회사 추가",
   editCompany: "회사 편집",
   companyNameField: "회사명",
@@ -106,12 +111,12 @@ export const ko = {
   language: "언어",
   language_preference_desc: "선호하는 표시 언어를 선택하세요",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "제품",
+  footerLinkResources: "리소스",
+  footerLinkAbout: "회사 소개",
+  footerLinkPrivacy: "개인정보 처리방침",
+  footerLinkTerms: "서비스 약관",
+  footerLinkContact: "문의하기",
+  footerTagline: "전 세계 프리랜서, 대행사 및 소규모 비즈니스가 신뢰하는 최고의 무료 온라인 인보이스 생성기입니다.",
+  footerRightsReserved: "모든 권리 보유.",
 };

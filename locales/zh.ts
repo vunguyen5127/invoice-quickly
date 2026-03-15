@@ -1,4 +1,6 @@
-export const zh = {
+import { Translations } from "./en";
+
+export const zh: Translations = {
   invoiceDetails: "发票详情",
   invoiceNumber: "发票编号",
   issueDate: "开票日期",
@@ -45,6 +47,7 @@ export const zh = {
   authorizedSignature: "授权签名",
   printName: "签署人姓名",
   date: "日期",
+  // Preview specific
   invoiceTitle: "发票",
   billedTo: "账单寄至",
   dateOfIssue: "开票日期",
@@ -52,6 +55,8 @@ export const zh = {
   watermark: "由 Invoice-Quickly 创建",
   samplePreview: "示例预览",
   taxDisclaimer: "税费由支付服务商计算",
+  
+  // Company Modals
   addNewCompany: "添加新公司",
   editCompany: "编辑公司",
   companyNameField: "公司名称",
@@ -101,17 +106,17 @@ export const zh = {
   accountSettings: "账户设置",
   light: "浅色",
   dark: "深色",
-  system: "系统平衡",
+  system: "系统",
   settings_preferences: "首选项",
   language: "语言",
   language_preference_desc: "选择您的首选显示语言",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "产品",
+  footerLinkResources: "资源",
+  footerLinkAbout: "关于我们",
+  footerLinkPrivacy: "隐私政策",
+  footerLinkTerms: "服务条款",
+  footerLinkContact: "联系我们",
+  footerTagline: "深受全球自由职业者、代理机构和小型企业信任的最佳免费在线发票生成器。",
+  footerRightsReserved: "版权所有。",
 };

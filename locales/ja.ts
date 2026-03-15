@@ -1,4 +1,6 @@
-export const ja = {
+import { Translations } from "./en";
+
+export const ja: Translations = {
   invoiceDetails: "請求書詳細",
   invoiceNumber: "請求書番号",
   issueDate: "発行日",
@@ -45,6 +47,7 @@ export const ja = {
   authorizedSignature: "承認済み署名",
   printName: "署名者名",
   date: "日付",
+  // Preview specific
   invoiceTitle: "請求書",
   billedTo: "請求先",
   dateOfIssue: "発行日",
@@ -52,6 +55,8 @@ export const ja = {
   watermark: "Invoice-Quickly で作成",
   samplePreview: "サンプルプレビュー",
   taxDisclaimer: "税金は決済プロバイダーによって計算されます",
+  
+  // Company Modals
   addNewCompany: "新しい会社を追加",
   editCompany: "会社を編集",
   companyNameField: "会社名",
@@ -106,12 +111,12 @@ export const ja = {
   language: "言語",
   language_preference_desc: "希望する表示言語を選択してください",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "製品",
+  footerLinkResources: "リソース",
+  footerLinkAbout: "私たちについて",
+  footerLinkPrivacy: "プライバシーポリシー",
+  footerLinkTerms: "利用規約",
+  footerLinkContact: "お問い合わせ",
+  footerTagline: "世界中のフリーランサー、代理店、小規模企業に信頼されている最高の無料オンライン請求書作成ツール。",
+  footerRightsReserved: "全著作権所有。",
 };

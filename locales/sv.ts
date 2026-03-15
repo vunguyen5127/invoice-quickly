@@ -1,4 +1,6 @@
-export const sv = {
+import { Translations } from "./en";
+
+export const sv: Translations = {
   invoiceDetails: "Fakturadetaljer",
   invoiceNumber: "Fakturanummer",
   issueDate: "Fakturadatum",
@@ -45,13 +47,16 @@ export const sv = {
   authorizedSignature: "Auktoriserad signatur",
   printName: "Signerarens namn",
   date: "Datum",
+  // Preview specific
   invoiceTitle: "FAKTURA",
   billedTo: "Fakturerad till",
   dateOfIssue: "Fakturadatum",
   tax: "Moms",
   watermark: "Skapad med Invoice-Quickly",
   samplePreview: "Exempelvisning",
-  taxDisclaimer: "Moms beräknas av betalningsleverantören",
+  taxDisclaimer: "Moms beräknas av betalningsleverandören",
+  
+  // Company Modals
   addNewCompany: "Lägg till nytt företag",
   editCompany: "Redigera företag",
   companyNameField: "Företagsnamn",
@@ -106,12 +111,12 @@ export const sv = {
   language: "Språk",
   language_preference_desc: "Välj ditt föredragna visningsspråk",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Produkt",
+  footerLinkResources: "Resurser",
+  footerLinkAbout: "Om oss",
+  footerLinkPrivacy: "Integritetspolicy",
+  footerLinkTerms: "Användarvillkor",
+  footerLinkContact: "Kontakta oss",
+  footerTagline: "Den bästa gratis online-faktureringsgeneratorn som litas på av frilansare, byråer och småföretag över hela världen.",
+  footerRightsReserved: "Alla rättigheter förbehållna.",
 };

@@ -1,4 +1,6 @@
-export const tr = {
+import { Translations } from "./en";
+
+export const tr: Translations = {
   invoiceDetails: "Detaylar",
   invoiceNumber: "Fatura Numarası",
   issueDate: "Düzenleme Tarihi",
@@ -45,6 +47,7 @@ export const tr = {
   authorizedSignature: "Yetkili İmza",
   printName: "İmzalayanın Adı",
   date: "Tarih",
+  // Preview specific
   invoiceTitle: "FATURA",
   billedTo: "Şuna Faturalandı",
   dateOfIssue: "Düzenleme Tarihi",
@@ -52,6 +55,8 @@ export const tr = {
   watermark: "Invoice-Quickly ile oluşturuldu",
   samplePreview: "Örnek Önizleme",
   taxDisclaimer: "Vergi, ödeme sağlayıcısı tarafından hesaplanır",
+  
+  // Company Modals
   addNewCompany: "Yeni Şirket Ekle",
   editCompany: "Şirketi Düzenle",
   companyNameField: "Şirket Adı",
@@ -106,12 +111,12 @@ export const tr = {
   language: "Dil",
   language_preference_desc: "Tercih ettiğiniz görüntüleme dilini seçin",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Ürün",
+  footerLinkResources: "Kaynaklar",
+  footerLinkAbout: "Hakkımızda",
+  footerLinkPrivacy: "Gizlilik Politikası",
+  footerLinkTerms: "Hizmet Şartları",
+  footerLinkContact: "Bize Ulaşın",
+  footerTagline: "Dünya çapında freelancerlar, ajanslar ve küçük işletmeler tarafından güvenilen en iyi ücretsiz çevrimiçi fatura oluşturucu.",
+  footerRightsReserved: "Tüm hakları saklıdır.",
 };

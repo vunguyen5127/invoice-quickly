@@ -1,4 +1,6 @@
-export const fi = {
+import { Translations } from "./en";
+
+export const fi: Translations = {
   invoiceDetails: "Laskun tiedot",
   invoiceNumber: "Laskun numero",
   issueDate: "Laskun päiväys",
@@ -45,6 +47,7 @@ export const fi = {
   authorizedSignature: "Valtuutettu allekirjoitus",
   printName: "Allekirjoittajan nimi",
   date: "Päiväys",
+  // Preview specific
   invoiceTitle: "LASKU",
   billedTo: "Laskun saaja",
   dateOfIssue: "Laskun päiväys",
@@ -52,6 +55,8 @@ export const fi = {
   watermark: "Luotu Invoice-Quickly-sovelluksella",
   samplePreview: "Esimerkkinäkymä",
   taxDisclaimer: "Maksunvälittäjä laskee verot",
+  
+  // Company Modals
   addNewCompany: "Lisää uusi yritys",
   editCompany: "Muokkaa yritystä",
   companyNameField: "Yrityksen nimi",
@@ -106,12 +111,12 @@ export const fi = {
   language: "Kieli",
   language_preference_desc: "Valitse haluamasi näyttökieli",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Tuote",
+  footerLinkResources: "Resurssit",
+  footerLinkAbout: "Meistä",
+  footerLinkPrivacy: "Tietosuojakäytäntö",
+  footerLinkTerms: "Käyttöehdot",
+  footerLinkContact: "Ota yhteyttä",
+  footerTagline: "Paras ilmainen online-laskun luoja, johon freelancerit, toimistot ja pienyritykset luottavat ympäri maailmaa.",
+  footerRightsReserved: "Kaikki oikeudet pidätetään.",
 };

@@ -1,4 +1,6 @@
-export const da = {
+import { Translations } from "./en";
+
+export const da: Translations = {
   invoiceDetails: "Fakturaoplysninger",
   invoiceNumber: "Fakturanummer",
   issueDate: "Fakturadato",
@@ -45,6 +47,7 @@ export const da = {
   authorizedSignature: "Autoriseret underskrift",
   printName: "Underskrivers navn",
   date: "Dato",
+  // Preview specific
   invoiceTitle: "FAKTURA",
   billedTo: "Faktureret til",
   dateOfIssue: "Fakturadato",
@@ -52,6 +55,8 @@ export const da = {
   watermark: "Oprettet med Invoice-Quickly",
   samplePreview: "Eksempelvisning",
   taxDisclaimer: "Moms beregnes af betalingsudbyderen",
+  
+  // Company Modals
   addNewCompany: "Tilføj nyt firma",
   editCompany: "Rediger firma",
   companyNameField: "Firmenavn",
@@ -106,12 +111,12 @@ export const da = {
   language: "Sprog",
   language_preference_desc: "Vælg dit foretrukne visningssprog",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Produkt",
+  footerLinkResources: "Ressourcer",
+  footerLinkAbout: "Om os",
+  footerLinkPrivacy: "Privatlivspolitik",
+  footerLinkTerms: "Servicevilkår",
+  footerLinkContact: "Kontakt os",
+  footerTagline: "Den bedste gratis online fakturagenerator betroet af freelancere, bureauer og små virksomheder verden over.",
+  footerRightsReserved: "Alle rettigheder forbeholdes.",
 };

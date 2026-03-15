@@ -1,4 +1,6 @@
-export const pt = {
+import { Translations } from "./en";
+
+export const pt: Translations = {
   invoiceDetails: "Detalhes da Fatura",
   invoiceNumber: "Número da Fatura",
   issueDate: "Data de Emissão",
@@ -45,6 +47,7 @@ export const pt = {
   authorizedSignature: "Assinatura Autorizada",
   printName: "Nome do signatário",
   date: "Data",
+  // Preview specific
   invoiceTitle: "FATURA",
   billedTo: "Faturado a",
   dateOfIssue: "Data de Emissão",
@@ -52,6 +55,8 @@ export const pt = {
   watermark: "Criado com Invoice-Quickly",
   samplePreview: "Amostra de Visualização",
   taxDisclaimer: "Imposto calculado pelo fornecedor de pagamentos",
+  
+  // Company Modals
   addNewCompany: "Adicionar Nova Empresa",
   editCompany: "Editar Empresa",
   companyNameField: "Nome da Empresa",
@@ -106,12 +111,12 @@ export const pt = {
   language: "Idioma",
   language_preference_desc: "Escolha o seu idioma de exibição preferido",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Produto",
+  footerLinkResources: "Recursos",
+  footerLinkAbout: "Sobre nós",
+  footerLinkPrivacy: "Política de Privacidade",
+  footerLinkTerms: "Termos de Serviço",
+  footerLinkContact: "Contacte-nos",
+  footerTagline: "O melhor gerador de faturas online gratuito, no qual confiam freelancers, agências e pequenas empresas em todo o mundo.",
+  footerRightsReserved: "Todos os direitos reservados.",
 };

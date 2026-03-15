@@ -1,4 +1,6 @@
-export const hi = {
+import { Translations } from "./en";
+
+export const hi: Translations = {
   invoiceDetails: "इनवॉइस विवरण",
   invoiceNumber: "इनवॉइस संख्या",
   issueDate: "जारी करने की तिथि",
@@ -45,6 +47,7 @@ export const hi = {
   authorizedSignature: "अधिकृत हस्ताक्षर",
   printName: "हस्ताक्षरकर्ता का नाम",
   date: "तिथि",
+  // Preview specific
   invoiceTitle: "इनवॉइस",
   billedTo: "बिल भेजा गया",
   dateOfIssue: "जारी करने की तिथि",
@@ -52,6 +55,8 @@ export const hi = {
   watermark: "Invoice-Quickly के साथ बनाया गया",
   samplePreview: "नमूना पूर्वावलोकन",
   taxDisclaimer: "कर की गणना भुगतान प्रदाता द्वारा की जाती है",
+  
+  // Company Modals
   addNewCompany: "नई कंपनी जोड़ें",
   editCompany: "कंपनी संपादित करें",
   companyNameField: "कंपनी का नाम",
@@ -106,12 +111,12 @@ export const hi = {
   language: "भाषा",
   language_preference_desc: "अपनी पसंदीदा प्रदर्शन भाषा चुनें",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "उत्पाद",
+  footerLinkResources: "संसाधन",
+  footerLinkAbout: "हमारे बारे में",
+  footerLinkPrivacy: "गोपनीयता नीति",
+  footerLinkTerms: "सेवा की शर्तें",
+  footerLinkContact: "हमसे संपर्क करें",
+  footerTagline: "दुनिया भर के फ्रीलांसरों, एजेंसियों और छोटे व्यवसायों द्वारा विश्वसनीय सबसे अच्छा मुफ्त ऑनलाइन चालान जनरेटर।",
+  footerRightsReserved: "सर्वाधिकार सुरक्षित।",
 };

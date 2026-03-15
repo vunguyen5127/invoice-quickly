@@ -1,4 +1,6 @@
-export const th = {
+import { Translations } from "./en";
+
+export const th: Translations = {
   invoiceDetails: "รายละเอียดใบแจ้งหนี้",
   invoiceNumber: "เลขที่ใบแจ้งหนี้",
   issueDate: "วันที่ออก",
@@ -45,6 +47,7 @@ export const th = {
   authorizedSignature: "ลายเซ็นผู้มีอำนาจ",
   printName: "ชื่อผู้ลงนาม",
   date: "วันที่",
+  // Preview specific
   invoiceTitle: "ใบแจ้งหนี้",
   billedTo: "เรียกเก็บเงินไปยัง",
   dateOfIssue: "วันที่ออก",
@@ -52,6 +55,8 @@ export const th = {
   watermark: "สร้างโดย Invoice-Quickly",
   samplePreview: "ตัวอย่างก่อนพิมพ์",
   taxDisclaimer: "ภาษีคำนวณโดยผู้ให้บริการชำระเงิน",
+  
+  // Company Modals
   addNewCompany: "เพิ่มบริษัทใหม่",
   editCompany: "แก้ไขบริษัท",
   companyNameField: "ชื่อบริษัท",
@@ -106,12 +111,12 @@ export const th = {
   language: "ภาษา",
   language_preference_desc: "เลือกภาษาที่แสดงที่คุณต้องการ",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "ผลิตภัณฑ์",
+  footerLinkResources: "แหล่งข้อมูล",
+  footerLinkAbout: "เกี่ยวกับเรา",
+  footerLinkPrivacy: "นโยบายความเป็นส่วนตัว",
+  footerLinkTerms: "ข้อกำหนดการให้บริการ",
+  footerLinkContact: "ติดต่อเรา",
+  footerTagline: "เครื่องมือสร้างใบแจ้งหนี้ออนไลน์ฟรีที่ดีที่สุดที่ได้รับความไว้วางใจจากฟรีแลนซ์ เอเจนซี่ และธุรกิจขนาดเล็กทั่วโลก",
+  footerRightsReserved: "สงวนลิขสิทธิ์ทั้งหมด",
 };

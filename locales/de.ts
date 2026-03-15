@@ -1,4 +1,6 @@
-export const de = {
+import { Translations } from "./en";
+
+export const de: Translations = {
   invoiceDetails: "Rechnungsdetails",
   invoiceNumber: "Rechnungsnummer",
   issueDate: "Ausstellungsdatum",
@@ -45,6 +47,7 @@ export const de = {
   authorizedSignature: "Autorisierte Unterschrift",
   printName: "Name des Unterzeichners",
   date: "Datum",
+  // Preview specific
   invoiceTitle: "RECHNUNG",
   billedTo: "Rechnung an",
   dateOfIssue: "Ausstellungsdatum",
@@ -52,6 +55,8 @@ export const de = {
   watermark: "Erstellt mit Invoice-Quickly",
   samplePreview: "Beispiel-Vorschau",
   taxDisclaimer: "Steuer wird vom Zahlungsanbieter berechnet",
+  
+  // Company Modals
   addNewCompany: "Neue Firma hinzufügen",
   editCompany: "Firma bearbeiten",
   companyNameField: "Firmenname",
@@ -106,12 +111,12 @@ export const de = {
   language: "Sprache",
   language_preference_desc: "Wählen Sie Ihre bevorzugte Anzeigesprache",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Produkt",
+  footerLinkResources: "Ressourcen",
+  footerLinkAbout: "Über uns",
+  footerLinkPrivacy: "Datenschutzrichtlinie",
+  footerLinkTerms: "Nutzungsbedingungen",
+  footerLinkContact: "Kontakt",
+  footerTagline: "Der beste kostenlose Online-Rechnungsgenerator, dem Freiberufler, Agenturen und kleine Unternehmen weltweit vertrauen.",
+  footerRightsReserved: "Alle Rechte vorbehalten.",
 };

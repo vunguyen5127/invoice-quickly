@@ -1,4 +1,6 @@
-export const nl = {
+import { Translations } from "./en";
+
+export const nl: Translations = {
   invoiceDetails: "Factuurdetails",
   invoiceNumber: "Factuurnummer",
   issueDate: "Factuurdatum",
@@ -45,6 +47,7 @@ export const nl = {
   authorizedSignature: "Geautoriseerde handtekening",
   printName: "Naam ondertekenaar",
   date: "Datum",
+  // Preview specific
   invoiceTitle: "FACTUUR",
   billedTo: "Gefactureerd aan",
   dateOfIssue: "Factuurdatum",
@@ -52,6 +55,8 @@ export const nl = {
   watermark: "Gemaakt met Invoice-Quickly",
   samplePreview: "Voorbeeldweergave",
   taxDisclaimer: "Btw berekend door betalingsprovider",
+  
+  // Company Modals
   addNewCompany: "Nieuw bedrijf toevoegen",
   editCompany: "Bedrijf bewerken",
   companyNameField: "Bedrijfsnaam",
@@ -107,11 +112,11 @@ export const nl = {
   language_preference_desc: "Kies uw gewenste weergavetaal",
   // Footer
   footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkResources: "Bronnen",
+  footerLinkAbout: "Over ons",
+  footerLinkPrivacy: "Privacybeleid",
+  footerLinkTerms: "Servicevoorwaarden",
+  footerLinkContact: "Contact",
+  footerTagline: "De beste gratis online factuurgenerator die wordt vertrouwd door freelancers, bureaus en kleine bedrijven wereldwijd.",
+  footerRightsReserved: "Alle rechten voorbehouden.",
 };

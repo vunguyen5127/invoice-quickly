@@ -1,4 +1,6 @@
-export const ru = {
+import { Translations } from "./en";
+
+export const ru: Translations = {
   invoiceDetails: "Детали счета",
   invoiceNumber: "Номер счета",
   issueDate: "Дата выставления",
@@ -45,6 +47,7 @@ export const ru = {
   authorizedSignature: "Уполномоченная подпись",
   printName: "Имя подписанта",
   date: "Дата",
+  // Preview specific
   invoiceTitle: "СЧЕТ",
   billedTo: "Плательщик",
   dateOfIssue: "Дата выставления",
@@ -52,6 +55,8 @@ export const ru = {
   watermark: "Создано в Invoice-Quickly",
   samplePreview: "Предварительный просмотр",
   taxDisclaimer: "Налог рассчитывается платежным провайдером",
+  
+  // Company Modals
   addNewCompany: "Добавить новую компанию",
   editCompany: "Редактировать компанию",
   companyNameField: "Название компании",
@@ -106,12 +111,12 @@ export const ru = {
   language: "Язык",
   language_preference_desc: "Выберите предпочтительный язык интерфейса",
   // Footer
-  footerLinkProduct: "Product",
-  footerLinkResources: "Resources",
-  footerLinkAbout: "About Us",
-  footerLinkPrivacy: "Privacy Policy",
-  footerLinkTerms: "Terms of Service",
-  footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
-  footerRightsReserved: "All rights reserved.",
+  footerLinkProduct: "Продукт",
+  footerLinkResources: "Ресурсы",
+  footerLinkAbout: "О нас",
+  footerLinkPrivacy: "Политика конфиденциальности",
+  footerLinkTerms: "Условия использования",
+  footerLinkContact: "Связаться с нами",
+  footerTagline: "Лучший бесплатный онлайн-генератор инвойсов, которому доверяют фрилансеры, агентства и малые предприятия по всему миру.",
+  footerRightsReserved: "Все права защищены.",
 };
