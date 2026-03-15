@@ -201,21 +201,27 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
           </fieldset>
           <fieldset className={fieldsetClass}>
             <legend className={legendClass}>{t.issueDate}</legend>
-            <input 
-              type="date" 
-              className={inputInnerClass} 
-              value={invoice.details.issueDate} 
-              onChange={(e) => handleSectionChange('details', 'issueDate', e.target.value)}
-            />
+            <div className="relative flex items-center">
+              <input 
+                type="date" 
+                className={`${inputInnerClass} cursor-pointer`}
+                value={invoice.details.issueDate} 
+                onChange={(e) => handleSectionChange('details', 'issueDate', e.target.value)}
+              />
+              <Calendar className="w-4 h-4 text-zinc-400 dark:text-zinc-500 absolute right-0 pointer-events-none" />
+            </div>
           </fieldset>
           <fieldset className={fieldsetClass}>
             <legend className={legendClass}>{t.dueDate}</legend>
-            <input 
-              type="date" 
-              className={inputInnerClass} 
-              value={invoice.details.dueDate} 
-              onChange={(e) => handleSectionChange('details', 'dueDate', e.target.value)}
-            />
+            <div className="relative flex items-center">
+              <input 
+                type="date" 
+                className={`${inputInnerClass} cursor-pointer`}
+                value={invoice.details.dueDate} 
+                onChange={(e) => handleSectionChange('details', 'dueDate', e.target.value)}
+              />
+              <Calendar className="w-4 h-4 text-zinc-400 dark:text-zinc-500 absolute right-0 pointer-events-none" />
+            </div>
           </fieldset>
         </div>
       </div>

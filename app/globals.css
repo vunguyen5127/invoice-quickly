@@ -143,3 +143,27 @@ body {
     margin: 0;
   }
 }
+
+/* Date Picker Polish */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+input[type="date"] {
+  position: relative;
+}
+
+/* Ensure the text is visible over the invisible picker */
+input[type="date"]::-webkit-datetime-edit {
+  position: relative;
+  z-index: 1;
+}
