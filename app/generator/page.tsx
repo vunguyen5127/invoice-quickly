@@ -182,8 +182,43 @@ function CreateInvoiceContent() {
     }
   };
 
-  // Don't render until loaded to prevent hydration mismatch
-  if (!isLoaded) return null;
+  // Don't render interactive parts until loaded to prevent hydration mismatch
+  const mainContent = !isLoaded ? (
+    <div className="flex-1">
+      <div className="h-10 flex items-center mb-6">
+        <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Editor</h2>
+      </div>
+      <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
+        <InvoiceEditSkeleton />
+      </div>
+    </div>
+  ) : (
+    <>
+      {/* Left Column: Form */}
+      <div className="flex-1">
+        <div className="h-10 flex items-center mb-6">
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.editor}</h2>
+        </div>
+        <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
+          <InvoiceForm invoice={invoice} setInvoice={setInvoice} />
+        </div>
+      </div>
+
+      {/* Right Column: Preview */}
+      <div className="flex-1 xl:sticky xl:top-14">
+        <div className="h-10 flex items-center mb-6">
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
+        </div>
+        <div className="w-full rounded-[5px] ring-2 ring-blue-400/50">
+          <div className="w-full bg-zinc-50 dark:bg-zinc-950 rounded-[5px] overflow-hidden [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
+            <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top-left transition-all">
+              <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
@@ -239,29 +274,7 @@ function CreateInvoiceContent() {
 
       <div className="container mx-auto px-4 sm:px-8 py-8 max-w-[1600px] flex-1">
         <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
-          {/* Left Column: Form */}
-          <div className="flex-1">
-            <div className="h-10 flex items-center mb-6">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.editor}</h2>
-            </div>
-            <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
-              <InvoiceForm invoice={invoice} setInvoice={setInvoice} />
-            </div>
-          </div>
-
-          {/* Right Column: Preview */}
-          <div className="flex-1 xl:sticky xl:top-14">
-            <div className="h-10 flex items-center mb-6">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
-            </div>
-            <div className="w-full rounded-[5px] ring-2 ring-blue-400/50">
-              <div className="w-full bg-zinc-50 dark:bg-zinc-950 rounded-[5px] overflow-hidden [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-                <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top-left transition-all">
-                  <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
-                </div>
-              </div>
-            </div>
-          </div>
+          {mainContent}
         </div>
 
         {/* Select Company Modal */}

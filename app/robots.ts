@@ -6,7 +6,19 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/auth/", "/dashboard/", "/invoice/", "/share/"],
+        disallow: [
+          "/admin",
+          "/auth/",
+          "/dashboard/",
+          "/invoice/",
+          "/share/",
+          "/api/",
+          "/login",
+        ],
+      },
+      {
+        userAgent: "GPTBot",
+        disallow: ["/dashboard/", "/invoice/", "/share/"],
       },
     ],
     sitemap: "https://invoice-quickly.com/sitemap.xml",
