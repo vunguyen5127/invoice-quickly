@@ -231,11 +231,11 @@ function CreateInvoiceContent() {
     <>
       {/* Left Column: Form */}
       <div
-        className="overflow-hidden"
+        className="w-full flex-1 overflow-hidden"
         style={{
-          flex: isMounted ? '1 1 0%' : '0 0 0%',
+          width: isMounted ? '100%' : '0%',
           opacity: isMounted ? 1 : 0,
-          transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
+          transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
         }}
       >
         <div className="h-10 flex items-center mb-6">
@@ -248,11 +248,11 @@ function CreateInvoiceContent() {
 
       {/* Right Column: Preview */}
       <div
-        className="xl:sticky xl:top-14 overflow-hidden"
+        className="w-full flex-1 xl:sticky xl:top-14 overflow-hidden"
         style={{
-          flex: isMounted ? '1 1 0%' : '0 0 0%',
+          width: isMounted ? '100%' : '0%',
           opacity: isMounted ? 1 : 0,
-          transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
+          transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
         }}
       >
         <div className="h-10 flex items-center mb-6">

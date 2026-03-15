@@ -222,12 +222,11 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           
           {/* Left Column: Form */}
           <div
-            className="w-full xl:w-1/2 flex flex-col gap-6 overflow-hidden"
+            className="w-full flex-1 flex flex-col gap-6 overflow-hidden"
             style={{
-              maxWidth: isMounted ? '50%' : '0%',
+              width: isMounted ? '100%' : '0%',
               opacity: isMounted ? 1 : 0,
-              flex: isMounted ? '0 0 50%' : '0 0 0%',
-              transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1), max-width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
+              transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
             }}
           >
             <div className="flex items-center justify-between h-10">
@@ -240,12 +239,11 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
 
         {/* Right Column: Preview */}
         <div
-          className="w-full xl:w-1/2 xl:sticky xl:top-24 overflow-hidden"
+          className="w-full flex-1 xl:sticky xl:top-24 overflow-hidden"
           style={{
-            maxWidth: isMounted ? '50%' : '0%',
+            width: isMounted ? '100%' : '0%',
             opacity: isMounted ? 1 : 0,
-            flex: isMounted ? '0 0 50%' : '0 0 0%',
-            transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, max-width 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
+            transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
           }}
         >
           <div className="flex items-center justify-between h-10 mb-6">
