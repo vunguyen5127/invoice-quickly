@@ -52,7 +52,7 @@ export const vn: Translations = {
   billedTo: "Đơn Vị Mua Hàng",
   dateOfIssue: "Ngày Lập",
   tax: "Thuế",
-  watermark: "Tạo bởi InvoiceQuickly",
+  watermark: "Tạo bởi Invoice-Quickly",
   samplePreview: "Bản Xem Trước",
   taxDisclaimer: "Thuế được tính bởi đơn vị thanh toán",
   

@@ -50,7 +50,7 @@ export const en = {
   billedTo: "Billed To",
   dateOfIssue: "Date of Issue",
   tax: "Tax",
-  watermark: "Created with InvoiceQuickly",
+  watermark: "Created with Invoice-Quickly",
   samplePreview: "Sample Preview",
   taxDisclaimer: "Tax calculated by payment provider",
   

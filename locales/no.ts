@@ -49,7 +49,7 @@ export const no = {
   billedTo: "Fakturert til",
   dateOfIssue: "Fakturadato",
   tax: "Moms",
-  watermark: "Opprettet med InvoiceQuickly",
+  watermark: "Opprettet med Invoice-Quickly",
   samplePreview: "Eksempelvisning",
   taxDisclaimer: "Moms beregnes av betalingsleverandøren",
   addNewCompany: "Legg til nytt firma",

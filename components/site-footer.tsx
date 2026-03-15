@@ -11,7 +11,7 @@ export function SiteFooter() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
           <div className="md:col-span-2">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2">InvoiceQuickly</h3>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2">Invoice-Quickly</h3>
             <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
               {t.footerTagline}
             </p>
@@ -63,7 +63,7 @@ export function SiteFooter() {
         </div>
         <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 text-center">
           <p className="text-slate-400 dark:text-zinc-600 text-xs">
-            © {new Date().getFullYear()} InvoiceQuickly. {t.footerRightsReserved}
+            © {new Date().getFullYear()} Invoice-Quickly. {t.footerRightsReserved}
           </p>
         </div>
       </div>

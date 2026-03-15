@@ -86,11 +86,11 @@ const notoThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: {
-    default: "Free Invoice Generator Online — Create & Download PDF Invoices | InvoiceQuickly",
-    template: "%s | InvoiceQuickly",
+    default: "Free Invoice Generator Online — Create & Download PDF Invoices | Invoice-Quickly",
+    template: "%s | Invoice-Quickly",
   },
   description:
-    "Generate invoices for free with InvoiceQuickly — the free online invoice generator. Create professional PDF invoices in seconds, no signup required. Free forever, no watermark.",
+    "Generate invoices for free with Invoice-Quickly — the free online invoice generator. Create professional PDF invoices in seconds, no signup required. Free forever, no watermark.",
   keywords: [
     "invoice generator free",
     "free invoice generator",
@@ -109,14 +109,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://invoice-quickly.com"),
   openGraph: {
     type: "website",
-    siteName: "InvoiceQuickly",
-    title: "Free Invoice Generator Online — Create & Download PDF Invoices | InvoiceQuickly",
-    description: "Generate invoices for free with InvoiceQuickly. Create professional PDF invoices in seconds — no signup, no watermark, free forever.",
+    siteName: "Invoice-Quickly",
+    title: "Free Invoice Generator Online — Create & Download PDF Invoices | Invoice-Quickly",
+    description: "Generate invoices for free with Invoice-Quickly. Create professional PDF invoices in seconds — no signup, no watermark, free forever.",
     url: "https://invoice-quickly.com",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Invoice Generator Online | InvoiceQuickly",
+    title: "Free Invoice Generator Online | Invoice-Quickly",
     description: "Create and download professional PDF invoices for free. No signup, no watermark — the best free online invoice generator.",
   },
   robots: {
@@ -147,7 +147,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "InvoiceQuickly",
+              name: "Invoice-Quickly",
               url: "https://invoice-quickly.com",
               logo: "https://invoice-quickly.com/logo.svg",
               description: "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark.",

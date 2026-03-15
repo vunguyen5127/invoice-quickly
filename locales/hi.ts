@@ -49,7 +49,7 @@ export const hi = {
   billedTo: "बिल भेजा गया",
   dateOfIssue: "जारी करने की तिथि",
   tax: "कर",
-  watermark: "InvoiceQuickly के साथ बनाया गया",
+  watermark: "Invoice-Quickly के साथ बनाया गया",
   samplePreview: "नमूना पूर्वावलोकन",
   taxDisclaimer: "कर की गणना भुगतान प्रदाता द्वारा की जाती है",
   addNewCompany: "नई कंपनी जोड़ें",

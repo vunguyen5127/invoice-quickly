@@ -4,7 +4,7 @@ Last updated: 2026-03-13
 
 ## Goal
 
-Implement a simple 2-tier pricing model for InvoiceQuickly:
+Implement a simple 2-tier pricing model for Invoice-Quickly:
 
 - `Free`
 - `Pro`

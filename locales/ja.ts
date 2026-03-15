@@ -49,7 +49,7 @@ export const ja = {
   billedTo: "請求先",
   dateOfIssue: "発行日",
   tax: "税金",
-  watermark: "InvoiceQuickly で作成",
+  watermark: "Invoice-Quickly で作成",
   samplePreview: "サンプルプレビュー",
   taxDisclaimer: "税金は決済プロバイダーによって計算されます",
   addNewCompany: "新しい会社を追加",

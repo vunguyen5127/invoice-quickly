@@ -49,7 +49,7 @@ export const zh = {
   billedTo: "账单寄至",
   dateOfIssue: "开票日期",
   tax: "税收",
-  watermark: "由 InvoiceQuickly 创建",
+  watermark: "由 Invoice-Quickly 创建",
   samplePreview: "示例预览",
   taxDisclaimer: "税费由支付服务商计算",
   addNewCompany: "添加新公司",

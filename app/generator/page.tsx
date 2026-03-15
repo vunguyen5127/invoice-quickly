@@ -54,7 +54,7 @@ function CreateInvoiceContent() {
 
       if (isNew) {
         // Coming from landing page CTA — always start fresh
-        localStorage.removeItem("invoiceQuicklyDraft");
+        localStorage.removeItem("Invoice-QuicklyDraft");
         // Clean URL without reloading
         window.history.replaceState({}, "", "/generator");
 
@@ -77,7 +77,7 @@ function CreateInvoiceContent() {
           };
         }
       } else {
-        const savedDraft = localStorage.getItem("invoiceQuicklyDraft");
+        const savedDraft = localStorage.getItem("Invoice-QuicklyDraft");
         if (savedDraft) {
           try {
             draftInvoice = JSON.parse(savedDraft);
@@ -107,7 +107,7 @@ function CreateInvoiceContent() {
   // Save to localStorage on change
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("invoiceQuicklyDraft", JSON.stringify(invoice));
+      localStorage.setItem("Invoice-QuicklyDraft", JSON.stringify(invoice));
     }
   }, [invoice, isLoaded]);
 

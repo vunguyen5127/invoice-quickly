@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Read InvoiceQuickly's Privacy Policy to learn how we protect your data, handle public invoice links, and use cookies to provide our free invoice generator.",
+  description: "Read Invoice-Quickly's Privacy Policy to learn how we protect your data, handle public invoice links, and use cookies to provide our free invoice generator.",
   alternates: { canonical: "/privacy-policy" },
 };
 
@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
               Who We Are
             </h2>
             <p>
-              Welcome to InvoiceQuickly ("we," "our," or "us"). We provide a web-based invoice generator accessible at https://invoice-quickly.com. We are committed to protecting your personal information and your right to privacy.
+              Welcome to Invoice-Quickly ("we," "our," or "us"). We provide a web-based invoice generator accessible at https://invoice-quickly.com. We are committed to protecting your personal information and your right to privacy.
             </p>
           </section>
 
@@ -43,7 +43,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 border-b border-zinc-100 dark:border-zinc-800 pb-2">
               Information We Collect
             </h2>
-            <p className="mb-4">We collect information that you voluntarily provide to us when you use InvoiceQuickly:</p>
+            <p className="mb-4">We collect information that you voluntarily provide to us when you use Invoice-Quickly:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Account Information:</strong> If you choose to create an account, we collect your email address and authentication credentials.</li>
               <li><strong>Company Details:</strong> Information about the businesses you manage, including company name, email, physical address, phone number, and logo images.</li>
@@ -93,7 +93,7 @@ export default function PrivacyPolicyPage() {
               We use Google AdSense to display advertisements to users on our Free plan. Google and its advertising partners use cookies to serve ads based on your prior visits to our website or other websites on the internet.
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to InvoiceQuickly and/or other sites on the Internet.</li>
+              <li>Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to Invoice-Quickly and/or other sites on the Internet.</li>
               <li>You may opt out of personalized advertising by visiting Google's <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Ads Settings</a>.</li>
             </ul>
           </section>
@@ -102,7 +102,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 border-b border-zinc-100 dark:border-zinc-800 pb-2">
               Third-Party Service Providers
             </h2>
-            <p className="mb-4">We rely on trusted third-party services to operate InvoiceQuickly. We share your information only as necessary for them to provide their services:</p>
+            <p className="mb-4">We rely on trusted third-party services to operate Invoice-Quickly. We share your information only as necessary for them to provide their services:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Supabase:</strong> We use Supabase as our backend database and authentication provider. Your invoice and company data is stored securely on their servers.</li>
               <li><strong>Paddle:</strong> We use Paddle as our Merchant of Record to process payments for our Pro plan. Paddle handles your payment information in accordance with their own privacy policy.</li>
@@ -115,7 +115,7 @@ export default function PrivacyPolicyPage() {
               How Public Invoice Links Work and Privacy Implications
             </h2>
             <p>
-              InvoiceQuickly allows you to share invoices with your clients via a public link (URL). Please be aware that <strong>anyone who possesses this specific public link can view the invoice details associated with it</strong>. We recommend sharing these links only with the intended recipients.
+              Invoice-Quickly allows you to share invoices with your clients via a public link (URL). Please be aware that <strong>anyone who possesses this specific public link can view the invoice details associated with it</strong>. We recommend sharing these links only with the intended recipients.
             </p>
           </section>
 
@@ -151,7 +151,7 @@ export default function PrivacyPolicyPage() {
               Your Rights and Choices
             </h2>
             <p>
-              Depending on your location, you may have the right to access, update, or delete your personal information. You can exercise these rights directly through your InvoiceQuickly dashboard by editing your company details, deleting invoices, or deleting your account. If you need further assistance, please contact us.
+              Depending on your location, you may have the right to access, update, or delete your personal information. You can exercise these rights directly through your Invoice-Quickly dashboard by editing your company details, deleting invoices, or deleting your account. If you need further assistance, please contact us.
             </p>
           </section>
 
@@ -160,7 +160,7 @@ export default function PrivacyPolicyPage() {
               Children's Privacy
             </h2>
             <p>
-              InvoiceQuickly is intended for business use and is not directed at children under the age of 16. We do not knowingly collect personal information from children.
+              Invoice-Quickly is intended for business use and is not directed at children under the age of 16. We do not knowingly collect personal information from children.
             </p>
           </section>
 
@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
 
       <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50 mt-12">
         <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} InvoiceQuickly. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
         </div>
       </footer>
     </div>

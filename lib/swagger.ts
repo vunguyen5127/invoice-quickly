@@ -6,9 +6,9 @@ export const getApiDocs = async () => {
     definition: {
       openapi: "3.0.0",
       info: {
-        title: "InvoiceQuickly API Documentation",
+        title: "Invoice-Quickly API Documentation",
         version: "1.0.0",
-        description: "API documentation for the InvoiceQuickly application.",
+        description: "API documentation for the Invoice-Quickly application.",
       },
       components: {
         securitySchemes: {

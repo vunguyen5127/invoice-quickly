@@ -49,7 +49,7 @@ export const th = {
   billedTo: "เรียกเก็บเงินไปยัง",
   dateOfIssue: "วันที่ออก",
   tax: "ภาษี",
-  watermark: "สร้างโดย InvoiceQuickly",
+  watermark: "สร้างโดย Invoice-Quickly",
   samplePreview: "ตัวอย่างก่อนพิมพ์",
   taxDisclaimer: "ภาษีคำนวณโดยผู้ให้บริการชำระเงิน",
   addNewCompany: "เพิ่มบริษัทใหม่",

@@ -49,7 +49,7 @@ export const ko = {
   billedTo: "청구 대상",
   dateOfIssue: "발행일",
   tax: "세금",
-  watermark: "InvoiceQuickly로 제작됨",
+  watermark: "Invoice-Quickly로 제작됨",
   samplePreview: "샘플 미리보기",
   taxDisclaimer: "세금은 결제 대행사에서 계산합니다",
   addNewCompany: "새 회사 추가",

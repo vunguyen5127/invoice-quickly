@@ -96,7 +96,7 @@ Use conversion-driven modal.
 
 If user NOT logged in:
 - Add subtle watermark in preview bottom area:
-    "Created with InvoiceQuickly"
+    "Created with Invoice-Quickly"
 
 Opacity low (20%)
 Small font

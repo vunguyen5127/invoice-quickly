@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { CheckCircle2, Zap, Shield, Globe, Users, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About InvoiceQuickly — Free Invoice Generator for Everyone",
+  title: "About Invoice-Quickly — Free Invoice Generator for Everyone",
   description:
-    "Learn about InvoiceQuickly, the free online invoice generator built for freelancers and small businesses. Generate invoices for free with no signup, no watermark, and instant PDF downloads.",
+    "Learn about Invoice-Quickly, the free online invoice generator built for freelancers and small businesses. Generate invoices for free with no signup, no watermark, and instant PDF downloads.",
   alternates: { canonical: "/about" },
 };
 
@@ -16,10 +16,10 @@ export default function AboutPage() {
         {/* Hero Section */}
         <div className="text-center mb-20">
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            About InvoiceQuickly — Free Invoice Generator
+            About Invoice-Quickly — Free Invoice Generator
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
-            InvoiceQuickly is a <strong>free invoice generator</strong> built with a simple goal: to make professional invoicing accessible to everyone. We
+            Invoice-Quickly is a <strong>free invoice generator</strong> built with a simple goal: to make professional invoicing accessible to everyone. We
             believe freelancers and small businesses deserve a fast, free online invoice generator — so they can spend less time on paperwork and more time
             doing what they love.
           </p>
@@ -28,7 +28,7 @@ export default function AboutPage() {
         {/* Why Us Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24 items-center">
           <div>
-            <h2 className="text-3xl font-bold mb-6">Why InvoiceQuickly?</h2>
+            <h2 className="text-3xl font-bold mb-6">Why Invoice-Quickly?</h2>
             <div className="space-y-6">
               {[
                 {
@@ -132,7 +132,7 @@ export default function AboutPage() {
 
       <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50">
         <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} InvoiceQuickly. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
         </div>
       </footer>
     </div>

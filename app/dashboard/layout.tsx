@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Dashboard — Manage Your Invoices",
-  description: "View and manage all your invoices from one dashboard. InvoiceQuickly's free invoice generator with invoice history and company management.",
+  description: "View and manage all your invoices from one dashboard. Invoice-Quickly's free invoice generator with invoice history and company management.",
   robots: { index: false, follow: false },
 };
 

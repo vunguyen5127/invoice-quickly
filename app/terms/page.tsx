@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Terms of Service for InvoiceQuickly, the free online invoice generator. Read our terms for using the service.",
+  description: "Terms of Service for Invoice-Quickly, the free online invoice generator. Read our terms for using the service.",
   alternates: { canonical: "/terms" },
 };
 
@@ -19,7 +19,7 @@ export default function TermsPage() {
               1. Acceptance of Terms
             </h2>
             <p>
-              By accessing and using InvoiceQuickly, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our
+              By accessing and using Invoice-Quickly, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our
               service.
             </p>
           </section>
@@ -28,7 +28,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 border-b border-zinc-100 dark:border-zinc-800 pb-2">
               2. Description of Service
             </h2>
-            <p>InvoiceQuickly is an online invoice generation and management tool. We provide features to create, save, and download professional invoices.</p>
+            <p>Invoice-Quickly is an online invoice generation and management tool. We provide features to create, save, and download professional invoices.</p>
           </section>
 
           <section>
@@ -47,7 +47,7 @@ export default function TermsPage() {
               4. Intellectual Property
             </h2>
             <p>
-              The service and its original content, features, and functionality are owned by InvoiceQuickly and are protected by international copyright,
+              The service and its original content, features, and functionality are owned by Invoice-Quickly and are protected by international copyright,
               trademark, patent, trade secret, and other intellectual property or proprietary rights laws.
             </p>
           </section>
@@ -57,7 +57,7 @@ export default function TermsPage() {
               5. Limitation of Liability
             </h2>
             <p>
-              In no event shall InvoiceQuickly be liable for any indirect, incidental, special, consequential, or punitive damages, including without
+              In no event shall Invoice-Quickly be liable for any indirect, incidental, special, consequential, or punitive damages, including without
               limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or
               use the service.
             </p>
@@ -80,7 +80,7 @@ export default function TermsPage() {
 
       <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50 mt-12">
         <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} InvoiceQuickly. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
         </div>
       </footer>
     </div>

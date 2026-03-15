@@ -49,7 +49,7 @@ export const fr = {
   billedTo: "Facturé à",
   dateOfIssue: "Date d'Émission",
   tax: "Taxe",
-  watermark: "Créé avec InvoiceQuickly",
+  watermark: "Créé avec Invoice-Quickly",
   samplePreview: "Aperçu de l'Échantillon",
   taxDisclaimer: "Taxe calculée par le prestataire de paiement",
   addNewCompany: "Ajouter une Nouvelle Entreprise",

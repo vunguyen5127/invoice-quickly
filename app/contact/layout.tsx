@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Us — InvoiceQuickly",
-  description: "Get in touch with InvoiceQuickly. Have questions about our free invoice generator? We'd love to hear from you.",
+  title: "Contact Us — Invoice-Quickly",
+  description: "Get in touch with Invoice-Quickly. Have questions about our free invoice generator? We'd love to hear from you.",
   alternates: { canonical: "/contact" },
 };
 

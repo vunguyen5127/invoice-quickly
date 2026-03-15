@@ -49,7 +49,7 @@ export const ar = {
   billedTo: "فاتورة إلى",
   dateOfIssue: "تاريخ الإصدار",
   tax: "الضريبة",
-  watermark: "تم الإنشاء بواسطة InvoiceQuickly",
+  watermark: "تم الإنشاء بواسطة Invoice-Quickly",
   samplePreview: "معاينة عينة",
   taxDisclaimer: "يتم احتساب الضريبة بواسطة مزود الدفع",
   addNewCompany: "إضافة شركة جديدة",

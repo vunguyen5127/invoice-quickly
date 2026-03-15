@@ -49,7 +49,7 @@ export const fi = {
   billedTo: "Laskun saaja",
   dateOfIssue: "Laskun päiväys",
   tax: "Vero",
-  watermark: "Luotu InvoiceQuickly-sovelluksella",
+  watermark: "Luotu Invoice-Quickly-sovelluksella",
   samplePreview: "Esimerkkinäkymä",
   taxDisclaimer: "Maksunvälittäjä laskee verot",
   addNewCompany: "Lisää uusi yritys",

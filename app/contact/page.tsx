@@ -21,7 +21,7 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold tracking-tight mb-6">Get in Touch</h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-            Have questions, feedback, or need support? We're here to help you get the most out of InvoiceQuickly.
+            Have questions, feedback, or need support? We're here to help you get the most out of Invoice-Quickly.
           </p>
         </div>
 
@@ -105,7 +105,7 @@ export default function ContactPage() {
 
       <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50">
         <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} InvoiceQuickly. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
         </div>
       </footer>
     </div>

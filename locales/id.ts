@@ -49,7 +49,7 @@ export const id = {
   billedTo: "Ditujukan ke",
   dateOfIssue: "Tanggal Terbit",
   tax: "Pajak",
-  watermark: "Dibuat dengan InvoiceQuickly",
+  watermark: "Dibuat dengan Invoice-Quickly",
   samplePreview: "Pratinjau Sampel",
   taxDisclaimer: "Pajak dihitung oleh penyedia pembayaran",
   addNewCompany: "Tambah Perusahaan Baru",

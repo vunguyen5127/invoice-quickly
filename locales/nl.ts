@@ -49,7 +49,7 @@ export const nl = {
   billedTo: "Gefactureerd aan",
   dateOfIssue: "Factuurdatum",
   tax: "Btw",
-  watermark: "Gemaakt met InvoiceQuickly",
+  watermark: "Gemaakt met Invoice-Quickly",
   samplePreview: "Voorbeeldweergave",
   taxDisclaimer: "Btw berekend door betalingsprovider",
   addNewCompany: "Nieuw bedrijf toevoegen",

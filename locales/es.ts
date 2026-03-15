@@ -49,7 +49,7 @@ export const es = {
   billedTo: "Facturado a",
   dateOfIssue: "Fecha de Emisión",
   tax: "Impuesto",
-  watermark: "Creado con InvoiceQuickly",
+  watermark: "Creado con Invoice-Quickly",
   samplePreview: "Vista Previa de Muestra",
   taxDisclaimer: "Impuesto calculado por el proveedor de pago",
   addNewCompany: "Agregar Nueva Empresa",

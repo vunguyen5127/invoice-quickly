@@ -49,7 +49,7 @@ export const sv = {
   billedTo: "Fakturerad till",
   dateOfIssue: "Fakturadatum",
   tax: "Moms",
-  watermark: "Skapad med InvoiceQuickly",
+  watermark: "Skapad med Invoice-Quickly",
   samplePreview: "Exempelvisning",
   taxDisclaimer: "Moms beräknas av betalningsleverantören",
   addNewCompany: "Lägg till nytt företag",

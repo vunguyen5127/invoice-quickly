@@ -49,7 +49,7 @@ export const tr = {
   billedTo: "Şuna Faturalandı",
   dateOfIssue: "Düzenleme Tarihi",
   tax: "Vergi",
-  watermark: "InvoiceQuickly ile oluşturuldu",
+  watermark: "Invoice-Quickly ile oluşturuldu",
   samplePreview: "Örnek Önizleme",
   taxDisclaimer: "Vergi, ödeme sağlayıcısı tarafından hesaplanır",
   addNewCompany: "Yeni Şirket Ekle",

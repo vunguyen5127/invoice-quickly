@@ -49,7 +49,7 @@ export const ru = {
   billedTo: "Плательщик",
   dateOfIssue: "Дата выставления",
   tax: "Налог",
-  watermark: "Создано в InvoiceQuickly",
+  watermark: "Создано в Invoice-Quickly",
   samplePreview: "Предварительный просмотр",
   taxDisclaimer: "Налог рассчитывается платежным провайдером",
   addNewCompany: "Добавить новую компанию",

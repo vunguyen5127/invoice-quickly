@@ -49,7 +49,7 @@ export const pl = {
   billedTo: "Nabywca",
   dateOfIssue: "Data wystawienia",
   tax: "Podatek",
-  watermark: "Utworzono w InvoiceQuickly",
+  watermark: "Utworzono w Invoice-Quickly",
   samplePreview: "Podgląd przykładowy",
   taxDisclaimer: "Podatek jest obliczany przez dostawcę usług płatniczych",
   addNewCompany: "Dodaj nową firmę",

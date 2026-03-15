@@ -49,7 +49,7 @@ export const de = {
   billedTo: "Rechnung an",
   dateOfIssue: "Ausstellungsdatum",
   tax: "Steuer",
-  watermark: "Erstellt mit InvoiceQuickly",
+  watermark: "Erstellt mit Invoice-Quickly",
   samplePreview: "Beispiel-Vorschau",
   taxDisclaimer: "Steuer wird vom Zahlungsanbieter berechnet",
   addNewCompany: "Neue Firma hinzufügen",
