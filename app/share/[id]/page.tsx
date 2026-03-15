@@ -61,7 +61,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-white dark:bg-zinc-950">
       <div className="container mx-auto px-4 sm:px-8 py-8 max-w-5xl">
         {/* Simplified Header / Action Bar */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -84,11 +84,8 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
         </div>
 
         {/* Invoice Container */}
-        <div className="w-full overflow-x-auto rounded-[5px] shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10 dark:shadow-none bg-zinc-200/50 dark:bg-zinc-900/80 p-2 sm:p-8 flex justify-center">
-          <div className="transform origin-top transition-transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100">
-            {/* We pass a forced dummy language translation to preview safely if needed, but it should inherit from context */}
-            <InvoicePreview invoice={invoice} />
-          </div>
+        <div className="rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+           <InvoicePreview invoice={invoice} />
         </div>
         
         {/* Promotional Footer */}

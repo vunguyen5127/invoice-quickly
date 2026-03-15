@@ -24,6 +24,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [companyId, setCompanyId] = useState<string | null>(null);
   const router = useRouter();
 
@@ -48,6 +49,10 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       setCompanyId(_companyId || null);
       setInvoice(invoiceData as InvoiceState);
       setLoading(false);
+      // Trigger mount animation after a frame so transition plays
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setIsMounted(true));
+      });
     };
 
     loadInvoice();
@@ -115,26 +120,26 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
-        <div className="container flex h-12 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
-            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 object-contain" />
+    <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
+      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
+        <div className="container flex h-14 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
+          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80">
+            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
             <span className="hidden sm:inline-block">Invoice-Quickly</span>
           </Link>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-3 mr-2">
               <button 
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-75"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-75"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button 
                 onClick={handleDownload}
                 disabled={isGenerating}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -146,26 +151,37 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       </header>
       <div className="container mx-auto px-4 sm:px-8 py-8 max-w-[1600px] flex-1">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-sm mb-6">
-          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+        <nav className="flex flex-wrap items-center gap-1.5 text-sm mb-6">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors shrink-0">
             {t.dashboard}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
           {companyId && (
             <>
-              <Link href={`/company/${companyId}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
-                {invoice.company.name || t.company}
+              <Link 
+                href={`/company/${companyId}`} 
+                className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[120px] sm:max-w-[160px]"
+              >
+                {(invoice.company.name || "").split(/,|\n/)[0] || t.company}
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+              <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
             </>
           )}
-          <span className="text-zinc-700 dark:text-zinc-200 font-medium">Edit #{invoice.details.invoiceNumber}</span>
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">Edit #{invoice.details.invoiceNumber}</span>
         </nav>
 
         <div className="flex flex-col xl:flex-row gap-8 pb-32 xl:pb-20">
           
           {/* Left Column: Form */}
-          <div className="w-full xl:w-1/2 flex flex-col gap-6">
+          <div
+            className="w-full xl:w-1/2 flex flex-col gap-6 overflow-hidden"
+            style={{
+              flex: isMounted ? '0 0 50%' : '0 0 0%',
+              maxWidth: isMounted ? '50%' : '0%',
+              opacity: isMounted ? 1 : 0,
+              transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1), max-width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
+            }}
+          >
             <div className="flex items-center justify-between h-10">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Edit Invoice</h2>
             </div>
@@ -173,23 +189,25 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
               <InvoiceForm invoice={invoice} setInvoice={setInvoice} />
             </div>
           </div>
-
-        {/* Right Column: Preview */}
-        <div className="w-full xl:w-1/2 flex flex-col gap-6">
-          <div className="flex items-center justify-between h-10">
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
-          </div>
           
-          <div className="xl:sticky xl:top-24 mt-4 xl:mt-0 w-full">
-            <div className="w-full overflow-x-auto bg-zinc-50 dark:bg-zinc-950 rounded-[5px] p-px flex justify-center [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-              <div className="transform origin-top scale-[0.6] sm:scale-75 lg:scale-90 xl:scale-100 transition-transform">
-                <InvoicePreview invoice={invoice} isLoggedIn={true} />
-              </div>
+          {/* Right Column: Preview */}
+          <div
+            className="flex-1 xl:sticky xl:top-24 overflow-hidden"
+            style={{
+              flex: isMounted ? '1 1 0%' : '0 0 0%',
+              opacity: isMounted ? 1 : 0,
+              transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
+            }}
+          >
+            <div className="h-10 flex items-center mb-6">
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
+            </div>
+            <div className="rounded-[5px] overflow-hidden mt-1">
+              <InvoicePreview invoice={invoice} isLoggedIn={true} />
             </div>
           </div>
         </div>
 
-        </div>
 
         {/* Mobile bottom bar */}
         <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-4 flex gap-2 z-50">

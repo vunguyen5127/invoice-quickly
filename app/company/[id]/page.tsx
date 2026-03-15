@@ -157,14 +157,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         {/* Breadcrumb & Company Info */}
-        <nav className="flex items-center gap-1.5 text-sm">
-          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+        <nav className="flex flex-wrap items-center gap-1.5 text-sm">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors shrink-0">
             {t.dashboard}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
-          <div className="flex items-center gap-2 group">
-            <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[300px]">
-              {company.name}
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
+          <div className="flex items-center gap-2 group min-w-0">
+            <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[180px] sm:max-w-[300px]">
+              {(company.name || "").split(/,|\n/)[0]}
             </span>
             <Tooltip content="Edit Company Details">
               <button

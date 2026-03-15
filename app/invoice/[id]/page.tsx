@@ -124,23 +124,27 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
+    <div className="min-h-screen bg-white dark:bg-zinc-950">
+      <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-sm">
-          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+        <nav className="flex flex-wrap items-center gap-1.5 text-sm">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors shrink-0">
             {t.dashboard}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
           {invoice._companyId && (
             <>
-              <Link href={`/company/${invoice._companyId}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
-                {invoice.company.name || t.company}
+              <Link 
+                href={`/company/${invoice._companyId}`} 
+                className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[120px] sm:max-w-[160px]"
+              >
+                {(invoice.company.name || "").split(/,|\n/)[0] || t.company}
               </Link>
-              <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+              <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
             </>
           )}
-          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[160px]">
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">
             Invoice #{invoice.details.invoiceNumber}
           </span>
         </nav>
@@ -178,10 +182,8 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         </div>
       </div>
 
-      <div className="w-full overflow-x-auto rounded-2xl shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10 dark:shadow-none bg-zinc-200/50 dark:bg-zinc-900/80 p-2 sm:p-8 flex justify-center">
-        <div className="transform origin-top transition-transform scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100">
-          <InvoicePreview invoice={invoice} />
-        </div>
+      <div className="rounded-[5px] overflow-hidden">
+        <InvoicePreview invoice={invoice} />
       </div>
       <ConfirmModal
         isOpen={showDeleteModal}
@@ -191,6 +193,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         message="Are you sure you want to delete this invoice? This action cannot be undone."
         isProcessing={isDeleting}
       />
+    </div>
     </div>
   );
 }

@@ -12,6 +12,29 @@ interface InvoicePreviewProps {
 }
 
 export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }: InvoicePreviewProps) {
+  const [scale, setScale] = React.useState(1);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+    
+    const updateScale = (width: number) => {
+      // 794px is our standard A4 wrapper width minimum
+      setScale(Math.min(width / 794, 1));
+    };
+    
+    // Initial 
+    updateScale(containerRef.current.clientWidth);
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        updateScale(entry.contentRect.width);
+      }
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
   const { t } = useLanguage();
   const symbol = getCurrencySymbol(invoice.currency);
 
@@ -42,13 +65,16 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
     new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
 
   return (
-    <div 
-      className="bg-white text-zinc-900 mx-auto overflow-hidden sm:rounded-[5px] shadow-[0_8px_30px_rgb(0,0,0,0.08)] ring-1 ring-zinc-900/5 transition-transform duration-100" 
-      style={{
-        width: "100%",
-        maxWidth: "210mm",     // A4 width
-      }}
-    >
+    <div ref={containerRef} className="w-full border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-[5px] overflow-hidden">
+      <div 
+        className="bg-white text-zinc-900 overflow-hidden sm:rounded-[5px]" 
+        style={{
+          width: "100%",
+          minWidth: "210mm",     // Force A4 width minimum
+          maxWidth: "210mm",     // A4 width
+          ...(scale < 1 ? { zoom: scale } : {}), // dynamically scale down to fit container using zoom
+        } as React.CSSProperties}
+      >
       <div 
         id="invoice-capture-area" 
         className="w-full bg-white flex flex-col text-zinc-900 relative" 
@@ -212,7 +238,14 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             </div>
           )}
         </div>
+      {/* Decorative footer */}
+      {isLoggedIn && !compact && (
+        <div className="absolute bottom-4 right-8 text-xs font-semibold text-zinc-300 opacity-50 select-none">
+          {t.watermark || "Created with Invoice-Quickly"}
+        </div>
+      )}
       </div>
     </div>
+  </div>
   );
 }
