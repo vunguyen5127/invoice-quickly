@@ -22,46 +22,59 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  // Fetch companies for the user with count
-  const { data: companies, error: compError, count } = await supabase
+  // 1. Fetch exact total count and companies for the current page
+  // We omit nested relations here to avoid slow count queries across table joins
+  const { data: companiesData, error: companiesError, count } = await supabase
     .from("companies")
-    .select("id, name, email, logo_url, created_at", { count: "exact" })
+    .select(`
+      id, 
+      name, 
+      email, 
+      logo_url, 
+      created_at
+    `, { count: "exact" })
     .order("created_at", { ascending: false })
     .range(from, to);
 
-  if (compError) {
-    console.error("Error fetching companies:", compError);
+  if (companiesError) {
+    console.error("Error fetching companies:", companiesError);
     return { data: [], totalCount: 0 };
   }
 
-  if (!companies || companies.length === 0) return { data: [], totalCount: count || 0 };
-
-  // Fetch only the company_id for all non-deleted invoices belonging to THESE paginated companies
-  const companyIds = companies.map(c => c.id);
-  const { data: invoices, error: invError } = await supabase
-    .from("invoices")
-    .select("company_id")
-    .in("company_id", companyIds)
-    .is("deleted_at", null);
-
-  if (invError) {
-    console.error("Error fetching invoice counts:", invError);
-    return { 
-      data: companies.map(c => ({ ...c, invoices: [] })), 
-      totalCount: count || 0 
-    };
+  const companiesList = companiesData || [];
+  
+  if (companiesList.length === 0) {
+    return { data: [], totalCount: count || 0 };
   }
 
-  // Group counts by company_id
-  const countMap = (invoices || []).reduce((acc: Record<string, number>, curr) => {
-    acc[curr.company_id] = (acc[curr.company_id] || 0) + 1;
-    return acc;
-  }, {});
+  // 2. Fetch invoice counts only for the companies on the current page
+  const companyIds = companiesList.map(c => c.id);
+  const { data: countsData, error: countsError } = await supabase
+    .from("companies")
+    .select(`
+      id,
+      invoices:invoices(count)
+    `)
+    .in("id", companyIds)
+    .is("invoices.deleted_at", null);
 
-  // Return companies with a mocked invoices array length for compatibility
-  const data = companies.map(c => ({
+  if (countsError) {
+    console.error("Error fetching invoice counts:", countsError);
+    // Proceed without counts if it fails
+  }
+
+  // Create a map for quick lookup
+  const countsMap = new Map();
+  if (countsData) {
+    countsData.forEach(c => {
+      countsMap.set(c.id, (c.invoices as any)?.[0]?.count || 0);
+    });
+  }
+
+  // Transform the response to match the expected format (invoices as a mocked array)
+  const data = companiesList.map(c => ({
     ...c,
-    invoices: new Array(countMap[c.id] || 0).fill(null)
+    invoices: new Array(countsMap.get(c.id) || 0).fill(null)
   }));
 
   return { data, totalCount: count || 0 };
@@ -171,32 +184,53 @@ export async function getCompanyInvoices(
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  let query = supabase
+  // Build the base exact query for both count and data
+  let queryBase = supabase
     .from("invoices")
-    .select("id, invoice_number, client_name, created_at, total_amount, currency", { count: "exact" })
+    .select("id, invoice_number, client_name, created_at, total_amount, currency")
     .eq("company_id", companyId)
     .is("deleted_at", null);
 
   // Apply search filtering if provided
   if (search.trim()) {
-    // In Supabase, we can use or() for multiple columns, but for complex searches 
-    // it's often better to use ilike on specific columns or text search.
-    // For now, let's keep it simple with iLike on invoice_number and client_name
-    query = query.or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
+    queryBase = queryBase.or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
   }
 
-  // Apply sorting
-  query = query.order(sortField, { ascending: sortDir === "asc" });
+  // 1. Fire the count query
+  const countPromise = supabase
+    .from("invoices")
+    .select("id", { count: "exact", head: true })
+    .eq("company_id", companyId)
+    .is("deleted_at", null)
+    .then(async (res) => {
+       if (search.trim()) {
+         return await supabase
+          .from("invoices")
+          .select("id", { count: "exact", head: true })
+          .eq("company_id", companyId)
+          .is("deleted_at", null)
+          .or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
+       }
+       return res;
+    });
 
-  // Apply range for pagination
-  const { data, error, count } = await query.range(from, to);
+  // 2. Fire the data query
+  const dataPromise = queryBase
+    .order(sortField, { ascending: sortDir === "asc" })
+    .range(from, to);
 
-  if (error) {
-    console.error("Error fetching company invoices:", error);
+  // Await both simultaneously
+  const [countResult, dataResult] = await Promise.all([countPromise, dataPromise]);
+
+  if (dataResult.error) {
+    console.error("Error fetching company invoices:", dataResult.error);
     return { data: [], totalCount: 0 };
   }
 
-  return { data: data || [], totalCount: count || 0 };
+  return { 
+    data: dataResult.data || [], 
+    totalCount: countResult.count || 0 
+  };
 }
 
 export async function getCompanyById(token: string, companyId: string) {
