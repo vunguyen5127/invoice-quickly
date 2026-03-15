@@ -67,11 +67,12 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
   return (
     <div ref={containerRef} className="w-full border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-[5px] overflow-hidden">
       <div 
-        className="bg-white text-zinc-900 overflow-hidden sm:rounded-[5px]" 
+        className="bg-white text-zinc-900 overflow-hidden sm:rounded-[5px] border" 
         style={{
           width: "100%",
           minWidth: "210mm",     // Force A4 width minimum
           maxWidth: "210mm",     // A4 width
+          borderColor: '#0070f3',
           ...(scale < 1 ? { zoom: scale } : {}), // dynamically scale down to fit container using zoom
         } as React.CSSProperties}
       >
@@ -238,12 +239,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             </div>
           )}
         </div>
-      {/* Decorative footer */}
-      {isLoggedIn && !compact && (
-        <div className="absolute bottom-4 right-8 text-xs font-semibold text-zinc-300 opacity-50 select-none">
-          {t.watermark || "Created with Invoice-Quickly"}
-        </div>
-      )}
+
       </div>
     </div>
   </div>

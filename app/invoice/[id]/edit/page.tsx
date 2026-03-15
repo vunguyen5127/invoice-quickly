@@ -170,7 +170,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
           <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">Edit #{invoice.details.invoiceNumber}</span>
         </nav>
 
-        <div className="flex flex-col xl:flex-row gap-8 pb-32 xl:pb-20">
+        <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
           
           {/* Left Column: Form */}
           <div
