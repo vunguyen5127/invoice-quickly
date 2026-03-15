@@ -153,14 +153,44 @@ function CreateInvoiceContent() {
     }
   };
 
-  const saveToCompany = async (companyId: string) => {
+  const saveToCompany = async (companyId: string, companyData?: any) => {
     setIsSaving(true);
     try {
       const {
         data: { session },
       } = (await supabase?.auth.getSession()) || { data: { session: null } };
       if (!session) throw new Error("No session");
-      await saveInvoiceToSupabase(session.access_token, invoice, companyId);
+
+      let finalInvoice = invoice;
+      
+      // If a new company was just created, override the default invoice company info
+      if (companyData) {
+        const companyDetailsString = [companyData.name, companyData.address, companyData.email, companyData.phone]
+          .filter(Boolean)
+          .join(", ");
+          
+        finalInvoice = {
+          ...invoice,
+          company: {
+            ...invoice.company,
+            name: companyDetailsString,
+            email: "",
+            address: "",
+            phone: "",
+            logo: companyData.logo_url || invoice.company.logo,
+          },
+          signatureName: companyData.signer_name || invoice.signatureName,
+          signature: companyData.signature_url || invoice.signature,
+          currency: companyData.default_currency || invoice.currency,
+          notes: companyData.default_notes || invoice.notes,
+          terms: companyData.default_terms || invoice.terms,
+          taxRate: companyData.default_tax !== null && companyData.default_tax !== undefined ? companyData.default_tax : invoice.taxRate,
+          discount: companyData.default_discount !== null && companyData.default_discount !== undefined ? companyData.default_discount : invoice.discount,
+        };
+        setInvoice(finalInvoice);
+      }
+
+      await saveInvoiceToSupabase(session.access_token, finalInvoice, companyId);
       setIsSelectModalOpen(false);
       setShowSuccessModal(true);
     } catch (e: any) {
@@ -344,7 +374,7 @@ function CreateInvoiceContent() {
           onClose={() => setIsCreateModalOpen(false)}
           onSuccess={async (newCompany) => {
             setIsCreateModalOpen(false);
-            await saveToCompany(newCompany.id);
+            await saveToCompany(newCompany.id, newCompany);
           }}
         />
 
