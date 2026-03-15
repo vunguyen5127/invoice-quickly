@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
+    <div className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
       <main className="container mx-auto px-4 sm:px-8 py-20 max-w-5xl">
         {/* Hero Section */}
         <div className="text-center mb-20">
@@ -129,12 +129,6 @@ export default function AboutPage() {
           </Link>
         </div>
       </main>
-
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50">
-        <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+    <div className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       <main className="container mx-auto px-4 sm:px-8 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
         <p className="text-zinc-500 dark:text-zinc-400 mb-8">Last updated: March 10, 2026</p>
@@ -77,12 +77,6 @@ export default function TermsPage() {
           </section>
         </div>
       </main>
-
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50 mt-12">
-        <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

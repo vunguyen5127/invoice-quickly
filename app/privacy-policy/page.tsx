@@ -184,12 +184,6 @@ export default function PrivacyPolicyPage() {
           </section>
         </div>
       </main>
-
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-12 bg-zinc-50 dark:bg-zinc-900/50 mt-12">
-        <div className="container mx-auto px-4 text-center text-zinc-500 dark:text-zinc-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} Invoice-Quickly. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }

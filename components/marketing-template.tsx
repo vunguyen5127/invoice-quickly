@@ -1,10 +1,13 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Zap, Shield, FileText, Globe, Users, CreditCard, Sparkles } from "lucide-react";
+import { ArrowRight, Zap, Shield, FileText, Globe, Users, CreditCard, Sparkles, ChevronRight } from "lucide-react";
 import { FeatureCard, FAQItem, StepCard } from "./marketing-components";
-import { SEOPageContent } from "@/data/marketing-pages";
+import { SEOPageContent, marketingPages } from "@/data/marketing-pages";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
+import { Breadcrumbs } from "./breadcrumbs";
 
 const icons = {
   zap: <Zap className="w-6 h-6" />,
@@ -30,10 +33,29 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
     items: page.exampleInvoice.data.items || initialInvoiceState.items,
   };
 
+  // Select 3 related templates (stably, to avoid hydration mismatch)
+  const currentIndex = marketingPages.findIndex(p => p.slug === page.slug);
+  const relatedTemplates = [
+    marketingPages[(currentIndex + 1) % marketingPages.length],
+    marketingPages[(currentIndex + 2) % marketingPages.length],
+    marketingPages[(currentIndex + 3) % marketingPages.length],
+  ];
+
   return (
     <div className="flex flex-col bg-white dark:bg-zinc-950">
+      {/* Breadcrumbs Area */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-8 -mb-12 relative z-20">
+        <Breadcrumbs 
+          items={[
+            { label: "Templates", href: "/how-to-write-an-invoice" },
+            { label: page.hero.badge.replace("Free ", "") }
+          ]} 
+        />
+      </div>
+
       {/* Hero Section */}
       <section className="relative px-4 pt-20 pb-24 sm:px-6 lg:px-8 overflow-hidden">
+        {/* ... existing hero ... */}
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
           <div className="h-[520px] w-[960px] rounded-full bg-gradient-to-br from-blue-400/20 via-indigo-300/10 to-violet-300/5 blur-3xl dark:from-blue-600/15 dark:via-indigo-500/5 dark:to-violet-600/5" />
         </div>
@@ -156,6 +178,48 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
           <div className="space-y-4">
             {page.faq.items.map((item, i) => (
               <FAQItem key={i} question={item.question} answer={item.answer} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related Templates - Internal Linking Hub */}
+      <section className="py-24 bg-slate-50 dark:bg-zinc-900/20 border-t border-slate-100 dark:border-zinc-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Explore More Templates</h2>
+            <Link href="/how-to-write-an-invoice" className="text-sm font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1 group">
+              View All Hub
+              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedTemplates.map((template) => (
+              <Link 
+                key={template.slug} 
+                href={`/${template.slug}`}
+                className="group flex flex-col bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg transition-all"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                   <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                      <FileText className="w-4 h-4" />
+                   </div>
+                   <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
+                      {template.hero.badge.replace("Free ", "").replace(" Template", "")}
+                   </span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                  {template.hero.title}
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-zinc-500 line-clamp-3 leading-relaxed mb-6">
+                  {template.metadata.description}
+                </p>
+                <div className="mt-auto flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
+                  Read Guide
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </Link>
             ))}
           </div>
         </div>
