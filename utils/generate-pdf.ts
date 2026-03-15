@@ -59,24 +59,35 @@ export const generatePDF = async (elementId: string, filename: string) => {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
-    // Calculate how many A4 pages we need
-    // Ratio of pixels to mm (based on targetWidth fitting into pdfWidth)
+    // SCALE-TO-FIT Optimization:
     const pxToMm = pdfWidth / targetWidth;
     const contentHeightMm = fullHeight * pxToMm;
+    const fitThreshold = pdfHeight * 1.08; 
     
-    let heightLeft = contentHeightMm;
-    let position = 0;
-    
-    // Add the first page
-    pdf.addImage(imgDataUrl, "JPEG", 0, position, pdfWidth, contentHeightMm);
-    heightLeft -= pdfHeight;
+    if (contentHeightMm <= fitThreshold) {
+      // Scale to fit single page if only slightly over
+      pdf.addImage(imgDataUrl, "JPEG", 0, 0, pdfWidth, Math.min(contentHeightMm, pdfHeight));
+    } else {
+      // Improved Tiling: We add a small overlap or handle the split more gracefully
+      let heightLeft = contentHeightMm;
+      let pageNumber = 1;
 
-    // Add subsequent pages if needed
-    while (heightLeft > 0) {
-      position = heightLeft - contentHeightMm; // Shifting up
-      pdf.addPage();
-      pdf.addImage(imgDataUrl, "JPEG", 0, position, pdfWidth, contentHeightMm);
-      heightLeft -= pdfHeight;
+      while (heightLeft > 0) {
+        if (pageNumber > 1) pdf.addPage();
+        
+        // Add the image segment for the current page
+        pdf.addImage(
+          imgDataUrl, 
+          "JPEG", 
+          0, 
+          -((pageNumber - 1) * pdfHeight), 
+          pdfWidth, 
+          contentHeightMm
+        );
+        
+        heightLeft -= pdfHeight;
+        pageNumber++;
+      }
     }
     
     // Trigger the download

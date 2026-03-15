@@ -78,10 +78,10 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
       >
       <div 
         id="invoice-capture-area" 
-        className="w-full bg-white flex flex-col text-zinc-900 relative" 
+        className="w-full bg-white flex flex-col text-zinc-900 relative pb-10" 
         style={{ 
           minHeight: compact ? "auto" : "297mm",    // A4 height or auto
-          padding: "16mm 16mm",  // Standard margins
+          padding: "12mm 12mm",  // Reduced margins to fit more content
         }}
       >
         {/* Top Company Logo/Name Row */}
@@ -158,10 +158,10 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             <tbody className="divide-y divide-zinc-300">
               {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
                 <tr key={item.id} className="divide-x divide-zinc-300">
-                  <td className="py-3 px-3 text-left align-top whitespace-pre-wrap font-medium">{item.description || "-"}</td>
-                  <td className="py-3 px-3 text-center align-top">{item.quantity}</td>
-                  <td className="py-3 px-3 text-right align-top">{formatAmount(item.rate)}</td>
-                  <td className="py-3 px-3 text-right align-top font-bold text-zinc-900">{formatAmount(item.quantity * item.rate)}</td>
+                  <td className="py-2 px-3 text-left align-top whitespace-pre-wrap font-medium">{item.description || "-"}</td>
+                  <td className="py-2 px-3 text-center align-top">{item.quantity}</td>
+                  <td className="py-2 px-3 text-right align-top">{formatAmount(item.rate)}</td>
+                  <td className="py-2 px-3 text-right align-top font-bold text-zinc-900">{formatAmount(item.quantity * item.rate)}</td>
                 </tr>
               ))}
             </tbody>
@@ -171,32 +171,32 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
           <div className="flex justify-end mt-0">
             <div className="w-[calc(19rem+2px)]">
               <div className="flex">
-                <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{t.subtotal}</div>
-                <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
+                <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">{t.subtotal}</div>
+                <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
               </div>
 
               {invoice.discount > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
+                  <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">
                     {(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount} {invoice.discountType === 'percentage' && invoice.discount > 0 ? `(${invoice.discount.toFixed(1)}%)` : ""}
                   </div>
-                  <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
+                  <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
                 </div>
               )}
 
               {invoice.taxRate > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">
+                  <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">
                     {(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax} {invoice.taxType === 'percentage' && invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
                   </div>
-                   <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
+                   <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
                 </div>
               )}
 
               {invoice.shipping > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-3 px-4 text-right font-bold text-[14px]">{(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}</div>
-                   <div className="w-28 py-3 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
+                  <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">{(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}</div>
+                   <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
                 </div>
               )}
 
@@ -209,35 +209,38 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
             </div>
           </div>
         </div>
-        {/* Signature Area */}
-        <div className="mt-12 flex justify-end">
-           {invoice.signature ? (
-             <div className="flex flex-col items-center">
-                <div className="mb-2">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain dark:invert" />
-                </div>
-                {invoice.signatureName && (
-                  <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
-                )}
-             </div>
-           ) : null}
-        </div>
+        {/* Side-by-Side Footer: Notes/Terms on left, Signature on right */}
+        <div className={`mt-auto flex flex-row justify-between items-end gap-12 ${compact ? 'pt-6 pb-2' : 'pt-10'}`}>
+          {/* Left: Notes & Terms */}
+          <div className="flex-1 min-w-0">
+            {invoice.notes && invoice.showNotes && (
+              <div className="mb-2">
+                <p className="font-bold text-zinc-900 mb-0 uppercase tracking-widest text-[10px] inline-block pr-8">{t.notes}</p>
+                <p className="text-[10px] text-zinc-600 whitespace-pre-wrap leading-snug">{invoice.notes}</p>
+              </div>
+            )}
+            {invoice.terms && invoice.showTerms && (
+              <div className="mb-0">
+                <p className="font-bold text-zinc-900 mb-0 uppercase tracking-widest text-[10px] inline-block pr-8">{t.termsConditions}</p>
+                <p className="text-[10px] text-zinc-600 whitespace-pre-wrap leading-snug">{invoice.terms}</p>
+              </div>
+            )}
+          </div>
 
-        {/* Footer Notes & Terms (Now pushed to bottom) */}
-        <div className={`mt-auto ${compact ? 'pt-8 pb-4' : 'pt-16'}`}>
-          {invoice.notes && invoice.showNotes && (
-            <div className="mb-2">
-              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[10px] inline-block pr-8">{t.notes}</p>
-              <p className="text-[10px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.notes}</p>
-            </div>
-          )}
-          {invoice.terms && invoice.showTerms && (
-            <div className="mb-8">
-              <p className="font-bold text-zinc-900 border-b border-zinc-100 mb-1 uppercase tracking-widest text-[10px] inline-block pr-8">{t.termsConditions}</p>
-              <p className="text-[10px] text-zinc-600 whitespace-pre-wrap leading-relaxed max-w-2xl">{invoice.terms}</p>
-            </div>
-          )}
+          {/* Right: Signature Area Area */}
+          <div className="shrink-0">
+             {invoice.signature ? (
+               <div className="flex flex-col items-center">
+                  <div className="mb-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={invoice.signature} alt="Signature" className="max-w-[180px] max-h-[100px] object-contain dark:invert" />
+                  </div>
+                  {invoice.signatureName && (
+                    <p className="mt-2 text-[18px] font-bold italic font-serif text-zinc-800 tracking-tight">{invoice.signatureName}</p>
+                  )}
+               </div>
+             ) : null}
+          </div>
         </div>
 
       </div>
