@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { marketingPages } from "@/data/marketing-pages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://invoice-quickly.com";
@@ -43,8 +44,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/terms`,
       lastModified: new Date(),
-      changeFrequency: "yearly",
+      changeFrequency: "yearly" as const,
       priority: 0.3,
     },
+    ...marketingPages.map((page) => ({
+      url: `${baseUrl}/${page.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
   ];
 }
