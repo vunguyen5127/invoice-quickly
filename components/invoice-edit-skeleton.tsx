@@ -10,7 +10,7 @@ export function InvoiceEditSkeleton() {
         <div className="container flex h-full items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
-            <div className="h-5 w-32 bg-zinc-100 dark:bg-zinc-800/60 rounded-[5px] hidden sm:block"></div>
+            <div className="h-5 w-32 bg-zinc-100 dark:bg-zinc-800/60 rounded-[5px]"></div>
           </div>
           <div className="flex items-center gap-3">
              <div className="h-8 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>

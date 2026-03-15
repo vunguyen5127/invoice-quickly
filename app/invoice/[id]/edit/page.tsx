@@ -125,7 +125,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         <div className="container flex h-14 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
           <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80">
             <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
-            <span className="hidden sm:inline-block">Invoice-Quickly</span>
+            <span className="inline-block">Invoice-Quickly</span>
           </Link>
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3 mr-2">

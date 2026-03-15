@@ -274,7 +274,7 @@ function CreateInvoiceContent() {
             className="flex items-center gap-2.5 font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80"
           >
             <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
-            <span className="hidden sm:inline">Invoice-Quickly</span>
+            <span>Invoice-Quickly</span>
           </Link>
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-1.5 bg-zinc-100/80 dark:bg-zinc-800/50 rounded-xl p-1">
