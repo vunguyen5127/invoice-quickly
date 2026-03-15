@@ -33,6 +33,19 @@ export async function logUserLogin() {
     } else {
       console.log("Recorded login for user:", user.email);
       localStorage.setItem(cacheKey, now.toString());
+
+      // Notify admin if it's a new user (first login log)
+      try {
+        const { notifyAdminOnNewUser } = await import("@/app/actions/auth-actions");
+        await notifyAdminOnNewUser({
+          id: user.id,
+          email: user.email || "unknown",
+          name: user.user_metadata?.full_name || user.user_metadata?.name || undefined,
+          provider: user.app_metadata?.provider || "email",
+        });
+      } catch (notifyErr) {
+        console.error("Failed to trigger new user notification:", notifyErr);
+      }
     }
   } catch (err) {
     console.error("Failed to log user login:", err);
