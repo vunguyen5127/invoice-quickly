@@ -26,6 +26,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [companyName, setCompanyName] = useState("");
   const [initialNotesOpen, setInitialNotesOpen] = useState(false);
   const [initialTermsOpen, setInitialTermsOpen] = useState(false);
@@ -119,6 +120,10 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       setInitialTermsOpen(companyData.show_terms ?? true);
 
       setLoading(false);
+      // Trigger mount animation after a frame so transition plays
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setIsMounted(true));
+      });
     };
 
     loadCompanyAndSetInvoice();
@@ -166,27 +171,27 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-[#f6f6f6] dark:bg-zinc-950/80 backdrop-blur-md shadow-sm">
-        <div className="container flex h-12 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-800 dark:text-zinc-100 transition-opacity hover:opacity-80">
-            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 object-contain" />
+    <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
+      <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
+        <div className="container flex h-14 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
+          <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80">
+            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
             <span className="hidden sm:inline-block">Invoice-Quickly</span>
             {companyName && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 ml-1 truncate max-w-[120px]">{companyName}</span>}
           </Link>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="hidden sm:flex items-center gap-2 sm:gap-3 mr-2">
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-3 mr-2">
               <button 
                 onClick={handleSave}
                 disabled={isSaving || !canSave}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button 
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -198,22 +203,33 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       </header>
       <div className="container mx-auto px-4 sm:px-8 py-8 max-w-[1600px] flex-1">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-sm mb-6">
-          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors">
+        <nav className="flex flex-wrap items-center gap-1.5 text-sm mb-6">
+          <Link href="/dashboard" className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors shrink-0">
             {t.dashboard}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
-          <Link href={`/company/${resolvedParams.id}`} className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[160px]">
-            {companyName || t.company}
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
+          <Link 
+            href={`/company/${resolvedParams.id}`} 
+            className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors truncate max-w-[120px] sm:max-w-[160px]"
+          >
+            {(companyName || "").split(/,|\n/)[0] || t.company}
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
-          <span className="text-zinc-700 dark:text-zinc-200 font-medium">{t.newInvoice}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">{t.newInvoice}</span>
         </nav>
 
         <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
           
           {/* Left Column: Form */}
-          <div className="w-full xl:w-1/2 flex flex-col gap-6">
+          <div
+            className="w-full xl:w-1/2 flex flex-col gap-6 overflow-hidden"
+            style={{
+              maxWidth: isMounted ? '50%' : '0%',
+              opacity: isMounted ? 1 : 0,
+              flex: isMounted ? '0 0 50%' : '0 0 0%',
+              transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1), max-width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
+            }}
+          >
             <div className="flex items-center justify-between h-10">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.createInvoice}</h2>
             </div>
@@ -223,16 +239,20 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           </div>
 
         {/* Right Column: Preview */}
-        <div className="w-full xl:w-1/2 xl:sticky xl:top-24">
+        <div
+          className="w-full xl:w-1/2 xl:sticky xl:top-24 overflow-hidden"
+          style={{
+            maxWidth: isMounted ? '50%' : '0%',
+            opacity: isMounted ? 1 : 0,
+            flex: isMounted ? '0 0 50%' : '0 0 0%',
+            transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, max-width 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
+          }}
+        >
           <div className="flex items-center justify-between h-10 mb-6">
             <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
           </div>
-          <div className="w-full rounded-[5px] ring-2 ring-blue-400/50">
-            <div className="w-full bg-zinc-50 dark:bg-zinc-950 rounded-[5px] overflow-hidden [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-              <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top transition-all">
-                <InvoicePreview invoice={invoice} isLoggedIn={true} />
-              </div>
-            </div>
+          <div className="rounded-[5px] overflow-hidden mt-1">
+            <InvoicePreview invoice={invoice} isLoggedIn={true} />
           </div>
         </div>
 

@@ -28,6 +28,7 @@ function CreateInvoiceContent() {
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const canSave = invoice.client.name.trim().length > 0 && invoice.items.some((item) => item.description.trim().length > 0);
@@ -99,6 +100,10 @@ function CreateInvoiceContent() {
 
       setInvoice(draftInvoice);
       setIsLoaded(true);
+      // Trigger mount animation after a frame so transition plays
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setIsMounted(true));
+      });
     };
 
     initData();
@@ -225,7 +230,14 @@ function CreateInvoiceContent() {
   ) : (
     <>
       {/* Left Column: Form */}
-      <div className="flex-1">
+      <div
+        className="overflow-hidden"
+        style={{
+          flex: isMounted ? '1 1 0%' : '0 0 0%',
+          opacity: isMounted ? 1 : 0,
+          transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
+        }}
+      >
         <div className="h-10 flex items-center mb-6">
           <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.editor}</h2>
         </div>
@@ -235,23 +247,26 @@ function CreateInvoiceContent() {
       </div>
 
       {/* Right Column: Preview */}
-      <div className="flex-1 xl:sticky xl:top-14">
+      <div
+        className="xl:sticky xl:top-14 overflow-hidden"
+        style={{
+          flex: isMounted ? '1 1 0%' : '0 0 0%',
+          opacity: isMounted ? 1 : 0,
+          transition: 'flex 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
+        }}
+      >
         <div className="h-10 flex items-center mb-6">
           <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
         </div>
-        <div className="w-full rounded-[5px] ring-2 ring-blue-400/50">
-          <div className="w-full bg-zinc-50 dark:bg-zinc-950 rounded-[5px] overflow-hidden [background-image:radial-gradient(rgba(212,212,216,0.3)_1px,transparent_1px)] [background-size:16px_16px] dark:[background-image:radial-gradient(rgba(39,39,42,0.3)_1px,transparent_1px)]">
-            <div className="[zoom:0.6] sm:[zoom:0.75] lg:[zoom:0.9] xl:[zoom:1] origin-top-left transition-all">
-              <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
-            </div>
-          </div>
+        <div className="rounded-[5px] overflow-hidden mt-1">
+          <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
         </div>
       </div>
     </>
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-zinc-950">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950">
       <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
         <div className="container flex h-14 items-center justify-between px-4 sm:px-6 max-w-[1600px] mx-auto">
           <Link
@@ -263,14 +278,7 @@ function CreateInvoiceContent() {
           </Link>
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center gap-1.5 bg-zinc-100/80 dark:bg-zinc-800/50 rounded-xl p-1">
-              {isLoggedIn && (
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150"
-                >
-                  <LayoutDashboard className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.myInvoices}</span>
-                </Link>
-              )}
+
               <button
                 onClick={handleShare}
                 disabled={!canSave}
@@ -295,6 +303,16 @@ function CreateInvoiceContent() {
             </div>
             <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0.5" />
             <div className="flex items-center gap-0.5">
+              {isLoggedIn && (
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150 mr-1"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span className="hidden lg:inline">{t.myInvoices}</span>
+                </Link>
+              )}
+              {isLoggedIn && <div className="hidden xs:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />}
               <ThemeToggle />
               <AuthButton />
             </div>
