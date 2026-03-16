@@ -144,33 +144,30 @@ export default function Dashboard() {
               <Link 
                 key={company.id}
                 href={`/company/${company.id}`}
-                className="group relative bg-white/60 backdrop-blur-2xl dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 rounded-3xl p-6 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 hover:border-blue-300 dark:hover:border-blue-700/50 transition-all duration-300 flex flex-col overflow-hidden ring-1 ring-inset ring-transparent hover:ring-blue-500/20"
+                className="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-5 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700/50 transition-all duration-300 flex flex-col overflow-hidden ring-1 ring-inset ring-transparent hover:ring-blue-500/10"
               >
-                {/* Decorative blob */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 blur-2xl rounded-full -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="flex justify-between items-start mb-6 relative">
-                  <div className="w-14 h-14 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-800/50 rounded-full flex items-center justify-center border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm group-hover:scale-105 transition-transform duration-300 overflow-hidden bg-white">
+                <div className="flex justify-between items-start mb-4 relative">
+                  <div className="w-12 h-12 bg-zinc-50 dark:bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-200/50 dark:border-zinc-700/50 shadow-sm transition-transform duration-300 overflow-hidden bg-white">
                     {company.logo_url ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1 mix-blend-multiply dark:mix-blend-normal" />
                     ) : (
-                      <Building2 className="w-7 h-7 text-zinc-700 dark:text-zinc-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                      <Building2 className="w-6 h-6 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                     )}
                   </div>
-                  <div className="flex items-center gap-1 z-10 transition-opacity">
+                  <div className="flex items-center gap-1.5 z-10">
                     <Tooltip content="Edit Company" position="left">
                       <button
                         onClick={(e) => handleEdit(e, company)}
-                        className="p-2.5 text-blue-500 hover:text-blue-600 bg-blue-50/50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-[5px] transition-all"
+                        className="p-1.5 text-zinc-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-[5px] transition-all"
                       >
-                        <PenLine className="w-4.5 h-4.5" />
+                        <PenLine className="w-4 h-4" />
                       </button>
                     </Tooltip>
                     <Tooltip content="Delete Company" position="left">
                       <button
                         onClick={(e) => handleDeleteClick(e, company.id)}
-                        className="p-2.5 text-red-500 hover:text-red-600 bg-red-50/50 hover:bg-red-100 dark:text-red-400 dark:bg-red-900/10 dark:hover:bg-red-900/30 rounded-[5px] transition-all"
+                        className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-[5px] transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -178,22 +175,22 @@ export default function Dashboard() {
                   </div>
                 </div>
                 
-                <h3 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-1.5 line-clamp-1 relative">
-                  {company.name}
-                </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-1 mb-6 relative">
-                  {company.email || "No email provided"}
-                </p>
-
-                <div className="mt-auto pt-6 border-t border-zinc-100 dark:border-zinc-800/80 flex justify-between items-end relative">
-                  <div>
-                    <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Total Invoices</p>
-                    <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{invoicesCount}</p>
+                <div className="space-y-0.5 mb-4">
+                  <h3 className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 line-clamp-1">
+                    {company.name}
+                  </h3>
+                  <p className="text-[13px] text-zinc-500 dark:text-zinc-400 line-clamp-1">
+                    {company.email || "No email provided"}
+                  </p>
+                </div>
+ 
+                <div className="mt-auto pt-4 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center relative">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider leading-none">Invoices</span>
+                    <span className="text-[15px] font-bold text-zinc-800 dark:text-zinc-200 leading-none">{invoicesCount}</span>
                   </div>
-                  <div className="text-right">
-                     <div className="w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500 dark:text-zinc-400 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-md transition-all duration-300">
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                     </div>
+                  <div className="w-8 h-8 rounded-[5px] bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </div>
                 </div>
               </Link>
