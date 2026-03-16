@@ -133,6 +133,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://invoice-quickly.com",
   },
+  themeColor: "#2563eb",
   icons: {
     icon: [
       { url: "/favicon.ico" },
