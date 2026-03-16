@@ -91,6 +91,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       }
       
       setCompany(companyData);
+      
       await loadInvoices();
       setLoading(false);
     };
@@ -177,13 +178,15 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           </div>
         </nav>
 
-        <Link 
-          href={`/company/${resolvedParams.id}/new`}
-          className="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] whitespace-nowrap shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Create Invoice</span>
-        </Link>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <Link 
+            href={`/company/${resolvedParams.id}/new`}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] whitespace-nowrap"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Create Invoice</span>
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-[5px] overflow-hidden shadow-sm">

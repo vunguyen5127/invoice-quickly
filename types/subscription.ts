@@ -12,6 +12,9 @@ export interface Subscription {
   current_period_start: string | null;
   current_period_end: string | null;
   cancel_at: string | null;
+  card_brand: string | null;
+  card_last4: string | null;
+  next_billed_at: string | null;
   created_at: string;
   updated_at: string;
 }

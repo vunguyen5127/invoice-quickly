@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Geist,
   Geist_Mono,
@@ -133,7 +133,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://invoice-quickly.com",
   },
-  themeColor: "#2563eb",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -143,6 +142,10 @@ export const metadata: Metadata = {
       { url: "/logo.svg" },
     ],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#2563eb",
 };
 
 export default function RootLayout({

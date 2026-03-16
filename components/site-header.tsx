@@ -11,6 +11,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { marketingPages } from "@/data/marketing-pages";
+import { getUserEntitlements } from "@/utils/entitlements";
+import { PlanType } from "@/types/subscription";
 
 const ADMIN_EMAIL = "vunguyencapital@gmail.com";
 
@@ -19,6 +21,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [hasUser, setHasUser] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userPlan, setUserPlan] = useState<PlanType>("free");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {

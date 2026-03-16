@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Check, Minus, Zap, ArrowRight, Loader2, Shield, CreditCard, Infinity } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
+import { createCheckoutTransaction } from "./actions";
 
 declare global {
   interface Window {
@@ -26,15 +27,19 @@ const comparisons: { feature: string; free: string | boolean; pro: string | bool
 ];
 
 export default function PricingPage() {
-  const [isYearly, setIsYearly] = useState(true);
+  const [isYearly, setIsYearly] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const getUser = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) setUserId(session.user.id);
+      if (session?.user) {
+        setUserId(session.user.id);
+        setUserEmail(session.user.email || null);
+      }
     };
     getUser();
   }, []);
@@ -44,155 +49,174 @@ export default function PricingPage() {
     setIsLoading(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { window.location.href = "/login?redirect=/pricing"; return; }
-      const priceId = isYearly
-        ? process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY;
+      if (!session) { 
+        window.location.href = "/login?redirect=/pricing"; 
+        return; 
+      }
+      
+      const { transactionId } = await createCheckoutTransaction(session.access_token, isYearly);
+      
       if (window.Paddle) {
         window.Paddle.Checkout.open({
-          items: [{ priceId, quantity: 1 }],
-          customer: { email: session.user.email },
-          customData: { user_id: session.user.id },
-          settings: { successUrl: `${window.location.origin}/dashboard?upgraded=1`, displayMode: "overlay" },
+          transactionId,
+          settings: { 
+            successUrl: `${window.location.origin}/dashboard?upgraded=1`, 
+            displayMode: "overlay" 
+          },
         });
       }
-    } catch (err) { console.error("Failed to open checkout:", err); }
-    finally { setIsLoading(false); }
+    } catch (err: any) { 
+      console.error("Failed to open checkout:", err); 
+      alert(err.message || "Failed to initialize checkout. Please try again.");
+    } finally { 
+      setIsLoading(false); 
+    }
   };
 
   const monthlyPrice = 10;
   const yearlyPrice = 99;
   const perMonth = isYearly ? Math.round(yearlyPrice / 12) : monthlyPrice;
 
-  const CellValue = ({ value }: { value: string | boolean }) => {
-    if (value === true) return <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 mx-auto" />;
-    if (value === false) return <Minus className="w-4 h-4 text-zinc-300 dark:text-zinc-700 mx-auto" />;
-    return <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{value}</span>;
-  };
-
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950">
-      <div className="container mx-auto px-4 py-14 md:py-20 max-w-4xl">
-
-        {/* ── Header ── */}
-        <div className="text-center mb-14">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 mb-3">
-            Pricing
-          </h1>
-          <p className="text-base md:text-lg text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
-            Start free, upgrade anytime. Simple pricing, no surprises.
-          </p>
+    <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-900/40">
+      <div className="container mx-auto px-4 py-6 md:py-10 max-w-5xl">
+        
+        {/* Toggle - Pill style centered */}
+        <div className="flex justify-center mb-6">
+           <div className="bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-[7px] inline-flex items-center shadow-inner relative">
+              {/* Sliding Background */}
+              <div 
+                className={`absolute h-[calc(100%-4px)] top-0.5 bottom-0.5 transition-all duration-300 ease-out bg-white dark:bg-zinc-800 rounded-[5px] shadow-sm ring-1 ring-zinc-200/50 dark:ring-white/5 ${!isYearly ? 'left-0.5 w-[calc(50%-2px)]' : 'left-[calc(50%)] w-[calc(50%-2px)]'}`}
+              />
+              
+              <button 
+                onClick={() => setIsYearly(false)}
+                className={`relative z-10 px-7 py-1.5 rounded-[5px] text-xs font-bold transition-colors duration-200 ${!isYearly ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}
+              >
+                Monthly
+              </button>
+              <button 
+                onClick={() => setIsYearly(true)}
+                className={`relative z-10 px-7 py-1.5 rounded-[5px] text-xs font-bold transition-colors duration-200 flex items-center gap-3 ${isYearly ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}
+              >
+                Yearly
+                <span className="bg-blue-600 text-white text-[9px] px-1.5 py-0.5 rounded-sm ml-0.5">Save 17%</span>
+              </button>
+           </div>
         </div>
 
-        {/* ── Pricing Card ── */}
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
-
-          {/* ── Plan headers ── */}
-          <div className="grid grid-cols-[1fr_1fr_1fr] md:grid-cols-[2fr_1fr_1fr]">
-            {/* Toggle cell */}
-            <div className="p-5 md:p-8 flex items-end border-b border-zinc-100 dark:border-zinc-800">
-              <div className="inline-flex items-center gap-0.5 p-0.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
-                <button
-                  onClick={() => setIsYearly(false)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
-                    !isYearly
-                      ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                  }`}
-                >
-                  Monthly
-                </button>
-                <button
-                  onClick={() => setIsYearly(true)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all flex items-center gap-1.5 ${
-                    isYearly
-                      ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                      : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                  }`}
-                >
-                  Yearly
-                  <span className="px-1.5 py-px text-[9px] font-bold rounded bg-emerald-500 text-white leading-tight">
-                    -17%
-                  </span>
-                </button>
+        {/* Grid - Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 max-w-4xl mx-auto items-start">
+           
+           {/* Free Plan */}
+           <div className="flex flex-col group animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h2 className="text-2xl font-black text-zinc-900 dark:text-zinc-100 mb-1">Free</h2>
+              <p className="text-zinc-500 dark:text-zinc-400 text-[13px] leading-relaxed mb-6 min-h-[32px]">
+                Try professional invoicing for your startup.
+              </p>
+              
+              <div className="flex items-baseline gap-1.5 mb-6">
+                <span className="text-5xl md:text-6xl font-black text-zinc-900 dark:text-zinc-100 tracking-tighter">$0</span>
+                <span className="text-zinc-400 font-bold text-xs leading-tight">per<br/>month</span>
               </div>
-            </div>
 
-            {/* Free header */}
-            <div className="p-5 md:p-8 text-center border-b border-l border-zinc-100 dark:border-zinc-800">
-              <p className="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">Free</p>
-              <div className="flex items-baseline justify-center gap-0.5">
-                <span className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100">$0</span>
+              <div className="flex-1"></div>
+
+              <div className="space-y-3">
+                <p className="text-zinc-900 dark:text-zinc-100 font-bold text-[13px]">This includes:</p>
+                <ul className="space-y-3">
+                   {[
+                     "1 Company",
+                     "15 Invoices per month",
+                     "Invoice creation & download",
+                     "Public invoice sharing",
+                     "Standard templates",
+                     "Ads enabled"
+                   ].map((item, i) => (
+                     <li key={i} className="flex items-start gap-3 text-zinc-600 dark:text-zinc-400 text-[12px] leading-tight">
+                       <div className="mt-0.5 p-1 bg-zinc-100 dark:bg-zinc-900 rounded-sm border border-zinc-200/50 dark:border-white/5 flex-shrink-0">
+                         <Check className="w-3 h-3 text-zinc-600 dark:text-zinc-400" strokeWidth={3} />
+                       </div>
+                       {item}
+                     </li>
+                   ))}
+                </ul>
               </div>
-              <p className="text-[11px] text-zinc-400 mt-1">forever</p>
-              <Link
-                href={userId ? "/dashboard" : "/login?redirect=/dashboard"}
-                className="mt-4 w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg text-xs font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-              >
-                Get started
-              </Link>
-            </div>
+           </div>
 
-            {/* Pro header */}
-            <div className="p-5 md:p-8 text-center border-b border-l border-zinc-100 dark:border-zinc-800 bg-blue-50/50 dark:bg-blue-950/20 relative">
-              <div className="absolute top-2 right-2">
-                <span className="px-2 py-0.5 text-[9px] font-bold rounded-full bg-blue-600 text-white uppercase tracking-wider">
-                  Popular
+           {/* Pro Plan */}
+           <div className="flex flex-col animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150">
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-2xl font-black text-zinc-900 dark:text-zinc-100">Pro</h2>
+                <span className="bg-blue-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm uppercase tracking-wider">Popular</span>
+              </div>
+              <p className="text-zinc-500 dark:text-zinc-400 text-[13px] leading-relaxed mb-6 min-h-[32px]">
+                For teams who care about branding and automation.
+              </p>
+              
+              <div className="flex items-baseline gap-1.5 mb-6 relative">
+                <span className="text-5xl md:text-6xl font-black text-zinc-900 dark:text-zinc-100 tracking-tighter">
+                  ${isYearly ? yearlyPrice : monthlyPrice}
+                </span>
+                <span className="text-zinc-400 font-bold text-xs leading-tight">
+                  per<br/>{isYearly ? "year" : "month"}
                 </span>
               </div>
-              <p className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3">Pro</p>
-              <div className="flex items-baseline justify-center gap-0.5">
-                <span className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-zinc-100">${perMonth}</span>
-                <span className="text-zinc-400 text-xs font-medium">/mo</span>
-              </div>
-              <p className="text-[11px] text-zinc-400 mt-1">
-                {isYearly ? `$${yearlyPrice} billed yearly` : "billed monthly"}
-              </p>
-              <button
-                onClick={handleUpgrade}
-                disabled={isLoading}
-                className="mt-4 w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors shadow-sm disabled:opacity-50"
-              >
-                {isLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <>Upgrade <ArrowRight className="w-3 h-3" /></>}
-              </button>
-            </div>
-          </div>
 
-          {/* ── Comparison rows ── */}
-          {comparisons.map((row, i) => (
-            <div
-              key={row.feature}
-              className={`grid grid-cols-[1fr_1fr_1fr] md:grid-cols-[2fr_1fr_1fr] ${
-                i < comparisons.length - 1 ? "border-b border-zinc-100 dark:border-zinc-800/60" : ""
-              } ${i % 2 === 0 ? "bg-zinc-50/50 dark:bg-zinc-900/50" : "bg-white dark:bg-zinc-950/30"}`}
-            >
-              <div className="px-5 md:px-8 py-3 md:py-3.5 text-[13px] text-zinc-600 dark:text-zinc-400 font-medium">
-                {row.feature}
+              <div className="flex justify-start">
+                {userEmail === "vunguyen5127@gmail.com" ? (
+                  <button
+                    onClick={handleUpgrade}
+                    disabled={isLoading}
+                    className="w-fit py-2.5 px-10 bg-blue-600 text-white rounded-[5px] font-black text-sm text-center hover:bg-blue-700 transition-all shadow-[0_5px_15px_-5px_rgba(37,99,235,0.4)] active:scale-[0.98] mb-6 flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Subscribe</>}
+                  </button>
+                ) : (
+                  <div className="mb-6 py-2.5 px-6 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded-[5px] text-xs font-bold uppercase tracking-wider">
+                    Coming Soon
+                  </div>
+                )}
               </div>
-              <div className="px-5 md:px-8 py-3 md:py-3.5 text-center border-l border-zinc-100 dark:border-zinc-800/60">
-                <CellValue value={row.free} />
+
+              <div className="space-y-3">
+                <p className="text-zinc-900 dark:text-zinc-100 font-bold text-[13px]">This includes:</p>
+                <ul className="space-y-3">
+                   {[
+                     "Everything in Free",
+                     "10 Companies (Fair Use)",
+                     "500 Invoices per month",
+                     "No Advertising",
+                     "Advanced Branding (Logo, Colors)",
+                     "CSV/Excel Exporting",
+                     "Priority Support"
+                   ].map((item, i) => (
+                     <li key={i} className={`flex items-start gap-3 text-[12px] leading-tight ${i < 3 ? 'text-zinc-900 dark:text-zinc-100 font-bold' : 'text-zinc-600 dark:text-zinc-400'}`}>
+                       <div className="mt-0.5 p-1 bg-zinc-100 dark:bg-zinc-900 rounded-sm border border-zinc-200/50 dark:border-white/5 flex-shrink-0">
+                         <Check className="w-3 h-3 text-zinc-900 dark:text-zinc-100" strokeWidth={3} />
+                       </div>
+                       {item}
+                     </li>
+                   ))}
+                </ul>
               </div>
-              <div className="px-5 md:px-8 py-3 md:py-3.5 text-center border-l border-zinc-100 dark:border-zinc-800/60 bg-blue-50/30 dark:bg-blue-950/10">
-                <CellValue value={row.pro} />
-              </div>
-            </div>
-          ))}
+           </div>
         </div>
 
-        {/* ── Trust bar ── */}
-        <div className="flex flex-wrap items-center justify-center gap-8 mt-12 text-zinc-400 dark:text-zinc-500 text-[13px]">
-          <div className="flex items-center gap-2">
-            <Shield className="w-4 h-4" />
-            <span>Secure checkout</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CreditCard className="w-4 h-4" />
-            <span>No credit card for Free</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Infinity className="w-4 h-4" />
-            <span>Cancel anytime</span>
-          </div>
+        {/* Trust features */}
+        <div className="mt-16 pt-10 border-t border-zinc-100 dark:border-zinc-900 flex flex-wrap justify-center gap-x-10 gap-y-5 text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
+           <div className="flex items-center gap-2">
+             <Shield className="w-4 h-4" />
+             No hidden fees
+           </div>
+           <div className="flex items-center gap-2">
+             <CreditCard className="w-4 h-4" />
+             Secure payments
+           </div>
+           <div className="flex items-center gap-2">
+             <Infinity className="w-4 h-4" />
+             Cancel anytime
+           </div>
         </div>
       </div>
     </div>

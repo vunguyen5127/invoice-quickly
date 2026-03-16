@@ -9,6 +9,7 @@ interface ConfirmModalProps {
   onConfirm: () => void;
   title: string;
   message: string;
+  confirmText?: string;
   isProcessing?: boolean;
 }
 
@@ -18,6 +19,7 @@ export function ConfirmModal({
   onConfirm,
   title,
   message,
+  confirmText = "Delete",
   isProcessing = false,
 }: ConfirmModalProps) {
   if (!isOpen) return null;
@@ -58,7 +60,7 @@ export function ConfirmModal({
               disabled={isProcessing}
               className="w-full sm:w-auto px-5 py-2.5 rounded-[5px] font-medium text-sm text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm disabled:opacity-75 flex items-center justify-center min-w-[100px]"
             >
-              {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Delete"}
+              {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : confirmText}
             </button>
           </div>
           

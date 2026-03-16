@@ -3,17 +3,24 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut } from "lucide-react";
+import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { ThemeToggle, ThemeSelector } from "@/components/theme-toggle";
 import { languages } from "@/components/language-toggle";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { getUserSubscription, cancelSubscription, resumeSubscription } from "./actions";
+import { Subscription } from "@/types/subscription";
+import { format } from "date-fns";
+import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function SettingsPage() {
   const { t, lang, setLang } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [isResuming, setIsResuming] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,10 +32,53 @@ export default function SettingsPage() {
         return;
       }
       setUser(session.user);
+      
+      const sub = await getUserSubscription(session.access_token);
+      setSubscription(sub);
+      
       setLoading(false);
     };
     checkUser();
   }, [router]);
+
+  const handleCancelSubscription = async () => {
+    if (!subscription?.paddle_subscription_id) return;
+    
+    setIsCancelling(true);
+    const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
+    
+    if (session) {
+      const result = await cancelSubscription(session.access_token, subscription.paddle_subscription_id);
+      if ("success" in result) {
+        // Refresh subscription data
+        const sub = await getUserSubscription(session.access_token);
+        setSubscription(sub);
+        setIsCancelModalOpen(false);
+      } else {
+        alert(result.error);
+      }
+    }
+    setIsCancelling(false);
+  };
+
+  const handleResumeSubscription = async () => {
+    if (!subscription?.paddle_subscription_id) return;
+    
+    setIsResuming(true);
+    const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
+    
+    if (session) {
+      const result = await resumeSubscription(session.access_token, subscription.paddle_subscription_id);
+      if ("success" in result) {
+        // Refresh subscription data
+        const sub = await getUserSubscription(session.access_token);
+        setSubscription(sub);
+      } else {
+        alert(result.error);
+      }
+    }
+    setIsResuming(false);
+  };
 
   if (loading) {
     return (
@@ -86,6 +136,106 @@ export default function SettingsPage() {
             <p className="text-zinc-500 text-sm">{user?.email}</p>
           </div>
         </div>
+      </div>
+
+      {/* Subscription Section */}
+      <div className={sectionClass}>
+        <div className={headerClass}>
+          <Crown className="w-4 h-4 text-yellow-500" />
+          Subscription
+        </div>
+        <div className={itemClass}>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+               <CreditCard className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Current Plan</p>
+              <p className="text-xs text-zinc-500 capitalize">{subscription?.plan || "Free"} Plan</p>
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+              subscription?.status === 'active' 
+                ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
+                : subscription?.status === 'canceled'
+                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500"
+            }`}>
+              {subscription?.status || "Free"}
+            </span>
+            {subscription?.card_brand && subscription?.card_last4 && (
+              <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
+                {subscription.card_brand} •••• {subscription.card_last4}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {subscription?.plan === 'pro' && (
+          <>
+            <div className={itemClass}>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                   <Calendar className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                    {subscription.status === 'canceled' ? "Expires on" : "Renews on"}
+                  </p>
+                  <p className="text-xs text-zinc-500">
+                    {(subscription.next_billed_at || subscription.current_period_end) 
+                      ? format(new Date(subscription.next_billed_at || subscription.current_period_end!), "MMMM dd, yyyy") 
+                      : "N/A"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {subscription.status === 'active' && (
+              <div className="px-6 py-4 bg-red-50/50 dark:bg-red-950/10 border-t border-zinc-50 dark:border-zinc-800/50 flex justify-between items-center">
+                <div className="flex items-center gap-2 text-red-500">
+                   <Shield className="w-4 h-4" />
+                   <span className="text-xs font-bold uppercase tracking-wider">Auto-renewal Active</span>
+                </div>
+                <button 
+                  onClick={() => setIsCancelModalOpen(true)}
+                  className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider"
+                >
+                  Cancel Subscription
+                </button>
+              </div>
+            )}
+
+            {subscription.status === 'canceled' && new Date(subscription.current_period_end!) > new Date() && (
+              <div className="px-6 py-4 bg-amber-50/50 dark:bg-amber-950/10 border-t border-zinc-50 dark:border-zinc-800/50 flex justify-between items-center">
+                <div className="flex items-center gap-2 text-amber-600">
+                   <AlertTriangle className="w-4 h-4" />
+                   <span className="text-xs font-bold uppercase tracking-wider">Cancels Soon</span>
+                </div>
+                <button 
+                  onClick={handleResumeSubscription}
+                  disabled={isResuming}
+                  className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider flex items-center gap-2"
+                >
+                  {isResuming ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3 h-3" />}
+                  Resume Subscription
+                </button>
+              </div>
+            )}
+          </>
+        )}
+        
+        {subscription?.plan === 'free' && user?.email === 'vunguyen5127@gmail.com' && (
+          <div className="px-6 py-4 bg-blue-50/50 dark:bg-blue-950/10 border-t border-zinc-50 dark:border-zinc-800/50">
+            <Link 
+              href="/pricing"
+              className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider"
+            >
+              Upgrade to Pro
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* Appearance & Language */}
@@ -173,6 +323,15 @@ export default function SettingsPage() {
         </button>
       </div>
 
+      <ConfirmModal
+        isOpen={isCancelModalOpen}
+        onClose={() => setIsCancelModalOpen(false)}
+        onConfirm={handleCancelSubscription}
+        isProcessing={isCancelling}
+        title="Cancel Subscription"
+        message="Are you sure you want to cancel your subscription? You will lose access to Pro features at the end of your current billing period."
+        confirmText="Cancel Subscription"
+      />
     </div>
   );
 }

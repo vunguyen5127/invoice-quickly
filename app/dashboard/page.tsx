@@ -6,13 +6,18 @@ import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { getUserEntitlements } from "@/utils/entitlements";
 import { format } from "date-fns";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight, Crown } from "lucide-react";
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
 import { ConfirmModal } from "@/components/confirm-modal";
+import { Tooltip } from "@/components/tooltip";
+import { DashboardSkeleton } from "@/components/dashboard-skeleton";
+import { FREE_ENTITLEMENTS } from "@/types/subscription";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function Dashboard() {
+  const { t } = useLanguage();
   const [companies, setCompanies] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,6 +27,8 @@ export default function Dashboard() {
   const [editingCompany, setEditingCompany] = useState<any | null>(null);
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const router = useRouter();
 
   const PAGE_SIZE = 12;
@@ -36,10 +43,17 @@ export default function Dashboard() {
       return;
     }
 
-      const data = await getUserCompanies(session.access_token);
-      setCompanies(data);
-      setLoading(false);
-    };
+    setUserEmail(session.user.email || null);
+    const data = await getUserCompanies(session.access_token, currentPage, PAGE_SIZE);
+    setCompanies(data.data);
+    setTotalCount(data.totalCount);
+
+    const ent = await getUserEntitlements(session.access_token);
+    setEntitlements(ent);
+
+    setLoading(false);
+    setIsRefreshing(false);
+  };
 
   useEffect(() => {
     loadData(loading ? false : true);
@@ -92,13 +106,21 @@ export default function Dashboard() {
           <p className="text-zinc-500 mt-1">Select a company to manage its invoices</p>
         </div>
         <div className="flex items-center gap-2">
+          {entitlements.plan === "free" && userEmail === "vunguyen5127@gmail.com" && (
+            <Link
+               href="/pricing"
+               className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl hover:opacity-90 font-bold transition-all shadow-sm group"
+            >
+              <Crown className="w-4 h-4 text-yellow-400 group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline">Upgrade</span>
+            </Link>
+          )}
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">Add Company</span>
-            <span className="sm:hidden">Add</span>
           </button>
         </div>
       </div>
@@ -252,14 +274,8 @@ export default function Dashboard() {
         onClose={() => setCompanyToDelete(null)}
         onConfirm={confirmDelete}
         title="Delete Company?"
-        message="Are you sure you want to delete this company? All invoices associated with it will also be permanently deleted. This action cannot be undone."
+        message="Are you sure you want to delete this company? All invoices associated with it will also be deleted."
         isProcessing={isDeleting}
-      />
-
-      <UpgradeModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        trigger="company_limit"
       />
     </div>
   );

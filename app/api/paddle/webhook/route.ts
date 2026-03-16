@@ -81,6 +81,12 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
     // Update existing subscription
     const plan = getPlanFromPriceId(priceId);
     const mappedStatus = mapPaddleStatus(status);
+    
+    // Extract payment method details
+    const card = data.payment_method?.details?.card;
+    const cardBrand = card?.type || card?.brand;
+    const cardLast4 = card?.last4;
+    const nextBilledAt = data.next_billed_at || data.current_billing_period?.ends_at;
 
     const { error } = await supabase
       .from("subscriptions")
@@ -92,6 +98,9 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
         current_period_start: currentPeriodStart,
         current_period_end: currentPeriodEnd,
         cancel_at: null,
+        card_brand: cardBrand,
+        card_last4: cardLast4,
+        next_billed_at: nextBilledAt,
         updated_at: new Date().toISOString(),
       })
       .eq("paddle_subscription_id", paddleSubscriptionId);
@@ -108,6 +117,12 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
 
     const plan = getPlanFromPriceId(priceId);
     const mappedStatus = mapPaddleStatus(status);
+    
+    // Extract payment method details
+    const card = data.payment_method?.details?.card;
+    const cardBrand = card?.type || card?.brand;
+    const cardLast4 = card?.last4;
+    const nextBilledAt = data.next_billed_at || data.current_billing_period?.ends_at;
 
     const { error } = await supabase
       .from("subscriptions")
@@ -120,6 +135,9 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
         price_id: priceId,
         current_period_start: currentPeriodStart,
         current_period_end: currentPeriodEnd,
+        card_brand: cardBrand,
+        card_last4: cardLast4,
+        next_billed_at: nextBilledAt,
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
 
