@@ -5,6 +5,7 @@ import { Check, Minus, Zap, ArrowRight, Loader2, Shield, CreditCard, Infinity } 
 import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
 import { createCheckoutTransaction } from "./actions";
+import { isTester } from "@/utils/tester";
 
 declare global {
   interface Window {
@@ -164,7 +165,7 @@ export default function PricingPage() {
               </div>
 
               <div className="flex justify-start">
-                {userEmail === "vunguyen5127@gmail.com" ? (
+                {isTester(userEmail) ? (
                   <button
                     onClick={handleUpgrade}
                     disabled={isLoading}

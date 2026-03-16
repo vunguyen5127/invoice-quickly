@@ -12,6 +12,7 @@ import { getUserSubscription, cancelSubscription, resumeSubscription } from "./a
 import { Subscription } from "@/types/subscription";
 import { format } from "date-fns";
 import { ConfirmModal } from "@/components/confirm-modal";
+import { isTester } from "@/utils/tester";
 
 export default function SettingsPage() {
   const { t, lang, setLang } = useLanguage();
@@ -226,7 +227,7 @@ export default function SettingsPage() {
           </>
         )}
         
-        {subscription?.plan === 'free' && user?.email === 'vunguyen5127@gmail.com' && (
+        {subscription?.plan === 'free' && isTester(user?.email) && (
           <div className="px-6 py-4 bg-blue-50/50 dark:bg-blue-950/10 border-t border-zinc-50 dark:border-zinc-800/50">
             <Link 
               href="/pricing"

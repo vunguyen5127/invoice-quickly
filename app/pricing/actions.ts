@@ -2,6 +2,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { PADDLE_CONFIG } from "@/utils/paddle";
+import { isTester } from "@/utils/tester";
 
 function getServerSupabase(token: string) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -22,7 +23,7 @@ export async function createCheckoutTransaction(token: string, isYearly: boolean
     throw new Error("User not authenticated");
   }
 
-  if (user.email !== "vunguyen5127@gmail.com") {
+  if (!isTester(user.email)) {
     throw new Error("Subscriptions are currently in private beta.");
   }
 

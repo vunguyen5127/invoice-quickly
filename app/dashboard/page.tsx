@@ -12,6 +12,7 @@ import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
 import { ConfirmModal } from "@/components/confirm-modal";
 import { Tooltip } from "@/components/tooltip";
+import { isTester } from "@/utils/tester";
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import { FREE_ENTITLEMENTS } from "@/types/subscription";
 import { useLanguage } from "@/contexts/language-context";
@@ -106,7 +107,7 @@ export default function Dashboard() {
           <p className="text-zinc-500 mt-1">Select a company to manage its invoices</p>
         </div>
         <div className="flex items-center gap-2">
-          {entitlements.plan === "free" && userEmail === "vunguyen5127@gmail.com" && (
+          {entitlements.plan === "free" && isTester(userEmail) && (
             <Link
                href="/pricing"
                className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl hover:opacity-90 font-bold transition-all shadow-sm group"
