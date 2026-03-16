@@ -49,9 +49,6 @@ function LoginContent() {
     const { data: { subscription } } = supabase ? supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session) {
-          if (event === "SIGNED_IN") {
-            logUserLogin();
-          }
           router.push(redirectPath);
         }
       }

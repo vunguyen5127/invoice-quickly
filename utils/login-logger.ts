@@ -42,6 +42,7 @@ export async function logUserLogin() {
           email: user.email || "unknown",
           name: user.user_metadata?.full_name || user.user_metadata?.name || undefined,
           provider: user.app_metadata?.provider || "email",
+          createdAt: user.created_at,
         });
       } catch (notifyErr) {
         console.error("Failed to trigger new user notification:", notifyErr);

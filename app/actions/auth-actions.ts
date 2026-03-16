@@ -14,6 +14,7 @@ export async function notifyAdminOnNewUser(userData: {
   email: string;
   name?: string;
   provider?: string;
+  createdAt?: string;
 }) {
   try {
     // Check how many login logs exist for this user
@@ -30,9 +31,25 @@ export async function notifyAdminOnNewUser(userData: {
 
     console.log(`[auth-actions] Found ${count} logs for user ${userData.email}`);
 
-    // If count is 1, it means this was the first login ever (or at least the first one logged)
-    if (count === 1) {
-      console.log(`[auth-actions] First login detected for ${userData.email}. Sending admin alert...`);
+    // Improved logic: Identify as "new" if:
+    // 1. It's the absolute first log (count === 1)
+    // 2. OR count is 2 but the account was created very recently (within 15 minutes)
+    // This handles race conditions where multiple logs might be created during the first redirect.
+    let isNewUser = count === 1;
+    
+    if (!isNewUser && count === 2 && userData.createdAt) {
+      const createdTime = new Date(userData.createdAt).getTime();
+      const now = Date.now();
+      const diffMinutes = (now - createdTime) / (1000 * 60);
+      
+      if (diffMinutes < 15) {
+        console.log(`[auth-actions] Account created ${Math.round(diffMinutes)}m ago with 2 logs. Treating as new user.`);
+        isNewUser = true;
+      }
+    }
+
+    if (isNewUser) {
+      console.log(`[auth-actions] New user login detected for ${userData.email}. Sending admin alert...`);
       const result = await sendNewUserAlert({
         email: userData.email,
         name: userData.name,
