@@ -25,8 +25,7 @@ export function SignaturePadModal({ isOpen, onClose, onSave }: SignaturePadModal
       return;
     }
     
-    // Get trim data URL to remove whitespace around the signature
-    const dataURL = sigCanvas.current?.getTrimmedCanvas().toDataURL('image/png');
+    const dataURL = sigCanvas.current?.getTrimmedCanvas().toDataURL('image/webp', 0.9);
     if (dataURL) {
       onSave(dataURL);
       onClose();

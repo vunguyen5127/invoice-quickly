@@ -7,6 +7,7 @@ import { supabase } from "@/utils/supabase/client";
 import { SignaturePadModal } from "./signature-pad-modal";
 import { CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
+import { convertToWebP } from "@/utils/image-utils";
 
 interface CreateCompanyModalProps {
   isOpen: boolean;
@@ -90,13 +91,20 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) { alert("Image must be less than 2MB"); return; }
-    const reader = new FileReader();
-    reader.onloadend = () => setLogo(reader.result as string);
-    reader.readAsDataURL(file);
+    
+    try {
+      const webpDataUrl = await convertToWebP(file);
+      setLogo(webpDataUrl);
+    } catch (error) {
+      console.error("WebP conversion failed", error);
+      const reader = new FileReader();
+      reader.onloadend = () => setLogo(reader.result as string);
+      reader.readAsDataURL(file);
+    }
   };
 
   const tabBtn = (active: boolean) => `flex-1 py-2 text-[14px] font-bold transition-all border-b-2 ${
@@ -236,13 +244,19 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                       <button type="button" onClick={() => setIsSignatureModalOpen(true)} className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
                         <PenTool className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.draw}</span>
                       </button>
-                      <input id="sig-upload-create" type="file" accept="image/*" className="hidden" onChange={e => {
+                      <input id="sig-upload-create" type="file" accept="image/*" className="hidden" onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
                         if (file.size > 2 * 1024 * 1024) { alert("Max 2MB"); return; }
-                        const r = new FileReader();
-                        r.onloadend = () => setSignatureUrl(r.result as string);
-                        r.readAsDataURL(file);
+                        try {
+                          const webpDataUrl = await convertToWebP(file);
+                          setSignatureUrl(webpDataUrl);
+                        } catch (error) {
+                          console.error("WebP conversion failed", error);
+                          const r = new FileReader();
+                          r.onloadend = () => setSignatureUrl(r.result as string);
+                          r.readAsDataURL(file);
+                        }
                       }} />
                     </div>
                   )}

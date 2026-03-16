@@ -10,6 +10,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { getUserCompanies } from "@/app/dashboard/actions";
 import { supabase } from "@/utils/supabase/client";
 import { Tooltip } from "./tooltip";
+import { convertToWebP } from "@/utils/image-utils";
 
 interface InvoiceFormProps {
   invoice: InvoiceState;
@@ -129,14 +130,21 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
     }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, callback: (base64: string) => void) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, callback: (webp: string) => void) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      callback(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    try {
+      const webpDataUrl = await convertToWebP(file);
+      callback(webpDataUrl);
+    } catch (error) {
+      console.error("Failed to convert image to WebP", error);
+      // Fallback to original reader if conversion fails
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        callback(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const logoInputRef = useRef<HTMLInputElement>(null);
