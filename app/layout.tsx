@@ -133,6 +133,15 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://invoice-quickly.com",
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/logo.svg" },
+    ],
+  },
 };
 
 export default function RootLayout({
