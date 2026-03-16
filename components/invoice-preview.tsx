@@ -97,7 +97,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
            {invoice.company.logo && (
              <div className="shrink-0 ml-6">
                {/* eslint-disable-next-line @next/next/no-img-element */}
-               <img src={invoice.company.logo} alt="Company Logo" className="max-w-[160px] max-h-[70px] object-contain rounded-sm" />
+               <img src={invoice.company.logo} alt="Company Logo" className="max-w-[240px] max-h-[100px] object-contain rounded-sm" />
              </div>
            )}
         </div>
@@ -210,7 +210,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
           </div>
         </div>
         {/* Side-by-Side Footer: Notes/Terms on left, Signature on right */}
-        <div className={`mt-auto flex flex-row justify-between items-end gap-12 ${compact ? 'pt-6 pb-2' : 'pt-10'}`}>
+        <div className={`mt-8 py-4 flex flex-row justify-between items-end gap-12 ${compact ? 'pb-2' : ''}`}>
           {/* Left: Notes & Terms */}
           <div className="flex-1 min-w-0">
             {invoice.notes && invoice.showNotes && (
