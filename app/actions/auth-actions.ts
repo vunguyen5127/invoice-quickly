@@ -18,7 +18,9 @@ export async function notifyAdminOnNewUser(userData: {
 }) {
   try {
     // Check how many login logs exist for this user
-    console.log(`[auth-actions] Checking login logs for user ID: ${userData.id}`);
+    console.log(`[auth-actions] Checking login logs for user: ${userData.email} (${userData.id})`);
+    console.log(`[auth-actions] Account created at: ${userData.createdAt}`);
+    
     const { count, error } = await supabaseAdmin
       .from("user_login_logs")
       .select("*", { count: "exact", head: true })
@@ -31,19 +33,19 @@ export async function notifyAdminOnNewUser(userData: {
 
     console.log(`[auth-actions] Found ${count} logs for user ${userData.email}`);
 
-    // Improved logic: Identify as "new" if:
+    // Robust logic: Identify as "new" if:
     // 1. It's the absolute first log (count === 1)
-    // 2. OR count is 2 but the account was created very recently (within 15 minutes)
-    // This handles race conditions where multiple logs might be created during the first redirect.
+    // 2. OR count is low (<= 5) but the account was created very recently (within 15 minutes)
+    // This handles race conditions where multiple logs might be created during the first redirect/mount.
     let isNewUser = count === 1;
     
-    if (!isNewUser && count === 2 && userData.createdAt) {
+    if (!isNewUser && count !== null && count <= 5 && userData.createdAt) {
       const createdTime = new Date(userData.createdAt).getTime();
       const now = Date.now();
       const diffMinutes = (now - createdTime) / (1000 * 60);
       
       if (diffMinutes < 15) {
-        console.log(`[auth-actions] Account created ${Math.round(diffMinutes)}m ago with 2 logs. Treating as new user.`);
+        console.log(`[auth-actions] Account created ${Math.round(diffMinutes)}m ago with ${count} logs. Treating as new user.`);
         isNewUser = true;
       }
     }

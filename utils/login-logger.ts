@@ -1,7 +1,10 @@
 import { supabase } from "@/utils/supabase/client";
 
+let isLoggingInProgress = false;
+
 export async function logUserLogin() {
-  if (!supabase) return;
+  if (!supabase || isLoggingInProgress) return;
+  isLoggingInProgress = true;
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
@@ -50,6 +53,8 @@ export async function logUserLogin() {
     }
   } catch (err) {
     console.error("Failed to log user login:", err);
+  } finally {
+    isLoggingInProgress = false;
   }
 }
 

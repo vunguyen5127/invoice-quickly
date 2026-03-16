@@ -7,18 +7,6 @@ export function LogUserSession() {
   useEffect(() => {
     if (!supabase) return;
 
-    // Check on initial load
-    const checkAndLog = async () => {
-      if (!supabase) return;
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { logUserLogin } = await import("@/utils/login-logger");
-        logUserLogin();
-      }
-    };
-    
-    checkAndLog();
-
     if (!supabase) return;
 
     // Listen for subsequent logins
