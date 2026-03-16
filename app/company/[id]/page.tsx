@@ -188,29 +188,29 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
 
       <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-[5px] overflow-hidden shadow-sm">
         {/* Header with search */}
-        <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <h2 className="font-semibold text-zinc-900 dark:text-zinc-100">
+        <div className="px-4 sm:px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <h2 className="font-semibold text-zinc-900 dark:text-zinc-100 shrink-0">
             Invoices
             <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
           </h2>
           {invoices.length > 0 && (
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-              <div className="flex items-center gap-2 text-sm text-zinc-500 w-full sm:w-auto">
-                <span className="whitespace-nowrap">Show:</span>
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+              <div className="flex items-center gap-2 text-sm text-zinc-500 shrink-0">
+                <span className="hidden xs:inline whitespace-nowrap">Show:</span>
                 <select
                   value={itemsPerPage}
                   onChange={(e) => {
                     setItemsPerPage(Number(e.target.value));
                     setCurrentPage(1);
                   }}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all cursor-pointer"
+                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded px-2 py-1.5 sm:py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all cursor-pointer text-[13px] sm:text-sm"
                 >
                   {PAGE_SIZE_OPTIONS.map(option => (
                     <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
               </div>
-              <div className="relative w-full sm:w-64">
+              <div className="relative flex-1 sm:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
                 <input
                   type="text"
