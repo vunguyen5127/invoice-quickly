@@ -168,7 +168,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
   const inputBaseClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
-  const fieldsetClass = "relative w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 pb-2 pt-0 transition-all focus-within:border-blue-600 dark:focus-within:border-blue-500 focus-within:border-2 hover:border-zinc-400 dark:hover:border-zinc-600 group min-w-0";
+  const fieldsetBaseClass = "relative w-full rounded-[5px] border bg-white dark:bg-zinc-950/50 px-3 pb-2 pt-0 transition-all focus-within:border-blue-600 dark:focus-within:border-blue-500 focus-within:border-2 hover:border-zinc-400 dark:hover:border-zinc-600 group min-w-0";
+  const fieldsetBorderDefault = "border-zinc-300 dark:border-zinc-700";
+  const fieldsetBorderRequired = "border-2 border-red-300/80 dark:border-red-500/30";
   const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-400 px-1 ml-[-4px] group-focus-within:text-blue-600 dark:group-focus-within:text-blue-500 transition-colors empty:hidden max-w-full block truncate";
   const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none pr-6";
 
@@ -178,7 +180,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
       <button
         type="button"
         onClick={onClear}
-        className="absolute -top-2 right-1 z-10 w-5 h-5 flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 border border-zinc-200 dark:border-zinc-700 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-sm"
+        className="absolute -top-2 right-1 z-10 w-5 h-5 flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 border border-zinc-200 dark:border-zinc-700 transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100 shadow-sm"
         tabIndex={-1}
         aria-label="Clear"
       >
@@ -197,7 +199,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
       <div className={sectionClass}>
         <h3 className={sectionTitleClass}>{t.invoiceDetails}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <fieldset className={fieldsetClass}>
+          <fieldset className={`${fieldsetBaseClass} ${!invoice.details.invoiceNumber ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
             <legend className={legendClass}>{t.invoiceNumber}</legend>
             <ClearBtn value={invoice.details.invoiceNumber} onClear={() => handleSectionChange('details', 'invoiceNumber', '')} />
             <input 
@@ -207,7 +209,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               onChange={(e) => handleSectionChange('details', 'invoiceNumber', e.target.value)}
             />
           </fieldset>
-          <fieldset className={fieldsetClass}>
+          <fieldset className={`${fieldsetBaseClass} ${!invoice.details.issueDate ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
             <legend className={legendClass}>{t.issueDate}</legend>
             <div className="relative flex items-center">
               <input 
@@ -219,7 +221,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <Calendar className="w-4 h-4 text-zinc-400 dark:text-zinc-500 absolute right-0 pointer-events-none" />
             </div>
           </fieldset>
-          <fieldset className={fieldsetClass}>
+          <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
             <legend className={legendClass}>{t.dueDate}</legend>
             <div className="relative flex items-center">
               <input 
@@ -251,7 +253,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   {t.fromYourDetails}
                 </h4>
               </div>
-              <fieldset className={`${fieldsetClass} flex-1`}>
+              <fieldset className={`${fieldsetBaseClass} flex-1 ${!invoice.company.name ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
                 <legend className={legendClass}>{`${t.companyName}, ${t.yourAddress}, ${t.yourEmail}, ${t.companyPhone}`}</legend>
                 <div className="w-full h-full flex flex-col">
                   <ClearBtn value={invoice.company.name} onClear={() => handleSectionChange('company', 'name', '')} />
@@ -333,7 +335,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               {t.toClientDetails}
             </h4>
             <div className="space-y-4">
-              <fieldset className={fieldsetClass}>
+              <fieldset className={`${fieldsetBaseClass} ${!invoice.client.name ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
                 <legend className={legendClass}>{`${t.clientName}, ${t.clientAddress}, ${t.clientEmail}, ${t.clientPhone}`}</legend>
                 <div className="w-full h-full flex flex-col">
                   <ClearBtn value={invoice.client.name} onClear={() => handleSectionChange('client', 'name', '')} />
@@ -347,7 +349,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 </div>
               </fieldset>
               
-              <fieldset className={fieldsetClass}>
+              <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
                 <legend className={legendClass}>{`${t.shipTo} ${t.clientPhone.includes('(') ? t.clientPhone.match(/\(.*\)/)?.[0] || '(Optional)' : '(Optional)'}`}</legend>
                 <ClearBtn value={invoice.client.shipTo || ""} onClear={() => handleSectionChange('client', 'shipTo', '')} />
                 <textarea 
@@ -393,7 +395,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className="w-full h-11 pl-4 md:pl-5 pr-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] md:rounded-[5px] text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-sans shadow-sm"
+                      className={`w-full h-11 pl-4 md:pl-5 pr-4 bg-white dark:bg-zinc-950 border ${!item.description ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-[8px] md:rounded-[5px] text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-sans shadow-sm`}
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
@@ -421,7 +423,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       <input 
                         type="number" 
                         placeholder="0.00"
-                        className="w-full h-11 px-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] md:rounded-[5px] text-left text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm"
+                        className={`w-full h-11 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-[8px] md:rounded-[5px] text-left text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm`}
                         value={item.rate || ''}
                         onChange={(e) => {
                           const val = e.target.value;
@@ -472,7 +474,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           <div className="space-y-4">
-            <fieldset className={fieldsetClass}>
+            <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
               <legend className={legendClass}>{t.currency}</legend>
               <select 
                 className={`${inputInnerClass} py-0`}
@@ -617,7 +619,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 </div>
                 {isNotesOpen && (
                   <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
-                    <fieldset className={fieldsetClass}>
+                    <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
                       <legend className={legendClass}>{t.notes}</legend>
                       <textarea 
                         className={`${inputInnerClass} h-[52px] min-h-[52px] overflow-y-auto resize-none mt-1`} 
@@ -660,7 +662,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 </div>
                 {isTermsOpen && (
                   <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
-                    <fieldset className={fieldsetClass}>
+                    <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
                       <legend className={legendClass}>{t.termsConditions}</legend>
                       <textarea 
                         className={`${inputInnerClass} h-[52px] min-h-[52px] overflow-y-auto resize-none mt-1`} 
@@ -736,7 +738,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
                   {invoice.signature && (
                     <div>
-                      <fieldset className={fieldsetClass}>
+                      <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
                         <legend className={legendClass}>{t.printName}</legend>
                         <input 
                           type="text" 
