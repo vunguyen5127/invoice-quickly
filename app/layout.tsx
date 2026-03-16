@@ -148,6 +148,8 @@ export const viewport: Viewport = {
   themeColor: "#2563eb",
 };
 
+import PaddleScript from "@/components/paddle/PaddleScript";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -157,19 +159,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519024554738216" crossOrigin="anonymous" />
-        <script src="https://cdn.paddle.com/paddle/v2/paddle.js" async />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              document.addEventListener('DOMContentLoaded', function() {
-                if (window.Paddle) {
-                  Paddle.Environment.set('${process.env.PADDLE_ENV || "sandbox"}');
-                  Paddle.Initialize({ token: '${process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || ""}' });
-                }
-              });
-            `,
-          }}
-        />
+        <PaddleScript />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -39,7 +39,7 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
     return { error: "PADDLE_API_KEY_MISSING" };
   }
 
-  const isSandbox = process.env.PADDLE_ENV === "sandbox";
+  const isSandbox = process.env.NEXT_PUBLIC_PADDLE_ENV === "sandbox";
   const baseUrl = isSandbox ? "https://sandbox-api.paddle.com" : "https://api.paddle.com";
 
   try {
@@ -73,7 +73,7 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
     return { error: "PADDLE_API_KEY_MISSING" };
   }
 
-  const isSandbox = process.env.PADDLE_ENV === "sandbox";
+  const isSandbox = process.env.NEXT_PUBLIC_PADDLE_ENV === "sandbox";
   const baseUrl = isSandbox ? "https://sandbox-api.paddle.com" : "https://api.paddle.com";
 
   try {

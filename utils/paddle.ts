@@ -6,7 +6,7 @@
 import crypto from "crypto";
 
 export const PADDLE_CONFIG = {
-  env: process.env.PADDLE_ENV || "sandbox",
+  env: (process.env.NEXT_PUBLIC_PADDLE_ENV as "sandbox" | "live") || "sandbox",
   apiKey: process.env.PADDLE_API_KEY || "",
   webhookSecret: process.env.PADDLE_WEBHOOK_SECRET || "",
   clientToken: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || "",
