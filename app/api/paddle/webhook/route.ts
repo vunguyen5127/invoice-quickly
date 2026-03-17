@@ -16,9 +16,14 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text();
     const signatureHeader = request.headers.get("paddle-signature") || "";
 
+    console.log(`[Paddle Webhook] Incoming request: ${signatureHeader ? "Has signature" : "No signature"}`);
+    
     // Verify signature
     if (!verifyPaddleWebhookSignature(rawBody, signatureHeader)) {
-      console.error("Paddle webhook: invalid signature");
+      console.error("[Paddle Webhook] Signature verification failed");
+      console.log("[Paddle Webhook] Header:", signatureHeader);
+      // Don't log full rawBody for security, but maybe its length
+      console.log(`[Paddle Webhook] Body length: ${rawBody.length}`);
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
@@ -26,7 +31,7 @@ export async function POST(request: NextRequest) {
     const eventType: string = event.event_type;
     const data = event.data;
 
-    console.log(`Paddle webhook received: ${eventType}`, data?.id);
+    console.log(`[Paddle Webhook] Received event: ${eventType}`, data?.id);
 
     const supabase = getServiceSupabase();
 
