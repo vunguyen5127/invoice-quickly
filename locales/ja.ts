@@ -129,4 +129,5 @@ export const ja: Translations = {
   template_pdf: "PDF請求書ジェネレーター",
   template_excel: "Excelからのアップグレード",
   template_free: "100％無料",
+  pricing: "料金",
 };

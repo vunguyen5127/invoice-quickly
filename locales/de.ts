@@ -129,4 +129,5 @@ export const de: Translations = {
   template_pdf: "PDF-Rechnungsgenerator",
   template_excel: "Upgrade von Excel",
   template_free: "100 % Kostenlos",
+  pricing: "Preise",
 };

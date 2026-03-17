@@ -129,4 +129,5 @@ export const pt: Translations = {
   template_pdf: "Gerador de Faturas PDF",
   template_excel: "Atualizar do Excel",
   template_free: "100% Grátis",
+  pricing: "Preços",
 };

@@ -128,5 +128,6 @@ export const th: Translations = {
   template_invoice: "เทมเพลตใบแจ้งหนี้",
   template_pdf: "เครื่องมือสร้างใบแจ้งหนี้ PDF",
   template_excel: "อัปเกรดจาก Excel",
-  template_free: "ฟรี 100%",
+  template_free: "ฟรี 100% ตลอดไป",
+  pricing: "ราคา",
 };

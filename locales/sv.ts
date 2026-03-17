@@ -129,4 +129,5 @@ export const sv: Translations = {
   template_pdf: "PDF-fakturagenerator",
   template_excel: "Uppgradera från Excel",
   template_free: "100 % Gratis",
+  pricing: "Priser",
 };

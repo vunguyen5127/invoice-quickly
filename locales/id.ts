@@ -128,5 +128,6 @@ export const id: Translations = {
   template_invoice: "Templat Faktur",
   template_pdf: "Pembuat Faktur PDF",
   template_excel: "Tingkatkan dari Excel",
-  template_free: "100% Gratis",
+  template_free: "100% Selamanya",
+  pricing: "Harga",
 };

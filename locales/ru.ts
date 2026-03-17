@@ -129,4 +129,5 @@ export const ru: Translations = {
   template_pdf: "Генератор счетов PDF",
   template_excel: "Обновление из Excel",
   template_free: "100% Бесплатно",
+  pricing: "Цены",
 };

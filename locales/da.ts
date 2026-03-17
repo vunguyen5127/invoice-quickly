@@ -129,4 +129,5 @@ export const da: Translations = {
   template_pdf: "PDF-fakturagenerator",
   template_excel: "Opgradering fra Excel",
   template_free: "100 % Gratis",
+  pricing: "Priser",
 };

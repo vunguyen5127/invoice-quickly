@@ -129,4 +129,5 @@ export const fi: Translations = {
   template_pdf: "PDF-laskutusgeneraattori",
   template_excel: "Päivitä Excelistä",
   template_free: "100 % Ilmainen",
+  pricing: "Hinnoittelu",
 };

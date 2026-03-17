@@ -129,4 +129,5 @@ export const zh: Translations = {
   template_pdf: "PDF 发票生成器",
   template_excel: "从 Excel 升级",
   template_free: "100% 免费",
+  pricing: "价格",
 };

@@ -129,4 +129,5 @@ export const ar: Translations = {
   template_pdf: "مولد فاتورة PDF",
   template_excel: "الترقية من إكسل",
   template_free: "مجاني 100٪",
+  pricing: "التسعير",
 };

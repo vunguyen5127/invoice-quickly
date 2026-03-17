@@ -129,4 +129,5 @@ export const nl: Translations = {
   template_pdf: "PDF Factuurgenerator",
   template_excel: "Upgraden vanuit Excel",
   template_free: "100% Gratis",
+  pricing: "Prijzen",
 };

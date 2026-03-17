@@ -128,5 +128,6 @@ export const no: Translations = {
   template_invoice: "Fakturamaler",
   template_pdf: "PDF Fakturagenerator",
   template_excel: "Oppgrader fra Excel",
-  template_free: "100 % Gratis",
+  template_free: "100% Gratis",
+  pricing: "Priser",
 };

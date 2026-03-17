@@ -129,4 +129,5 @@ export const tr: Translations = {
   template_pdf: "PDF Fatura Oluşturucu",
   template_excel: "Excel'den Yükselt",
   template_free: "%100 Ücretsiz",
+  pricing: "Fiyatlandırma",
 };

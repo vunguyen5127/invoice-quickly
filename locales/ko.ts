@@ -129,4 +129,5 @@ export const ko: Translations = {
   template_pdf: "PDF 인보이스 생성기",
   template_excel: "엑셀에서 업그레이드",
   template_free: "100% 무료",
+  pricing: "요금",
 };

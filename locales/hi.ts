@@ -128,5 +128,6 @@ export const hi: Translations = {
   template_invoice: "चालान टेम्प्लेट",
   template_pdf: "चेक पीडीएफ जनरेटर",
   template_excel: "एक्सेल से अपग्रेड करें",
-  template_free: "100% नि: शुल्क",
+  template_free: "100% हमेशा के लिए",
+  pricing: "मूल्य निर्धारण",
 };
