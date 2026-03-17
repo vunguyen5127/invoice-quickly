@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
 
     switch (eventType) {
       case "subscription.created":
+      case "subscription.activated":
       case "subscription.updated":
       case "subscription.resumed": {
         await handleSubscriptionUpdate(supabase, data);
