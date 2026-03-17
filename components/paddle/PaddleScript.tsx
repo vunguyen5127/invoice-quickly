@@ -15,7 +15,6 @@ export default function PaddleScript() {
     const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
 
     if (!token) {
-      console.warn("[PaddleScript] NEXT_PUBLIC_PADDLE_CLIENT_TOKEN is missing. Paddle will not be initialized.");
       return;
     }
 
@@ -23,7 +22,6 @@ export default function PaddleScript() {
       if (window.Paddle && typeof window.Paddle.Initialize === 'function') {
         window.Paddle.Environment.set(env);
         window.Paddle.Initialize({ token });
-        console.log(`[PaddleScript] Successfully initialized in ${env} mode.`);
       }
     };
 
