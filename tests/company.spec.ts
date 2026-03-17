@@ -57,8 +57,8 @@ test.describe('Company and Invoice Management UI', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/generator');
     
-    // Using the new aria-label for consistent selection
-    const shareButton = page.getByLabel('Share');
+    // Using the new aria-label for consistent selection. Pick the first one as there are multiple (e.g., sticky header and main body)
+    const shareButton = page.getByLabel('Share').first();
     await expect(shareButton).toBeVisible();
   });
 });
