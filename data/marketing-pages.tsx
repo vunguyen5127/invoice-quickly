@@ -1,4 +1,3 @@
-import React from "react";
 import { InvoiceState } from "@/types/invoice";
 
 export interface SEOPageContent {

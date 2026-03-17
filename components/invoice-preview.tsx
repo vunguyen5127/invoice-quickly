@@ -27,7 +27,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
     updateScale(containerRef.current.clientWidth);
 
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         updateScale(entry.contentRect.width);
       }
     });

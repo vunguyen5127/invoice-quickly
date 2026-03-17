@@ -4,7 +4,6 @@ import { useEffect, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { logUserLogin } from "@/utils/login-logger";
 
 function LoginContent() {
   const router = useRouter();

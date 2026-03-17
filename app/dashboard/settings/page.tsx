@@ -5,14 +5,13 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
-import { ThemeToggle, ThemeSelector } from "@/components/theme-toggle";
+import { ThemeSelector } from "@/components/theme-toggle";
 import { languages } from "@/components/language-toggle";
 import Link from "next/link";
 import { getUserSubscription, cancelSubscription, resumeSubscription } from "./actions";
 import { Subscription } from "@/types/subscription";
 import { format } from "date-fns";
 import { ConfirmModal } from "@/components/confirm-modal";
-import { isTester } from "@/utils/tester";
 import { SettingsSkeleton } from "@/components/settings-skeleton";
 
 export default function SettingsPage() {

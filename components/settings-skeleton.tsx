@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { ChevronLeft } from "lucide-react";
 
 export function SettingsSkeleton() {
   const sectionClass = "bg-white dark:bg-zinc-900 rounded-[5px] border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm mb-6 animate-pulse";

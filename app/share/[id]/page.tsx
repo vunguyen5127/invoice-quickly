@@ -5,9 +5,8 @@ import { getPublicInvoiceById } from "./actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
-import { Download, Loader2 } from "lucide-react";
+import { Download } from "lucide-react";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 
 export default function ShareInvoicePage({ params }: { params: Promise<{ id: string }> }) {

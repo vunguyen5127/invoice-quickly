@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { InvoiceState, InvoiceItem, CURRENCIES } from "@/types/invoice";
-import { Plus, Trash2, Upload, X, Package, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar, Settings, RefreshCw } from "lucide-react";
+import { Plus, Upload, X, Package, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar, Settings, RefreshCw } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { SignaturePadModal } from "./signature-pad-modal";

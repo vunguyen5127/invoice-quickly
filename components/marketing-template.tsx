@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Zap, Shield, FileText, Globe, Users, CreditCard, Sparkles, ChevronRight } from "lucide-react";
-import { FeatureCard, FAQItem, StepCard } from "./marketing-components";
+import { FeatureCard, FAQItem } from "./marketing-components";
 import { SEOPageContent, marketingPages } from "@/data/marketing-pages";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";

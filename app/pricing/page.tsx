@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Check, X, Zap, ArrowRight, Loader2, Shield, CreditCard, Infinity, Crown, Sparkles } from "lucide-react";
+import { Check, X, ArrowRight, Loader2, Shield, CreditCard, Infinity, Crown, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
 import { createCheckoutTransaction } from "./actions";

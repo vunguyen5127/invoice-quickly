@@ -5,7 +5,7 @@ import { updateCompany } from "@/app/dashboard/actions";
 import { X, Loader2, PenTool, Upload, Building2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { SignaturePadModal } from "./signature-pad-modal";
-import { InvoiceState, CURRENCIES } from "@/types/invoice";
+import { CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
 import { convertToWebP } from "@/utils/image-utils";
 

@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { InvoiceState, initialInvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Save, Loader2, Receipt, Printer, ChevronRight, Share2 } from "lucide-react";
+import { Download, Save, ChevronRight, Share2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getInvoiceById } from "../actions";

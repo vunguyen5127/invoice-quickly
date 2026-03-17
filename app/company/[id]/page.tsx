@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices } from "@/app/dashboard/actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download } from "lucide-react";
+import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";

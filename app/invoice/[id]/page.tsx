@@ -8,7 +8,7 @@ import { deleteInvoice } from "@/app/dashboard/actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
-import { ArrowLeft, Download, Trash2, Loader2, Printer, Share2, ChevronRight } from "lucide-react";
+import { ArrowLeft, Download, Trash2, Loader2, Share2, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
