@@ -13,6 +13,7 @@ import { Subscription } from "@/types/subscription";
 import { format } from "date-fns";
 import { ConfirmModal } from "@/components/confirm-modal";
 import { isTester } from "@/utils/tester";
+import { SettingsSkeleton } from "@/components/settings-skeleton";
 
 export default function SettingsPage() {
   const { t, lang, setLang } = useLanguage();
@@ -82,11 +83,7 @@ export default function SettingsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-      </div>
-    );
+    return <SettingsSkeleton />;
   }
 
   const handleLogout = async () => {
