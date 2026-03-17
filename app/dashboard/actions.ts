@@ -243,6 +243,59 @@ export async function getCompanyInvoices(
   };
 }
 
+export async function getAllCompanyInvoices(token: string, companyId: string) {
+  const supabase = getServerSupabase(token);
+  
+  // First get the exact total count
+  const { count, error: countError } = await supabase
+    .from("invoices")
+    .select("id", { count: "exact", head: true })
+    .eq("company_id", companyId)
+    .is("deleted_at", null);
+
+  if (countError) {
+    console.error("Error fetching all company invoices count:", countError);
+    return [];
+  }
+
+  const total = count || 0;
+  if (total === 0) return [];
+
+  // Supabase/PostgREST typically limits single requests to 1000 rows.
+  // We'll fetch concurrently in chunks of 1000 to maximize performance.
+  const pageSize = 1000;
+  const numPages = Math.ceil(total / pageSize);
+  const fetchPromises = [];
+
+  for (let i = 0; i < numPages; i++) {
+    const from = i * pageSize;
+    const to = from + pageSize - 1;
+    
+    fetchPromises.push(
+      supabase
+        .from("invoices")
+        .select("invoice_number, client_name, created_at, total_amount, currency")
+        .eq("company_id", companyId)
+        .is("deleted_at", null)
+        .order("created_at", { ascending: false })
+        .range(from, to)
+    );
+  }
+
+  const results = await Promise.all(fetchPromises);
+  
+  const allInvoices: any[] = [];
+  for (const { data, error } of results) {
+    if (error) {
+      console.error("Error fetching chunk of invoices:", error);
+    } else if (data) {
+      allInvoices.push(...data);
+    }
+  }
+
+  return allInvoices;
+}
+
 export async function getCompanyById(token: string, companyId: string) {
   const supabase = getServerSupabase(token);
   const { data, error } = await supabase

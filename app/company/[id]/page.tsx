@@ -3,14 +3,16 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById, getCompanyInvoices, deleteInvoice } from "@/app/dashboard/actions";
+import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices } from "@/app/dashboard/actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy } from "lucide-react";
+import { Loader2, Trash2, Eye, Plus, ArrowLeft, Building2, PenTool, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
 import { InvoicesSkeleton } from "@/components/invoices-skeleton";
-
+import { exportInvoicesToExcel } from "@/utils/export-excel";
+import { UpgradeModal } from "@/components/upgrade-modal";
+import { getUserEntitlements } from "@/utils/entitlements";
 const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { use } from "react";
@@ -32,6 +34,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [invoiceToDelete, setInvoiceToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general">("general");
+  const [canUseAdvancedExport, setCanUseAdvancedExport] = useState(false);
   const { t } = useLanguage();
   const router = useRouter();
 
@@ -92,6 +98,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       
       setCompany(companyData);
       
+      const entitlements = await getUserEntitlements(session.access_token);
+      setCanUseAdvancedExport(entitlements.canUseAdvancedExport);
+      
       await loadInvoices();
       setLoading(false);
     };
@@ -150,6 +159,27 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     <ArrowUpDown className={`w-3.5 h-3.5 inline-block ml-1 transition-colors ${sortField === field ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-300 dark:text-zinc-600'}`} />
   );
 
+  const handleExportExcel = async () => {
+    if (canUseAdvancedExport) {
+      setIsExporting(true);
+      try {
+        if (!supabase) return;
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+        
+        const allInvoices = await getAllCompanyInvoices(session.access_token, resolvedParams.id);
+        await exportInvoicesToExcel(allInvoices, company?.name || "Company");
+      } catch (error) {
+        console.error("Failed to export invoices:", error);
+      } finally {
+        setIsExporting(false);
+      }
+    } else {
+      setUpgradeTrigger("csv_export");
+      setIsUpgradeModalOpen(true);
+    }
+  };
+
   if (loading) {
     return <InvoicesSkeleton />;
   }
@@ -178,10 +208,22 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           </div>
         </nav>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+          <button
+            onClick={handleExportExcel}
+            disabled={isExporting}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium transition-all shadow-sm active:scale-[0.98] whitespace-nowrap disabled:opacity-70"
+          >
+            {isExporting ? (
+              <Loader2 className="w-4 h-4 text-emerald-600 dark:text-emerald-500 animate-spin" />
+            ) : (
+              <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-500" />
+            )}
+            <span>{isExporting ? "Exporting..." : "Export Excel"}</span>
+          </button>
           <Link 
             href={`/company/${resolvedParams.id}/new`}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] whitespace-nowrap"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             <span>Create Invoice</span>
@@ -385,6 +427,12 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         title="Delete Invoice?"
         message="Are you sure you want to delete this invoice? This action cannot be undone."
         isProcessing={isDeleting}
+      />
+
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        trigger={upgradeTrigger}
       />
     </div>
   );

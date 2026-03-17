@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-type UpgradeTrigger = "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "general";
+type UpgradeTrigger = "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general";
 
 const TRIGGER_COPY: Record<UpgradeTrigger, { title: string; body: string }> = {
   company_limit: {
@@ -20,7 +20,7 @@ const TRIGGER_COPY: Record<UpgradeTrigger, { title: string; body: string }> = {
   },
   invoice_limit: {
     title: "You've reached your monthly invoice limit",
-    body: "Free plan includes up to 50 invoices/month. Upgrade to Pro for unlimited invoices and no ads.",
+    body: "Free plan includes up to 15 invoices/month. Upgrade to Pro for 500 invoices/month and no ads.",
   },
   recurring: {
     title: "Recurring Invoices are a Pro feature",
@@ -30,6 +30,10 @@ const TRIGGER_COPY: Record<UpgradeTrigger, { title: string; body: string }> = {
     title: "Remove ads with Pro",
     body: "Enjoy a clean, ad-free experience with Pro — plus unlimited companies, invoices, and more.",
   },
+  csv_export: {
+    title: "CSV Export is a Pro feature",
+    body: "Export your invoices to CSV for easy accounting. Upgrade to Pro to unlock this and more.",
+  },
   general: {
     title: "Unlock the full power of InvoiceQuickly",
     body: "Upgrade to Pro for unlimited companies, invoices, advanced branding, and more.",
@@ -37,8 +41,8 @@ const TRIGGER_COPY: Record<UpgradeTrigger, { title: string; body: string }> = {
 };
 
 const PRO_HIGHLIGHTS = [
-  "Unlimited companies",
-  "Unlimited invoices",
+  "10 Companies",
+  "500 Invoices / month",
   "No ads",
   "Advanced branding",
   "Priority support",
