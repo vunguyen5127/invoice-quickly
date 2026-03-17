@@ -4,23 +4,43 @@ import { createClient } from "@supabase/supabase-js";
 import { PADDLE_CONFIG } from "@/utils/paddle";
 import { isTester } from "@/utils/tester";
 
-function getServerSupabase(token: string) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+function getServerSupabase(token?: string) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
     throw new Error("Missing Supabase environment variables");
   }
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    { global: { headers: { Authorization: `Bearer ${token}` } } }
-  );
+  
+  // If token is provided, we set it in the headers to ensure the client is authenticated
+  const options = token ? {
+    global: {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  } : {};
+
+  return createClient(url, key, options);
 }
 
 export async function createCheckoutTransaction(token: string, isYearly: boolean) {
-  const supabase = getServerSupabase(token);
-  const { data: { user } } = await supabase.auth.getUser();
+  console.log(`[Paddle] createCheckoutTransaction: token received (length: ${token?.length})`);
+  
+  if (!token || token === "undefined") {
+    console.error("[Paddle] Invalid token received");
+    throw new Error("Authentication failed: No valid session token provided.");
+  }
 
-  if (!user) {
-    throw new Error("User not authenticated");
+  // Set the token in the client for this request
+  const supabase = getServerSupabase(token);
+  
+  // Now getUser() should work with the token from headers
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    console.error("[Paddle] Supabase Auth Error Object:", JSON.stringify(authError, null, 2));
+    console.log(`[Paddle] Supabase URL in use: ${process.env.NEXT_PUBLIC_SUPABASE_URL}`);
+    throw new Error(`Authentication failed: ${authError?.message || "Auth session missing!"}`);
   }
 
   if (!isTester(user.email)) {

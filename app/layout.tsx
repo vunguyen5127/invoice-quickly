@@ -150,6 +150,8 @@ export const viewport: Viewport = {
 
 import PaddleScript from "@/components/paddle/PaddleScript";
 
+import ClientMetadata from "@/components/client-metadata";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -158,58 +160,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519024554738216" crossOrigin="anonymous" />
-        <PaddleScript />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "@id": "https://invoice-quickly.com/#organization",
-                "name": "Invoice-Quickly",
-                "url": "https://invoice-quickly.com",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": "https://invoice-quickly.com/logo.svg",
-                  "width": "512",
-                  "height": "512"
-                },
-                "description": "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark.",
-                "brand": {
-                  "@type": "Brand",
-                  "name": "Invoice-Quickly"
-                }
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "SoftwareApplication",
-                "name": "Invoice-Quickly — Free Invoice Generator",
-                "description": "The fastest free online invoice generator. Create professional PDF invoices in seconds with no signup and no watermark.",
-                "applicationCategory": "BusinessApplication",
-                "operatingSystem": "Any",
-                "url": "https://invoice-quickly.com",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "USD"
-                },
-                "aggregateRating": {
-                  "@type": "AggregateRating",
-                  "ratingValue": "4.9",
-                  "ratingCount": "2847"
-                }
-              }
-            ]),
-          }}
-        />
+        <ClientMetadata />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${beVietnam.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <LanguageProvider>
+            <PaddleScript />
             <LogUserSession />
             <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
               <SiteHeader />

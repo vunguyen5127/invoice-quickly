@@ -10,28 +10,36 @@ declare global {
 
 export default function PaddleScript() {
   useEffect(() => {
-    if (typeof window !== 'undefined' && !window.Paddle) {
-      const script = document.createElement('script')
-      script.src = 'https://cdn.paddle.com/paddle/v2/paddle.js'
-      script.async = true
-      
-      const paddleEnv = process.env.NEXT_PUBLIC_PADDLE_ENV || 'sandbox';
-      const paddleToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
+    // Determine environment and token
+    const env = (process.env.NEXT_PUBLIC_PADDLE_ENV || 'sandbox') as 'sandbox' | 'live';
+    const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
 
-      script.onload = () => {
-        if (window.Paddle && paddleToken) {
-          window.Paddle.Environment.set(paddleEnv);
-          window.Paddle.Initialize({ 
-            token: paddleToken,
-          });
-          console.log(`[Paddle] Initialized via PaddleScript: ${paddleEnv}`);
-        } else if (!paddleToken) {
-          console.error("[Paddle] Missing NEXT_PUBLIC_PADDLE_CLIENT_TOKEN");
-        }
-      }
-      document.head.appendChild(script)
+    if (!token) {
+      console.warn("[PaddleScript] NEXT_PUBLIC_PADDLE_CLIENT_TOKEN is missing. Paddle will not be initialized.");
+      return;
     }
-  }, [])
+
+    const initializePaddle = () => {
+      if (window.Paddle && typeof window.Paddle.Initialize === 'function') {
+        window.Paddle.Environment.set(env);
+        window.Paddle.Initialize({ token });
+        console.log(`[PaddleScript] Successfully initialized in ${env} mode.`);
+      }
+    };
+
+    // If script is already loaded by another component or layout
+    if (window.Paddle) {
+      initializePaddle();
+    } else {
+      // Load script dynamically
+      const script = document.createElement('script');
+      script.src = 'https://cdn.paddle.com/paddle/v2/paddle.js';
+      script.async = true;
+      script.onload = initializePaddle;
+      script.onerror = () => console.error("[PaddleScript] Failed to load Paddle.js script.");
+      document.head.appendChild(script);
+    }
+  }, []);
 
   return null
 }
