@@ -81,15 +81,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Fallback to English if translation is missing
   const t = dictionaries[lang] || en;
 
-  // Prevent hydration mismatch by rendering default on server, then updating client
-  if (!mounted) {
-    return (
-      <LanguageContext.Provider value={{ lang: "EN", setLang: handleSetLang, t: en }}>
-        {children}
-      </LanguageContext.Provider>
-    );
-  }
-
+  // We render the provider immediately on the server with English defaults.
+  // Once mounted, we check for saved language. If it's still English,
+  // we don't trigger a remount-like behavior.
   return (
     <LanguageContext.Provider value={{ lang, setLang: handleSetLang, t }}>
       {children}
