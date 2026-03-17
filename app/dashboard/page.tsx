@@ -107,7 +107,7 @@ export default function Dashboard() {
           <p className="text-zinc-500 mt-1">Select a company to manage its invoices</p>
         </div>
         <div className="flex items-center gap-2">
-          {entitlements.plan === "free" && isTester(userEmail) && (
+          {entitlements.plan === "free" && (
             <Link
                href="/pricing"
                className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl hover:opacity-90 font-bold transition-all shadow-sm group"

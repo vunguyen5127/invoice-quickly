@@ -224,7 +224,7 @@ export default function SettingsPage() {
           </>
         )}
         
-        {subscription?.plan === 'free' && isTester(user?.email) && (
+        {subscription?.plan === 'free' && (
           <div className="px-6 py-4 bg-blue-50/50 dark:bg-blue-950/10 border-t border-zinc-50 dark:border-zinc-800/50">
             <Link 
               href="/pricing"

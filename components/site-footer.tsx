@@ -112,6 +112,11 @@ export function SiteFooter() {
                   {t.footerLinkTerms}
                 </Link>
               </li>
+              <li>
+                <Link href="/refund-policy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  Refund Policy
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

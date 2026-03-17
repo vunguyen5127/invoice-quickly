@@ -80,6 +80,12 @@ export function SiteHeader() {
             >
               About
             </Link>
+            <Link 
+              href="/pricing" 
+              className="px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-lg transition-all"
+            >
+              Pricing
+            </Link>
           </div>
         </div>
 
