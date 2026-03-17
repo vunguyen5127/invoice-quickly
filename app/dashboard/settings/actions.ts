@@ -2,6 +2,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { Subscription } from "@/types/subscription";
+import { revalidatePath } from "next/cache";
 
 function getServerSupabase(token: string) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -100,6 +101,7 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
         .eq("user_id", user.id);
     }
 
+    revalidatePath("/dashboard/settings");
     return { success: true };
   } catch (error) {
     console.error("Error calling Paddle API:", error);
@@ -176,6 +178,7 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
         .eq("user_id", user.id);
     }
 
+    revalidatePath("/dashboard/settings");
     return { success: true };
   } catch (error) {
     console.error("Error calling Paddle API:", error);
