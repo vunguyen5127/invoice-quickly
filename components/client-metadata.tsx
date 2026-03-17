@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Script from 'next/script'
 
 export default function ClientMetadata() {
   const [isMounted, setIsMounted] = useState(false)
@@ -14,11 +13,14 @@ export default function ClientMetadata() {
 
   return (
     <>
-      <Script 
+      {/* 
+        Using standard script tag instead of next/script to avoid "data-nscript" attribute.
+        AdSense logs a warning if it detects unknown attributes on its script tag.
+      */}
+      <script 
         async 
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519024554738216" 
         crossOrigin="anonymous" 
-        strategy="afterInteractive"
       />
       <script
         type="application/ld+json"
