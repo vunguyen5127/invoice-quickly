@@ -75,6 +75,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/pricing" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  {t.pricing || "Pricing"}
+                </Link>
+              </li>
+              <li>
                 <Link href="/dashboard" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   {t.dashboard}
                 </Link>

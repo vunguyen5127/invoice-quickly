@@ -127,9 +127,10 @@ export const en = {
   template_pdf: "PDF Invoice Generator",
   template_excel: "Upgrade from Excel",
   template_free: "100% Forever",
+  pricing: "Pricing",
 };
 
-export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templates' | 'viewAllHub' | 'template_invoice' | 'template_pdf' | 'template_excel' | 'template_free'> & {
+export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templates' | 'viewAllHub' | 'template_invoice' | 'template_pdf' | 'template_excel' | 'template_free' | 'pricing'> & {
   noWatermark?: string;
   instantPdf?: string;
   templates?: string;
@@ -138,4 +139,5 @@ export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templ
   template_pdf?: string;
   template_excel?: string;
   template_free?: string;
+  pricing?: string;
 };

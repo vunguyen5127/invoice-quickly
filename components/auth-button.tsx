@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { LogIn, LogOut, Loader2, Settings } from "lucide-react";
+import { LogIn, LogOut, Loader2, Settings, CreditCard } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { getBaseUrl } from "@/utils/url";
@@ -124,6 +124,15 @@ export function AuthButton() {
               </div>
 
               <div className="py-1 flex flex-col">
+                <Link
+                  href="/pricing"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full text-left px-4 py-2.5 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors duration-150 flex items-center gap-3 text-sm font-medium"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  {t.pricing || "Pricing"}
+                </Link>
+
                 <Link
                   href="/dashboard/settings"
                   onClick={() => setIsOpen(false)}

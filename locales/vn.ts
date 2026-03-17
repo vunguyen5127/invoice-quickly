@@ -129,4 +129,5 @@ export const vn: Translations = {
   template_pdf: "Trình Tạo Hóa Đơn PDF",
   template_excel: "Nâng Cấp Từ Excel",
   template_free: "Miễn Phí 100%",
+  pricing: "Bảng Giá",
 };

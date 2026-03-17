@@ -92,8 +92,8 @@ export default function SettingsPage() {
   };
 
   const sectionClass = "bg-white dark:bg-zinc-900 rounded-[5px] border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm shadow-zinc-200/50 dark:shadow-none mb-6";
-  const headerClass = "px-6 py-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-2 font-bold text-zinc-900 dark:text-zinc-100 bg-zinc-50/30 dark:bg-zinc-900/30";
-  const itemClass = "px-6 py-4 flex items-center justify-between border-b last:border-0 border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors";
+  const headerClass = "px-6 py-3 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-2 font-bold text-zinc-900 dark:text-zinc-100 bg-zinc-50/30 dark:bg-zinc-900/30";
+  const itemClass = "px-6 py-3 flex items-center justify-between border-b last:border-0 border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors";
 
   return (
     <div className="container mx-auto px-4 sm:px-8 py-8 max-w-2xl">
@@ -187,39 +187,28 @@ export default function SettingsPage() {
                   </p>
                 </div>
               </div>
+
+              {/* Styled Action Buttons */}
+          {subscription.status === 'active' && !subscription.cancel_at && (
+            <button 
+              onClick={() => setIsCancelModalOpen(true)}
+              className="px-3 py-1.5 rounded-[5px] bg-red-50 dark:bg-red-950/30 text-[11px] font-bold text-red-500 hover:bg-red-100 dark:hover:bg-red-950/50 transition-all border border-red-100 dark:border-red-900/30 uppercase tracking-wider"
+            >
+              Cancel
+            </button>
+          )}
+
+          {subscription.status === 'active' && subscription.cancel_at && (
+            <button 
+              onClick={handleResumeSubscription}
+              disabled={isResuming}
+              className="px-3 py-1.5 rounded-[5px] bg-blue-50 dark:bg-blue-950/30 text-[11px] font-bold text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-all border border-blue-100 dark:border-blue-900/30 uppercase tracking-wider flex items-center gap-1.5"
+            >
+              {isResuming ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
+              Resume
+            </button>
+          )}
             </div>
-
-            {subscription.status === 'active' && !subscription.cancel_at && (
-              <div className="px-6 py-4 bg-red-50/50 dark:bg-red-950/10 border-t border-zinc-50 dark:border-zinc-800/50 flex justify-between items-center">
-                <div className="flex items-center gap-2 text-red-500">
-                   <Shield className="w-4 h-4" />
-                   <span className="text-xs font-bold uppercase tracking-wider">Auto-renewal Active</span>
-                </div>
-                <button 
-                  onClick={() => setIsCancelModalOpen(true)}
-                  className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors uppercase tracking-wider"
-                >
-                  Cancel Subscription
-                </button>
-              </div>
-            )}
-
-            {subscription.status === 'active' && subscription.cancel_at && (
-              <div className="px-6 py-4 bg-amber-50/50 dark:bg-amber-950/10 border-t border-zinc-50 dark:border-zinc-800/50 flex justify-between items-center">
-                <div className="flex items-center gap-2 text-amber-600">
-                   <AlertTriangle className="w-4 h-4" />
-                   <span className="text-xs font-bold uppercase tracking-wider">Cancels Soon</span>
-                </div>
-                <button 
-                  onClick={handleResumeSubscription}
-                  disabled={isResuming}
-                  className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider flex items-center gap-2"
-                >
-                  {isResuming ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3 h-3" />}
-                  Resume Subscription
-                </button>
-              </div>
-            )}
           </>
         )}
         
