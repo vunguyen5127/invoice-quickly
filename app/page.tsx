@@ -242,7 +242,7 @@ export default function LandingPage() {
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             {/* macOS mockup */}
             <div className="w-full lg:w-[58%] shrink-0 order-2 lg:order-1">
-              <div className="rounded-2xl border border-slate-200/80 dark:border-zinc-700/70 shadow-2xl shadow-slate-900/15 overflow-hidden">
+              <div className="rounded-[5px] border border-slate-200/80 dark:border-zinc-700/70 shadow-2xl shadow-slate-900/15 overflow-hidden">
                 {/* Browser chrome */}
                 <div className="bg-slate-100/80 dark:bg-zinc-800 px-4 py-3 flex items-center gap-2 border-b border-slate-200 dark:border-zinc-700">
                   <span className="w-3 h-3 rounded-full bg-red-400" />

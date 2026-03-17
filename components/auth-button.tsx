@@ -117,7 +117,7 @@ export function AuthButton() {
         {isOpen && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-            <div className="absolute right-0 top-full mt-2 w-52 rounded-xl bg-white dark:bg-zinc-900 shadow-lg shadow-zinc-900/10 dark:shadow-black/30 ring-1 ring-zinc-200/80 dark:ring-zinc-800 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2">
+            <div className="absolute right-0 top-full mt-2 w-52 rounded-[5px] bg-white dark:bg-zinc-900 shadow-lg shadow-zinc-900/10 dark:shadow-black/30 ring-1 ring-zinc-200/80 dark:ring-zinc-800 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2">
               <div className="px-4 py-3 border-b border-zinc-100 dark:border-zinc-800">
                 <p className="text-sm text-zinc-900 dark:text-white font-semibold truncate">{user.user_metadata?.name || user.email}</p>
                 <p className="text-[11px] text-zinc-400 dark:text-zinc-500 truncate mt-0.5 font-medium">{user.email}</p>
@@ -163,7 +163,7 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 h-8 text-[13px] font-semibold transition-all duration-150 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-sm shadow-blue-600/25 shrink-0 whitespace-nowrap"
+      className="inline-flex items-center justify-center gap-1.5 rounded-[5px] px-3.5 h-8 text-[13px] font-semibold transition-all duration-150 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-sm shadow-blue-600/25 shrink-0 whitespace-nowrap"
       aria-label="Sign in with Google"
     >
       <LogIn className="w-4 h-4" />

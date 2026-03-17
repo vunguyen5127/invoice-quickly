@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck } from "lucide-react";
+import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck, Zap } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { ThemeSelector } from "@/components/theme-toggle";
 import { languages } from "@/components/language-toggle";
@@ -55,6 +55,7 @@ export default function SettingsPage() {
         const sub = await getUserSubscription(session.access_token);
         setSubscription(sub);
         setIsCancelModalOpen(false);
+        router.refresh(); // Ensure layout-level data is also fresh
       } else {
         alert(result.error);
       }
@@ -74,6 +75,7 @@ export default function SettingsPage() {
         // Refresh subscription data
         const sub = await getUserSubscription(session.access_token);
         setSubscription(sub);
+        router.refresh(); // Ensure layout-level data is also fresh
       } else {
         alert(result.error);
       }
@@ -143,7 +145,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <CreditCard className="w-4 h-4" />
             </div>
             <div>
@@ -151,20 +153,32 @@ export default function SettingsPage() {
               <p className="text-xs text-zinc-500 capitalize">{subscription?.plan || "Free"} Plan</p>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-              subscription?.status === 'active' 
-                ? (subscription.cancel_at ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400")
-                : subscription?.status === 'canceled'
-                ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
-                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500"
-            }`}>
-              {subscription?.status === 'active' && subscription.cancel_at ? "Cancels Soon" : (subscription?.status || "Free")}
-            </span>
-            {subscription?.card_brand && subscription?.card_last4 && (
-              <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
-                {subscription.card_brand} •••• {subscription.card_last4}
-              </p>
+          <div className="flex flex-col items-end gap-1.5">
+            {(!subscription || subscription.plan === 'free') ? (
+              <Link
+                href="/pricing"
+                className="px-3 py-1.5 rounded-[5px] bg-blue-600 text-[11px] font-bold text-white hover:bg-blue-500 active:bg-blue-700 transition-all shadow-sm shadow-blue-600/20 flex items-center gap-1.5"
+              >
+                <Zap className="w-3 h-3" />
+                Upgrade
+              </Link>
+            ) : (
+              <>
+                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-[5px] uppercase tracking-wider ${
+                  subscription?.status === 'active' 
+                    ? (subscription.cancel_at ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200/50 dark:ring-amber-800/50" : "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200/50 dark:ring-emerald-800/50")
+                    : subscription?.status === 'canceled'
+                    ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200/50 dark:ring-amber-800/50"
+                    : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 ring-1 ring-zinc-200 dark:ring-zinc-700"
+                }`}>
+                  {subscription?.status === 'active' && subscription.cancel_at ? "Cancels Soon" : (subscription?.status || "Free")}
+                </span>
+                {subscription?.card_brand && subscription?.card_last4 && (
+                  <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
+                    {subscription.card_brand} •••• {subscription.card_last4}
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -173,7 +187,7 @@ export default function SettingsPage() {
           <>
             <div className={itemClass}>
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                    <Calendar className="w-4 h-4" />
                 </div>
                 <div>
@@ -212,16 +226,7 @@ export default function SettingsPage() {
           </>
         )}
         
-        {subscription?.plan === 'free' && (
-          <div className="px-6 py-4 bg-blue-50/50 dark:bg-blue-950/10 border-t border-zinc-50 dark:border-zinc-800/50">
-            <Link 
-              href="/pricing"
-              className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors uppercase tracking-wider"
-            >
-              Upgrade to Pro
-            </Link>
-          </div>
-        )}
+
       </div>
 
       {/* Appearance & Language */}
@@ -232,7 +237,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <Globe className="w-4 h-4" />
             </div>
             <div>
@@ -252,7 +257,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <Sun className="w-4 h-4 dark:hidden" />
                <Moon className="w-4 h-4 hidden dark:block" />
             </div>
@@ -273,7 +278,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
            <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <Bell className="w-4 h-4" />
             </div>
             <div>
@@ -289,7 +294,7 @@ export default function SettingsPage() {
         {user?.email === "vunguyencapital@gmail.com" && (
           <Link href="/admin" className={itemClass}>
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+              <div className="p-2 rounded-[5px] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                 <Shield className="w-4 h-4" />
               </div>
               <div>

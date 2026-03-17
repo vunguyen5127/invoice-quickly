@@ -385,7 +385,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               {invoice.items.map((item, index) => (
                 <div 
                   key={item.id} 
-                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-4 md:p-0 md:pr-8 bg-zinc-50/50 md:bg-transparent rounded-xl md:rounded-none border md:border-none border-zinc-200/60 dark:border-zinc-800/60 mb-3 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
+                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-4 md:p-0 md:pr-8 bg-zinc-50/50 md:bg-transparent rounded-[5px] md:rounded-none border md:border-none border-zinc-200/60 dark:border-zinc-800/60 mb-3 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
                 >
                   {/* Item Label for Mobile */}
                   <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">{t.description}</div>
@@ -459,7 +459,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
           <button 
             type="button"
             onClick={addItem}
-            className="w-fit flex items-center justify-center gap-2 mt-6 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[14px] font-bold shadow-sm shadow-emerald-200 dark:shadow-none transition-all active:scale-[0.98] group"
+            className="w-fit flex items-center justify-center gap-2 mt-6 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[5px] text-[14px] font-bold shadow-sm shadow-emerald-200 dark:shadow-none transition-all active:scale-[0.98] group"
           >
             <Plus className="w-4 h-4 text-white" /> {t.addItem}
           </button>

@@ -12,7 +12,7 @@ export function ThemeToggle() {
     <Tooltip content={theme === "light" ? "Dark Mode" : "Light Mode"} position="bottom">
       <button
         onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        className="inline-flex items-center justify-center rounded-lg h-8 w-8 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80 transition-all duration-150 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+        className="inline-flex items-center justify-center rounded-[5px] h-8 w-8 hover:bg-zinc-200/60 dark:hover:bg-zinc-800/80 transition-all duration-150 text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
         aria-label="Toggle theme"
       >
         <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-amber-500" />

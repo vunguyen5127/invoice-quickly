@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { getUserEntitlements } from "@/utils/entitlements";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight, Crown } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight, Crown, Zap } from "lucide-react";
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
@@ -108,15 +108,15 @@ export default function Dashboard() {
           {entitlements.plan === "free" && (
             <Link
                href="/pricing"
-               className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl hover:opacity-90 font-bold transition-all shadow-sm group"
+               className="flex items-center gap-1.5 px-4 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-[5px] hover:bg-blue-500 font-bold transition-all shadow-sm shadow-blue-600/20 text-xs sm:text-[13px]"
             >
-              <Crown className="w-4 h-4 text-yellow-400 group-hover:scale-110 transition-transform" />
+              <Zap className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Upgrade</span>
             </Link>
           )}
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors shadow-sm text-xs sm:text-[13px]"
           >
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">Add Company</span>
@@ -233,7 +233,7 @@ export default function Dashboard() {
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 disabled={isRefreshing}
-                className={`w-10 h-10 rounded-lg text-sm font-bold transition-all ${
+                className={`w-10 h-10 rounded-[5px] text-sm font-bold transition-all ${
                   currentPage === page
                     ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
                     : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"

@@ -51,15 +51,14 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
       },
     });
 
+    let currentSubData: any = null;
     if (getResponse.ok) {
-      const subData = await getResponse.json();
-      if (subData.data?.scheduled_change) {
+      currentSubData = await getResponse.json();
+      if (currentSubData.data?.scheduled_change) {
         // If it's already scheduled for cancellation, just return success
-        if (subData.data.scheduled_change.action === 'cancel') {
+        if (currentSubData.data.scheduled_change.action === 'cancel') {
           return { success: true };
         }
-        // If there's another type of change, we might need to overwrite it or error
-        // But for now, we'll try the cancel call anyway or return a specific error
       }
     }
 
@@ -84,6 +83,21 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
       }
       
       return { error: errorData.error?.detail || "Failed to cancel subscription" };
+    }
+
+    // Update database immediately if possible to avoid waiting for webhook
+    const supabase = getServerSupabase(token);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase
+        .from("subscriptions")
+        .update({ 
+          // We don't change the status to 'canceled' yet because it's scheduled for end of period
+          // But we record the scheduled change
+          cancel_at: currentSubData?.data?.scheduled_change?.effective_at || new Date().toISOString(),
+          updated_at: new Date().toISOString() 
+        })
+        .eq("user_id", user.id);
     }
 
     return { success: true };
@@ -146,6 +160,20 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
       const errorData = await response.json();
       console.error("Paddle resume error:", errorData);
       return { error: errorData.error?.detail || "Failed to resume subscription" };
+    }
+
+    // Update database immediately if possible to avoid waiting for webhook
+    const supabase = getServerSupabase(token);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      await supabase
+        .from("subscriptions")
+        .update({ 
+          status: 'active',
+          cancel_at: null,
+          updated_at: new Date().toISOString() 
+        })
+        .eq("user_id", user.id);
     }
 
     return { success: true };

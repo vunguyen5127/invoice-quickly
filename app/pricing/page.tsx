@@ -100,19 +100,19 @@ export default function PricingPage() {
 
       {/* Toggle */}
       <div className="flex justify-center mb-10 mt-8">
-        <div className="bg-zinc-100 dark:bg-zinc-900 p-1 rounded-xl inline-flex items-center shadow-inner relative">
+        <div className="bg-zinc-100 dark:bg-zinc-900 p-1 rounded-[5px] inline-flex items-center shadow-inner relative">
           <div 
-            className={`absolute h-[calc(100%-8px)] top-1 bottom-1 transition-all duration-300 ease-out bg-white dark:bg-zinc-800 rounded-lg shadow-sm ring-1 ring-zinc-200/60 dark:ring-white/5 ${!isYearly ? 'left-1 w-[calc(50%-4px)]' : 'left-[calc(50%+2px)] w-[calc(50%-4px)]'}`}
+            className={`absolute h-[calc(100%-8px)] top-1 bottom-1 transition-all duration-300 ease-out bg-white dark:bg-zinc-800 rounded-[5px] shadow-sm ring-1 ring-zinc-200/60 dark:ring-white/5 ${!isYearly ? 'left-1 w-[calc(50%-4px)]' : 'left-[calc(50%+2px)] w-[calc(50%-4px)]'}`}
           />
           <button 
             onClick={() => setIsYearly(false)}
-            className={`relative z-10 px-8 py-2.5 rounded-lg text-sm font-bold transition-colors duration-200 ${!isYearly ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}
+            className={`relative z-10 px-8 py-2.5 rounded-[5px] text-sm font-bold transition-colors duration-200 ${!isYearly ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}
           >
             Monthly
           </button>
           <button 
             onClick={() => setIsYearly(true)}
-            className={`relative z-10 px-8 py-2.5 rounded-lg text-sm font-bold transition-colors duration-200 flex items-center gap-2 ${isYearly ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}
+            className={`relative z-10 px-8 py-2.5 rounded-[5px] text-sm font-bold transition-colors duration-200 flex items-center gap-2 ${isYearly ? 'text-zinc-900 dark:text-zinc-100' : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300'}`}
           >
             Yearly
             <span className="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">-17%</span>
@@ -124,7 +124,7 @@ export default function PricingPage() {
       <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
         
         {/* Free Plan */}
-        <div className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow">
+        <div className="relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow">
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-1">Free</h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
             Perfect for getting started with professional invoicing.
@@ -137,7 +137,7 @@ export default function PricingPage() {
 
           <Link
             href="/generator?new=1"
-            className="w-full py-3 px-6 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl font-bold text-sm text-center hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all mb-8 block"
+            className="w-full py-3 px-6 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-[5px] font-bold text-sm text-center hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all mb-8 block"
           >
             Get Started Free
           </Link>
@@ -162,7 +162,7 @@ export default function PricingPage() {
         </div>
 
         {/* Pro Plan */}
-        <div className="relative bg-white dark:bg-zinc-900 border-2 border-blue-500/40 dark:border-blue-500/30 rounded-2xl p-8 flex flex-col shadow-lg shadow-blue-500/10">
+        <div className="relative bg-white dark:bg-zinc-900 border-2 border-blue-500/40 dark:border-blue-500/30 rounded-[5px] p-8 flex flex-col shadow-lg shadow-blue-500/10">
           {/* Popular badge */}
           <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
             <div className="bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/30 flex items-center gap-1.5">
@@ -194,7 +194,7 @@ export default function PricingPage() {
           <button
             onClick={handleUpgrade}
             disabled={isLoading}
-            className="w-full py-3 px-6 bg-blue-600 text-white rounded-xl font-bold text-sm text-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] mb-4 flex items-center justify-center gap-2 disabled:opacity-50 group"
+            className="w-full py-3 px-6 bg-blue-600 text-white rounded-[5px] font-bold text-sm text-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] mb-4 flex items-center justify-center gap-2 disabled:opacity-50 group"
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -236,7 +236,7 @@ export default function PricingPage() {
       {/* Comparison Table */}
       <section className="max-w-3xl mx-auto px-4 mb-20">
         <h2 className="text-2xl font-bold text-center text-zinc-900 dark:text-zinc-100 mb-8">Compare plans</h2>
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] overflow-hidden shadow-sm">
           {/* Table Header */}
           <div className="grid grid-cols-3 px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800 text-xs font-bold uppercase tracking-wider text-zinc-500">
             <span>Feature</span>
@@ -274,19 +274,19 @@ export default function PricingPage() {
       <section className="max-w-4xl mx-auto px-4 pb-20">
         <div className="flex flex-wrap justify-center gap-x-12 gap-y-6 text-sm font-semibold text-zinc-400 dark:text-zinc-500">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800">
               <Shield className="w-4 h-4 text-emerald-500" />
             </div>
             No hidden fees
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800">
               <CreditCard className="w-4 h-4 text-blue-500" />
             </div>
             Secure payments by Paddle
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800">
               <Infinity className="w-4 h-4 text-violet-500" />
             </div>
             Cancel anytime

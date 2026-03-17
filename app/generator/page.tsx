@@ -277,26 +277,26 @@ function CreateInvoiceContent() {
             <span>Invoice-Quickly</span>
           </Link>
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-1.5 bg-zinc-100/80 dark:bg-zinc-800/50 rounded-xl p-1">
+            <div className="hidden sm:flex items-center gap-1.5 bg-zinc-100/80 dark:bg-zinc-800/50 rounded-[5px] p-1">
 
               <button
                 onClick={handleShare}
                 disabled={!canSave}
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-[5px] font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none"
               >
                 <Share2 className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button
                 onClick={handleSaveClick}
                 disabled={isSaving || !canSave}
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-semibold text-[13px] bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-[5px] font-semibold text-[13px] bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
               >
                 <Save className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-semibold text-[13px] bg-zinc-800 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 active:bg-zinc-900 dark:active:bg-zinc-200 transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-[5px] font-semibold text-[13px] bg-zinc-800 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 active:bg-zinc-900 dark:active:bg-zinc-200 transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
               >
                 <Download className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -306,7 +306,7 @@ function CreateInvoiceContent() {
               {isLoggedIn && (
                 <Link
                   href="/dashboard"
-                  className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150 mr-1"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-[5px] font-medium text-[13px] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100 hover:shadow-sm transition-all duration-150 mr-1"
                 >
                   <LayoutDashboard className="w-4 h-4" />
                   <span className="hidden lg:inline">{t.myInvoices}</span>
@@ -345,7 +345,7 @@ function CreateInvoiceContent() {
                         setIsSelectModalOpen(false);
                         setIsCreateModalOpen(true);
                       }}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium"
                     >
                       {t.createFirstCompany}
                     </button>
@@ -359,7 +359,7 @@ function CreateInvoiceContent() {
                         onClick={() => saveToCompany(c.id)}
                         className="w-full text-left p-4 border border-zinc-200 dark:border-zinc-800 rounded-[5px] hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all flex items-center gap-3"
                       >
-                        <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-[5px] flex items-center justify-center flex-shrink-0">
                           <Building2 className="w-5 h-5 text-zinc-500" />
                         </div>
                         <div className="flex-1 truncate">
@@ -424,7 +424,7 @@ function CreateInvoiceContent() {
                       },
                     });
                   }}
-                  className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                  className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-[5px] shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
@@ -456,21 +456,21 @@ function CreateInvoiceContent() {
           <button
             onClick={handleShare}
             aria-label="Share"
-            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-medium text-[13px] bg-white dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:scale-[0.97] transition-all duration-150"
+            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-[5px] font-medium text-[13px] bg-white dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700 active:scale-[0.97] transition-all duration-150"
           >
             <Share2 className="w-4 h-4" /> {t.share}
           </button>
           <button
             onClick={handleSaveClick}
             disabled={isSaving || !canSave}
-            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-semibold text-[13px] bg-emerald-500 text-white hover:bg-emerald-600 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm shadow-emerald-500/25"
+            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-[5px] font-semibold text-[13px] bg-emerald-500 text-white hover:bg-emerald-600 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm shadow-emerald-500/25"
           >
             <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button
             onClick={handleDownload}
             disabled={isGenerating || !canSave}
-            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-semibold text-[13px] bg-zinc-800 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
+            className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-[5px] font-semibold text-[13px] bg-zinc-800 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
           >
             <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>
