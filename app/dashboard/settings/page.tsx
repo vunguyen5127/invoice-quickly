@@ -158,12 +158,12 @@ export default function SettingsPage() {
           <div className="flex flex-col items-end gap-1">
             <span className={`text-xs font-bold px-2 py-1 rounded-full ${
               subscription?.status === 'active' 
-                ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" 
+                ? (subscription.cancel_at ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400" : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400")
                 : subscription?.status === 'canceled'
                 ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
                 : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500"
             }`}>
-              {subscription?.status || "Free"}
+              {subscription?.status === 'active' && subscription.cancel_at ? "Cancels Soon" : (subscription?.status || "Free")}
             </span>
             {subscription?.card_brand && subscription?.card_last4 && (
               <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
@@ -182,18 +182,18 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                    {subscription.status === 'canceled' ? "Expires on" : "Renews on"}
+                    {(subscription.status === 'canceled' || subscription.cancel_at) ? "Expires on" : "Renews on"}
                   </p>
                   <p className="text-xs text-zinc-500">
-                    {(subscription.next_billed_at || subscription.current_period_end) 
-                      ? format(new Date(subscription.next_billed_at || subscription.current_period_end!), "MMMM dd, yyyy") 
+                    {(subscription.cancel_at || subscription.next_billed_at || subscription.current_period_end) 
+                      ? format(new Date(subscription.cancel_at || subscription.next_billed_at || subscription.current_period_end!), "MMMM dd, yyyy") 
                       : "N/A"}
                   </p>
                 </div>
               </div>
             </div>
 
-            {subscription.status === 'active' && (
+            {subscription.status === 'active' && !subscription.cancel_at && (
               <div className="px-6 py-4 bg-red-50/50 dark:bg-red-950/10 border-t border-zinc-50 dark:border-zinc-800/50 flex justify-between items-center">
                 <div className="flex items-center gap-2 text-red-500">
                    <Shield className="w-4 h-4" />
@@ -208,7 +208,7 @@ export default function SettingsPage() {
               </div>
             )}
 
-            {subscription.status === 'canceled' && new Date(subscription.current_period_end!) > new Date() && (
+            {subscription.status === 'active' && subscription.cancel_at && (
               <div className="px-6 py-4 bg-amber-50/50 dark:bg-amber-950/10 border-t border-zinc-50 dark:border-zinc-800/50 flex justify-between items-center">
                 <div className="flex items-center gap-2 text-amber-600">
                    <AlertTriangle className="w-4 h-4" />

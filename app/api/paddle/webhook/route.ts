@@ -94,6 +94,14 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
     const cardLast4 = card?.last4;
     const nextBilledAt = data.next_billed_at || data.current_billing_period?.ends_at;
 
+    // Detect scheduled cancellation
+    let cancelAt = null;
+    if (data.scheduled_change?.action === 'cancel') {
+      cancelAt = data.scheduled_change.effective_at;
+    } else if (status === 'canceled') {
+      cancelAt = data.canceled_at || new Date().toISOString();
+    }
+
     const { error } = await supabase
       .from("subscriptions")
       .update({
@@ -103,7 +111,7 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
         paddle_customer_id: customerId,
         current_period_start: currentPeriodStart,
         current_period_end: currentPeriodEnd,
-        cancel_at: null,
+        cancel_at: cancelAt,
         card_brand: cardBrand,
         card_last4: cardLast4,
         next_billed_at: nextBilledAt,
@@ -130,6 +138,12 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
     const cardLast4 = card?.last4;
     const nextBilledAt = data.next_billed_at || data.current_billing_period?.ends_at;
 
+    // Detect scheduled cancellation
+    let cancelAt = null;
+    if (data.scheduled_change?.action === 'cancel') {
+      cancelAt = data.scheduled_change.effective_at;
+    }
+
     const { error } = await supabase
       .from("subscriptions")
       .upsert({
@@ -141,6 +155,7 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
         price_id: priceId,
         current_period_start: currentPeriodStart,
         current_period_end: currentPeriodEnd,
+        cancel_at: cancelAt,
         card_brand: cardBrand,
         card_last4: cardLast4,
         next_billed_at: nextBilledAt,
@@ -155,13 +170,14 @@ async function handleSubscriptionUpdate(supabase: any, data: any) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function handleSubscriptionCanceled(supabase: any, data: any) {
   const paddleSubscriptionId = data.id;
-  const cancelAt = data.scheduled_change?.effective_at || data.canceled_at;
+  const cancelAt = data.canceled_at || data.scheduled_change?.effective_at || new Date().toISOString();
 
   const { error } = await supabase
     .from("subscriptions")
     .update({
       status: "canceled",
       cancel_at: cancelAt,
+      next_billed_at: null,
       updated_at: new Date().toISOString(),
     })
     .eq("paddle_subscription_id", paddleSubscriptionId);

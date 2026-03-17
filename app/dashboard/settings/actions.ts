@@ -43,6 +43,26 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
   const baseUrl = isSandbox ? "https://sandbox-api.paddle.com" : "https://api.paddle.com";
 
   try {
+    // First, check if there's already a scheduled change
+    const getResponse = await fetch(`${baseUrl}/subscriptions/${subscriptionId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
+      },
+    });
+
+    if (getResponse.ok) {
+      const subData = await getResponse.json();
+      if (subData.data?.scheduled_change) {
+        // If it's already scheduled for cancellation, just return success
+        if (subData.data.scheduled_change.action === 'cancel') {
+          return { success: true };
+        }
+        // If there's another type of change, we might need to overwrite it or error
+        // But for now, we'll try the cancel call anyway or return a specific error
+      }
+    }
+
     const response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}/cancel`, {
       method: "POST",
       headers: {
@@ -57,6 +77,12 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
     if (!response.ok) {
       const errorData = await response.json();
       console.error("Paddle cancellation error:", errorData);
+      
+      // Handle the case where there's a pending change
+      if (errorData.error?.code === 'subscription_update_has_pending_scheduled_change') {
+        return { error: "There is already a pending change on your subscription. Please wait for it to process or contact support." };
+      }
+      
       return { error: errorData.error?.detail || "Failed to cancel subscription" };
     }
 
@@ -77,17 +103,48 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
   const baseUrl = isSandbox ? "https://sandbox-api.paddle.com" : "https://api.paddle.com";
 
   try {
-    const response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}/activate`, {
-      method: "POST",
+    // 1. Get current status to decide which endpoint to use
+    const getResponse = await fetch(`${baseUrl}/subscriptions/${subscriptionId}`, {
+      method: "GET",
       headers: {
         "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
-        "Content-Type": "application/json",
       },
     });
 
+    if (!getResponse.ok) {
+      return { error: "Failed to fetch subscription status from Paddle" };
+    }
+
+    const subData = await getResponse.json();
+    const status = subData.data?.status;
+
+    let response;
+    if (status === 'active') {
+      // If active (with scheduled cancellation), we remove the scheduled change
+      response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}`, {
+        method: "PATCH",
+        headers: {
+          "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          scheduled_change: null,
+        }),
+      });
+    } else {
+      // If canceled or past_due, we use the activate endpoint
+      response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}/activate`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Paddle activation error:", errorData);
+      console.error("Paddle resume error:", errorData);
       return { error: errorData.error?.detail || "Failed to resume subscription" };
     }
 
