@@ -37,14 +37,17 @@ export async function sendNewUserAlert(userData: {
     subject: `🚀 New User Logged In: ${userData.email}`,
     html: `
       <div style="font-family: sans-serif; padding: 20px; color: #333;">
-        <h2 style="color: #2563eb;">New user detected on InvoiceQuickly!</h2>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="https://invoice-quickly.com/logo.svg" alt="InvoiceQuickly" style="width: 40px; height: 40px;">
+        </div>
+        <h2 style="color: #0070f3;">New user detected on InvoiceQuickly!</h2>
         <p>A new user has just logged into the platform.</p>
         <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
           <p><strong>Email:</strong> ${userData.email}</p>
           <p><strong>Name:</strong> ${userData.name || "N/A"}</p>
           <p><strong>Provider:</strong> ${userData.provider || "email"}</p>
         </div>
-        <p style="font-size: 12px; color: #666;">This is an automated notification from your app.</p>
+        <p style="color: #666; margin-top: 20px;">This is an automated notification from your app.</p>
       </div>
     `,
   };
@@ -121,18 +124,18 @@ export async function sendInvoiceReminderEmail(userData: {
     to: email,
     subject,
     html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="font-size: 20px; color: #18181b;">Invoice Quickly</h1>
+          <img src="https://invoice-quickly.com/logo.svg" alt="Invoice Quickly" style="width: 48px; height: 48px;">
         </div>
         <p>Hi${name ? ` ${name}` : ''},</p>
         <p>Here's your daily invoice payment summary:</p>
         ${overdueSection}
         ${upcomingSection}
         <div style="margin-top: 30px; padding: 15px; background: #f9fafb; border-radius: 8px; text-align: center;">
-          <a href="https://invoice-quickly.com/dashboard" style="display: inline-block; padding: 10px 24px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">View Dashboard</a>
+          <a href="https://invoice-quickly.com/dashboard" style="display: inline-block; padding: 10px 24px; background: #0070f3; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">View Dashboard</a>
         </div>
-        <p style="font-size: 12px; color: #9ca3af; margin-top: 30px; text-align: center;">This is an automated daily reminder from Invoice Quickly.<br/>You can manage your invoices at <a href="https://invoice-quickly.com/dashboard" style="color: #2563eb;">invoice-quickly.com</a></p>
+        <p style="color: #9ca3af; margin-top: 30px; text-align: center;">This is an automated daily reminder from Invoice Quickly.<br/>You can manage your invoices at <a href="https://invoice-quickly.com/dashboard" style="color: #0070f3;">invoice-quickly.com</a></p>
       </div>
     `,
   };
