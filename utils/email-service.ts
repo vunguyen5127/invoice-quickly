@@ -1,12 +1,12 @@
 import nodemailer from "nodemailer";
-import { MAILER_DOMAIN, MAILER_PORT, MAILER_USERNAME, MAILER_PASSWORD } from "@/utils/config";
+import config from "@/utils/config";
 
 const BREVO_CONFIG = {
-  host: MAILER_DOMAIN,
-  port: MAILER_PORT,
+  host: config.mailer.domain,
+  port: config.mailer.port,
   auth: {
-    user: MAILER_USERNAME,
-    pass: MAILER_PASSWORD,
+    user: config.mailer.username,
+    pass: config.mailer.password,
   },
 };
 
