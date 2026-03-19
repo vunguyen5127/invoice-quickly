@@ -95,7 +95,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
         {/* Promotional Footer */}
         <div className="text-center mt-12 mb-8">
           <p className="text-sm text-zinc-500 mb-3">Powered by</p>
-          <Link href="/" className="inline-flex items-center gap-2 font-black text-xl tracking-tighter hover:opacity-80 transition-opacity">
+          <Link href="/" className="inline-flex items-center gap-2 font-bold text-lg tracking-tight hover:opacity-80 transition-opacity">
             <span className="text-blue-600">Invoice</span>
             <span className="text-zinc-900 dark:text-white">Quickly</span>
           </Link>

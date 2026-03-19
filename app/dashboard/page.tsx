@@ -107,8 +107,8 @@ export default function Dashboard() {
       {/* Header Section */}
       <div className="flex flex-row items-center justify-between mb-4 sm:mb-12">
         <div className="space-y-1">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 italic lowercase">
-            dashboard
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+            Dashboard
           </h1>
           <p className="text-zinc-500 text-xs sm:text-sm font-medium">Manage your business entities and invoices.</p>
         </div>

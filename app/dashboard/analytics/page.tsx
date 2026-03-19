@@ -239,7 +239,7 @@ export default function AnalyticsPage() {
         <div className="lg:col-span-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-8 shadow-sm flex flex-col h-[450px]">
           <div className="flex items-center justify-between mb-8">
              <div className="space-y-0.5">
-               <h3 className="text-lg font-black text-zinc-900 dark:text-white flex items-center gap-2.5 italic">
+               <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2.5">
                  <LayoutGrid className="w-5 h-5 text-blue-500" /> Revenue Stream
                </h3>
                <p className="text-zinc-500 text-[13px] font-medium">Collected: <span className="text-emerald-500 font-bold">${totalRevenue.toLocaleString()}</span></p>
@@ -294,7 +294,7 @@ export default function AnalyticsPage() {
            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/[0.03] rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
            
            <div className="flex flex-col gap-0.5 mb-8 relative z-10">
-             <h3 className="text-lg font-black italic text-zinc-900 dark:text-white">Aging Summary</h3>
+             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Aging Summary</h3>
              <p className="text-zinc-500 text-[13px] font-medium">Comparison across {period}</p>
            </div>
 
