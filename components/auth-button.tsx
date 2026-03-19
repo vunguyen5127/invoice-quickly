@@ -6,7 +6,7 @@ import { getBaseUrl } from "@/utils/url";
 import { BarChart2, CreditCard, Loader2, LogIn, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { useAuth } from "@/contexts/auth-context";
 
@@ -15,6 +15,21 @@ export function AuthButton() {
   const { user, loading, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleLogin = async () => {
     if (!supabase) {
@@ -67,18 +82,18 @@ export function AuthButton() {
     })();
 
     return (
-      <div className="relative flex items-center gap-4">
+      <div className="relative flex items-center gap-4" ref={dropdownRef}>
         <button
           onClick={toggleDropdown}
-          className="rounded-full overflow-hidden border-2 border-transparent hover:border-blue-500/30 dark:hover:border-blue-400/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950 w-9 h-9 flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 shrink-0 shadow-sm"
+          className="relative rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 hover:shadow-md hover:shadow-blue-500/10 dark:hover:border-blue-400/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 dark:focus:ring-offset-zinc-950 w-9 h-9 flex items-center justify-center bg-white dark:bg-zinc-800 shrink-0 shadow-sm group"
           aria-label="User menu"
           aria-expanded={isOpen}
         >
           {user.user_metadata?.avatar_url ? (
-            <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+            <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-              <span className="text-xs font-bold font-sans tracking-wide">
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white transition-transform duration-300 group-hover:scale-110">
+              <span className="text-[11px] font-bold font-sans tracking-wide">
                 {userInitials}
               </span>
             </div>
@@ -87,13 +102,12 @@ export function AuthButton() {
 
         {isOpen && (
           <>
-            <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-            <div className="absolute right-0 top-full mt-2 w-[280px] rounded-2xl bg-white dark:bg-zinc-900 shadow-xl shadow-black/5 dark:shadow-black/40 ring-1 ring-zinc-200/80 dark:ring-white/10 z-50 overflow-hidden text-sm animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+            <div className="absolute right-0 top-full mt-3 w-[280px] rounded-2xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/50 border border-zinc-200/50 dark:border-white/10 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2 duration-200 origin-top-right">
               
               {/* Header */}
-              <div className="px-5 py-4 border-b border-zinc-100 dark:border-white/5 bg-zinc-50/50 dark:bg-white/[0.02]">
+              <div className="px-5 py-4 border-b border-zinc-100/50 dark:border-white/5 bg-zinc-50/30 dark:bg-white/[0.02]">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 shrink-0 rounded-full overflow-hidden border border-zinc-200/80 dark:border-white/10 shadow-sm bg-white dark:bg-zinc-800">
+                  <div className="h-10 w-10 shrink-0 rounded-full overflow-hidden border border-zinc-200 shadow-sm bg-white dark:bg-zinc-800 dark:border-white/10">
                     {user.user_metadata?.avatar_url ? (
                       <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
@@ -105,7 +119,7 @@ export function AuthButton() {
                     )}
                   </div>
                   <div className="flex flex-col min-w-0">
-                    <p className="text-[14px] text-zinc-900 dark:text-white font-semibold truncate leading-none mb-1">
+                    <p className="text-[14px] text-zinc-900 dark:text-white font-semibold truncate leading-none mb-1.5">
                       {user.user_metadata?.name || user.user_metadata?.full_name || "User"}
                     </p>
                     <p className="text-[12px] text-zinc-500 dark:text-zinc-400 truncate leading-none font-medium">
@@ -116,11 +130,11 @@ export function AuthButton() {
               </div>
 
               {/* Menu Links */}
-              <div className="p-2 flex flex-col space-y-0.5">
+              <div className="p-2 space-y-0.5">
                 <Link
                   href="/dashboard/analytics"
                   onClick={() => setIsOpen(false)}
-                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-150 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <BarChart2 className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                   Analytics
@@ -129,7 +143,7 @@ export function AuthButton() {
                 <Link
                   href="/pricing"
                   onClick={() => setIsOpen(false)}
-                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-150 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <CreditCard className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                   {t.pricing || "Pricing"}
@@ -138,23 +152,23 @@ export function AuthButton() {
                 <Link
                   href="/dashboard/settings"
                   onClick={() => setIsOpen(false)}
-                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-150 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <Settings className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
-                  {t.settings}
+                  {t.settings || "Settings"}
                 </Link>
               </div>
               
               {/* Footer */}
-              <div className="p-2 border-t border-zinc-100 dark:border-white/5 bg-zinc-50/50 dark:bg-transparent">
+              <div className="p-2 border-t border-zinc-100/50 dark:border-white/5 bg-zinc-50/30 dark:bg-transparent">
                 <button
                   onClick={() => {
                     setIsOpen(false);
                     handleLogout();
                   }}
-                  className="group w-full text-left px-3 py-2.5 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all duration-150 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-xl text-zinc-600 dark:text-zinc-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
-                  <LogOut className="w-4 h-4 text-red-500 group-hover:text-red-600 dark:text-red-400 transition-colors" />
+                  <LogOut className="w-4 h-4 text-zinc-400 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors" />
                   {t.signIn === "Sign In" ? "Sign out" : "Đăng xuất"}
                 </button>
               </div>
@@ -169,11 +183,12 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="inline-flex items-center justify-center gap-1.5 rounded-[5px] px-3.5 h-8 text-[13px] font-semibold transition-all duration-150 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white shadow-sm shadow-blue-600/25 shrink-0 whitespace-nowrap"
-      aria-label="Sign in with Google"
+      className="group relative inline-flex items-center justify-center gap-2 rounded-xl px-4 h-9 text-[13px] font-semibold transition-all duration-300 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 overflow-hidden shadow-md shadow-zinc-900/10 dark:shadow-white/10"
+      aria-label="Sign in"
     >
-      <LogIn className="w-4 h-4" />
-      <span>{t.signIn}</span>
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <LogIn className="w-4 h-4 relative z-10" />
+      <span className="relative z-10">{t.signIn}</span>
     </button>
   );
 }
