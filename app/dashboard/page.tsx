@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getUserCompanies, deleteCompany, getDashboardStats } from "./actions";
+import { getUserCompanies, deleteCompany } from "./actions";
 import { getUserEntitlements } from "@/utils/entitlements";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight, Crown, Zap, DollarSign, AlertTriangle, CheckCircle2, FileText } from "lucide-react";
+import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight, Crown, Zap } from "lucide-react";
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
@@ -31,7 +31,7 @@ export default function Dashboard() {
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
-  const [stats, setStats] = useState({ totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0 });
+
   const router = useRouter();
 
   const PAGE_SIZE = 12;
@@ -48,8 +48,7 @@ export default function Dashboard() {
     const ent = await getUserEntitlements(session.access_token);
     setEntitlements(ent);
 
-    const dashStats = await getDashboardStats(session.access_token);
-    setStats(dashStats);
+
 
     setLoading(false);
     setIsRefreshing(false);
@@ -130,47 +129,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Dashboard Stats Cards */}
-      {!loading && stats.totalInvoices > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center flex-shrink-0">
-              <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.totalOutstanding}</p>
-              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100 truncate">${stats.totalOutstanding.toLocaleString()}</p>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center flex-shrink-0">
-              <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.overdueInvoices}</p>
-              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{stats.overdueCount}</p>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center flex-shrink-0">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.paidThisMonth}</p>
-              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100 truncate">${stats.paidThisMonth.toLocaleString()}</p>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center flex-shrink-0">
-              <FileText className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.totalInvoices}</p>
-              <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{stats.totalInvoices}</p>
-            </div>
-          </div>
-        </div>
-      )}
+    
 
       {companies.length === 0 ? (
         <div className="bg-white/60 backdrop-blur-3xl dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 rounded-3xl p-12 text-center shadow-xl ring-1 ring-zinc-900/5 dark:ring-white/10 relative overflow-hidden">
