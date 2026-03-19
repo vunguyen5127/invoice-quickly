@@ -113,7 +113,7 @@ export default function Dashboard() {
           {entitlements.plan === "free" && (
             <Link
                href="/pricing"
-               className="group relative flex items-center gap-1.5 px-4 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-[5px] hover:shadow-lg hover:shadow-purple-500/25 font-bold transition-all text-xs sm:text-[13px] overflow-hidden"
+               className="group relative flex items-center gap-1.5 px-5 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/25 font-bold transition-all text-[13px] overflow-hidden active:scale-[0.98]"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
               <Zap className="w-3.5 h-3.5 relative z-10" />
@@ -122,11 +122,10 @@ export default function Dashboard() {
           )}
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="group relative flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[5px] hover:bg-zinc-800 dark:hover:bg-zinc-100 font-semibold transition-all shadow-md text-xs sm:text-[13px] overflow-hidden"
+            className="group relative flex items-center gap-2.5 px-5 h-10 bg-gradient-to-b from-primary to-primary/95 text-primary-foreground rounded-xl hover:shadow-xl hover:shadow-primary/20 font-semibold tracking-tight transition-all shadow-lg shadow-primary/10 active:scale-[0.98] overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <Plus className="w-4 h-4 relative z-10" />
-            <span className="hidden sm:inline relative z-10">Add Company</span>
+            <Plus className="w-4.5 h-4.5" />
+            <span className="hidden sm:inline">Add Company</span>
           </button>
         </div>
       </div>
@@ -147,11 +146,10 @@ export default function Dashboard() {
           </p>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="group relative inline-flex items-center gap-2 px-8 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-[5px] hover:bg-zinc-800 dark:hover:bg-zinc-100 font-semibold transition-all shadow-xl shadow-zinc-900/10 dark:shadow-white/10 ring-1 ring-black/10 dark:ring-white/10 z-10 overflow-hidden"
+            className="group relative inline-flex items-center gap-2.5 px-8 h-11 bg-gradient-to-b from-primary to-primary/90 text-primary-foreground rounded-xl hover:shadow-2xl hover:shadow-primary/20 font-semibold tracking-tight transition-all shadow-xl shadow-primary/10 active:scale-[0.98] z-10 overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <span className="relative z-10">Create Company</span>
-            <ArrowRight className="w-4 h-4 ml-1 relative z-10 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-5 h-5 ml-1 relative z-10 group-hover:translate-x-1.5 transition-transform" />
           </button>
         </div>
       ) : (
@@ -169,7 +167,7 @@ export default function Dashboard() {
               <Link 
                 key={company.id}
                 href={`/company/${company.id}`}
-                className="group relative bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-[5px] p-6 hover:shadow-2xl hover:shadow-zinc-900/5 dark:hover:shadow-black/40 hover:border-blue-500/30 dark:hover:border-blue-400/30 transition-all duration-300 flex flex-col overflow-hidden"
+                className="group relative bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 dark:hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 flex flex-col overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <div className="flex justify-between items-start mb-5 relative z-10">

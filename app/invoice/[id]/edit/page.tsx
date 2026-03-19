@@ -132,14 +132,14 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
               <button 
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-75"
+                className="flex items-center gap-2 px-4 h-10 rounded-xl font-semibold text-sm shadow-sm bg-success text-success-foreground hover:opacity-90 transition-all disabled:opacity-75"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button 
                 onClick={handleDownload}
                 disabled={isGenerating}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+                className="flex items-center gap-2 px-5 h-10 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 bg-primary text-primary-foreground hover:opacity-90 transition-all disabled:opacity-75"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -209,25 +209,25 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
 
 
         {/* Mobile bottom bar */}
-        <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-4 flex gap-2 z-50">
+        <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-4 flex gap-2 z-50 pb-safe shadow-[0_-2px_16px_rgba(0,0,0,0.06)]">
           <button
             onClick={handleShare}
             aria-label="Share"
-            className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-medium text-sm bg-white border border-zinc-200 text-zinc-700 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-300 transition-all shadow-sm"
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl font-medium text-sm bg-secondary text-secondary-foreground border border-border transition-all"
           >
             <Share2 className="w-4 h-4" /> {t.share}
           </button>
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-medium text-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-75"
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl font-bold text-sm bg-success text-success-foreground hover:opacity-90 transition-all disabled:opacity-75 shadow-lg shadow-success/10"
           >
             <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button
             onClick={handleDownload}
             disabled={isGenerating}
-            className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg font-medium text-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75"
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl font-bold text-sm bg-primary text-primary-foreground hover:opacity-90 transition-all disabled:opacity-75 shadow-lg shadow-primary/10"
           >
             <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>

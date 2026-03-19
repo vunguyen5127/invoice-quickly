@@ -137,7 +137,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         <p className="text-zinc-500 mb-8">This invoice either doesn't exist or you don't have permission to view it.</p>
         <Link 
           href="/dashboard"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:opacity-90 font-bold transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
         >
           <ArrowLeft className="w-4 h-4" /> Return to Dashboard
         </Link>
@@ -187,7 +187,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
             <button
               onClick={() => handleStatusChange('sent')}
               disabled={isUpdatingStatus}
-              className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 h-10 text-sm font-semibold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-xl transition-all disabled:opacity-50"
             >
               <Send className="w-4 h-4" />
               <span className="hidden sm:inline">{t.markAsSent}</span>
@@ -197,7 +197,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
             <button
               onClick={() => handleStatusChange('paid')}
               disabled={isUpdatingStatus}
-              className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-800 rounded-lg transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 h-10 text-sm font-semibold text-success bg-success/10 hover:bg-success/20 border border-success/20 rounded-xl transition-all disabled:opacity-50"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span className="hidden sm:inline">{t.markAsPaid}</span>
@@ -209,7 +209,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           <Tooltip content="Delete Invoice">
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="p-2.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors border border-transparent hover:border-red-100 dark:hover:border-red-900/30"
+              className="p-2.5 text-zinc-400 hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all border border-transparent hover:border-destructive/20"
             >
               <Trash2 className="w-5 h-5" />
             </button>
@@ -218,7 +218,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           <Tooltip content="Share Invoice">
             <button 
               onClick={handleShare}
-              className="p-2.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors border border-transparent hover:border-blue-100 dark:hover:border-blue-900/30"
+              className="p-2.5 text-zinc-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all border border-transparent hover:border-primary/20"
             >
               <Share2 className="w-5 h-5" />
             </button>
@@ -230,7 +230,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
             <button 
               onClick={handleDownload}
               disabled={isGenerating}
-              className="p-2.5 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors border border-transparent hover:border-blue-100 dark:hover:border-blue-900/30 disabled:opacity-50"
+              className="p-2.5 text-zinc-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all border border-transparent hover:border-primary/20 disabled:opacity-50"
             >
               {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
             </button>

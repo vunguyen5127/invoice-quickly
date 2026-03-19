@@ -37,9 +37,9 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
   const [isSubmitting, setIsSubmitting] = useState(false);
   const logoInputRef = React.useRef<HTMLInputElement>(null);
 
-  const fs = "w-full rounded-[5px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-3 pb-2 pt-0 transition-all focus-within:border-blue-500 dark:focus-within:border-blue-500 hover:border-zinc-300 dark:hover:border-zinc-700 group";
-  const lg = "text-[11px] font-medium text-zinc-400 dark:text-zinc-500 px-1 ml-[-4px] group-focus-within:text-blue-500 transition-colors empty:hidden";
-  const ic = "w-full bg-transparent text-[13px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none";
+  const fs = "w-full rounded-lg border border-border bg-background px-3 pb-2 pt-0 transition-all focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group shadow-sm";
+  const lg = "text-[11px] font-medium text-zinc-400 dark:text-zinc-500 px-1 ml-[-4px] group-focus-within:text-primary transition-colors empty:hidden";
+  const ic = "w-full bg-transparent text-[13px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none";
 
   if (!isOpen) return null;
 
@@ -107,9 +107,9 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     }
   };
 
-  const tabBtn = (active: boolean) => `flex-1 py-2 text-[14px] font-bold transition-all border-b-2 ${
+  const tabBtn = (active: boolean) => `flex-1 py-3 text-[14px] font-bold transition-all border-b-2 ${
       active 
-        ? "border-blue-500 text-blue-600 dark:text-blue-400" 
+        ? "border-primary text-primary" 
         : "border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:border-zinc-200 dark:hover:border-zinc-700"
     }`;
 
@@ -298,11 +298,11 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
           </div>
 
           {/* Footer */}
-          <div className="px-5 pb-4 pt-3 flex items-center justify-end gap-4 border-t border-zinc-100 dark:border-zinc-800">
-            <button type="button" onClick={onClose} disabled={isSubmitting} className="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
+          <div className="px-5 pb-5 pt-3 flex items-center justify-end gap-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/30 dark:bg-transparent">
+            <button type="button" onClick={onClose} disabled={isSubmitting} className="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors px-3 py-2">
               {t.cancel}
             </button>
-            <button type="submit" disabled={isSubmitting || !name.trim()} className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-[5px] transition-colors disabled:opacity-50 shadow-sm">
+            <button type="submit" disabled={isSubmitting || !name.trim()} className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary hover:opacity-90 rounded-xl transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-[0.98]">
               {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               {t.createCompanyBtn}
             </button>

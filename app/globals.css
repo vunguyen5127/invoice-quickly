@@ -4,17 +4,80 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #09090b;
+
+  --primary: #0070f3; /* logo-blue */
+  --primary-foreground: #ffffff;
+
+  --secondary: #f4f4f5; /* zinc-100 */
+  --secondary-foreground: #18181b; /* zinc-900 */
+
+  --destructive: #e11d48; /* rose-600 */
+  --destructive-foreground: #ffffff;
+
+  --success: #059669; /* emerald-600 */
+  --success-foreground: #ffffff;
+
+  --border: #e4e4e7; /* zinc-200 */
+  --input: #e4e4e7; /* zinc-200 */
+  --ring: #0070f3; /* logo-blue */
+
+  --radius: 0.75rem; /* rounded-xl (12px) */
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #09090b;
+  --foreground: #fafafa;
+
+  --primary: #3291ff; /* logo-blue-light (for accessibility in dark mode) */
+  --primary-foreground: #ffffff;
+
+  --secondary: #27272a; /* zinc-800 */
+  --secondary-foreground: #fafafa;
+
+  --destructive: #ef4444; /* red-500 */
+  --destructive-foreground: #ffffff;
+
+  --success: #10b981; /* emerald-500 */
+  --success-foreground: #ffffff;
+
+  --border: #27272a; /* zinc-800 */
+  --input: #27272a; /* zinc-800 */
+  --ring: #3291ff; /* logo-blue-light */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-blue-50: #e6f2ff;
+  --color-blue-100: #cce4ff;
+  --color-blue-400: #66b2ff;
+  --color-blue-500: #3291ff;
+  --color-blue-600: #0070f3;
+  --color-blue-700: #0061d5;
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-xl: var(--radius);
+  --radius-lg: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 8px);
+
   --font-sans: var(--font-geist-sans), var(--font-be-vietnam), var(--font-noto-sans), var(--font-noto-sans-jp), var(--font-noto-sans-kr), var(--font-noto-sans-sc), var(--font-noto-sans-arabic), var(--font-noto-sans-devanagari), var(--font-noto-sans-thai), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }

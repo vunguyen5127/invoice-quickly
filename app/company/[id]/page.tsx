@@ -226,25 +226,25 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           </div>
         </nav>
 
-        <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-row items-center gap-2 sm:gap-3.5 w-full sm:w-auto">
           <button
             onClick={handleExportExcel}
             disabled={isExporting}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 font-medium transition-all shadow-sm active:scale-[0.98] whitespace-nowrap disabled:opacity-70"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-7 h-10 sm:h-11 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/80 font-semibold text-xs sm:text-sm transition-all shadow-sm active:scale-[0.98] whitespace-nowrap disabled:opacity-70"
           >
             {isExporting ? (
-              <Loader2 className="w-4 h-4 text-emerald-600 dark:text-emerald-500 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-success animate-spin" />
             ) : (
-              <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-500" />
+              <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-success" />
             )}
-            <span>{isExporting ? "Exporting..." : "Export Excel"}</span>
+            <span className="truncate">{isExporting ? "..." : "Export Excel"}</span>
           </button>
           <Link 
             href={`/company/${resolvedParams.id}/new`}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-all shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 active:scale-[0.98] whitespace-nowrap"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-8 h-10 sm:h-11 bg-gradient-to-b from-primary to-primary/90 text-primary-foreground rounded-xl hover:shadow-xl hover:shadow-primary/20 font-semibold text-xs sm:text-sm tracking-tight transition-all shadow-lg shadow-primary/10 active:scale-[0.98] whitespace-nowrap"
           >
-            <Plus className="w-4 h-4" />
-            <span>Create Invoice</span>
+            <Plus className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <span className="truncate">Create Invoice</span>
           </Link>
         </div>
       </div>
@@ -280,7 +280,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                   placeholder="Search invoices..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all"
+                  className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-border bg-background text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
               </div>
             </div>

@@ -165,14 +165,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
     setIsTermsOpen(invoice.showTerms);
   }, [invoice.showTerms]);
 
-  const inputBaseClass = "w-full rounded-[5px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all duration-300 focus:outline-none focus:border-blue-500/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 shadow-sm";
+  const inputBaseClass = "w-full rounded-lg border border-border bg-background px-3 py-2 text-[14px] font-medium transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
-  const fieldsetBaseClass = "relative w-full rounded-[5px] border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-blue-500/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
-  const fieldsetBorderDefault = "border-zinc-200 dark:border-zinc-800";
-  const fieldsetBorderRequired = "border-red-400 dark:border-red-500/60 bg-red-50/50 dark:bg-red-950/20";
-  const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-400 px-1 ml-[-4px] group-focus-within:text-blue-600 dark:group-focus-within:text-blue-500 transition-colors empty:hidden max-w-full block truncate";
-  const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none pr-6";
+  const fieldsetBaseClass = "relative w-full rounded-lg border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
+  const fieldsetBorderDefault = "border-border";
+  const fieldsetBorderRequired = "border-destructive/40 bg-destructive/5 dark:bg-destructive/10";
+  const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-400 px-1 ml-[-4px] group-focus-within:text-primary transition-colors empty:hidden max-w-full block truncate text-slate-400";
+  const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none pr-6";
 
   const ClearBtn = ({ value, onClear }: { value: string; onClear: () => void }) => {
     if (!value) return null;
@@ -395,7 +395,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className={`w-full h-11 pl-4 md:pl-5 pr-4 bg-white dark:bg-zinc-950 border ${!item.description ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-[8px] md:rounded-[5px] text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-sans shadow-sm`}
+                      className={`w-full h-11 pl-4 md:pl-5 pr-4 bg-background border ${!item.description ? 'border-2 border-destructive/40' : 'border-border'} rounded-lg text-[14px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-sans shadow-sm`}
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
@@ -459,7 +459,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
           <button 
             type="button"
             onClick={addItem}
-            className="w-fit flex items-center justify-center gap-2 mt-6 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[5px] text-[14px] font-bold shadow-sm shadow-emerald-200 dark:shadow-none transition-all active:scale-[0.98] group"
+            className="w-fit flex items-center justify-center gap-2 mt-6 px-4 py-2 bg-success text-success-foreground rounded-xl text-[14px] font-bold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group"
           >
             <Plus className="w-4 h-4 text-white" /> {t.addItem}
           </button>

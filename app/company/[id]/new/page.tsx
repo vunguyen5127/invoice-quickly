@@ -177,21 +177,21 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
           <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80">
             <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
             <span className="inline-block">Invoice-Quickly</span>
-            {companyName && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 ml-1 truncate max-w-[120px]">{companyName}</span>}
+
           </Link>
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3 mr-2">
               <button 
                 onClick={handleSave}
                 disabled={isSaving || !canSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-emerald-600 text-white hover:bg-emerald-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center gap-2 px-4 h-10 rounded-xl font-semibold text-sm shadow-sm bg-success text-success-foreground hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Save className="w-4 h-4" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button 
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm shadow-sm bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+                className="flex items-center gap-2 px-5 h-10 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 bg-primary text-primary-foreground hover:opacity-90 font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
               >
                 <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
               </button>
@@ -257,25 +257,25 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         </div>
 
         {/* Mobile Sticky Bottom Bar */}
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-none pb-safe">
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 flex items-center gap-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pb-safe">
           <button 
             onClick={handleShare}
             aria-label="Share"
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-3 rounded-xl font-medium text-sm bg-secondary text-secondary-foreground border border-border transition-colors"
           >
             <Share2 className="w-4 h-4" /> {t.share}
           </button>
           <button 
             onClick={handleSave}
             disabled={isSaving || !canSave}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-green-600 border border-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-3 rounded-xl font-bold text-sm bg-success text-success-foreground hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none shadow-lg shadow-success/10"
           >
             <Save className="w-4 h-4" /> {isSaving ? t.saving : t.save}
           </button>
           <button 
             onClick={handleDownload}
             disabled={isGenerating || !canSave}
-            className="flex-1 flex justify-center items-center gap-2 px-3 py-2 rounded-lg font-medium text-sm shadow-sm bg-[#2563eb] border border-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+            className="flex-1 flex justify-center items-center gap-2 px-3 py-3 rounded-xl font-bold text-sm bg-primary text-primary-foreground hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none shadow-lg shadow-primary/10"
           >
             <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
           </button>

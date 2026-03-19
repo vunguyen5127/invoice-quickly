@@ -183,12 +183,11 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="group relative inline-flex items-center justify-center gap-2 rounded-[5px] px-4 h-9 text-[13px] font-semibold transition-all duration-300 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100 overflow-hidden shadow-md shadow-zinc-900/10 dark:shadow-white/10"
+      className="group relative inline-flex items-center justify-center gap-2 rounded-lg px-4 sm:px-5 h-9 sm:h-10 text-xs sm:text-[13px] font-semibold transition-all duration-300 bg-gradient-to-b from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] shadow-md shadow-primary/5"
       aria-label="Sign in"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <LogIn className="w-4 h-4 relative z-10" />
-      <span className="relative z-10">{t.signIn}</span>
+      <LogIn className="w-3.5 h-3.5" />
+      <span>{t.signIn}</span>
     </button>
   );
 }

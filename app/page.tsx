@@ -169,17 +169,17 @@ export default function LandingPage() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
             <Link
               href="/generator?new=1"
-              className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:bg-blue-700 hover:scale-105 hover:shadow-blue-500/50 active:scale-95"
+              className="group inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-b from-primary to-primary/90 px-10 py-4.5 text-lg font-semibold text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:shadow-2xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98]"
             >
               Create Invoice Free
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="h-5.5 w-5.5 transition-transform group-hover:translate-x-1.5" />
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-8 py-3.5 text-base font-medium text-slate-700 shadow-sm transition-all hover:bg-slate-50 hover:scale-105 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-10 py-4.5 text-lg font-semibold text-foreground shadow-sm transition-all hover:bg-secondary hover:scale-[1.02] active:scale-[0.98]"
             >
               Sign In to Dashboard
             </Link>
@@ -291,7 +291,7 @@ export default function LandingPage() {
               </ul>
               <Link
                 href="/generator?new=1"
-                className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 hover:scale-105"
+                className="group inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:opacity-90 hover:scale-[1.02]"
               >
                 Try it free
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -507,7 +507,7 @@ export default function LandingPage() {
             <p className="text-lg text-slate-400 mb-10">Free invoice generator online • No signup • No watermark • Free PDF download</p>
             <Link
               href="/generator?new=1"
-              className="group inline-flex items-center gap-2 rounded-full bg-white text-slate-900 px-8 py-4 text-base font-bold shadow-lg transition-all hover:bg-slate-50 hover:-translate-y-1 hover:shadow-xl active:scale-95"
+              className="group inline-flex items-center gap-2 rounded-xl bg-white text-slate-900 px-8 py-4 text-base font-bold shadow-lg transition-all hover:bg-slate-50 hover:-translate-y-1 hover:shadow-xl active:scale-[0.98]"
             >
               Create Invoice Free
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />

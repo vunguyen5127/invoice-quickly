@@ -152,7 +152,7 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
           <button
             onClick={handleUpgrade}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-[5px] font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/25 disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-[5px] font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/25 disabled:opacity-50"
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -168,7 +168,7 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
           </p>
           <button
             onClick={onClose}
-            className="w-full mt-3 px-6 py-2.5 text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors text-center"
+            className="w-full mt-3 px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors text-center"
           >
             Maybe later
           </button>
