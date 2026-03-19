@@ -4,9 +4,9 @@ import React from "react";
 
 export function DashboardSkeleton() {
   return (
-    <div className="container mx-auto px-4 sm:px-8 py-8 max-w-7xl animate-pulse">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-12 animate-pulse">
       {/* Header Skeleton */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center mb-4 sm:mb-12">
         <div className="space-y-3">
           <div className="h-9 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
           <div className="h-4 w-64 bg-zinc-100 dark:bg-zinc-800/60 rounded-[5px]"></div>

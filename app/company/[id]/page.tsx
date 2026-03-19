@@ -269,54 +269,89 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
 
       <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
         {/* Header with search */}
-        <div className="px-4 sm:px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <h2 className="font-semibold text-zinc-900 dark:text-zinc-100 shrink-0">
-            Invoices
-            <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
-          </h2>
-          {(totalCount > 0 || statusFilter !== 'all' || debouncedSearch !== '') && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              <div className="flex items-center gap-2 text-sm text-zinc-500 shrink-0">
-                <span className="hidden xs:inline whitespace-nowrap font-medium text-zinc-400 uppercase text-[10px] tracking-widest mr-1">Show:</span>
-                <select
-                  value={itemsPerPage}
-                  onChange={(e) => {
-                    setItemsPerPage(Number(e.target.value));
-                    setCurrentPage(1);
-                  }}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[65px] text-left"
-                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.3rem center', backgroundSize: '1rem' }}
-                >
-                  {PAGE_SIZE_OPTIONS.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-                <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 hidden sm:block mx-1" />
-                <select
-                  value={statusFilter}
-                  onChange={(e) => handleStatusFilterChange(e.target.value)}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[100px]"
-                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}
-                >
-                  <option value="all">All Status</option>
-                  <option value="draft">Draft</option>
-                  <option value="sent">Sent</option>
-                  <option value="paid">Paid</option>
-                  <option value="overdue">Overdue</option>
-                </select>
-              </div>
-              <div className="relative flex-1 sm:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-                <input
-                  type="text"
-                  placeholder="Search invoices..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-border bg-background text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                />
-              </div>
+        <div className="px-4 sm:px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col gap-3.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+            <div className="flex items-center justify-between sm:justify-start gap-4">
+              <h2 className="font-semibold text-zinc-900 dark:text-zinc-100 shrink-0">
+                Invoices
+                <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
+              </h2>
+
+              {(totalCount > 0 || statusFilter !== 'all' || debouncedSearch !== '') && (
+                <div className="flex sm:hidden items-center gap-2">
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => {
+                      setItemsPerPage(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[55px] text-center"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.2rem center', backgroundSize: '0.8rem' }}
+                  >
+                    {PAGE_SIZE_OPTIONS.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilterChange(e.target.value)}
+                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[90px]"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.4rem center', backgroundSize: '0.8rem' }}
+                  >
+                    <option value="all">All</option>
+                    <option value="draft">Draft</option>
+                    <option value="sent">Sent</option>
+                    <option value="paid">Paid</option>
+                    <option value="overdue">Overdue</option>
+                  </select>
+                </div>
+              )}
             </div>
-          )}
+
+            {(totalCount > 0 || statusFilter !== 'all' || debouncedSearch !== '') && (
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                <div className="hidden sm:flex items-center gap-2 text-sm text-zinc-500 shrink-0">
+                  <span className="hidden xs:inline whitespace-nowrap font-medium text-zinc-400 uppercase text-[10px] tracking-widest mr-1">Show:</span>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => {
+                      setItemsPerPage(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[65px] text-left"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.3rem center', backgroundSize: '1rem' }}
+                  >
+                    {PAGE_SIZE_OPTIONS.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                  <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1" />
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilterChange(e.target.value)}
+                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[100px]"
+                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}
+                  >
+                    <option value="all">All Status</option>
+                    <option value="draft">Draft</option>
+                    <option value="sent">Sent</option>
+                    <option value="paid">Paid</option>
+                    <option value="overdue">Overdue</option>
+                  </select>
+                </div>
+                <div className="relative w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                  <input
+                    type="text"
+                    placeholder="Search invoices..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-border bg-background text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {invoices.length === 0 && !debouncedSearch ? (
@@ -467,7 +502,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                     {format(new Date(inv.created_at), "MMM dd, yyyy")}
                                   </span>
                                 </div>
-                                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 truncate text-xl tracking-tight">
+                                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 truncate text-xl tracking-tight leading-tight">
                                   {inv.client_name}
                                 </h4>
                              </div>
@@ -476,10 +511,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                              </div>
                           </div>
                           
-                          <div className="mb-6">
-                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5 block">Amount</span>
-                             <p className="text-3xl font-black text-zinc-900 dark:text-zinc-100 tracking-tighter flex items-baseline gap-1">
-                               <span className="text-lg font-bold text-zinc-400">{getCurrencySymbol(inv.currency)}</span>
+                          <div className="flex items-baseline gap-2.5 mb-6 py-3 border-y border-zinc-50 dark:border-zinc-800/50">
+                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest shrink-0">Amount</span>
+                             <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight flex items-baseline gap-1">
+                               <span className="text-sm font-bold text-zinc-400">{getCurrencySymbol(inv.currency)}</span>
                                {Number(inv.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                              </p>
                           </div>

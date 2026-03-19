@@ -103,9 +103,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Header Section */}
-      <div className="flex flex-row items-center justify-between mb-8 sm:mb-12">
+      <div className="flex flex-row items-center justify-between mb-4 sm:mb-12">
         <div className="space-y-1">
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 italic lowercase">
             dashboard
@@ -230,7 +230,7 @@ export default function Dashboard() {
           </div>
 
           {/* Mobile Card View */}
-          <div className="sm:hidden space-y-4 px-4 py-8">
+          <div className="sm:hidden space-y-4 pb-8">
             {companies.map((company) => (
               <div 
                 key={company.id} 
@@ -332,10 +332,9 @@ export default function Dashboard() {
         </>
       )}
       
-      {/* Floating Action Button (Mobile Only) */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="sm:hidden fixed bottom-24 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40 border-4 border-white dark:border-zinc-950"
+        className="sm:hidden fixed bottom-6 right-4 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-transform z-40 border-4 border-white dark:border-zinc-950"
       >
         <Plus className="w-7 h-7" />
       </button>
