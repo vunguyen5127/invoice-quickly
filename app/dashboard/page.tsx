@@ -42,7 +42,15 @@ export default function Dashboard() {
     
     setUserEmail(session.user.email || null);
     const data = await getUserCompanies(session.access_token, currentPage, PAGE_SIZE);
-    setCompanies(data.data);
+    
+    // Sort companies by invoice count (highest first)
+    const sortedCompanies = [...(data.data || [])].sort((a, b) => {
+      const countA = a.invoices?.length || 0;
+      const countB = b.invoices?.length || 0;
+      return countB - countA;
+    });
+
+    setCompanies(sortedCompanies);
     setTotalCount(data.totalCount);
 
     const ent = await getUserEntitlements(session.access_token);
@@ -168,7 +176,7 @@ export default function Dashboard() {
                     <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Company</th>
                     <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Invoices</th>
                     <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Created</th>
-                    <th className="px-6 py-4 text-right"></th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50 font-medium">
