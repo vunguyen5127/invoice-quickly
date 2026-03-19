@@ -3,7 +3,7 @@
 import { useLanguage } from "@/contexts/language-context";
 import { supabase } from "@/utils/supabase/client";
 import { getBaseUrl } from "@/utils/url";
-import { BarChart2, CreditCard, Loader2, LogIn, LogOut, Settings } from "lucide-react";
+import { BarChart2, CreditCard, Loader2, LogIn, LogOut, Settings, UserCircle } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -183,10 +183,10 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="group relative inline-flex items-center justify-center gap-2 rounded-lg px-4 sm:px-5 h-9 sm:h-10 text-xs sm:text-[13px] font-semibold transition-all duration-300 bg-gradient-to-b from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] shadow-md shadow-primary/5"
+      className="group relative inline-flex items-center justify-center gap-2 rounded-lg px-4 sm:px-5 h-9 text-xs sm:text-[13px] font-semibold transition-all duration-300 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700/80 active:scale-[0.98] border border-transparent shadow-sm"
       aria-label="Sign in"
     >
-      <LogIn className="w-3.5 h-3.5" />
+      <UserCircle className="w-4 h-4 text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors" />
       <span>{t.signIn}</span>
     </button>
   );

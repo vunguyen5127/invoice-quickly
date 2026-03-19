@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Plus, Share2, Save, X, Building2, LayoutDashboard } from "lucide-react";
+import { Download, Plus, Share2, Save, X, Building2, LayoutDashboard, Loader2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies } from "@/app/dashboard/actions";
@@ -271,32 +271,33 @@ function CreateInvoiceContent() {
             <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 sm:h-7 sm:w-7 object-contain" />
             <span className="text-sm sm:text-base">Invoice-Quickly</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-2 bg-zinc-100/50 dark:bg-zinc-800/30 rounded-xl p-1">
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-1 bg-zinc-100/50 dark:bg-zinc-800/40 border border-zinc-200/50 dark:border-zinc-700/50 rounded-xl p-1 shadow-sm">
               <button
                 onClick={handleShare}
                 disabled={!canSave}
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 h-9 rounded-lg font-semibold text-[13px] text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none"
+                className="inline-flex items-center justify-center gap-1.5 px-3 h-9 rounded-lg font-semibold text-[13px] text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none"
               >
                 <Share2 className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{t.share}</span>
               </button>
               <button
                 onClick={handleSaveClick}
                 disabled={isSaving || !canSave}
-                className="inline-flex items-center justify-center gap-1.5 px-4 h-9 rounded-lg font-semibold text-[13px] bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700/80 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 px-4 h-9 rounded-lg font-semibold text-[13px] bg-white dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-700/80 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none shadow-sm"
               >
                 <Save className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{isSaving ? t.saving : t.save}</span>
               </button>
               <button
                 onClick={handleDownload}
                 disabled={isGenerating || !canSave}
-                className="inline-flex items-center justify-center gap-1.5 px-5 h-9 rounded-lg font-semibold text-[13px] bg-gradient-to-b from-primary to-primary/90 text-primary-foreground hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-primary/10"
+                className="inline-flex items-center justify-center gap-1.5 px-5 h-9 rounded-lg font-semibold text-[13px] bg-gradient-to-b from-primary to-primary/95 text-primary-foreground hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none shadow-md shadow-primary/10 min-w-[110px]"
               >
-                <Download className="w-3.5 h-3.5" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
+                {isGenerating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                <span className="hidden lg:inline">{t.download}</span>
               </button>
             </div>
-            <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-0.5" />
-            <div className="flex items-center gap-0.5">
+            <div className="hidden sm:block w-px h-5 bg-zinc-200 dark:bg-zinc-800 mx-0.5" />
+            <div className="flex items-center gap-1.5">
               {isLoggedIn && (
                 <Link
                   href="/dashboard"
@@ -466,7 +467,8 @@ function CreateInvoiceContent() {
             disabled={isGenerating || !canSave}
             className="flex-1 flex justify-center items-center gap-1.5 px-3 py-2.5 rounded-xl font-semibold text-[13px] bg-primary text-primary-foreground hover:opacity-90 active:scale-[0.97] transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none shadow-lg shadow-primary/10"
           >
-            <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
+            {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            {t.download}
           </button>
         </div>
       </div>

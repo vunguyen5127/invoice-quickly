@@ -149,19 +149,19 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
           <table className="w-full border-collapse border border-zinc-300">
             <thead>
               <tr className="bg-zinc-100 divide-x divide-zinc-300 border-b border-zinc-300">
-                <th className="py-2 px-3 text-left text-[12px] font-bold uppercase tracking-wider">{t.description}</th>
-                <th className="w-20 py-2 px-3 text-center text-[12px] font-bold uppercase tracking-wider">{t.qty}</th>
-                <th className="w-28 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.rate}</th>
-                <th className="w-28 py-2 px-3 text-right text-[12px] font-bold uppercase tracking-wider">{t.lineTotal || "Total"}</th>
+                <th className="py-2 px-3 text-left text-[11px] font-bold uppercase tracking-wider text-zinc-500">{t.description}</th>
+                <th className="w-20 py-2 px-3 text-center text-[11px] font-bold uppercase tracking-wider text-zinc-500">{t.qty}</th>
+                <th className="w-28 py-2 px-3 text-right text-[11px] font-bold uppercase tracking-wider text-zinc-500">{t.rate}</th>
+                <th className="w-28 py-2 px-3 text-right text-[11px] font-bold uppercase tracking-wider text-zinc-500">{t.lineTotal || "Total"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-300">
               {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
                 <tr key={item.id} className="divide-x divide-zinc-300">
-                  <td className="py-2 px-3 text-left align-top whitespace-pre-wrap font-medium">{item.description || "-"}</td>
-                  <td className="py-2 px-3 text-center align-top">{item.quantity}</td>
-                  <td className="py-2 px-3 text-right align-top">{formatAmount(item.rate)}</td>
-                  <td className="py-2 px-3 text-right align-top font-bold text-zinc-900">{formatAmount(item.quantity * item.rate)}</td>
+                  <td className="py-3 px-3 text-left align-top whitespace-pre-wrap text-[13px] font-medium text-zinc-700">{item.description || "-"}</td>
+                  <td className="py-3 px-3 text-center align-top text-[13px] text-zinc-700">{item.quantity}</td>
+                  <td className="py-3 px-3 text-right align-top text-[13px] text-zinc-700">{formatAmount(item.rate)}</td>
+                  <td className="py-3 px-3 text-right align-top text-[13px] font-bold text-zinc-900">{formatAmount(item.quantity * item.rate)}</td>
                 </tr>
               ))}
             </tbody>
@@ -171,38 +171,38 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
           <div className="flex justify-end mt-0">
             <div className="w-[calc(19rem+2px)]">
               <div className="flex">
-                <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">{t.subtotal}</div>
-                <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-t border-b border-zinc-300">{formatAmount(subTotal)}</div>
+                <div className="flex-1 py-2 px-4 text-right font-medium text-[13px] text-zinc-600">{t.subtotal}</div>
+                <div className="w-28 py-2 px-4 text-right font-bold text-[13px] border-l border-r border-t border-b border-zinc-300 text-zinc-900">{formatAmount(subTotal)}</div>
               </div>
 
               {invoice.discount > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">
+                  <div className="flex-1 py-1 px-4 text-right font-medium text-[13px] text-zinc-600">
                     {(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount} {invoice.discountType === 'percentage' && invoice.discount > 0 ? `(${invoice.discount.toFixed(1)}%)` : ""}
                   </div>
-                  <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">-{formatAmount(discountAmount)}</div>
+                  <div className="w-28 py-1 px-4 text-right font-bold text-[13px] border-l border-r border-b border-zinc-300 text-zinc-900">-{formatAmount(discountAmount)}</div>
                 </div>
               )}
 
               {invoice.taxRate > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">
+                  <div className="flex-1 py-1 px-4 text-right font-medium text-[13px] text-zinc-600">
                     {(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax} {invoice.taxType === 'percentage' && invoice.taxRate > 0 ? `(${invoice.taxRate.toFixed(1)}%)` : ""}
                   </div>
-                   <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(taxAmount)}</div>
+                   <div className="w-28 py-1 px-4 text-right font-bold text-[13px] border-l border-r border-b border-zinc-300 text-zinc-900">{formatAmount(taxAmount)}</div>
                 </div>
               )}
 
               {invoice.shipping > 0 && (
                 <div className="flex">
-                  <div className="flex-1 py-2 px-4 text-right font-bold text-[14px]">{(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}</div>
-                   <div className="w-28 py-2 px-4 text-right font-bold text-[14px] border-l border-r border-b border-zinc-300">{formatAmount(invoice.shipping || 0)}</div>
+                  <div className="flex-1 py-1 px-4 text-right font-medium text-[13px] text-zinc-600">{(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}</div>
+                   <div className="w-28 py-1 px-4 text-right font-bold text-[13px] border-l border-r border-b border-zinc-300 text-zinc-900">{formatAmount(invoice.shipping || 0)}</div>
                 </div>
               )}
 
               <div className="flex">
-                <div className="flex-1 py-4 px-4 text-right font-black text-[14px] tracking-tighter">{t.totalDue}</div>
-                <div className="w-28 py-4 px-4 text-right font-black text-[14px] border-l border-r border-b-2 border-zinc-300">
+                <div className="flex-1 py-4 px-4 text-right font-bold text-[15px] text-zinc-900">{t.totalDue}</div>
+                <div className="w-28 py-4 px-4 text-right font-bold text-[15px] border-l border-r border-b-2 border-zinc-300 text-zinc-900">
                   {symbol}{formatAmount(total)}
                 </div>
               </div>
