@@ -78,7 +78,7 @@
   --radius-md: calc(var(--radius) - 4px);
   --radius-sm: calc(var(--radius) - 8px);
 
-  --font-sans: var(--font-geist-sans), var(--font-be-vietnam), var(--font-noto-sans), var(--font-noto-sans-jp), var(--font-noto-sans-kr), var(--font-noto-sans-sc), var(--font-noto-sans-arabic), var(--font-noto-sans-devanagari), var(--font-noto-sans-thai), system-ui, sans-serif;
+  --font-sans: var(--font-be-vietnam), var(--font-geist-sans), var(--font-noto-sans), var(--font-noto-sans-jp), var(--font-noto-sans-kr), var(--font-noto-sans-sc), var(--font-noto-sans-arabic), var(--font-noto-sans-devanagari), var(--font-noto-sans-thai), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 

@@ -59,7 +59,7 @@ export function AuthButton() {
 
   if (loading) {
     return (
-      <button className="inline-flex items-center justify-center rounded-[5px] px-3.5 text-[13px] font-medium h-8 text-zinc-400 bg-zinc-100 dark:bg-zinc-800 disabled">
+      <button className="inline-flex items-center justify-center rounded-lg px-3.5 h-9 text-[13px] font-semibold text-zinc-400 bg-zinc-100 dark:bg-zinc-800 disabled animate-pulse border border-transparent">
         <Loader2 className="w-3.5 h-3.5 animate-spin" />
       </button>
     );
@@ -93,7 +93,7 @@ export function AuthButton() {
             <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white transition-transform duration-300 group-hover:scale-110">
-              <span className="text-[11px] font-bold font-sans tracking-wide">
+              <span className="text-[11px] font-bold tracking-wide">
                 {userInitials}
               </span>
             </div>
@@ -102,7 +102,7 @@ export function AuthButton() {
 
         {isOpen && (
           <>
-            <div className="absolute right-0 top-full mt-3 w-[280px] rounded-[5px] bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/50 border border-zinc-200/50 dark:border-white/10 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2 duration-200 origin-top-right">
+            <div className="absolute right-0 top-full mt-3 w-[280px] rounded-xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/50 border border-zinc-200/50 dark:border-white/10 z-50 overflow-hidden text-sm animate-in fade-in slide-in-from-top-2 duration-200 origin-top-right">
               
               {/* Header */}
               <div className="px-5 py-4 border-b border-zinc-100/50 dark:border-white/5 bg-zinc-50/30 dark:bg-white/[0.02]">
@@ -112,7 +112,7 @@ export function AuthButton() {
                       <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
-                        <span className="text-sm font-bold font-sans">
+                        <span className="text-sm font-bold">
                           {userInitials}
                         </span>
                       </div>
@@ -134,7 +134,7 @@ export function AuthButton() {
                 <Link
                   href="/dashboard/analytics"
                   onClick={() => setIsOpen(false)}
-                  className="group w-full text-left px-3 py-2.5 rounded-[5px] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <BarChart2 className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                   Analytics
@@ -143,7 +143,7 @@ export function AuthButton() {
                 <Link
                   href="/pricing"
                   onClick={() => setIsOpen(false)}
-                  className="group w-full text-left px-3 py-2.5 rounded-[5px] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <CreditCard className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                   {t.pricing || "Pricing"}
@@ -152,7 +152,7 @@ export function AuthButton() {
                 <Link
                   href="/dashboard/settings"
                   onClick={() => setIsOpen(false)}
-                  className="group w-full text-left px-3 py-2.5 rounded-[5px] text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <Settings className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
                   {t.settings || "Settings"}
@@ -166,7 +166,7 @@ export function AuthButton() {
                     setIsOpen(false);
                     handleLogout();
                   }}
-                  className="group w-full text-left px-3 py-2.5 rounded-[5px] text-zinc-600 dark:text-zinc-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
+                  className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <LogOut className="w-4 h-4 text-zinc-400 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors" />
                   {t.signIn === "Sign In" ? "Sign out" : "Đăng xuất"}

@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getLoginLogs } from "@/utils/login-logger";
 import { format } from "date-fns";
-import { Loader2, ShieldCheck, ChevronLeft, ChevronRight, ArrowLeft, Monitor, Globe } from "lucide-react";
+import { Loader2, ShieldCheck, ChevronLeft, ChevronRight, Monitor, Globe } from "lucide-react";
 import Link from "next/link";
 
 const ADMIN_EMAIL = "vunguyencapital@gmail.com";
@@ -95,18 +95,22 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-8 py-8 max-w-6xl">
-      <Link href="/dashboard" className="inline-flex items-center text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 mb-6 transition-colors">
-        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Dashboard
-      </Link>
-
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-          <ShieldCheck className="w-5 h-5 text-white" />
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Admin Panel</h1>
-          <p className="text-sm text-zinc-500">User Login Activity</p>
+    <div className="container mx-auto px-4 sm:px-8 py-10 max-w-6xl">
+      <div className="mb-10 flex items-center gap-5">
+        <Link 
+          href="/dashboard"
+          className="p-2.5 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all shadow-sm"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </Link>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <ShieldCheck className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Admin Panel</h1>
+            <p className="text-sm text-zinc-500 font-medium leading-none pt-0.5">User Login Activity</p>
+          </div>
         </div>
       </div>
 
@@ -210,7 +214,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="p-2 rounded-[5px] text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -229,9 +233,9 @@ export default function AdminPage() {
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`w-8 h-8 rounded-[5px] text-sm font-medium transition-colors ${
+                        className={`w-8 h-8 rounded-lg text-sm font-bold transition-all duration-200 ${
                           currentPage === page
-                            ? "bg-blue-600 text-white shadow-sm"
+                            ? "bg-blue-600 text-white shadow-md shadow-blue-500/20 active:scale-[0.98]"
                             : "text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
                         }`}
                       >
@@ -242,7 +246,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
-                    className="p-2 rounded-[5px] text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>

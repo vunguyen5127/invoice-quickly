@@ -78,7 +78,7 @@ export function SiteHeader() {
           {hasUser && (
             <Link
               href="/dashboard"
-              className="text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-all duration-150 flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 mr-1"
+              className="text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-150 flex items-center gap-2 rounded-lg px-3.5 py-2 mr-1"
             >
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden md:inline">{t.myInvoices}</span>

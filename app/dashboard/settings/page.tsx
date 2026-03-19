@@ -93,7 +93,7 @@ export default function SettingsPage() {
     router.push("/");
   };
 
-  const sectionClass = "bg-white dark:bg-zinc-900 rounded-[5px] border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm shadow-zinc-200/50 dark:shadow-none mb-6";
+  const sectionClass = "bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm shadow-zinc-200/50 dark:shadow-none mb-6";
   const headerClass = "px-6 py-3 border-b border-zinc-100 dark:border-zinc-800 flex items-center gap-2 font-bold text-zinc-900 dark:text-zinc-100 bg-zinc-50/30 dark:bg-zinc-900/30";
   const itemClass = "px-6 py-3 flex items-center justify-between border-b last:border-0 border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30 transition-colors";
 
@@ -145,7 +145,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <CreditCard className="w-4 h-4" />
             </div>
             <div>
@@ -157,14 +157,14 @@ export default function SettingsPage() {
             {(!subscription || subscription.plan === 'free') ? (
               <Link
                 href="/pricing"
-                className="px-3 py-1.5 rounded-[5px] bg-blue-600 text-[11px] font-bold text-white hover:bg-blue-500 active:bg-blue-700 transition-all shadow-sm shadow-blue-600/20 flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-lg bg-blue-600 text-[11px] font-bold text-white hover:bg-blue-500 active:bg-blue-700 transition-all shadow-sm shadow-blue-600/20 flex items-center gap-1.5"
               >
                 <Zap className="w-3 h-3" />
                 Upgrade
               </Link>
             ) : (
               <>
-                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-[5px] uppercase tracking-wider ${
+                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider ${
                   subscription?.status === 'active' 
                     ? (subscription.cancel_at ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200/50 dark:ring-amber-800/50" : "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200/50 dark:ring-emerald-800/50")
                     : subscription?.status === 'canceled'
@@ -187,7 +187,7 @@ export default function SettingsPage() {
           <>
             <div className={itemClass}>
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                    <Calendar className="w-4 h-4" />
                 </div>
                 <div>
@@ -206,7 +206,7 @@ export default function SettingsPage() {
           {subscription.status === 'active' && !subscription.cancel_at && (
             <button 
               onClick={() => setIsCancelModalOpen(true)}
-              className="px-3 py-1.5 rounded-[5px] bg-red-50 dark:bg-red-950/30 text-[11px] font-bold text-red-500 hover:bg-red-100 dark:hover:bg-red-950/50 transition-all border border-red-100 dark:border-red-900/30 uppercase tracking-wider"
+              className="px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/30 text-[11px] font-bold text-red-500 hover:bg-red-100 dark:hover:bg-red-950/50 transition-all border border-red-100 dark:border-red-900/30 uppercase tracking-wider"
             >
               Cancel
             </button>
@@ -216,7 +216,7 @@ export default function SettingsPage() {
             <button 
               onClick={handleResumeSubscription}
               disabled={isResuming}
-              className="px-3 py-1.5 rounded-[5px] bg-blue-50 dark:bg-blue-950/30 text-[11px] font-bold text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-all border border-blue-100 dark:border-blue-900/30 uppercase tracking-wider flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-[11px] font-bold text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-all border border-blue-100 dark:border-blue-900/30 uppercase tracking-wider flex items-center gap-1.5"
             >
               {isResuming ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
               Resume
@@ -237,7 +237,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <Globe className="w-4 h-4" />
             </div>
             <div>
@@ -257,7 +257,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <Sun className="w-4 h-4 dark:hidden" />
                <Moon className="w-4 h-4 hidden dark:block" />
             </div>
@@ -278,7 +278,7 @@ export default function SettingsPage() {
         </div>
         <div className={itemClass}>
            <div className="flex items-center gap-3">
-            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
                <Bell className="w-4 h-4" />
             </div>
             <div>
@@ -294,7 +294,7 @@ export default function SettingsPage() {
         {user?.email === "vunguyencapital@gmail.com" && (
           <Link href="/admin" className={itemClass}>
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-[5px] bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+              <div className="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                 <Shield className="w-4 h-4" />
               </div>
               <div>

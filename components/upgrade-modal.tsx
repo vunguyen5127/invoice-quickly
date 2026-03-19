@@ -97,16 +97,16 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-zinc-900 rounded-[5px] shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200 border border-zinc-200 dark:border-zinc-800">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200 border border-zinc-200 dark:border-zinc-800">
         {/* Header with gradient */}
         <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 p-1.5 rounded-[5px] bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors"
+            className="absolute top-3 right-3 p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
-          <div className="w-14 h-14 bg-white/15 rounded-[5px] flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+          <div className="w-14 h-14 bg-white/15 rounded-xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
             <Crown className="w-7 h-7 text-yellow-300" />
           </div>
           <h2 className="text-xl font-bold text-white mb-2">{copy.title}</h2>
@@ -152,7 +152,7 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
           <button
             onClick={handleUpgrade}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-[5px] font-bold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/25 disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25 disabled:opacity-50 active:scale-[0.98]"
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

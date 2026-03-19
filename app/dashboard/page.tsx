@@ -137,7 +137,7 @@ export default function Dashboard() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full -mr-32 -mt-32 pointer-events-none"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 blur-3xl rounded-full -ml-32 -mb-32 pointer-events-none"></div>
           
-          <div className="w-20 h-20 bg-gradient-to-tr from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-[5px] flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50 shadow-inner">
+          <div className="w-20 h-20 bg-gradient-to-tr from-blue-50 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50 shadow-inner">
             <Building2 className="w-10 h-10" />
           </div>
           <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-3 relative z-10">Create Your First Company</h3>
@@ -171,7 +171,7 @@ export default function Dashboard() {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <div className="flex justify-between items-start mb-5 relative z-10">
-                  <div className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-[5px] flex items-center justify-center border border-zinc-200/50 dark:border-white/10 shadow-sm transition-transform duration-300 group-hover:scale-105 overflow-hidden ring-4 ring-white dark:ring-zinc-900">
+                  <div className="w-12 h-12 bg-white dark:bg-zinc-800 rounded-xl flex items-center justify-center border border-zinc-200/50 dark:border-white/10 shadow-sm transition-transform duration-300 group-hover:scale-105 overflow-hidden ring-4 ring-white dark:ring-zinc-900">
                     {company.logo_url ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img src={company.logo_url} alt={`${company.name} logo`} className="max-w-full max-h-full object-contain p-1" />
@@ -183,7 +183,7 @@ export default function Dashboard() {
                     <Tooltip content="Edit Company" position="left">
                       <button
                         onClick={(e) => handleEdit(e, company)}
-                        className="p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-zinc-100 dark:hover:bg-white/10 rounded-[5px] transition-all"
+                        className="p-1.5 text-zinc-400 hover:text-blue-600 hover:bg-zinc-100 dark:hover:bg-white/10 rounded-lg transition-all"
                       >
                         <PenLine className="w-4 h-4" />
                       </button>
@@ -191,7 +191,7 @@ export default function Dashboard() {
                     <Tooltip content="Delete Company" position="left">
                       <button
                         onClick={(e) => handleDeleteClick(e, company.id)}
-                        className="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-[5px] transition-all"
+                        className="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -234,7 +234,7 @@ export default function Dashboard() {
             <button
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1 || isRefreshing}
-              className="p-2 rounded-[5px] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -243,7 +243,7 @@ export default function Dashboard() {
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 disabled={isRefreshing}
-                className={`w-10 h-10 rounded-[5px] text-sm font-bold transition-all duration-200 ${
+                className={`w-10 h-10 rounded-lg text-sm font-bold transition-all duration-200 ${
                   currentPage === page
                     ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-md shadow-zinc-900/20 dark:shadow-white/20 scale-105"
                     : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
@@ -255,7 +255,7 @@ export default function Dashboard() {
             <button
               onClick={() => setCurrentPage(prev => Math.min(Math.ceil(totalCount / PAGE_SIZE), prev + 1))}
               disabled={currentPage === Math.ceil(totalCount / PAGE_SIZE) || isRefreshing}
-              className="p-2 rounded-[5px] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="p-2 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <ChevronRight className="w-5 h-5 rotate-180 sm:rotate-0" />
             </button>

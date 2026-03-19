@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { getDashboardStats, getUserCompanies } from "../actions";
-import { DollarSign, AlertTriangle, CheckCircle2, FileText, ArrowLeft, Loader2, Building2, TrendingUp, Filter, Calendar, LayoutGrid, Download } from "lucide-react";
+import { DollarSign, AlertTriangle, CheckCircle2, FileText, ChevronLeft, Loader2, Building2, TrendingUp, Filter, Calendar, LayoutGrid, Download } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/language-context";
 import { useAuth } from "@/contexts/auth-context";
@@ -119,21 +119,21 @@ export default function AnalyticsPage() {
       
       {/* Header & Filter Bar */}
       <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
-        <div className="flex items-start gap-4">
+        <div className="flex items-center gap-5">
           <Link 
             href="/dashboard"
-            className="mt-1 p-2.5 rounded-xl hover:bg-white dark:hover:bg-zinc-800 transition-all border border-zinc-200/60 dark:border-white/10 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 bg-white/50 dark:bg-zinc-900/50 shadow-sm"
+            className="p-2.5 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all shadow-sm"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5" />
           </Link>
           <div>
             <div className="flex items-center gap-3 mb-1">
-               <h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 italic lowercase">
-                 analystic 
+               <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                 Analytics 
                </h1>
-               {statsLoading && <Loader2 className="w-4 h-4 animate-spin text-blue-500" />}
+               {statsLoading && <Loader2 className="w-5 h-5 animate-spin text-blue-500 ml-1" />}
             </div>
-            <p className="text-zinc-500 font-medium text-sm">
+            <p className="text-zinc-500 font-medium text-sm leading-none pt-0.5">
               Financial breakdown and document performance.
             </p>
           </div>
@@ -181,7 +181,7 @@ export default function AnalyticsPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {/* Outstanding Card */}
-        <div className="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-orange-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
+        <div className="group relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-orange-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-orange-500/5 flex items-center justify-center border border-orange-500/10 transition-colors">
             <DollarSign className="w-6 h-6 text-orange-600 dark:text-orange-400" />
           </div>
@@ -192,7 +192,7 @@ export default function AnalyticsPage() {
         </div>
         
         {/* Overdue Card */}
-        <div className="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-red-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
+        <div className="group relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-red-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-red-500/5 flex items-center justify-center border border-red-500/10 transition-colors">
             <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
           </div>
@@ -206,7 +206,7 @@ export default function AnalyticsPage() {
         </div>
         
         {/* Paid Card */}
-        <div className="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
+        <div className="group relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-emerald-500/5 flex items-center justify-center border border-emerald-500/10 transition-colors">
             <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </div>
@@ -220,7 +220,7 @@ export default function AnalyticsPage() {
         </div>
         
         {/* Invoices Card */}
-        <div className="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
+        <div className="group relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-blue-500/5 flex items-center justify-center border border-blue-500/10 transition-colors">
             <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
@@ -310,14 +310,14 @@ export default function AnalyticsPage() {
                     hide={period === 'month'}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="revenue" name="Paid" radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
+                  <Bar dataKey="revenue" name="Paid Collection" radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
                      {stats.chartData.map((entry, index) => (
-                       <Cell key={`cell-${index}`} fill="#0070f3" />
+                       <Cell key={`cell-${index}`} fill="#3b82f6" />
                      ))}
                   </Bar>
-                  <Bar dataKey="overdue" name="Overdue" radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
+                  <Bar dataKey="overdue" name="Overdue Balance" radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
                      {stats.chartData.map((entry, index) => (
-                       <Cell key={`cell-${index}`} fill="#f43f5e" />
+                       <Cell key={`cell-${index}`} fill="#ef4444" />
                      ))}
                   </Bar>
                </BarChart>

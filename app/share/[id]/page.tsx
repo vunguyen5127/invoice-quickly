@@ -51,7 +51,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
         <p className="text-zinc-500 mb-8">This invoice either doesn't exist or has been deleted.</p>
         <Link 
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98]"
         >
           Create Your Own Invoice
         </Link>
@@ -75,7 +75,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
             <button
               onClick={handleDownload}
               disabled={isGenerating}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-[5px] hover:bg-blue-700 font-medium transition-colors disabled:opacity-75 shadow-sm"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98] disabled:opacity-75"
             >
               <Download className="w-4 h-4" /> <span>{isGenerating ? "Generating..." : "Download PDF"}</span>
             </button>
@@ -83,7 +83,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
         </div>
 
         {/* Invoice Container */}
-        <div className="rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        <div className="rounded-2xl shadow-xl shadow-black/5 dark:shadow-none border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-950">
            <InvoicePreview invoice={invoice} />
         </div>
         

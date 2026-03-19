@@ -165,14 +165,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
     setIsTermsOpen(invoice.showTerms);
   }, [invoice.showTerms]);
 
-  const inputBaseClass = "w-full rounded-lg border border-border bg-background px-3 py-2 text-[14px] font-medium transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
-  const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
+  const inputBaseClass = "w-full rounded-xl border border-border bg-background px-3 py-2 text-[14px] font-semibold transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
+  const labelClass = "block text-[13px] font-bold text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
-  const fieldsetBaseClass = "relative w-full rounded-lg border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
+  const fieldsetBaseClass = "relative w-full rounded-xl border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
   const fieldsetBorderDefault = "border-border";
   const fieldsetBorderRequired = "border-destructive/40 bg-destructive/5 dark:bg-destructive/10";
-  const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-400 px-1 ml-[-4px] group-focus-within:text-primary transition-colors empty:hidden max-w-full block truncate text-slate-400";
-  const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none pr-6";
+  const legendClass = "text-[12px] font-bold text-zinc-500 dark:text-zinc-500 px-1 ml-[-4px] group-focus-within:text-primary transition-colors empty:hidden max-w-full block truncate text-slate-400";
+  const inputInnerClass = "w-full bg-transparent text-[14px] font-semibold text-foreground placeholder:text-zinc-400 focus:outline-none pr-6";
 
   const ClearBtn = ({ value, onClear }: { value: string; onClear: () => void }) => {
     if (!value) return null;
@@ -248,7 +248,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             {/* Left Column: Header + Text Area */}
             <div className="flex-1 flex flex-col">
               <div className="flex items-center mb-3 h-[32px]">
-                <h4 className="text-[14px] font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
+                <h4 className="text-[14px] font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-blue-500" />
                   {t.fromYourDetails}
                 </h4>
@@ -269,13 +269,13 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             </div>
 
             {/* Right Column: Dropdown + Logo Upload */}
-            <div className="w-full md:w-[100px] flex-shrink-0 flex flex-col gap-3">
+            <div className="w-full md:w-[130px] flex-shrink-0 flex flex-col gap-3">
               {myCompanies.length > 0 ? (
                 <div className="h-[32px]">
                   <select 
                     value={selectedCompanyId}
                     onChange={handleCompanyAutoFill}
-                    className="w-full h-full text-xs truncate bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-[5px] px-2.5 text-zinc-700 dark:text-zinc-300 outline-none transition-colors cursor-pointer shadow-sm appearance-none"
+                    className="w-full h-full text-[11px] font-bold uppercase tracking-tight truncate bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 text-zinc-700 dark:text-zinc-300 outline-none transition-colors cursor-pointer shadow-sm appearance-none"
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2371717a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundPosition: `right 0.5rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `1em 1em`, paddingRight: `1.5rem` }}
                   >
                     <option value="" disabled>{t.autoFillFrom}</option>
@@ -291,7 +291,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <div className="w-[100px] h-[100px] ml-auto md:mx-0">
                 {invoice.company.logo ? (
                   <div className="relative w-[100px] h-[100px] group transition-all">
-                    <div className="w-full h-full rounded-[5px] border border-zinc-200/80 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md flex items-center justify-center p-0 shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md">
+                    <div className="w-full h-full rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={invoice.company.logo} alt="Logo" className="w-full h-full object-cover" />
                     </div>
@@ -305,14 +305,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 ) : (
                   <div 
                     onClick={() => logoInputRef.current?.click()}
-                    className="w-[100px] h-[100px] rounded-[5px] border-2 border-dashed border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 bg-white/50 hover:bg-blue-50/50 dark:bg-zinc-900/40 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 backdrop-blur-md overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 group"
+                    className="w-[100px] h-[100px] rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 bg-white/50 hover:bg-blue-50/50 dark:bg-zinc-900/40 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 backdrop-blur-md overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 group"
                   >
                     <div className="p-2.5 bg-white dark:bg-zinc-800 rounded-full shadow-sm border border-zinc-100 dark:border-zinc-700 group-hover:scale-110 transition-transform">
                       <Upload className="w-4 h-4" />
                     </div>
                     <div className="text-center mt-1">
-                      <p className="text-[12px] font-medium leading-tight">{t.companyLogo}</p>
-                      <p className="text-[10px] opacity-70 mt-1 uppercase tracking-wider font-semibold">{t.upload}</p>
+                      <p className="text-[11px] font-bold leading-tight">{t.companyLogo}</p>
+                      <p className="text-[10px] opacity-70 mt-1 uppercase tracking-wider font-bold">{t.upload}</p>
                     </div>
                   </div>
                 )}
@@ -330,7 +330,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
           {/* To Section */}
           <div className="space-y-6">
-            <h4 className="text-[14px] font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
+            <h4 className="text-[14px] font-bold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
               <User className="w-4 h-4 text-emerald-500" />
               {t.toClientDetails}
             </h4>
@@ -375,17 +375,17 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
         <div className="w-full">
           <div className="w-full">
             {/* Header - Hidden on Mobile */}
-            <div className="hidden md:grid grid-cols-24 gap-[1px] py-2 text-[12px] font-bold text-zinc-900 bg-zinc-100 dark:bg-zinc-800/50 rounded-[5px] items-center mb-[1px] pr-8 uppercase tracking-wider">
-              <div className="col-span-16 pl-5">{t.description}</div>
+            <div className="hidden md:grid grid-cols-24 gap-[1px] py-2 text-[12px] font-bold text-zinc-900 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl items-center mb-[2px] pr-8 uppercase tracking-widest">
+              <div className="col-span-16 pl-6">{t.description}</div>
               <div className="col-span-3 text-center">{t.qty}</div>
               <div className="col-span-5 text-center">{t.rate}</div>
             </div>
 
-            <div className="space-y-[1px]">
+            <div className="space-y-4 md:space-y-[2px]">
               {invoice.items.map((item, index) => (
                 <div 
                   key={item.id} 
-                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-4 md:p-0 md:pr-8 bg-zinc-50/50 md:bg-transparent rounded-[5px] md:rounded-none border md:border-none border-zinc-200/60 dark:border-zinc-800/60 mb-3 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
+                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-5 md:p-0 md:pr-8 bg-zinc-50/50 dark:bg-zinc-900/20 md:bg-transparent rounded-2xl md:rounded-none border md:border-none border-zinc-200 dark:border-zinc-800 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
                 >
                   {/* Item Label for Mobile */}
                   <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">{t.description}</div>
@@ -395,7 +395,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className={`w-full h-11 pl-4 md:pl-5 pr-4 bg-background border ${!item.description ? 'border-2 border-destructive/40' : 'border-border'} rounded-lg text-[14px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-sans shadow-sm`}
+                      className={`w-full h-12 pl-4 md:pl-6 pr-4 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-xl text-[14px] font-bold text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
@@ -409,7 +409,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1 mb-1">{t.qty}</div>
                       <input 
                         type="number" 
-                        className="w-full h-11 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[8px] md:rounded-[5px] text-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm transition-all"
+                        className="w-full h-12 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl md:rounded-lg text-center text-[14px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm transition-all"
                         value={item.quantity}
                         min="0"
                         onChange={(e) => handleItemChange(index, "quantity", Number(e.target.value))}
@@ -423,7 +423,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       <input 
                         type="number" 
                         placeholder="0.00"
-                        className={`w-full h-11 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-[8px] md:rounded-[5px] text-left text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-sans shadow-sm`}
+                        className={`w-full h-12 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-xl md:rounded-lg text-left text-[14px] font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm`}
                         value={item.rate || ''}
                         onChange={(e) => {
                           const val = e.target.value;
@@ -440,7 +440,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   </div>
 
                   {/* Delete Icon - absolute on desktop, positioned in card for mobile */}
-                  <div className="absolute right-2 top-2 md:-right-2 md:top-1/2 md:-translate-y-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10">
+                  <div className="absolute right-2 top-2 md:-right-2 md:top-1/2 md:-translate-y-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10 font-bold">
                     <Tooltip content="Remove item" position="left">
                       <button 
                         onClick={() => removeItem(item.id)}
@@ -459,7 +459,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
           <button 
             type="button"
             onClick={addItem}
-            className="w-fit flex items-center justify-center gap-2 mt-6 px-4 py-2 bg-success text-success-foreground rounded-xl text-[14px] font-bold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group"
+            className="w-fit flex items-center justify-center gap-2 mt-8 px-5 py-3 bg-success text-success-foreground rounded-2xl text-[14px] font-bold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group"
           >
             <Plus className="w-4 h-4 text-white" /> {t.addItem}
           </button>
@@ -467,7 +467,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
       </div>
 
       <div className={sectionClass}>
-        <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-5 flex items-center gap-2">
+        <h3 className="text-[16px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 mb-6 flex items-center gap-2">
           <Settings className="w-4 h-4 text-blue-500" />
           {t.settings}
         </h3>
@@ -489,18 +489,18 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </select>
             </fieldset>
             
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               {/* Discount */}
               <div className="grid grid-cols-2 gap-[2px] items-center">
-                <div className="h-11 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center px-4 transition-all">
+                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
-                    className="w-full bg-transparent border-none outline-none text-[14px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
+                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 uppercase tracking-widest text-right focus:ring-0 p-0"
                     value={(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount}
                     onChange={(e) => handleRootChange("discountLabel", e.target.value)}
                     placeholder={t.discount}
                   />
                 </div>
-                <div className="h-11 border border-zinc-200 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                   <input 
                     type="number" 
                     placeholder="0"
@@ -516,7 +516,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       onClick={() => handleRootChange("discountType", invoice.discountType === 'percentage' ? 'fixed' : 'percentage')}
                       className="w-full h-full px-2 flex items-center justify-center gap-1.5 text-zinc-400 hover:text-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all"
                     >
-                      <span className="text-[14px] font-bold text-zinc-500">
+                      <span className="text-[14px] font-black text-zinc-500">
                         {invoice.discountType === 'percentage' ? '%' : (CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$')}
                       </span>
                       <RefreshCw className="w-4 h-4 ml-0.5" />
@@ -527,15 +527,15 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
               {/* Tax */}
               <div className="grid grid-cols-2 gap-[2px] items-center">
-                <div className="h-11 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center px-4 transition-all">
+                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
-                    className="w-full bg-transparent border-none outline-none text-[14px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
+                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 uppercase tracking-widest text-right focus:ring-0 p-0"
                     value={(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax}
                     onChange={(e) => handleRootChange("taxLabel", e.target.value)}
                     placeholder={t.tax}
                   />
                 </div>
-                <div className="h-11 border border-zinc-200 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                   <input 
                     type="number" 
                     placeholder="0"
@@ -551,7 +551,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                       onClick={() => handleRootChange("taxType", invoice.taxType === 'percentage' ? 'fixed' : 'percentage')}
                       className="w-full h-full px-2 flex items-center justify-center gap-1.5 text-zinc-400 hover:text-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-all"
                     >
-                      <span className="text-[14px] font-bold text-zinc-500">
+                      <span className="text-[14px] font-black text-zinc-500">
                         {invoice.taxType === 'percentage' ? '%' : (CURRENCIES.find(c => c.code === invoice.currency)?.symbol || '$')}
                       </span>
                       <RefreshCw className="w-4 h-4 ml-0.5" />
@@ -562,15 +562,15 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
               {/* Shipping */}
               <div className="grid grid-cols-2 gap-[2px] items-center">
-                <div className="h-11 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center px-4 transition-all">
+                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
-                    className="w-full bg-transparent border-none outline-none text-[14px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
+                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 uppercase tracking-widest text-right focus:ring-0 p-0"
                     value={(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}
                     onChange={(e) => handleRootChange("shippingLabel", e.target.value)}
                     placeholder={t.shipping}
                   />
                 </div>
-                <div className="h-11 border border-zinc-200 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                   <input 
                     type="number" 
                     placeholder="0"
@@ -590,39 +590,39 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
 
           <div className="space-y-4 pt-2">
             {/* Notes Accordion */}
-              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
-                <div className="w-full h-11 flex items-center justify-between px-3.5 bg-zinc-50/50 dark:bg-zinc-800/20">
+              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+                <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
                   <div className="flex items-center gap-3 flex-1 min-w-0 h-full">
                     <label className="flex items-center gap-2 cursor-pointer shrink-0 h-full" onClick={(e) => e.stopPropagation()}>
                       <input 
                         type="checkbox" 
                         checked={invoice.showNotes} 
                         onChange={(e) => handleRootChange("showNotes", e.target.checked)}
-                        className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                        className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer transition-all"
                       />
                     </label>
                     <button 
                       type="button"
                       onClick={() => setIsNotesOpen(!isNotesOpen)} 
-                      className="flex-1 h-full text-left text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
+                      className="flex-1 h-full text-left text-[13px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
                     >
-                      {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs font-medium">{t.addNotes}</span>}
+                      {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold uppercase tracking-widest">{t.addNotes}</span>}
                     </button>
                   </div>
                   <button 
                     type="button"
                     onClick={() => setIsNotesOpen(!isNotesOpen)}
-                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
+                    className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                   >
                     {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
                   </button>
                 </div>
                 {isNotesOpen && (
-                  <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
+                  <div className="p-5 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
                     <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
                       <legend className={legendClass}>{t.notes}</legend>
                       <textarea 
-                        className={`${inputInnerClass} h-[52px] min-h-[52px] overflow-y-auto resize-none mt-1`} 
+                        className={`${inputInnerClass} h-[64px] min-h-[64px] overflow-y-auto resize-none mt-1 leading-relaxed`} 
                         value={invoice.notes} 
                         onChange={(e) => handleRootChange("notes", e.target.value)}
                         placeholder={t.notesPlaceholder}
@@ -633,39 +633,39 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </div>
 
             {/* Terms Accordion */}
-              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
-                <div className="w-full h-11 flex items-center justify-between px-3.5 bg-zinc-50/50 dark:bg-zinc-800/20">
+              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+                <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
                   <div className="flex items-center gap-3 flex-1 min-w-0 h-full">
                     <label className="flex items-center gap-2 cursor-pointer shrink-0 h-full" onClick={(e) => e.stopPropagation()}>
                       <input 
                         type="checkbox" 
                         checked={invoice.showTerms} 
                         onChange={(e) => handleRootChange("showTerms", e.target.checked)}
-                        className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                        className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer transition-all"
                       />
                     </label>
                     <button 
                       type="button"
                       onClick={() => setIsTermsOpen(!isTermsOpen)} 
-                      className="flex-1 h-full text-left text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
+                      className="flex-1 h-full text-left text-[13px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
                     >
-                      {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs font-medium">{t.addTerms}</span>}
+                      {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold uppercase tracking-widest">{t.addTerms}</span>}
                     </button>
                   </div>
                   <button 
                     type="button"
                     onClick={() => setIsTermsOpen(!isTermsOpen)}
-                    className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
+                    className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                   >
                     {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
                   </button>
                 </div>
                 {isTermsOpen && (
-                  <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
+                  <div className="p-5 border-t border-zinc-200/60 dark:border-zinc-800/60 pt-6">
                     <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
                       <legend className={legendClass}>{t.termsConditions}</legend>
                       <textarea 
-                        className={`${inputInnerClass} h-[52px] min-h-[52px] overflow-y-auto resize-none mt-1`} 
+                        className={`${inputInnerClass} h-[64px] min-h-[64px] overflow-y-auto resize-none mt-1 leading-relaxed`} 
                         value={invoice.terms} 
                         onChange={(e) => handleRootChange("terms", e.target.value)}
                         placeholder={t.termsPlaceholder}
@@ -676,20 +676,20 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               </div>
 
             {/* Signature Accordion */}
-            <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950">
+            <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
               <button 
-                className="w-full h-11 flex items-center justify-between px-3.5 text-[13px] font-semibold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors rounded-[5px]"
+                className="w-full h-12 flex items-center justify-between px-4 text-[13px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
                 onClick={() => setIsSignatureOpen(!isSignatureOpen)}
               >
-                {t.signature} {(invoice.signature || invoice.signatureName) && !isSignatureOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-xs">{t.addSignature}</span>}
+                {t.signature} {(invoice.signature || invoice.signatureName) && !isSignatureOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] uppercase font-bold tracking-widest">{t.addSignature}</span>}
                 {isSignatureOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
               </button>
               {isSignatureOpen && (
-                <div className="p-4 border-t border-zinc-200/60 dark:border-zinc-800/60 space-y-4">
+                <div className="p-5 border-t border-zinc-200/60 dark:border-zinc-800/60 space-y-5">
                   <div>
                     <div className="flex items-start gap-4">
                       {invoice.signature ? (
-                        <div className="relative h-20 px-4 rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center group shadow-sm transition-all min-w-[160px]">
+                        <div className="relative h-24 px-5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center group shadow-sm transition-all min-w-[180px]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={invoice.signature} alt="Signature" className="max-w-full max-h-full object-contain dark:invert" />
                           <button 
@@ -700,29 +700,29 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                                 signatureName: ""
                               }));
                             }}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-[5px] p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-lg p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                           >
-                            <X className="w-3 h-3" />
+                            <X className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-3 w-full">
+                        <div className="flex items-center gap-4 w-full">
                           <div 
                             onClick={() => signatureInputRef.current?.click()}
-                            className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors bg-white hover:bg-blue-50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600"
+                            className="flex-1 h-24 rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 shadow-sm"
                           >
                             <Upload className="w-5 h-5 flex-shrink-0" />
-                            <span className="text-[10px] uppercase font-semibold tracking-wider truncate px-1 text-center w-full">{t.upload}</span>
+                            <span className="text-[10px] uppercase font-bold tracking-widest truncate px-1 text-center w-full">{t.upload}</span>
                           </div>
                           
-                          <div className="flex items-center justify-center text-sm font-medium text-zinc-400 flex-shrink-0">OR</div>
+                          <div className="flex items-center justify-center text-[10px] font-black tracking-widest text-zinc-300 uppercase flex-shrink-0">OR</div>
 
                           <div 
                             onClick={() => setIsSignatureModalOpen(true)}
-                            className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors bg-white hover:bg-blue-50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600"
+                            className="flex-1 h-24 rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 shadow-sm"
                           >
                             <PenTool className="w-5 h-5 flex-shrink-0" />
-                            <span className="text-[10px] uppercase font-semibold tracking-wider truncate px-1 text-center w-full">{t.draw}</span>
+                            <span className="text-[10px] uppercase font-bold tracking-widest truncate px-1 text-center w-full">{t.draw}</span>
                           </div>
                         </div>
                       )}
