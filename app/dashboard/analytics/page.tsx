@@ -50,7 +50,7 @@ export default function AnalyticsPage() {
       <div className="mb-8 flex items-center gap-4">
         <Link 
           href="/dashboard"
-          className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+          className="p-2.5 rounded-[5px] hover:bg-white dark:hover:bg-zinc-800 transition-all shadow-sm border border-transparent hover:border-zinc-200 dark:hover:border-white/10 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 bg-zinc-50 dark:bg-zinc-900/50"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
@@ -61,42 +61,50 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-6 flex flex-col gap-4">
-          <div className="w-12 h-12 rounded-full bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center">
+        {/* Outstanding Card */}
+        <div className="group relative bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-[5px] p-6 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1 hover:border-amber-500/30 dark:hover:border-amber-400/30 transition-all duration-300 flex flex-col gap-4 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="w-12 h-12 rounded-[5px] bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center border border-amber-100 dark:border-amber-900/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10">
             <DollarSign className="w-6 h-6 text-amber-600 dark:text-amber-400" />
           </div>
-          <div>
-            <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.totalOutstanding || "Total Outstanding"}</p>
+          <div className="relative z-10">
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.totalOutstanding || "Total Outstanding"}</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 break-words">${stats.totalOutstanding.toLocaleString()}</p>
           </div>
         </div>
         
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-6 flex flex-col gap-4">
-          <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+        {/* Overdue Card */}
+        <div className="group relative bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-[5px] p-6 hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-1 hover:border-red-500/30 dark:hover:border-red-400/30 transition-all duration-300 flex flex-col gap-4 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="w-12 h-12 rounded-[5px] bg-red-50 dark:bg-red-900/20 flex items-center justify-center border border-red-100 dark:border-red-900/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10">
             <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
           </div>
-          <div>
-            <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.overdueInvoices || "Overdue"}</p>
+          <div className="relative z-10">
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.overdueInvoices || "Overdue"}</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{stats.overdueCount}</p>
           </div>
         </div>
         
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-6 flex flex-col gap-4">
-          <div className="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center">
+        {/* Paid Card */}
+        <div className="group relative bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-[5px] p-6 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1 hover:border-emerald-500/30 dark:hover:border-emerald-400/30 transition-all duration-300 flex flex-col gap-4 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="w-12 h-12 rounded-[5px] bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center border border-emerald-100 dark:border-emerald-900/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10">
             <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </div>
-          <div>
-            <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.paidThisMonth || "Paid This Month"}</p>
+          <div className="relative z-10">
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.paidThisMonth || "Paid This Month"}</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 break-words">${stats.paidThisMonth.toLocaleString()}</p>
           </div>
         </div>
         
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] p-6 flex flex-col gap-4">
-          <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+        {/* Invoices Count Card */}
+        <div className="group relative bg-white/60 dark:bg-zinc-900/40 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-[5px] p-6 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 hover:border-blue-500/30 dark:hover:border-blue-400/30 transition-all duration-300 flex flex-col gap-4 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="w-12 h-12 rounded-[5px] bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center border border-blue-100 dark:border-blue-900/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10">
             <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
-          <div>
-            <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.totalInvoices || "Total Invoices"}</p>
+          <div className="relative z-10">
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{t.totalInvoices || "Total Invoices"}</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{stats.totalInvoices}</p>
           </div>
         </div>

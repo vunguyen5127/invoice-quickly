@@ -165,12 +165,12 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
     setIsTermsOpen(invoice.showTerms);
   }, [invoice.showTerms]);
 
-  const inputBaseClass = "w-full rounded-[5px] border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 hover:border-zinc-400 dark:hover:border-zinc-600 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400";
+  const inputBaseClass = "w-full rounded-[5px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/50 px-3 py-2 text-[14px] font-medium transition-all duration-300 focus:outline-none focus:border-blue-500/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 shadow-sm";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
-  const fieldsetBaseClass = "relative w-full rounded-[5px] border bg-white dark:bg-zinc-950/50 px-3 pb-2 pt-0 transition-all focus-within:border-blue-600 dark:focus-within:border-blue-500 focus-within:border-2 hover:border-zinc-400 dark:hover:border-zinc-600 group min-w-0";
-  const fieldsetBorderDefault = "border-zinc-300 dark:border-zinc-700";
-  const fieldsetBorderRequired = "border-2 border-red-300/80 dark:border-red-500/30";
+  const fieldsetBaseClass = "relative w-full rounded-[5px] border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-blue-500/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
+  const fieldsetBorderDefault = "border-zinc-200 dark:border-zinc-800";
+  const fieldsetBorderRequired = "border-red-400 dark:border-red-500/60 bg-red-50/50 dark:bg-red-950/20";
   const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-400 px-1 ml-[-4px] group-focus-within:text-blue-600 dark:group-focus-within:text-blue-500 transition-colors empty:hidden max-w-full block truncate";
   const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none pr-6";
 
@@ -291,7 +291,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <div className="w-[100px] h-[100px] ml-auto md:mx-0">
                 {invoice.company.logo ? (
                   <div className="relative w-[100px] h-[100px] group transition-all">
-                    <div className="w-full h-full rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden">
+                    <div className="w-full h-full rounded-[5px] border border-zinc-200/80 dark:border-zinc-800 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md flex items-center justify-center p-0 shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={invoice.company.logo} alt="Logo" className="w-full h-full object-cover" />
                     </div>
@@ -305,7 +305,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                 ) : (
                   <div 
                     onClick={() => logoInputRef.current?.click()}
-                    className="w-[100px] h-[100px] rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-400 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all bg-zinc-50 hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 overflow-hidden"
+                    className="w-[100px] h-[100px] rounded-[5px] border-2 border-dashed border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 bg-white/50 hover:bg-blue-50/50 dark:bg-zinc-900/40 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 backdrop-blur-md overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 group"
                   >
                     <div className="p-2.5 bg-white dark:bg-zinc-800 rounded-full shadow-sm border border-zinc-100 dark:border-zinc-700 group-hover:scale-110 transition-transform">
                       <Upload className="w-4 h-4" />

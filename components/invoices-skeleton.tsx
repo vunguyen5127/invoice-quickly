@@ -13,7 +13,7 @@ export function InvoicesSkeleton() {
         <div className="flex items-center gap-3">
           <div className="shrink-0 w-10 h-10 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
           <div className="h-9 w-64 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
-          <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800/60 rounded-lg"></div>
+          <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800/60 rounded-[5px]"></div>
         </div>
         <div className="h-10 w-full sm:w-40 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
       </div>
@@ -23,7 +23,7 @@ export function InvoicesSkeleton() {
         {/* Table Header with search */}
         <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="h-6 w-32 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
-          <div className="h-9 w-full sm:w-64 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
+          <div className="h-9 w-full sm:w-64 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
         </div>
 
         {/* Table Content Skeleton */}

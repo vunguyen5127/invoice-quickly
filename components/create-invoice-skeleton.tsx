@@ -14,9 +14,9 @@ export function CreateInvoiceSkeleton() {
             <div className="h-4 w-20 bg-zinc-100 dark:bg-zinc-800/60 rounded-full ml-1"></div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-8 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-lg hidden sm:block"></div>
-            <div className="h-8 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-lg hidden sm:block"></div>
-            <div className="h-8 w-8 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
+            <div className="h-8 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-[5px] hidden sm:block"></div>
+            <div className="h-8 w-24 bg-zinc-200 dark:bg-zinc-800 rounded-[5px] hidden sm:block"></div>
+            <div className="h-8 w-8 bg-zinc-200 dark:bg-zinc-800 rounded-[5px]"></div>
             <div className="h-8 w-8 bg-zinc-200 dark:bg-zinc-800 rounded-full"></div>
           </div>
         </div>

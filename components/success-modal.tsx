@@ -19,7 +19,7 @@ export function SuccessModal({ isOpen, onClose, title = "Success", message }: Su
         onClick={onClose}
       />
       
-      <div className="relative bg-white dark:bg-zinc-900 rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative bg-white dark:bg-zinc-900 rounded-[5px] shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         <div className="p-6">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">

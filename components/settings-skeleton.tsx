@@ -41,7 +41,7 @@ export function SettingsSkeleton() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
             <div className="space-y-1.5">
               <div className="h-4 w-24 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
               <div className="h-3 w-16 bg-zinc-100 dark:bg-zinc-800/60 rounded"></div>
@@ -51,7 +51,7 @@ export function SettingsSkeleton() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
             <div className="space-y-1.5">
               <div className="h-4 w-20 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
               <div className="h-3 w-32 bg-zinc-100 dark:bg-zinc-800/60 rounded"></div>
@@ -68,7 +68,7 @@ export function SettingsSkeleton() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
             <div className="space-y-1.5">
               <div className="h-4 w-16 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
               <div className="h-3 w-40 bg-zinc-100 dark:bg-zinc-800/60 rounded"></div>
@@ -78,7 +78,7 @@ export function SettingsSkeleton() {
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
+            <div className="p-2 rounded-[5px] bg-zinc-100 dark:bg-zinc-800 w-8 h-8"></div>
             <div className="space-y-1.5">
               <div className="h-4 w-12 bg-zinc-200 dark:bg-zinc-800 rounded"></div>
               <div className="h-3 w-36 bg-zinc-100 dark:bg-zinc-800/60 rounded"></div>
