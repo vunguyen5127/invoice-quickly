@@ -1,13 +1,15 @@
 import { supabase } from "@/utils/supabase/client";
 
+import { Session } from "@supabase/supabase-js";
+
 let isLoggingInProgress = false;
 
-export async function logUserLogin() {
+export async function logUserLogin(providedSession?: Session | null) {
   if (!supabase || isLoggingInProgress) return;
   isLoggingInProgress = true;
 
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    const session = providedSession || (await supabase.auth.getSession()).data.session;
     if (!session?.user) return;
 
     const user = session.user;

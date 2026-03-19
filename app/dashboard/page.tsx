@@ -15,8 +15,12 @@ import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import { FREE_ENTITLEMENTS } from "@/types/subscription";
 import { useLanguage } from "@/contexts/language-context";
 
+import { useAuth } from "@/contexts/auth-context";
+
 export default function Dashboard() {
   const { t } = useLanguage();
+  const { session, loading: authLoading } = useAuth();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [companies, setCompanies] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,22 +31,15 @@ export default function Dashboard() {
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [stats, setStats] = useState({ totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0 });
   const router = useRouter();
 
   const PAGE_SIZE = 12;
 
   const loadData = async (showRefreshLoader = false) => {
-    if (!supabase) return;
+    if (!session) return;
     if (showRefreshLoader) setIsRefreshing(true);
     
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      router.push("/login?redirect=/dashboard");
-      return;
-    }
-
     setUserEmail(session.user.email || null);
     const data = await getUserCompanies(session.access_token, currentPage, PAGE_SIZE);
     setCompanies(data.data);
@@ -59,8 +56,13 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    if (authLoading) return;
+    if (!session) {
+      router.push("/login?redirect=/dashboard");
+      return;
+    }
     loadData(loading ? false : true);
-  }, [router, currentPage]);
+  }, [router, currentPage, session, authLoading]);
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault(); // Prevent navigating to company link

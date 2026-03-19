@@ -152,6 +152,8 @@ import PaddleScript from "@/components/paddle/PaddleScript";
 
 import ClientMetadata from "@/components/client-metadata";
 
+import { AuthProvider } from "@/contexts/auth-context";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -166,15 +168,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${beVietnam.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <LanguageProvider>
-            <PaddleScript />
-            <LogUserSession />
-            <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
-              <SiteHeader />
-              <main className="flex-1">{children}</main>
-              <SiteFooter />
-            </div>
-          </LanguageProvider>
+          <AuthProvider>
+            <LanguageProvider>
+              <PaddleScript />
+              <LogUserSession />
+              <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 flex flex-col font-sans">
+                <SiteHeader />
+                <main className="flex-1">{children}</main>
+                <SiteFooter />
+              </div>
+            </LanguageProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

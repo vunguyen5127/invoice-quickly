@@ -9,42 +9,13 @@ import { getBaseUrl } from "@/utils/url";
 import { useLanguage } from "@/contexts/language-context";
 import Link from "next/link";
 
+import { useAuth } from "@/contexts/auth-context";
+
 export function AuthButton() {
   const { t } = useLanguage();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    // Check active sessions and sets the user
-    const getSession = async () => {
-      if (!supabase) {
-        setLoading(false);
-        return;
-      }
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      setLoading(false);
-    };
-
-    getSession();
-
-    if (!supabase) return;
-
-    // Listen for changes on auth state (logged in, signed out, etc.)
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleLogin = async () => {
     if (!supabase) {
@@ -68,8 +39,7 @@ export function AuthButton() {
   };
 
   const handleLogout = async () => {
-    if (!supabase) return;
-    await supabase.auth.signOut();
+    await signOut();
     router.push("/");
   };
 

@@ -21,8 +21,11 @@ const CreateCompanyModal = dynamic(() => import("@/components/create-company-mod
 const SuccessModal = dynamic(() => import("@/components/success-modal").then((mod) => mod.SuccessModal));
 import { useLanguage } from "@/contexts/language-context";
 
+import { useAuth } from "@/contexts/auth-context";
+
 function CreateInvoiceContent() {
   const { t } = useLanguage();
+  const { session, loading: authLoading } = useAuth();
   const [invoice, setInvoice] = useState<InvoiceState>(initialInvoiceState);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -43,14 +46,11 @@ function CreateInvoiceContent() {
 
   // Load from localStorage on mount and prefill user name
   useEffect(() => {
+    if (authLoading) return;
+    
     const initData = async () => {
       let draftInvoice = initialInvoiceState;
       const isNew = searchParams.get("new") === "1";
-
-      // Check login state first
-      const {
-        data: { session },
-      } = (await supabase?.auth.getSession()) || { data: { session: null } };
       const userIsLoggedIn = !!session?.user;
 
       if (isNew) {
@@ -107,7 +107,7 @@ function CreateInvoiceContent() {
     };
 
     initData();
-  }, []);
+  }, [authLoading, session, searchParams]);
 
   // Save to localStorage on change
   useEffect(() => {
