@@ -60,7 +60,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
-      <nav aria-label="Main navigation" className="container flex h-16 items-center justify-between px-4 sm:px-6 max-w-7xl mx-auto">
+      <nav aria-label="Main navigation" className="container flex h-14 items-center justify-between px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-8">
           <Link
             href="/"
