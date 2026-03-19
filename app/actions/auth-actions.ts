@@ -3,10 +3,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { sendNewUserAlert } from "@/utils/email-service";
 
+import config from "@/utils/config";
+
 // Using service role key to bypass RLS and count logs
 const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  config.supabase.url,
+  config.supabase.serviceRole
 );
 
 export async function notifyAdminOnNewUser(userData: {

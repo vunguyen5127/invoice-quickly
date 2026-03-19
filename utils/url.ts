@@ -3,7 +3,7 @@ import config from "@/utils/config";
 /**
  * Gets the base URL for the application.
  * Prioritizes actual browser origin on the client to ensure reliability across environments.
- * Falls back to config.siteUrl or NEXT_PUBLIC_VERCEL_URL for server-side usage.
+ * Falls back to config.siteUrl for server-side usage.
  */
 export const getBaseUrl = () => {
   // 1. Client-side: Always trust the current origin
@@ -17,8 +17,7 @@ export const getBaseUrl = () => {
     return url.replace(/\/$/, "");
   }
 
-  // 3. Last resort: Vercel environment or local development fallback
-  const fallback = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
-  const url = fallback.includes("http") ? fallback : `https://${fallback}`;
-  return url.replace(/\/$/, "");
+  // 3. Last resort: local development fallback
+  const fallback = "http://localhost:3000";
+  return fallback;
 };

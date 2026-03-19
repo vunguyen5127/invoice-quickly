@@ -2,22 +2,21 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { InvoiceState } from "@/types/invoice";
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/utils/config";
+import config from "@/utils/config";
 
 function getServerSupabase(token: string) {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  const { url, anonKey } = config.supabase;
+
+  if (!url || !anonKey) {
     console.error("Server-side Supabase initialization failed: Missing env vars");
-    console.log("NEXT_PUBLIC_SUPABASE_URL:", SUPABASE_URL ? "Present" : "Missing");
-    console.log("NEXT_PUBLIC_SUPABASE_ANON_KEY:", SUPABASE_ANON_KEY ? "Present" : "Missing");
+    console.log("NEXT_PUBLIC_SUPABASE_URL:", url ? "Present" : "Missing");
+    console.log("NEXT_PUBLIC_SUPABASE_ANON_KEY:", anonKey ? "Present" : "Missing");
     throw new Error("Missing Supabase environment variables");
   }
-  return createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    }
-  );
+
+  return createClient(url, anonKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } }
+  });
 }
 
 export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState, companyId?: string) {

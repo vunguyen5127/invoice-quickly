@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { sendInvoiceReminderEmail } from "@/utils/email-service";
 import { getCurrencySymbol } from "@/types/invoice";
 
+import config from "@/utils/config";
+
 /**
  * Daily cron job that:
  * 1. Keeps Supabase alive (prevents hibernation)
@@ -13,12 +15,11 @@ export async function GET(request: Request) {
   console.log("[cron/invoice-check] triggered at:", new Date().toISOString());
 
   const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (authHeader !== `Bearer ${config.cron.secret}`) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const { url: supabaseUrl, serviceRole: supabaseServiceRoleKey } = config.supabase;
 
   if (!supabaseUrl || !supabaseServiceRoleKey) {
     return new NextResponse("Supabase configuration missing", { status: 500 });

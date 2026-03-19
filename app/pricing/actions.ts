@@ -4,9 +4,10 @@ import { createClient } from "@supabase/supabase-js";
 import { PADDLE_CONFIG } from "@/utils/paddle";
 import { isTester } from "@/utils/tester";
 
+import config from "@/utils/config";
+
 function getServerSupabase(token?: string) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { url, anonKey: key } = config.supabase;
   if (!url || !key) {
     throw new Error("Missing Supabase environment variables");
   }
@@ -39,7 +40,7 @@ export async function createCheckoutTransaction(token: string, isYearly: boolean
 
   if (authError || !user) {
     console.error("[Paddle] Supabase Auth Error Object:", JSON.stringify(authError, null, 2));
-    console.log(`[Paddle] Supabase URL in use: ${process.env.NEXT_PUBLIC_SUPABASE_URL}`);
+    console.log(`[Paddle] Supabase URL in use: ${config.supabase.url}`);
     throw new Error(`Authentication failed: ${authError?.message || "Auth session missing!"}`);
   }
 
@@ -60,7 +61,7 @@ export async function createCheckoutTransaction(token: string, isYearly: boolean
     const response = await fetch(`${baseUrl}/transactions`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.PADDLE_API_KEY}`,
+        "Authorization": `Bearer ${config.paddle.apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

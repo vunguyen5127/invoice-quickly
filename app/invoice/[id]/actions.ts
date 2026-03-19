@@ -2,15 +2,15 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { InvoiceState } from "@/types/invoice";
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/utils/config";
+import config from "@/utils/config";
 
 function getServerSupabase(token: string) {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  if (!config.supabase.url || !config.supabase.anonKey) {
     throw new Error("Missing Supabase environment variables");
   }
   return createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
+    config.supabase.url,
+    config.supabase.anonKey,
     {
       global: { headers: { Authorization: `Bearer ${token}` } }
     }

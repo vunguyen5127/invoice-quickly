@@ -1,19 +1,16 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/utils/config";
+import config from "@/utils/config";
 
 function getServerSupabase(token: string) {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  const { url, anonKey } = config.supabase;
+  if (!url || !anonKey) {
     throw new Error("Missing Supabase environment variables");
   }
-  return createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    }
-  );
+  return createClient(url, anonKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } }
+  });
 }
 
 export async function getUserCompanies(token: string, page = 1, pageSize = 12) {

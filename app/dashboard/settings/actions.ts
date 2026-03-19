@@ -3,17 +3,16 @@
 import { createClient } from "@supabase/supabase-js";
 import { Subscription } from "@/types/subscription";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
-import { SUPABASE_URL, SUPABASE_ANON_KEY, PADDLE_API_KEY, PADDLE_ENV } from "@/utils/config";
+import config from "@/utils/config";
 
 function getServerSupabase(token: string) {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  const { url, anonKey } = config.supabase;
+  if (!url || !anonKey) {
     throw new Error("Missing Supabase environment variables");
   }
-  return createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    { global: { headers: { Authorization: `Bearer ${token}` } } }
-  );
+  return createClient(url, anonKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } }
+  });
 }
 
 export async function getUserSubscription(token: string): Promise<Subscription | null> {
@@ -37,12 +36,12 @@ export async function getUserSubscription(token: string): Promise<Subscription |
 }
 
 export async function cancelSubscription(token: string, subscriptionId: string) {
-  if (!PADDLE_API_KEY) {
+  if (!config.paddle.apiKey) {
     console.error("PADDLE_API_KEY is missing");
     return { error: "PADDLE_API_KEY_MISSING" };
   }
 
-  const isSandbox = PADDLE_ENV === "sandbox";
+  const isSandbox = config.paddle.env === "sandbox";
   const baseUrl = isSandbox ? "https://sandbox-api.paddle.com" : "https://api.paddle.com";
 
   try {
@@ -50,7 +49,7 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
     const getResponse = await fetch(`${baseUrl}/subscriptions/${subscriptionId}`, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${PADDLE_API_KEY}`,
+        "Authorization": `Bearer ${config.paddle.apiKey}`,
       },
     });
 
@@ -68,7 +67,7 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
     const response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}/cancel`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${PADDLE_API_KEY}`,
+        "Authorization": `Bearer ${config.paddle.apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -112,12 +111,12 @@ export async function cancelSubscription(token: string, subscriptionId: string) 
 }
 
 export async function resumeSubscription(token: string, subscriptionId: string) {
-  if (!PADDLE_API_KEY) {
+  if (!config.paddle.apiKey) {
     console.error("PADDLE_API_KEY is missing");
     return { error: "PADDLE_API_KEY_MISSING" };
   }
 
-  const isSandbox = PADDLE_ENV === "sandbox";
+  const isSandbox = config.paddle.env === "sandbox";
   const baseUrl = isSandbox ? "https://sandbox-api.paddle.com" : "https://api.paddle.com";
 
   try {
@@ -125,7 +124,7 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
     const getResponse = await fetch(`${baseUrl}/subscriptions/${subscriptionId}`, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${PADDLE_API_KEY}`,
+        "Authorization": `Bearer ${config.paddle.apiKey}`,
       },
     });
 
@@ -142,7 +141,7 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
       response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}`, {
         method: "PATCH",
         headers: {
-          "Authorization": `Bearer ${PADDLE_API_KEY}`,
+          "Authorization": `Bearer ${config.paddle.apiKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -154,7 +153,7 @@ export async function resumeSubscription(token: string, subscriptionId: string) 
       response = await fetch(`${baseUrl}/subscriptions/${subscriptionId}/activate`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${PADDLE_API_KEY}`,
+          "Authorization": `Bearer ${config.paddle.apiKey}`,
           "Content-Type": "application/json",
         },
       });

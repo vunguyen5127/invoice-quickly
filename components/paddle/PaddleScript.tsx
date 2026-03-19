@@ -8,11 +8,12 @@ declare global {
   }
 }
 
+import config from "@/utils/config";
+
 export default function PaddleScript() {
   useEffect(() => {
     // Determine environment and token
-    const env = (process.env.NEXT_PUBLIC_PADDLE_ENV || 'sandbox') as 'sandbox' | 'live';
-    const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
+    const { env, clientToken: token } = config.paddle;
 
     if (!token) {
       return;

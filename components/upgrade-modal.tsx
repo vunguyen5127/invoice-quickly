@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { X, Crown, Check, Loader2, Shield } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
+import config from "@/utils/config";
 
 declare global {
   interface Window {
@@ -73,8 +74,8 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
       }
 
       const priceId = isYearly
-        ? process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY
-        : process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY;
+        ? config.paddle.prices.proYearly
+        : config.paddle.prices.proMonthly;
 
       if (window.Paddle) {
         window.Paddle.Checkout.open({
