@@ -25,7 +25,7 @@ export async function seedAuthenticatedSession(page: Page, email = "test@example
   const fakeSession = {
     provider_token: null,
     provider_refresh_token: null,
-    access_token: "fake-access-token",
+    access_token: "fake.access.token",
     expires_in: 3600,
     expires_at: Math.floor(Date.now() / 1000) + 3600,
     refresh_token: "fake-refresh-token",

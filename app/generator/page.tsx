@@ -134,11 +134,6 @@ function CreateInvoiceContent() {
   const handleSaveClick = async () => {
     setIsSaving(true);
 
-    // Check if user is logged in
-    const {
-      data: { session },
-    } = (await supabase?.auth.getSession()) || { data: { session: null } };
-
     if (!session) {
       setIsSaving(false);
       setIsGuestSaveModalOpen(true);
