@@ -437,10 +437,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </td>
                           <td className="px-6 py-5 text-right">
                             <div className="flex items-center justify-end gap-1 transition-opacity">
-                               <Tooltip content="Edit Invoice">
+                               <Tooltip content={inv.status === 'paid' ? "Paid invoices cannot be edited" : "Edit Invoice"}>
                                  <Link
                                     href={`/invoice/${inv.id}/edit`}
-                                    className="p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors cursor-pointer"
+                                    className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                                      inv.status === 'paid' 
+                                        ? "text-zinc-200 dark:text-zinc-700 pointer-events-none" 
+                                        : "text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                                    }`}
                                   >
                                     <PenLine className="w-4 h-4" />
                                   </Link>
@@ -520,10 +524,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </div>
                           
                           <div className="flex items-center gap-2 p-1.5 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-100 dark:border-zinc-800" onClick={(e) => e.stopPropagation()}>
-                             <Tooltip content="Edit">
+                             <Tooltip content={inv.status === 'paid' ? "Paid invoices cannot be edited" : "Edit"}>
                                <Link 
                                  href={`/invoice/${inv.id}/edit`} 
-                                 className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all"
+                                 className={`flex-1 flex items-center justify-center p-3 rounded-xl transition-all ${
+                                   inv.status === 'paid'
+                                     ? "text-zinc-300 dark:text-zinc-700 bg-zinc-50/50 dark:bg-zinc-800/30 pointer-events-none"
+                                     : "text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 active:bg-zinc-50 dark:active:bg-zinc-800"
+                                 }`}
                                >
                                   <PenLine className="w-4 h-4" />
                                </Link>

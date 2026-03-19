@@ -65,9 +65,9 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
     new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
 
   return (
-    <div ref={containerRef} className="w-full border border-zinc-200 dark:border-zinc-800 shadow-sm rounded-[5px] overflow-hidden">
+    <div ref={containerRef} className="w-full">
       <div 
-        className="bg-white text-zinc-900 overflow-hidden sm:rounded-[5px] border" 
+        className="mx-auto bg-white text-zinc-900 overflow-hidden rounded-[5px] border" 
         style={{
           width: "100%",
           minWidth: "210mm",     // Force A4 width minimum

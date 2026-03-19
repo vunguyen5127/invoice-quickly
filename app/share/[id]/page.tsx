@@ -5,7 +5,7 @@ import { getPublicInvoiceById } from "./actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
-import { Download } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 
@@ -77,13 +77,18 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
               disabled={isGenerating}
               className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98] disabled:opacity-75"
             >
-              <Download className="w-4 h-4" /> <span>{isGenerating ? "Generating..." : "Download PDF"}</span>
+              {isGenerating ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              <span>Download PDF</span>
             </button>
           </div>
         </div>
 
         {/* Invoice Container */}
-        <div className="rounded-2xl shadow-xl shadow-black/5 dark:shadow-none border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-zinc-950">
+        <div className="rounded-2xl overflow-hidden">
            <InvoicePreview invoice={invoice} />
         </div>
         
