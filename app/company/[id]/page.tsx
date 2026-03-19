@@ -59,9 +59,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const { t } = useLanguage();
   const router = useRouter();
 
-  // Search, Sort, Pagination state
+  // Search, Sort, Pagination, Filter state
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +89,8 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       pageSize: itemsPerPage,
       search: debouncedSearch,
       sortField,
-      sortDir
+      sortDir,
+      status: statusFilter
     });
 
     setInvoices(result.data);
@@ -126,14 +128,19 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     initLoad();
   }, [router, resolvedParams.id]);
 
-  // Handle updates to paging/sorting/searching
+  // Handle updates to paging/sorting/searching/filtering
   useEffect(() => {
     if (!loading) {
       loadInvoices(true);
     }
-  }, [currentPage, itemsPerPage, debouncedSearch, sortField, sortDir]);
+  }, [currentPage, itemsPerPage, debouncedSearch, sortField, sortDir, statusFilter]);
 
   const totalPages = Math.max(1, Math.ceil(totalCount / itemsPerPage));
+
+  const handleStatusFilterChange = (status: string) => {
+    setStatusFilter(status);
+    setCurrentPage(1);
+  };
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -233,17 +240,26 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           >
           </button>
           
-          <button
-            onClick={handleExportExcel}
-            disabled={isExporting}
-            className="hidden sm:flex items-center justify-center gap-2.5 px-7 h-11 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/80 font-semibold text-sm transition-all shadow-sm active:scale-[0.98] whitespace-nowrap disabled:opacity-70"
-          >
-            {isExporting ? <Loader2 className="w-4 h-4 text-emerald-500 animate-spin" /> : <Download className="w-4 h-4 text-emerald-500" />}
-            <span>{isExporting ? "Exporting..." : "Export Excel"}</span>
-          </button>
+          <Tooltip content="Export All Invoices to Excel (Pro Feature)">
+            <button
+              onClick={handleExportExcel}
+              disabled={isExporting}
+              className="group hidden sm:flex items-center justify-center gap-2.5 px-8 h-11 bg-white dark:bg-zinc-900 border border-emerald-200 dark:border-emerald-900/50 text-emerald-700 dark:text-emerald-400 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-300 dark:hover:border-emerald-800 font-bold text-sm transition-all shadow-lg shadow-emerald-500/10 active:scale-[0.98] whitespace-nowrap disabled:opacity-50 cursor-pointer overflow-hidden relative"
+            >
+               {/* Subtle background glow on hover */}
+               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+               
+               {isExporting ? (
+                 <Loader2 className="w-4 h-4 animate-spin text-emerald-500" />
+               ) : (
+                 <Download className="w-4 h-4 text-emerald-500 transition-transform group-hover:-translate-y-0.5" />
+               )}
+               <span className="relative">{isExporting ? "Exporting..." : "Export Excel"}</span>
+            </button>
+          </Tooltip>
           <Link 
             href={`/company/${resolvedParams.id}/new`}
-            className="hidden sm:flex items-center justify-center gap-2.5 px-8 h-11 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] whitespace-nowrap"
+            className="hidden sm:flex items-center justify-center gap-2.5 px-8 h-11 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] whitespace-nowrap cursor-pointer"
           >
             <Plus className="w-4.5 h-4.5" />
             <span>Create Invoice</span>
@@ -258,21 +274,35 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             Invoices
             <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
           </h2>
-          {invoices.length > 0 && (
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          {(totalCount > 0 || statusFilter !== 'all' || debouncedSearch !== '') && (
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <div className="flex items-center gap-2 text-sm text-zinc-500 shrink-0">
-                <span className="hidden xs:inline whitespace-nowrap">Show:</span>
+                <span className="hidden xs:inline whitespace-nowrap font-medium text-zinc-400 uppercase text-[10px] tracking-widest mr-1">Show:</span>
                 <select
                   value={itemsPerPage}
                   onChange={(e) => {
                     setItemsPerPage(Number(e.target.value));
                     setCurrentPage(1);
                   }}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded px-2 py-1.5 sm:py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all cursor-pointer text-[13px] sm:text-sm"
+                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[65px] text-left"
+                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.3rem center', backgroundSize: '1rem' }}
                 >
                   {PAGE_SIZE_OPTIONS.map(option => (
                     <option key={option} value={option}>{option}</option>
                   ))}
+                </select>
+                <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 hidden sm:block mx-1" />
+                <select
+                  value={statusFilter}
+                  onChange={(e) => handleStatusFilterChange(e.target.value)}
+                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[100px]"
+                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}
+                >
+                  <option value="all">All Status</option>
+                  <option value="draft">Draft</option>
+                  <option value="sent">Sent</option>
+                  <option value="paid">Paid</option>
+                  <option value="overdue">Overdue</option>
                 </select>
               </div>
               <div className="relative flex-1 sm:w-64">
@@ -319,16 +349,32 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                     <thead className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
                       <tr>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
-                          Invoice Number <SortIcon field="invoice_number" />
+                          <Tooltip content="Sort by Invoice Number">
+                             <div className="flex items-center gap-1">
+                               Invoice Number <SortIcon field="invoice_number" />
+                             </div>
+                          </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
-                          Client <SortIcon field="client_name" />
+                          <Tooltip content="Sort by Client Name">
+                             <div className="flex items-center gap-1">
+                               Client <SortIcon field="client_name" />
+                             </div>
+                          </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
-                          Date Created <SortIcon field="created_at" />
+                          <Tooltip content="Sort by Date Created">
+                             <div className="flex items-center gap-1">
+                               Date Created <SortIcon field="created_at" />
+                             </div>
+                          </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
-                          Amount <SortIcon field="total_amount" />
+                          <Tooltip content="Sort by Total Amount">
+                             <div className="flex items-center justify-end gap-1">
+                               Amount <SortIcon field="total_amount" />
+                             </div>
+                          </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-center">
                           {t.status}
@@ -356,30 +402,38 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </td>
                           <td className="px-6 py-5 text-right">
                             <div className="flex items-center justify-end gap-1 transition-opacity">
-                               <Link
-                                  href={`/invoice/${inv.id}/edit`}
-                                  className="p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors"
-                                >
-                                  <PenLine className="w-4 h-4" />
-                                </Link>
-                                <button
-                                  onClick={() => handleDuplicate(inv.id)}
-                                  className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all"
-                                >
-                                  <Copy className="w-4 h-4" />
-                                </button>
-                                <Link
-                                  href={`/invoice/${inv.id}`}
-                                  className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
-                                >
-                                  <Eye className="w-4 h-4" />
-                                </Link>
-                                <button
-                                  onClick={() => handleDeleteClick(inv.id)}
-                                  className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
+                               <Tooltip content="Edit Invoice">
+                                 <Link
+                                    href={`/invoice/${inv.id}/edit`}
+                                    className="p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors cursor-pointer"
+                                  >
+                                    <PenLine className="w-4 h-4" />
+                                  </Link>
+                               </Tooltip>
+                               <Tooltip content="Duplicate Invoice">
+                                  <button
+                                    onClick={() => handleDuplicate(inv.id)}
+                                    className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all cursor-pointer"
+                                  >
+                                    <Copy className="w-4 h-4" />
+                                  </button>
+                               </Tooltip>
+                               <Tooltip content="View Invoice">
+                                  <Link
+                                    href={`/invoice/${inv.id}`}
+                                    className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors cursor-pointer"
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                  </Link>
+                               </Tooltip>
+                               <Tooltip content="Delete Invoice">
+                                  <button
+                                    onClick={() => handleDeleteClick(inv.id)}
+                                    className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors cursor-pointer"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                               </Tooltip>
                             </div>
                           </td>
                         </tr>
@@ -389,32 +443,80 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                 </div>
 
                 {/* Mobile Card View */}
-                <div className="sm:hidden divide-y divide-zinc-100 dark:divide-zinc-800/50">
+                <div className="sm:hidden px-4 py-10 space-y-6">
                   {invoices.map((inv: any) => (
-                    <div key={inv.id} className="p-5 flex flex-col gap-4 active:bg-zinc-50 dark:active:bg-zinc-800/30 transition-colors">
-                       <div className="flex items-start justify-between">
-                          <div>
-                             <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1">{inv.invoice_number}</p>
-                             <h4 className="font-bold text-zinc-900 dark:text-zinc-100 line-clamp-1 text-base">{inv.client_name}</h4>
-                             <p className="text-xs text-zinc-500 mt-0.5">{format(new Date(inv.created_at), "MMM dd, yyyy")}</p>
+                    <div 
+                      key={inv.id} 
+                      onClick={() => router.push(`/invoice/${inv.id}`)}
+                      className="group relative bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[24px] shadow-xl shadow-zinc-200/20 dark:shadow-none active:scale-[0.98] transition-all overflow-hidden"
+                    >
+                       {/* Top Accent Bar */}
+                       <div className={`absolute top-0 left-0 right-0 h-1.5 ${
+                         inv.status === 'paid' ? 'bg-emerald-500' : 
+                         inv.status === 'sent' ? 'bg-blue-500' : 'bg-zinc-300'
+                       }`} />
+
+                       <div className="p-6">
+                          <div className="flex items-start justify-between gap-3 mb-5">
+                             <div className="flex-1 min-w-0 space-y-1.5">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <span className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest bg-blue-50 dark:bg-blue-900/40 px-2 py-0.5 rounded-lg border border-blue-100/50 dark:border-blue-800/50">
+                                    {inv.invoice_number}
+                                  </span>
+                                  <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-tight">
+                                    {format(new Date(inv.created_at), "MMM dd, yyyy")}
+                                  </span>
+                                </div>
+                                <h4 className="font-bold text-zinc-900 dark:text-zinc-100 truncate text-xl tracking-tight">
+                                  {inv.client_name}
+                                </h4>
+                             </div>
+                             <div className="shrink-0 pt-1">
+                                <StatusBadge status={inv.status} dueDate={inv.due_date} t={t} />
+                             </div>
                           </div>
-                          <StatusBadge status={inv.status} dueDate={inv.due_date} t={t} />
-                       </div>
-                       
-                       <div className="flex items-center justify-between mt-2">
-                          <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 tracking-tighter">
-                            {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                          </p>
-                          <div className="flex items-center gap-1">
-                             <Link href={`/invoice/${inv.id}/edit`} className="p-2 text-zinc-500 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-                                <PenLine className="w-4 h-4" />
-                             </Link>
-                             <Link href={`/invoice/${inv.id}`} className="p-2 text-zinc-500 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-                                <Eye className="w-4 h-4" />
-                             </Link>
-                             <button onClick={() => handleDeleteClick(inv.id)} className="p-2 text-red-500 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
-                                <Trash2 className="w-4 h-4" />
-                             </button>
+                          
+                          <div className="mb-6">
+                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1.5 block">Amount</span>
+                             <p className="text-3xl font-black text-zinc-900 dark:text-zinc-100 tracking-tighter flex items-baseline gap-1">
+                               <span className="text-lg font-bold text-zinc-400">{getCurrencySymbol(inv.currency)}</span>
+                               {Number(inv.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                             </p>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 p-1.5 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-100 dark:border-zinc-800" onClick={(e) => e.stopPropagation()}>
+                             <Tooltip content="Edit">
+                               <Link 
+                                 href={`/invoice/${inv.id}/edit`} 
+                                 className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all"
+                               >
+                                  <PenLine className="w-4 h-4" />
+                               </Link>
+                             </Tooltip>
+                             <Tooltip content="Duplicate">
+                               <button 
+                                 onClick={() => handleDuplicate(inv.id)} 
+                                 className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all"
+                               >
+                                  <Copy className="w-4 h-4" />
+                               </button>
+                             </Tooltip>
+                             <Tooltip content="View">
+                               <Link 
+                                 href={`/invoice/${inv.id}`} 
+                                 className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all"
+                               >
+                                  <Eye className="w-4 h-4" />
+                               </Link>
+                             </Tooltip>
+                             <Tooltip content="Delete">
+                               <button 
+                                 onClick={() => handleDeleteClick(inv.id)} 
+                                 className="flex-1 flex items-center justify-center p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-red-100 transition-all"
+                               >
+                                  <Trash2 className="w-4 h-4" />
+                               </button>
+                             </Tooltip>
                           </div>
                        </div>
                     </div>
@@ -428,13 +530,15 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                       Showing <span className="text-zinc-900 dark:text-zinc-100">{((currentPage - 1) * itemsPerPage) + 1}</span> to <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * itemsPerPage, totalCount)}</span> of <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
                     </p>
                     <div className="flex items-center gap-1">
-                      <button
-                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                        disabled={currentPage === 1 || isRefreshing}
-                        className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                      </button>
+                      <Tooltip content="Previous Page">
+                        <button
+                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                          disabled={currentPage === 1 || isRefreshing}
+                          className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                      </Tooltip>
                       <div className="hidden xs:flex items-center gap-1">
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                         <button
@@ -451,13 +555,15 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                         </button>
                       ))}
                       </div>
-                      <button
-                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                        disabled={currentPage === totalPages || isRefreshing}
-                        className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                      >
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
+                      <Tooltip content="Next Page">
+                        <button
+                          onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                          disabled={currentPage === totalPages || isRefreshing}
+                          className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </Tooltip>
                     </div>
                   </div>
                 )}

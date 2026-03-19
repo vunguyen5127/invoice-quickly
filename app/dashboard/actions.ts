@@ -183,61 +183,57 @@ export async function getCompanyInvoices(
     search?: string; 
     sortField?: string; 
     sortDir?: "asc" | "desc";
+    status?: string;
   } = {}
 ) {
   const supabase = getServerSupabase(token);
-  const { page = 1, pageSize = 10, search = "", sortField = "created_at", sortDir = "desc" } = options;
+  const { 
+    page = 1, 
+    pageSize = 10, 
+    search = "", 
+    sortField = "created_at", 
+    sortDir = "desc",
+    status = "all"
+  } = options;
   
   // Calculate range
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
-  // Build the base exact query for both count and data
-  let queryBase = supabase
+  // Build queries
+  let query = supabase
     .from("invoices")
-    .select("id, invoice_number, client_name, created_at, total_amount, currency, status, due_date")
+    .select("id, invoice_number, client_name, created_at, total_amount, currency, status, due_date", { count: "exact" })
     .eq("company_id", companyId)
     .is("deleted_at", null);
 
-  // Apply search filtering if provided
-  if (search.trim()) {
-    queryBase = queryBase.or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
+  // Apply filters
+  if (status && status !== "all") {
+    if (status === "overdue") {
+      const today = new Date().toISOString().split('T')[0];
+      query = query.neq("status", "paid").lt("due_date", today);
+    } else {
+      query = query.eq("status", status);
+    }
   }
 
-  // 1. Fire the count query
-  const countPromise = supabase
-    .from("invoices")
-    .select("id", { count: "exact", head: true })
-    .eq("company_id", companyId)
-    .is("deleted_at", null)
-    .then(async (res) => {
-       if (search.trim()) {
-         return await supabase
-          .from("invoices")
-          .select("id", { count: "exact", head: true })
-          .eq("company_id", companyId)
-          .is("deleted_at", null)
-          .or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
-       }
-       return res;
-    });
+  if (search.trim()) {
+    query = query.or(`invoice_number.ilike.%${search}%,client_name.ilike.%${search}%`);
+  }
 
-  // 2. Fire the data query
-  const dataPromise = queryBase
+  // Execute query
+  const { data, count, error } = await query
     .order(sortField, { ascending: sortDir === "asc" })
     .range(from, to);
 
-  // Await both simultaneously
-  const [countResult, dataResult] = await Promise.all([countPromise, dataPromise]);
-
-  if (dataResult.error) {
-    console.error("Error fetching company invoices:", dataResult.error);
+  if (error) {
+    console.error("Error fetching company invoices:", error);
     return { data: [], totalCount: 0 };
   }
 
   return { 
-    data: dataResult.data || [], 
-    totalCount: countResult.count || 0 
+    data: data || [], 
+    totalCount: count || 0 
   };
 }
 

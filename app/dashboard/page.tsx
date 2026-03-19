@@ -116,7 +116,7 @@ export default function Dashboard() {
         {/* Desktop Create Button */}
         <button
           onClick={() => setIsModalOpen(true)}
-          className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
+          className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create Company</span>
@@ -204,18 +204,22 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center justify-end gap-1 transition-opacity">
-                          <button
-                            onClick={(e) => handleEdit(e, company)}
-                            className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded-lg transition-colors"
-                          >
-                            <PenLine className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={(e) => handleDeleteClick(e, company.id)}
-                            className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/40 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <Tooltip content="Edit Company">
+                            <button
+                              onClick={(e) => handleEdit(e, company)}
+                              className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <PenLine className="w-4 h-4" />
+                            </button>
+                          </Tooltip>
+                          <Tooltip content="Delete Company">
+                            <button
+                              onClick={(e) => handleDeleteClick(e, company.id)}
+                              className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/40 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </Tooltip>
                         </div>
                       </td>
                     </tr>
@@ -226,55 +230,61 @@ export default function Dashboard() {
           </div>
 
           {/* Mobile Card View */}
-          <div className="sm:hidden space-y-4">
+          <div className="sm:hidden space-y-4 px-4 py-8">
             {companies.map((company) => (
-              <div
-                key={company.id}
+              <div 
+                key={company.id} 
                 onClick={() => router.push(`/company/${company.id}`)}
-                className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm active:scale-[0.98] transition-transform"
+                className="group relative bg-white dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm active:scale-[0.98] transition-all overflow-hidden"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-                      {company.logo_url ? (
-                        /* eslint-disable-next-line @next/next/no-img-element */
-                        <img src={company.logo_url} alt="" className="w-full h-full object-cover" />
-                      ) : (
-                        <Building2 className="w-6 h-6 text-zinc-400" />
-                      )}
+                 <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-4">
+                       <div className="w-14 h-14 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 overflow-hidden shadow-inner">
+                          {company.logo_url ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img src={company.logo_url} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <Building2 className="w-7 h-7 text-zinc-400" />
+                          )}
+                       </div>
+                       <div>
+                          <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-md inline-block mb-1">
+                            {new Date(company.created_at).toLocaleDateString()}
+                          </p>
+                          <h4 className="font-bold text-zinc-900 dark:text-zinc-100 text-lg tracking-tight leading-none truncate max-w-[150px]">
+                            {company.name}
+                          </h4>
+                       </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-zinc-900 dark:text-zinc-100">{company.name}</h4>
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
-                        {new Date(company.created_at).toLocaleDateString()}
-                      </p>
+                    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                       <Tooltip content="Edit">
+                         <button 
+                           onClick={(e) => handleEdit(e, company)} 
+                           className="p-2.5 text-zinc-500 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-100 dark:active:bg-zinc-700 transition-colors cursor-pointer"
+                         >
+                            <PenLine className="w-4 h-4" />
+                         </button>
+                       </Tooltip>
+                       <Tooltip content="Delete">
+                         <button 
+                           onClick={(e) => handleDeleteClick(e, company.id)} 
+                           className="p-2.5 text-red-500 bg-red-50/50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 rounded-xl active:bg-red-100 dark:active:bg-red-900/40 transition-colors cursor-pointer"
+                         >
+                            <Trash2 className="w-4 h-4" />
+                         </button>
+                       </Tooltip>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={(e) => handleEdit(e, company)}
-                      className="p-2 text-zinc-400 active:text-blue-600"
-                    >
-                      <PenLine className="w-4 h-4" />
+                 </div>
+                 
+                 <div className="flex items-center justify-between pt-4 border-t border-zinc-50 dark:border-zinc-800/50">
+                    <div className="flex flex-col">
+                       <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter mb-0.5">Total Invoices</span>
+                       <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">{company.invoices?.length || 0}</span>
+                    </div>
+                    <button className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
+                      View details <ChevronRight className="w-3 h-3" />
                     </button>
-                    <button
-                      onClick={(e) => handleDeleteClick(e, company.id)}
-                      className="p-2 text-zinc-400 active:text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between pt-4 border-t border-zinc-50 dark:border-zinc-800/50">
-                  <div className="flex flex-col">
-                     <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter mb-0.5">Total Invoices</span>
-                     <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">{company.invoices?.length || 0}</span>
-                  </div>
-                  <button className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1">
-                    View details <ChevronRight className="w-3 h-3" />
-                  </button>
-                </div>
+                 </div>
               </div>
             ))}
           </div>
@@ -286,13 +296,15 @@ export default function Dashboard() {
                 Showing <span className="text-zinc-900 dark:text-zinc-100">{(currentPage - 1) * PAGE_SIZE + 1}</span> to <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * PAGE_SIZE, totalCount)}</span> of <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
               </p>
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1 || isRefreshing}
-                  className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
+                <Tooltip content="Previous Page">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1 || isRefreshing}
+                    className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                </Tooltip>
                 <div className="hidden sm:flex items-center gap-1">
                    {Array.from({ length: Math.ceil(totalCount / PAGE_SIZE) }).map((_, i) => (
                      <button
@@ -305,13 +317,15 @@ export default function Dashboard() {
                      </button>
                    ))}
                 </div>
-                <button
-                  onClick={() => setCurrentPage((p) => Math.min(Math.ceil(totalCount / PAGE_SIZE), p + 1))}
-                  disabled={currentPage === Math.ceil(totalCount / PAGE_SIZE) || isRefreshing}
-                  className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                <Tooltip content="Next Page">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(Math.ceil(totalCount / PAGE_SIZE), p + 1))}
+                    disabled={currentPage === Math.ceil(totalCount / PAGE_SIZE) || isRefreshing}
+                    className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </Tooltip>
               </div>
             </div>
           )}
