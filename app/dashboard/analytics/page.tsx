@@ -179,7 +179,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
         {/* Outstanding Card */}
         <div className="group relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200 dark:border-white/10 rounded-2xl p-6 hover:border-orange-500/30 transition-all duration-300 flex flex-col gap-5 overflow-hidden shadow-sm">
           <div className="w-12 h-12 rounded-xl bg-orange-500/5 flex items-center justify-center border border-orange-500/10 transition-colors">

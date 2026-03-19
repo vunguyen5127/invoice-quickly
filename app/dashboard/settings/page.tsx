@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck, Zap } from "lucide-react";
+import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck, Zap, Settings } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { ThemeSelector } from "@/components/theme-toggle";
 import { languages } from "@/components/language-toggle";
@@ -270,11 +270,11 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Account Security */}
+      {/* Account Preferences */}
       <div className={sectionClass}>
         <div className={headerClass}>
-          <Shield className="w-4 h-4 text-amber-500" />
-          Security
+          <Settings className="w-4 h-4 text-blue-500" />
+          Preferences
         </div>
         <div className={itemClass}>
            <div className="flex items-center gap-3">
@@ -286,8 +286,8 @@ export default function SettingsPage() {
               <p className="text-xs text-zinc-500">Manage your email notifications</p>
             </div>
           </div>
-          <div className="w-10 h-5 bg-zinc-200 dark:bg-zinc-800 rounded-full cursor-not-allowed opacity-50 relative">
-             <div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+          <div className="w-10 h-6 bg-zinc-200 dark:bg-zinc-800 rounded-full cursor-not-allowed opacity-40 relative shrink-0">
+             <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all"></div>
           </div>
         </div>
         

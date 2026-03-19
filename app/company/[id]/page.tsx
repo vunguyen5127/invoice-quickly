@@ -227,29 +227,31 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         </nav>
 
         <div className="flex flex-row items-center gap-2 sm:gap-3.5 w-full sm:w-auto">
+          {/* Desktop Only Buttons in Header */}
+          <button
+            className="hidden"
+          >
+          </button>
+          
           <button
             onClick={handleExportExcel}
             disabled={isExporting}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-7 h-10 sm:h-11 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/80 font-semibold text-xs sm:text-sm transition-all shadow-sm active:scale-[0.98] whitespace-nowrap disabled:opacity-70"
+            className="hidden sm:flex items-center justify-center gap-2.5 px-7 h-11 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/80 font-semibold text-sm transition-all shadow-sm active:scale-[0.98] whitespace-nowrap disabled:opacity-70"
           >
-            {isExporting ? (
-              <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-success animate-spin" />
-            ) : (
-              <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-success" />
-            )}
-            <span className="truncate">{isExporting ? "..." : "Export Excel"}</span>
+            {isExporting ? <Loader2 className="w-4 h-4 text-emerald-500 animate-spin" /> : <Download className="w-4 h-4 text-emerald-500" />}
+            <span>{isExporting ? "Exporting..." : "Export Excel"}</span>
           </button>
           <Link 
             href={`/company/${resolvedParams.id}/new`}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 sm:gap-2.5 px-3 sm:px-8 h-10 sm:h-11 bg-gradient-to-b from-primary to-primary/90 text-primary-foreground rounded-xl hover:shadow-xl hover:shadow-primary/20 font-semibold text-xs sm:text-sm tracking-tight transition-all shadow-lg shadow-primary/10 active:scale-[0.98] whitespace-nowrap"
+            className="hidden sm:flex items-center justify-center gap-2.5 px-8 h-11 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] whitespace-nowrap"
           >
-            <Plus className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-            <span className="truncate">Create Invoice</span>
+            <Plus className="w-4.5 h-4.5" />
+            <span>Create Invoice</span>
           </Link>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-[5px] overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
         {/* Header with search */}
         <div className="px-4 sm:px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h2 className="font-semibold text-zinc-900 dark:text-zinc-100 shrink-0">
@@ -311,80 +313,73 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
               </div>
             ) : (
               <>
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden sm:block overflow-x-auto">
                   <table className="w-full text-left text-sm whitespace-nowrap">
                     <thead className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
                       <tr>
-                        <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
                           Invoice Number <SortIcon field="invoice_number" />
                         </th>
-                        <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
                           Client <SortIcon field="client_name" />
                         </th>
-                        <th className="px-6 py-2.5 font-medium cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
                           Date Created <SortIcon field="created_at" />
                         </th>
-                        <th className="px-6 py-2.5 font-medium text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
                           Amount <SortIcon field="total_amount" />
                         </th>
-                        <th className="px-6 py-2.5 font-medium text-center">
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-center">
                           {t.status}
                         </th>
-                        <th className="px-6 py-2.5 font-medium text-right">Actions</th>
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10">
+                    <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10 font-medium">
                       {invoices.map((inv: any) => (
-                        <tr key={inv.id} className="even:bg-zinc-50/50 dark:even:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
-                          <td className="px-6 py-2.5 font-medium text-zinc-900 dark:text-zinc-100">
+                        <tr key={inv.id} className="group hover:bg-zinc-50/80 dark:hover:bg-zinc-800/30 transition-colors">
+                          <td className="px-6 py-5 font-bold text-zinc-900 dark:text-zinc-100">
                             {inv.invoice_number}
                           </td>
-                          <td className="px-6 py-2.5 max-w-[200px] truncate" title={inv.client_name}>
+                          <td className="px-6 py-5 max-w-[200px] truncate" title={inv.client_name}>
                             {inv.client_name}
                           </td>
-                          <td className="px-6 py-2.5 text-zinc-500">
+                          <td className="px-6 py-5 text-zinc-500">
                             {format(new Date(inv.created_at), "MMM dd, yyyy")}
                           </td>
-                          <td className="px-6 py-2.5 font-medium text-right">
-                            {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toFixed(2)}
+                          <td className="px-6 py-5 font-bold text-right">
+                            {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                           </td>
-                          <td className="px-6 py-2.5 text-center">
+                          <td className="px-6 py-5 text-center">
                             <StatusBadge status={inv.status} dueDate={inv.due_date} t={t} />
                           </td>
-                          <td className="px-6 py-2.5 text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Tooltip content="Edit Invoice">
-                                <Link
+                          <td className="px-6 py-5 text-right">
+                            <div className="flex items-center justify-end gap-1 transition-opacity">
+                               <Link
                                   href={`/invoice/${inv.id}/edit`}
-                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-md transition-colors"
+                                  className="p-2 text-zinc-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors"
                                 >
                                   <PenLine className="w-4 h-4" />
                                 </Link>
-                              </Tooltip>
-                              <Tooltip content="Duplicate Invoice">
                                 <button
                                   onClick={() => handleDuplicate(inv.id)}
-                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                                  className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all"
                                 >
                                   <Copy className="w-4 h-4" />
                                 </button>
-                              </Tooltip>
-                              <Tooltip content="View Invoice">
                                 <Link
                                   href={`/invoice/${inv.id}`}
-                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+                                  className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
                                 >
                                   <Eye className="w-4 h-4" />
                                 </Link>
-                              </Tooltip>
-                              <Tooltip content="Delete Invoice">
                                 <button
                                   onClick={() => handleDeleteClick(inv.id)}
-                                  className="inline-flex items-center justify-center p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                                  className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
-                              </Tooltip>
                             </div>
                           </td>
                         </tr>
@@ -393,38 +388,73 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                   </table>
                 </div>
 
+                {/* Mobile Card View */}
+                <div className="sm:hidden divide-y divide-zinc-100 dark:divide-zinc-800/50">
+                  {invoices.map((inv: any) => (
+                    <div key={inv.id} className="p-5 flex flex-col gap-4 active:bg-zinc-50 dark:active:bg-zinc-800/30 transition-colors">
+                       <div className="flex items-start justify-between">
+                          <div>
+                             <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1">{inv.invoice_number}</p>
+                             <h4 className="font-bold text-zinc-900 dark:text-zinc-100 line-clamp-1 text-base">{inv.client_name}</h4>
+                             <p className="text-xs text-zinc-500 mt-0.5">{format(new Date(inv.created_at), "MMM dd, yyyy")}</p>
+                          </div>
+                          <StatusBadge status={inv.status} dueDate={inv.due_date} t={t} />
+                       </div>
+                       
+                       <div className="flex items-center justify-between mt-2">
+                          <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 tracking-tighter">
+                            {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          </p>
+                          <div className="flex items-center gap-1">
+                             <Link href={`/invoice/${inv.id}/edit`} className="p-2 text-zinc-500 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+                                <PenLine className="w-4 h-4" />
+                             </Link>
+                             <Link href={`/invoice/${inv.id}`} className="p-2 text-zinc-500 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+                                <Eye className="w-4 h-4" />
+                             </Link>
+                             <button onClick={() => handleDeleteClick(inv.id)} className="p-2 text-red-500 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-900 shadow-sm">
+                                <Trash2 className="w-4 h-4" />
+                             </button>
+                          </div>
+                       </div>
+                    </div>
+                  ))}
+                </div>
+
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50 flex items-center justify-between">
-                    <p className="text-sm text-zinc-500">
-                      Showing {((currentPage - 1) * itemsPerPage) + 1}–{Math.min(currentPage * itemsPerPage, totalCount)} of {totalCount}
+                  <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 flex items-center justify-between pb-24 sm:pb-4">
+                    <p className="text-xs sm:text-sm text-zinc-500 font-medium">
+                      Showing <span className="text-zinc-900 dark:text-zinc-100">{((currentPage - 1) * itemsPerPage) + 1}</span> to <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * itemsPerPage, totalCount)}</span> of <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
                     </p>
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                         disabled={currentPage === 1 || isRefreshing}
-                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                       >
                         <ChevronLeft className="w-4 h-4" />
                       </button>
+                      <div className="hidden xs:flex items-center gap-1">
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                          className={`w-8 h-8 rounded-lg text-sm font-bold transition-all ${
                             currentPage === page
-                              ? "bg-blue-600 text-white shadow-sm"
-                              : "text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200"
+                              ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                              : "text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
                           } disabled:opacity-50`}
                           disabled={isRefreshing}
                         >
                           {page}
                         </button>
                       ))}
+                      </div>
                       <button
                         onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                         disabled={currentPage === totalPages || isRefreshing}
-                        className="p-2 rounded-lg text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-zinc-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                       >
                         <ChevronRight className="w-4 h-4" />
                       </button>
@@ -436,6 +466,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           </div>
         )}
       </div>
+
+      {/* Floating Action Button (Mobile Only) */}
+      <button
+        onClick={() => router.push(`/company/${resolvedParams.id}/new`)}
+        className="sm:hidden fixed bottom-24 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40 border-4 border-white dark:border-zinc-950"
+      >
+        <Plus className="w-7 h-7" />
+      </button>
 
       <EditCompanyModal
         isOpen={isEditModalOpen}
