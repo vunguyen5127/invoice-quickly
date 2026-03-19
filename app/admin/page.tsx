@@ -5,8 +5,9 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getLoginLogs } from "@/utils/login-logger";
 import { format } from "date-fns";
-import { Loader2, ShieldCheck, ChevronLeft, ChevronRight, Monitor, Globe } from "lucide-react";
+import { Loader2, ShieldCheck, ChevronLeft, ChevronRight, Monitor, Globe, Play, CheckCircle2, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { triggerInvoiceCheckCron, triggerTestEmail } from "./actions";
 
 const ADMIN_EMAIL = "vunguyencapital@gmail.com";
 const PAGE_SIZE = 20;
@@ -47,6 +48,10 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [cronRunning, setCronRunning] = useState(false);
+  const [testEmailLoading, setTestEmailLoading] = useState(false);
+  const [testEmail, setTestEmail] = useState("");
+  const [cronStatus, setCronStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -84,6 +89,63 @@ export default function AdminPage() {
     fetchLogs();
   }, [authorized, currentPage]);
 
+  const handleRunCron = async () => {
+    if (cronRunning) return;
+    
+    setCronRunning(true);
+    setCronStatus(null);
+    try {
+      const result = await triggerInvoiceCheckCron();
+      if (result.success) {
+        setCronStatus({
+          type: "success",
+          message: `Cron success: Sent ${result.data?.usersNotified} emails, found ${result.data?.invoicesFound} invoices.`
+        });
+      } else {
+        setCronStatus({
+          type: "error",
+          message: `Cron failed: ${result.error}`
+        });
+      }
+    } catch (err: any) {
+      setCronStatus({
+        type: "error",
+        message: `Error: ${err.message}`
+      });
+    } finally {
+      setCronRunning(false);
+    }
+  };
+
+  const handleTestEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (testEmailLoading || !testEmail) return;
+
+    setTestEmailLoading(true);
+    setCronStatus(null);
+    try {
+      const result = await triggerTestEmail(testEmail);
+      if (result.success) {
+        setCronStatus({
+          type: "success",
+          message: `Test email sent successfully to ${testEmail}!`
+        });
+      } else {
+        setCronStatus({
+          type: "error",
+          message: `Test email failed: ${result.error}`
+        });
+      }
+    } catch (err: any) {
+      setCronStatus({
+        type: "error",
+        message: `Error: ${err.message}`
+      });
+    } finally {
+      setTestEmailLoading(false);
+    }
+  };
+
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   if (!authorized) {
@@ -107,12 +169,73 @@ export default function AdminPage() {
           <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
             <ShieldCheck className="w-5 h-5 text-white" />
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Admin Panel</h1>
             <p className="text-sm text-zinc-500 font-medium leading-none pt-0.5">User Login Activity</p>
           </div>
+
+          <form onSubmit={handleTestEmail} className="flex items-center gap-2">
+            <input
+              type="email"
+              placeholder="Test email..."
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+              className="px-3 py-2 text-sm rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:outline-zinc-400"
+              required
+            />
+            <button
+              type="submit"
+              disabled={testEmailLoading}
+              className="px-4 py-2 text-sm font-semibold rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:opacity-90 disabled:opacity-50 transition-all"
+            >
+              {testEmailLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Test Email"}
+            </button>
+          </form>
+
+          <button
+            onClick={handleRunCron}
+            disabled={cronRunning}
+            className={`
+              flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all
+              ${cronRunning 
+                ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 cursor-not-allowed" 
+                : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 active:scale-[0.98] animate-in fade-in slide-in-from-right-2"
+              }
+            `}
+          >
+            {cronRunning ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Play className="w-4 h-4 fill-current" />
+            )}
+            {cronRunning ? "Running..." : "Run Invoice Cron"}
+          </button>
         </div>
       </div>
+
+      {/* Cron Status Message */}
+      {cronStatus && (
+        <div className={`
+          mb-6 p-4 rounded-xl border flex items-center gap-3 animate-in fade-in slide-in-from-top-2
+          ${cronStatus.type === "success" 
+            ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-400" 
+            : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-400"
+          }
+        `}>
+          {cronStatus.type === "success" ? (
+            <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+          ) : (
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          )}
+          <p className="text-sm font-medium">{cronStatus.message}</p>
+          <button 
+            onClick={() => setCronStatus(null)}
+            className="ml-auto text-xs font-bold uppercase tracking-wider opacity-60 hover:opacity-100"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">

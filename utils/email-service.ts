@@ -1,5 +1,5 @@
-import nodemailer from "nodemailer";
 import config from "@/utils/config";
+import nodemailer from "nodemailer";
 
 const BREVO_CONFIG = {
   host: config.mailer.domain,
@@ -147,5 +147,37 @@ export async function sendInvoiceReminderEmail(userData: {
   } catch (error) {
     console.error(`[email-service] Failed to send invoice reminder to ${email}:`, error);
     return { success: false, error };
+  }
+}
+
+export async function sendTestEmail(toEmail: string) {
+  console.log(`[email-service] Sending test email to: ${toEmail}`);
+  
+  try {
+    await transporter.verify();
+  } catch (err) {
+    return { success: false, error: "SMTP verification failed", details: err };
+  }
+
+  const mailOptions = {
+    from: `"Invoice Quickly" <noreply@invoice-quickly.com>`,
+    to: toEmail,
+    subject: "✨ Invoice Quickly: Test Email",
+    html: `
+      <div style="font-family: sans-serif; padding: 40px; text-align: center; color: #333;">
+        <h1 style="color: #0070f3;">Email Service Working!</h1>
+        <p>This is a test email from your Admin Panel.</p>
+        <p style="margin-top: 20px; font-size: 14px; color: #666;">
+          Sent at: ${new Date().toLocaleString()}
+        </p>
+      </div>
+    `,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    return { success: true, messageId: info.messageId };
+  } catch (error: any) {
+    return { success: false, error: error.message };
   }
 }
