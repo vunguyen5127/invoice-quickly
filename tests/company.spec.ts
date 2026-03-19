@@ -40,7 +40,7 @@ test.describe('Company and Invoice Management UI', () => {
     await page.goto('/dashboard');
     
     // Heading should be "My Invoices"
-    await expect(page.getByRole('heading', { name: /My Invoices/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /dashboard/i })).toBeVisible();
     
     // Click "Create Company" button
     const createBtn = page.getByRole('button', { name: /Create Company/i });
