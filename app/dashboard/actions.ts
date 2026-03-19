@@ -374,30 +374,72 @@ export async function updateInvoiceStatus(token: string, invoiceId: string, stat
   return true;
 }
 
-export async function getDashboardStats(token: string) {
+export async function getDashboardStats(token: string, options: { companyId?: string, period?: 'day' | 'week' | 'month' | 'year' } = {}) {
+  const { companyId, period = 'year' } = options;
   const supabase = getServerSupabase(token);
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0 };
+  if (!user) return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0, chartData: [] };
 
   // Fetch all non-deleted invoices for this user
-  const { data: invoices, error } = await supabase
+  let query = supabase
     .from("invoices")
     .select("total_amount, status, due_date, currency, created_at")
     .eq("user_id", user.id)
     .is("deleted_at", null);
 
-  if (error || !invoices) {
-    console.error("Error fetching dashboard stats:", error);
-    return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0 };
+  if (companyId) {
+    query = query.eq("company_id", companyId);
   }
 
-  const today = new Date().toISOString().split('T')[0];
-  const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
+  const { data: invoices, error } = await query;
+
+  if (error || !invoices) {
+    console.error("Error fetching dashboard stats:", error);
+    return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0, chartData: [] };
+  }
+
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
 
   let totalOutstanding = 0;
   let overdueCount = 0;
   let paidThisMonth = 0;
 
+  // 1. Prepare Chart Data Structure based on period
+  const chartMap = new Map();
+  
+  if (period === 'day') {
+    // Last 24 hours (hourly)
+    for (let i = 23; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 60 * 60 * 1000);
+      const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}-${d.getHours()}`;
+      chartMap.set(key, { label: `${d.getHours()}:00`, revenue: 0, overdue: 0 });
+    }
+  } else if (period === 'week') {
+    // Last 7 days (daily)
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+      const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+      chartMap.set(key, { label: d.toLocaleString('default', { weekday: 'short' }), revenue: 0, overdue: 0 });
+    }
+  } else if (period === 'month') {
+    // Last 30 days (daily)
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+      const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+      chartMap.set(key, { label: `${d.getDate()}/${d.getMonth()+1}`, revenue: 0, overdue: 0 });
+    }
+  } else {
+    // Last 12 months (monthly)
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+      chartMap.set(key, { label: d.toLocaleString('default', { month: 'short' }), revenue: 0, overdue: 0 });
+    }
+  }
+
+  // 2. Populate data
   for (const inv of invoices) {
     const amount = Number(inv.total_amount) || 0;
     const isPaid = inv.status === 'paid';
@@ -412,6 +454,21 @@ export async function getDashboardStats(token: string) {
     if (isPaid && inv.created_at && inv.created_at >= firstOfMonth) {
       paidThisMonth += amount;
     }
+
+    // Chart Data logic
+    if (inv.created_at) {
+       const cd = new Date(inv.created_at);
+       let mKey = "";
+       if (period === 'day') mKey = `${cd.getFullYear()}-${cd.getMonth()+1}-${cd.getDate()}-${cd.getHours()}`;
+       else if (period === 'year') mKey = `${cd.getFullYear()}-${(cd.getMonth() + 1).toString().padStart(2, '0')}`;
+       else mKey = `${cd.getFullYear()}-${cd.getMonth()+1}-${cd.getDate()}`;
+
+       if (chartMap.has(mKey)) {
+          const mData = chartMap.get(mKey);
+          if (isPaid) mData.revenue += amount;
+          if (isOverdue) mData.overdue += amount;
+       }
+    }
   }
 
   return {
@@ -419,5 +476,10 @@ export async function getDashboardStats(token: string) {
     overdueCount,
     paidThisMonth: Math.round(paidThisMonth * 100) / 100,
     totalInvoices: invoices.length,
+    chartData: Array.from(chartMap.values()).map(d => ({
+       ...d,
+       revenue: Math.round(d.revenue * 100) / 100,
+       overdue: Math.round(d.overdue * 100) / 100,
+    }))
   };
 }
