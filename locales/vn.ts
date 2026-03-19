@@ -130,4 +130,19 @@ export const vn: Translations = {
   template_excel: "Nâng Cấp Từ Excel",
   template_free: "Miễn Phí 100%",
   pricing: "Bảng Giá",
+
+  // Invoice Status
+  statusDraft: "Nháp",
+  statusSent: "Đã gửi",
+  statusPaid: "Đã thanh toán",
+  statusOverdue: "Quá hạn",
+  markAsSent: "Đánh dấu đã gửi",
+  markAsPaid: "Đánh dấu đã thanh toán",
+  status: "Trạng thái",
+
+  // Dashboard Stats
+  totalOutstanding: "Tổng chưa thu",
+  overdueInvoices: "Quá hạn",
+  paidThisMonth: "Đã thu tháng này",
+  totalInvoices: "Tổng hóa đơn",
 };

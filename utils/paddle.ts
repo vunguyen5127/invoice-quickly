@@ -4,17 +4,9 @@
  */
 
 import crypto from "crypto";
+import config from "@/utils/config";
 
-export const PADDLE_CONFIG = {
-  env: (process.env.NEXT_PUBLIC_PADDLE_ENV as "sandbox" | "live") || "sandbox",
-  apiKey: process.env.PADDLE_API_KEY || "",
-  webhookSecret: process.env.PADDLE_WEBHOOK_SECRET || "",
-  clientToken: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || "",
-  prices: {
-    proMonthly: process.env.PADDLE_PRICE_PRO_MONTHLY || "",
-    proYearly: process.env.PADDLE_PRICE_PRO_YEARLY || "",
-  },
-};
+export const PADDLE_CONFIG = config.paddle;
 
 /**
  * Verify Paddle webhook signature (using ts_body + h1 scheme).

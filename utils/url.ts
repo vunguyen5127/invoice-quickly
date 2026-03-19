@@ -1,12 +1,9 @@
-/**
- * Returns the base URL for the application.
- * In a browser environment, it uses the current window's origin.
- * It can also be overridden by NEXT_PUBLIC_SITE_URL environment variable.
- */
+import { SITE_URL } from "@/utils/config";
+
 export const getBaseUrl = () => {
   // 1. Prefer explicitly defined site URL
-  if (process?.env?.NEXT_PUBLIC_SITE_URL) {
-    let url = process.env.NEXT_PUBLIC_SITE_URL;
+  if (SITE_URL) {
+    let url = SITE_URL;
     url = url.includes("http") ? url : `https://${url}`;
     return url.replace(/\/$/, "");
   }

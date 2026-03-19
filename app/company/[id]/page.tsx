@@ -16,13 +16,31 @@ import { getUserEntitlements } from "@/utils/entitlements";
 const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { use } from "react";
-import { getCurrencySymbol } from "@/types/invoice";
+import { getCurrencySymbol, STATUS_CONFIG, InvoiceStatus } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
 
 type SortField = "invoice_number" | "client_name" | "created_at" | "total_amount";
 type SortDir = "asc" | "desc";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
+
+function getDisplayStatus(status: string | null, dueDate: string | null): InvoiceStatus {
+  const s = status || 'draft';
+  if (s === 'paid') return 'paid';
+  if (dueDate && dueDate < new Date().toISOString().split('T')[0]) return 'overdue';
+  return s as InvoiceStatus;
+}
+
+function StatusBadge({ status, dueDate, t }: { status: string | null; dueDate: string | null; t: any }) {
+  const displayStatus = getDisplayStatus(status, dueDate);
+  const config = STATUS_CONFIG[displayStatus];
+  const label = t[`status${displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1)}` as keyof typeof t] || displayStatus;
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${config.color} ${config.bg} ${config.darkBg} border ${config.border}`}>
+      {label}
+    </span>
+  );
+}
 
 export default function CompanyDashboardPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -309,6 +327,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                         <th className="px-6 py-2.5 font-medium text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
                           Amount <SortIcon field="total_amount" />
                         </th>
+                        <th className="px-6 py-2.5 font-medium text-center">
+                          {t.status}
+                        </th>
                         <th className="px-6 py-2.5 font-medium text-right">Actions</th>
                       </tr>
                     </thead>
@@ -326,6 +347,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </td>
                           <td className="px-6 py-2.5 font-medium text-right">
                             {getCurrencySymbol(inv.currency)}{Number(inv.total_amount).toFixed(2)}
+                          </td>
+                          <td className="px-6 py-2.5 text-center">
+                            <StatusBadge status={inv.status} dueDate={inv.due_date} t={t} />
                           </td>
                           <td className="px-6 py-2.5 text-right">
                             <div className="flex items-center justify-end gap-2">

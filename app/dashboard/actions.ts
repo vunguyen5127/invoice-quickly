@@ -1,14 +1,15 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/utils/config";
 
 function getServerSupabase(token: string) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     throw new Error("Missing Supabase environment variables");
   }
   return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
     {
       global: { headers: { Authorization: `Bearer ${token}` } }
     }
@@ -197,7 +198,7 @@ export async function getCompanyInvoices(
   // Build the base exact query for both count and data
   let queryBase = supabase
     .from("invoices")
-    .select("id, invoice_number, client_name, created_at, total_amount, currency")
+    .select("id, invoice_number, client_name, created_at, total_amount, currency, status, due_date")
     .eq("company_id", companyId)
     .is("deleted_at", null);
 
@@ -358,4 +359,68 @@ export async function getNextInvoiceNumber(token: string, companyId: string): Pr
   return `INV-${currentYear}-${nextIndex}`;
 }
 
+export async function updateInvoiceStatus(token: string, invoiceId: string, status: string) {
+  const supabase = getServerSupabase(token);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
 
+  const { error } = await supabase
+    .from("invoices")
+    .update({ status })
+    .eq("id", invoiceId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Error updating invoice status:", error);
+    return false;
+  }
+  return true;
+}
+
+export async function getDashboardStats(token: string) {
+  const supabase = getServerSupabase(token);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0 };
+
+  // Fetch all non-deleted invoices for this user
+  const { data: invoices, error } = await supabase
+    .from("invoices")
+    .select("total_amount, status, due_date, currency, created_at")
+    .eq("user_id", user.id)
+    .is("deleted_at", null);
+
+  if (error || !invoices) {
+    console.error("Error fetching dashboard stats:", error);
+    return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0 };
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
+
+  let totalOutstanding = 0;
+  let overdueCount = 0;
+  let paidThisMonth = 0;
+
+  for (const inv of invoices) {
+    const amount = Number(inv.total_amount) || 0;
+    const isPaid = inv.status === 'paid';
+    const isOverdue = !isPaid && inv.due_date && inv.due_date < today;
+
+    if (!isPaid) {
+      totalOutstanding += amount;
+    }
+    if (isOverdue) {
+      overdueCount++;
+    }
+    if (isPaid && inv.created_at && inv.created_at >= firstOfMonth) {
+      paidThisMonth += amount;
+    }
+  }
+
+  return {
+    totalOutstanding: Math.round(totalOutstanding * 100) / 100,
+    overdueCount,
+    paidThisMonth: Math.round(paidThisMonth * 100) / 100,
+    totalInvoices: invoices.length,
+  };
+}

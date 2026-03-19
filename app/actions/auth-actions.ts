@@ -17,10 +17,6 @@ export async function notifyAdminOnNewUser(userData: {
   createdAt?: string;
 }) {
   try {
-    // Check how many login logs exist for this user
-    console.log(`[auth-actions] Checking login logs for user: ${userData.email} (${userData.id})`);
-    console.log(`[auth-actions] Account created at: ${userData.createdAt}`);
-    
     const { count, error } = await supabaseAdmin
       .from("user_login_logs")
       .select("*", { count: "exact", head: true })
@@ -30,8 +26,6 @@ export async function notifyAdminOnNewUser(userData: {
       console.error("[auth-actions] Error counting user login logs:", error);
       return { success: false, error: error.message };
     }
-
-    console.log(`[auth-actions] Found ${count} logs for user ${userData.email}`);
 
     // Robust logic: Identify as "new" if:
     // 1. It's the absolute first log (count === 1)
@@ -45,23 +39,19 @@ export async function notifyAdminOnNewUser(userData: {
       const diffMinutes = (now - createdTime) / (1000 * 60);
       
       if (diffMinutes < 15) {
-        console.log(`[auth-actions] Account created ${Math.round(diffMinutes)}m ago with ${count} logs. Treating as new user.`);
         isNewUser = true;
       }
     }
 
     if (isNewUser) {
-      console.log(`[auth-actions] New user login detected for ${userData.email}. Sending admin alert...`);
       const result = await sendNewUserAlert({
         email: userData.email,
         name: userData.name,
         provider: userData.provider,
       });
-      console.log(`[auth-actions] Admin alert result:`, result);
       return result;
     }
 
-    console.log(`[auth-actions] Not a new user (${count} logs), skipping notification.`);
     return { success: true, message: "Not a new user login." };
   } catch (err) {
     console.error("Failed to process new user notification:", err);

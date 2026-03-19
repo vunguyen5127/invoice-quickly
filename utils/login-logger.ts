@@ -34,7 +34,6 @@ export async function logUserLogin() {
     if (error) {
       console.error("Supabase insert log error:", error);
     } else {
-      console.log("Recorded login for user:", user.email);
       localStorage.setItem(cacheKey, now.toString());
 
       // Notify admin if it's a new user (first login log)

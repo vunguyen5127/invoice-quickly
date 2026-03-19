@@ -8,10 +8,12 @@ import { deleteInvoice } from "@/app/dashboard/actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
-import { ArrowLeft, Download, Trash2, Loader2, Share2, ChevronRight } from "lucide-react";
+import { ArrowLeft, Download, Trash2, Loader2, Share2, ChevronRight, Send, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
+import { updateInvoiceStatus } from "@/app/dashboard/actions";
+import { STATUS_CONFIG, InvoiceStatus } from "@/types/invoice";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 import { Tooltip } from "@/components/tooltip";
@@ -19,11 +21,13 @@ import { useLanguage } from "@/contexts/language-context";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
-  const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string }) | null>(null);
+  const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string; _status?: string; _dueDate?: string }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState<string>('draft');
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,6 +45,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       
       if (data) {
         setInvoice(data);
+        setCurrentStatus(data._status || 'draft');
       }
       setLoading(false);
     };
@@ -104,6 +109,23 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     }
   };
 
+  const handleStatusChange = async (newStatus: string) => {
+    setIsUpdatingStatus(true);
+    const { id } = await params;
+    let token = "";
+    if (supabase) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) token = session.access_token;
+    }
+    if (token) {
+      const success = await updateInvoiceStatus(token, id, newStatus);
+      if (success) {
+        setCurrentStatus(newStatus);
+      }
+    }
+    setIsUpdatingStatus(false);
+  };
+
   if (loading) {
     return <InvoiceViewSkeleton />;
   }
@@ -147,9 +169,43 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">
             Invoice #{invoice.details.invoiceNumber}
           </span>
+          {(() => {
+            const displayStatus = currentStatus === 'paid' ? 'paid' : (invoice._dueDate && invoice._dueDate < new Date().toISOString().split('T')[0] ? 'overdue' : currentStatus) as InvoiceStatus;
+            const config = STATUS_CONFIG[displayStatus] || STATUS_CONFIG.draft;
+            const label = t[`status${displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1)}` as keyof typeof t] || displayStatus;
+            return (
+              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${config.color} ${config.bg} ${config.darkBg} border ${config.border} ml-2`}>
+                {label}
+              </span>
+            );
+          })()}
         </nav>
 
         <div className="flex items-center gap-2 w-full sm:w-auto md:justify-end">
+          {/* Status action buttons */}
+          {currentStatus === 'draft' && (
+            <button
+              onClick={() => handleStatusChange('sent')}
+              disabled={isUpdatingStatus}
+              className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors disabled:opacity-50"
+            >
+              <Send className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.markAsSent}</span>
+            </button>
+          )}
+          {(currentStatus === 'draft' || currentStatus === 'sent') && (
+            <button
+              onClick={() => handleStatusChange('paid')}
+              disabled={isUpdatingStatus}
+              className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-800 rounded-lg transition-colors disabled:opacity-50"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.markAsPaid}</span>
+            </button>
+          )}
+
+          <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800 mx-0.5 hidden sm:block" />
+
           <Tooltip content="Delete Invoice">
             <button
               onClick={() => setShowDeleteModal(true)}

@@ -128,9 +128,24 @@ export const en = {
   template_excel: "Upgrade from Excel",
   template_free: "100% Forever",
   pricing: "Pricing",
+
+  // Invoice Status
+  statusDraft: "Draft",
+  statusSent: "Sent",
+  statusPaid: "Paid",
+  statusOverdue: "Overdue",
+  markAsSent: "Mark as Sent",
+  markAsPaid: "Mark as Paid",
+  status: "Status",
+
+  // Dashboard Stats
+  totalOutstanding: "Total Outstanding",
+  overdueInvoices: "Overdue",
+  paidThisMonth: "Paid This Month",
+  totalInvoices: "Total Invoices",
 };
 
-export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templates' | 'viewAllHub' | 'template_invoice' | 'template_pdf' | 'template_excel' | 'template_free' | 'pricing'> & {
+export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templates' | 'viewAllHub' | 'template_invoice' | 'template_pdf' | 'template_excel' | 'template_free' | 'pricing' | 'statusDraft' | 'statusSent' | 'statusPaid' | 'statusOverdue' | 'markAsSent' | 'markAsPaid' | 'status' | 'totalOutstanding' | 'overdueInvoices' | 'paidThisMonth' | 'totalInvoices'> & {
   noWatermark?: string;
   instantPdf?: string;
   templates?: string;
@@ -140,4 +155,15 @@ export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templ
   template_excel?: string;
   template_free?: string;
   pricing?: string;
+  statusDraft?: string;
+  statusSent?: string;
+  statusPaid?: string;
+  statusOverdue?: string;
+  markAsSent?: string;
+  markAsPaid?: string;
+  status?: string;
+  totalOutstanding?: string;
+  overdueInvoices?: string;
+  paidThisMonth?: string;
+  totalInvoices?: string;
 };

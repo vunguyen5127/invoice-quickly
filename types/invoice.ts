@@ -1,3 +1,12 @@
+export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue';
+
+export const STATUS_CONFIG: Record<InvoiceStatus, { color: string; bg: string; darkBg: string; border: string }> = {
+  draft:   { color: 'text-zinc-600 dark:text-zinc-400',   bg: 'bg-zinc-100',    darkBg: 'dark:bg-zinc-800',    border: 'border-zinc-200 dark:border-zinc-700' },
+  sent:    { color: 'text-blue-700 dark:text-blue-300',    bg: 'bg-blue-50',     darkBg: 'dark:bg-blue-900/30', border: 'border-blue-200 dark:border-blue-800' },
+  paid:    { color: 'text-emerald-700 dark:text-emerald-300', bg: 'bg-emerald-50', darkBg: 'dark:bg-emerald-900/30', border: 'border-emerald-200 dark:border-emerald-800' },
+  overdue: { color: 'text-red-700 dark:text-red-300',      bg: 'bg-red-50',      darkBg: 'dark:bg-red-900/30',  border: 'border-red-200 dark:border-red-800' },
+};
+
 export interface InvoiceItem {
   id: string;
   description: string;

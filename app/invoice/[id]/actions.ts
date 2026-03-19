@@ -2,21 +2,22 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { InvoiceState } from "@/types/invoice";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/utils/config";
 
 function getServerSupabase(token: string) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     throw new Error("Missing Supabase environment variables");
   }
   return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
     {
       global: { headers: { Authorization: `Bearer ${token}` } }
     }
   );
 }
 
-export async function getInvoiceById(token: string, id: string): Promise<(InvoiceState & { _companyId?: string }) | null> {
+export async function getInvoiceById(token: string, id: string): Promise<(InvoiceState & { _companyId?: string; _status?: string; _dueDate?: string }) | null> {
   const supabase = getServerSupabase(token);
   
   const { data: { user } } = await supabase.auth.getUser();
@@ -24,7 +25,7 @@ export async function getInvoiceById(token: string, id: string): Promise<(Invoic
 
   const { data, error } = await supabase
     .from("invoices")
-    .select("data, company_id")
+    .select("data, company_id, status, due_date")
     .eq("id", id)
     .single();
 
@@ -36,7 +37,7 @@ export async function getInvoiceById(token: string, id: string): Promise<(Invoic
   if (data.data) {
     const invoiceState = data.data as unknown as InvoiceState;
     invoiceState.id = id;
-    return { ...invoiceState, _companyId: data.company_id };
+    return { ...invoiceState, _companyId: data.company_id, _status: data.status || 'draft', _dueDate: data.due_date };
   }
   
   return null;
