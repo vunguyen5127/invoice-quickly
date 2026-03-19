@@ -50,7 +50,7 @@ export function Tooltip({
         <div className={`
           absolute z-[100] w-max max-w-[280px] px-2.5 py-1.5 
           bg-zinc-900 dark:bg-zinc-800 text-white dark:text-zinc-100 
-          text-[11px] font-medium rounded-[5px] shadow-xl 
+          text-[11px] font-medium rounded-lg shadow-xl 
           ring-1 ring-white/10 pointer-events-none 
           animate-in fade-in zoom-in-95 duration-150
           ${positionClasses[position]}

@@ -55,7 +55,7 @@ export function LanguageToggle() {
       <Tooltip content="Select language" position="bottom">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="hidden sm:inline-flex items-center justify-center rounded-[5px] p-2 h-8 w-8 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200/60 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-800/80 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="hidden sm:inline-flex items-center justify-center rounded-xl p-2 h-8 w-8 text-zinc-500 hover:text-zinc-800 hover:bg-zinc-200/60 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-800/80 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500"
           aria-label="Select language"
           aria-expanded={isOpen}
         >
@@ -65,7 +65,7 @@ export function LanguageToggle() {
       </Tooltip>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-52 rounded-[5px] bg-white dark:bg-zinc-900 shadow-lg shadow-zinc-900/10 dark:shadow-black/30 ring-1 ring-zinc-200/80 dark:ring-zinc-800 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
+        <div className="absolute right-0 top-full mt-2 w-52 rounded-xl bg-white dark:bg-zinc-900 shadow-lg shadow-zinc-900/10 dark:shadow-black/30 ring-1 ring-zinc-200/80 dark:ring-zinc-800 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2">
           <div className="py-1 flex flex-col max-h-80 overflow-y-auto custom-scrollbar">
             {languages.map((l) => (
               <button

@@ -9,8 +9,8 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon, iconColor, title, description }: FeatureCardProps) {
   return (
-    <div className="bg-white dark:bg-zinc-900 p-7 rounded-[5px] border border-slate-100 dark:border-zinc-800/80 hover:shadow-xl hover:shadow-slate-900/5 hover:-translate-y-1 transition-all duration-300 group">
-      <div className={`w-12 h-12 rounded-[5px] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 ${iconColor}`}>
+    <div className="bg-white dark:bg-zinc-900 p-7 rounded-2xl border border-slate-100 dark:border-zinc-800/80 hover:shadow-xl hover:shadow-slate-900/5 hover:-translate-y-1 transition-all duration-300 group">
+      <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 ${iconColor}`}>
         {icon}
       </div>
       <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">{title}</h3>
@@ -29,7 +29,7 @@ interface StepCardProps {
 export function StepCard({ number, title, description, icon }: StepCardProps) {
   return (
     <div className="relative flex flex-col items-center text-center group">
-      <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-[5px] flex items-center justify-center text-white shadow-lg shadow-blue-500/20 mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
+      <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20 mb-5 group-hover:scale-110 transition-transform duration-300 relative z-10">
         {icon}
       </div>
       <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1.5">Step {number}</span>
@@ -46,7 +46,7 @@ interface FAQItemProps {
 
 export function FAQItem({ question, answer }: FAQItemProps) {
   return (
-    <details className="group rounded-[5px] border border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900 [&_summary::-webkit-details-marker]:hidden">
+    <details className="group rounded-xl border border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900 [&_summary::-webkit-details-marker]:hidden">
       <summary className="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 font-semibold text-slate-900 dark:text-white">
         {question}
         <span className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-slate-500 dark:text-zinc-300 group-open:rotate-45 transition-transform duration-200">
@@ -74,7 +74,7 @@ interface TestimonialCardProps {
 
 export function TestimonialCard({ quote, name, role, avatar, initials }: TestimonialCardProps) {
   return (
-    <div className="bg-white dark:bg-zinc-900 p-8 rounded-[5px] shadow-sm border border-slate-100 dark:border-zinc-800 hover:shadow-md transition-shadow flex flex-col">
+    <div className="bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-zinc-800 hover:shadow-md transition-shadow flex flex-col">
       <div className="flex gap-0.5 mb-5">
         {Array.from({ length: 5 }).map((_, i) => (
           <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />

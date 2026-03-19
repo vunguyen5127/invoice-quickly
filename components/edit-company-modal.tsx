@@ -138,7 +138,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/40 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-zinc-900 rounded-[5px] shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
 
         {/* Header */}
         <div className="px-5 pt-4 pb-0 flex items-center justify-between">
@@ -146,7 +146,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
             <PenTool className="w-4 h-4 text-blue-500" />
             {t.editCompany}
           </h2>
-          <button onClick={onClose} className="p-1 rounded-[5px] text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+          <button onClick={onClose} className="p-1 rounded-xl text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -181,7 +181,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                   <div className="w-[110px] flex-shrink-0 relative">
                     {logo ? (
                       <div className="relative w-full h-[110px] group transition-all">
-                        <div className="w-full h-full rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950/50 flex items-center justify-center overflow-hidden">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={logo} alt="Logo" className="w-full h-full object-cover" />
                         </div>
@@ -190,7 +190,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                         </button>
                       </div>
                     ) : (
-                      <div onClick={() => logoInputRef.current?.click()} className="w-full h-[110px] rounded-[5px] border border-zinc-200 dark:border-zinc-700 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-blue-50/50 dark:bg-zinc-900">
+                      <div onClick={() => logoInputRef.current?.click()} className="w-full h-[110px] rounded-xl border border-zinc-200 dark:border-zinc-700 flex flex-col items-center justify-center cursor-pointer bg-white hover:bg-blue-50/50 dark:bg-zinc-900">
                         <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center text-white">
                           <Building2 className="w-6 h-6" />
                         </div>
@@ -260,11 +260,11 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <button type="button" onClick={() => document.getElementById('sig-upload-edit')?.click()} className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
+                      <button type="button" onClick={() => document.getElementById('sig-upload-edit')?.click()} className="flex-1 h-20 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
                         <Upload className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.upload}</span>
                       </button>
                       <span className="text-[11px] text-zinc-400">{t.or}</span>
-                      <button type="button" onClick={() => setIsSignatureModalOpen(true)} className="flex-1 h-20 rounded-[5px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
+                      <button type="button" onClick={() => setIsSignatureModalOpen(true)} className="flex-1 h-20 rounded-xl border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 flex flex-col items-center justify-center gap-0.5 cursor-pointer transition-colors text-zinc-400 hover:text-blue-500">
                         <PenTool className="w-4 h-4" /><span className="text-[10px] uppercase font-semibold">{t.draw}</span>
                       </button>
                       <input id="sig-upload-edit" type="file" accept="image/*" className="hidden" onChange={async (e) => {
@@ -325,7 +325,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
             <button type="button" onClick={onClose} disabled={isSubmitting} className="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
               {t.cancel}
             </button>
-            <button type="submit" disabled={isSubmitting || !name.trim()} className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-[5px] transition-colors disabled:opacity-50 shadow-sm">
+            <button type="submit" disabled={isSubmitting || !name.trim()} className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-blue-500 hover:bg-blue-600 rounded-xl transition-colors disabled:opacity-50 shadow-sm">
               {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               {t.saveChanges}
             </button>
