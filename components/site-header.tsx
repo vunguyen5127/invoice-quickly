@@ -78,13 +78,13 @@ export function SiteHeader() {
           {hasUser && (
             <Link
               href="/dashboard"
-              className="text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-150 flex items-center gap-2 rounded-lg px-3.5 py-2 mr-1"
+              className="inline-flex text-sm font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-150 items-center gap-2 rounded-lg px-3.5 py-2 mr-1"
             >
               <LayoutDashboard className="w-4 h-4" />
-              <span className="hidden md:inline">{t.myInvoices}</span>
+              <span className="hidden sm:inline">{t.myInvoices}</span>
             </Link>
           )}
-          {hasUser && <div className="hidden xs:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />}
+          {hasUser && <div className="hidden md:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />}
           <ThemeToggle />
           <LanguageToggle />
           <div className="ml-1 shrink-0">

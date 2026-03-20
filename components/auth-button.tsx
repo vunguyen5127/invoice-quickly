@@ -3,7 +3,7 @@
 import { useLanguage } from "@/contexts/language-context";
 import { supabase } from "@/utils/supabase/client";
 import { getBaseUrl } from "@/utils/url";
-import { BarChart2, CreditCard, Loader2, LogIn, LogOut, Settings, UserCircle } from "lucide-react";
+import { BarChart2, CreditCard, Loader2, LogIn, LogOut, Settings, UserCircle, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -132,12 +132,21 @@ export function AuthButton() {
               {/* Menu Links */}
               <div className="p-2 space-y-0.5">
                 <Link
+                  href="/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
+                >
+                  <LayoutDashboard className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
+                  {t.myInvoices || "My Invoices"}
+                </Link>
+
+                <Link
                   href="/dashboard/analytics"
                   onClick={() => setIsOpen(false)}
                   className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <BarChart2 className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
-                  Analytics
+                  {(t as any).analytics || "Analytics"}
                 </Link>
 
                 <Link
