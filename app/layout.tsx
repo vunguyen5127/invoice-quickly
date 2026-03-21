@@ -13,6 +13,7 @@ import {
 } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/contexts/language-context";
+import { RtlProvider } from "@/components/rtl-provider";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 import { LogUserSession } from "@/components/log-user-session";
@@ -170,6 +171,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <LanguageProvider>
+              <RtlProvider />
               <PaddleScript />
               <LogUserSession />
               <div className="flex flex-col min-h-screen">
