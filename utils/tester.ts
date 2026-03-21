@@ -1,4 +1,6 @@
-export const TESTER_EMAILS = ["vunguyen5127@gmail.com", "vunguyencapital@gmail.com"];
+const envEmails = process.env.TESTER_EMAILS?.split(",").map((e) => e.trim()).filter(Boolean) ?? [];
+
+export const TESTER_EMAILS: string[] = envEmails;
 
 export function isTester(email: string | undefined | null) {
   if (!email) return false;
