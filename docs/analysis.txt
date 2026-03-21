@@ -1,0 +1,643 @@
+================================================================================
+  INVOICE QUICKLY — PHÂN TÍCH CHI TIẾT DỰ ÁN & THỊ TRƯỜNG
+  Cập nhật: 2026-03-21
+  Mục đích: Tài liệu nội bộ để cải thiện dần theo thời gian
+================================================================================
+
+MỤC LỤC
+--------
+A. PHÂN TÍCH CODE THỰC TẾ
+   A1. Tổng quan kiến trúc
+   A2. Invoice Engine (invoice-form.tsx)
+   A3. Hệ thống phân quyền (Entitlements)
+   A4. Analytics & Dashboard
+   A5. Tự động hoá (Cron Jobs & Email)
+   A6. Thanh toán (Paddle)
+   A7. Xuất file (PDF & Excel)
+   A8. Đa ngôn ngữ (i18n)
+   A9. Bảo mật
+
+B. BUG TRACKER — LỖI & VẤN ĐỀ PHÁT HIỆN
+   B1. Lỗi nghiêm trọng (Critical)
+   B2. Lỗi trung bình (Medium)
+   B3. Cải thiện nhỏ (Minor)
+
+C. PHÂN TÍCH THỊ TRƯỜNG
+   C1. Quy mô & Xu hướng thị trường 2025
+   C2. Pain Points người dùng
+   C3. So sánh đối thủ cạnh tranh
+   C4. Gap Analysis (thiếu gì so với thị trường)
+
+D. LỘ TRÌNH CẢI THIỆN
+   D1. P0 — Phải làm ngay (Critical / Blocking)
+   D2. P1 — Ưu tiên cao (Sprint tiếp theo)
+   D3. P2 — Nâng cấp cạnh tranh
+   D4. P3 — Tầm nhìn dài hạn
+
+================================================================================
+A. PHÂN TÍCH CODE THỰC TẾ
+================================================================================
+
+A1. TỔNG QUAN KIẾN TRÚC
+------------------------
+Framework      : Next.js 16.1.6 (App Router)
+UI             : React 19.2.3 + Tailwind CSS v4 (Glassmorphism)
+Database       : Supabase (PostgreSQL) — Row Level Security bật
+Auth           : Supabase Auth — Google OAuth
+Email          : Nodemailer + Brevo SMTP
+Billing        : Paddle (Overlay checkout + Webhook)
+Charts         : Recharts (AreaChart + BarChart)
+Export         : jsPDF + html-to-image (PDF), ExcelJS (Excel)
+Testing        : Playwright E2E
+Deploy         : Vercel (vercel.json + Cron via Vercel Cron)
+TypeScript     : Strict mode, toàn bộ dự án có type
+
+Cấu trúc routing (App Router):
+  /                   → Landing page (marketing)
+  /generator          → Tạo invoice không cần login
+  /login              → Đăng nhập Google OAuth
+  /dashboard          → Danh sách companies (yêu cầu login)
+  /dashboard/analytics → Analytics & charts
+  /dashboard/settings  → Cài đặt tài khoản
+  /company/[id]       → Chi tiết company + danh sách invoices
+  /invoice/[id]       → Xem/chỉnh sửa invoice
+  /share/[id]         → Public link xem invoice (không cần login)
+  /pricing            → Bảng giá Free/Pro
+  /admin              → Admin panel nội bộ
+  /api/cron/invoice-check → Cron job hàng ngày
+  /api/paddle/webhook → Nhận events từ Paddle
+
+Server Actions (Next.js):
+  dashboard/actions.ts  → CRUD companies, invoices, stats (482 dòng)
+  app/actions/          → Thư mục actions dùng chung
+  utils/entitlements.ts → Kiểm tra quyền Free/Pro (server-only, "use server")
+
+
+A2. INVOICE ENGINE — invoice-form.tsx (770 dòng)
+-------------------------------------------------
+Đây là file lớn nhất và phức tạp nhất của dự án (44KB).
+
+TÍNH NĂNG ĐÃ THỬ NGHIỆM & XÁC NHẬN:
+  ✅ Auto-fill từ Company đã lưu (dropdown chọn company → fill hết thông tin)
+  ✅ Logo upload → tự convert sang WebP (convertToWebP từ image-utils.ts)
+  ✅ Signature: 2 cách (upload ảnh HOẶC ký tay qua SignaturePadModal)
+  ✅ Billing date range trong line item description (start - end date)
+  ✅ Line items: description (120 ký tự max), quantity, rate, auto-remove
+  ✅ Enter key trong description → tự thêm item mới
+  ✅ Discount: toggle % ↔ số tiền cố định
+  ✅ Tax: toggle % ↔ số tiền cố định  
+  ✅ Shipping: nhập trực tiếp (số tiền, không có %)
+  ✅ Notes & Terms: accordion toggle (show/hide)
+  ✅ Currency: chọn từ danh sách CURRENCIES
+  ✅ Ship To: địa chỉ giao hàng riêng (optional)
+  ✅ Validation: required fields đổi border màu đỏ khi trống
+  ✅ Responsive: Mobile card layout vs Desktop grid layout
+
+VẤN ĐỀ KỸ THUẬT PHÁT HIỆN:
+  ⚠️ Company auto-fill gộp tất cả thông tin vào MỘT textarea "name":
+     companyDetailsString = [name, address, email, phone].join(", ")
+     → Không tách riêng các fields → không thể validate từng field
+     → Ảnh hưởng đến quality của invoice preview
+
+  ⚠️ Không có giới hạn số lượng line items (có thể thêm vô hạn)
+     → Có thể gây performance issues và PDF quá dài
+
+  ⚠️ Description có maxLength=120 nhưng không có character counter
+     → User không biết mình còn lại bao nhiêu ký tự
+
+  ⚠️ canUseAdvancedBranding (Pro feature) không có guard nào trong form
+     → Free user vẫn dùng được logo, signature, custom colors
+
+
+A3. HỆ THỐNG PHÂN QUYỀN — entitlements.ts + types/subscription.ts
+-------------------------------------------------------------------
+Entitlements được định nghĩa rõ ràng, implementation sạch:
+
+  FREE_ENTITLEMENTS:
+    - maxCompanies: 1
+    - maxInvoicesPerMonth: 15
+    - adsEnabled: true
+    - canUseRecurring: false
+    - canUseAutoReminders: false
+    - canUseAdvancedBranding: false
+    - canUseAdvancedExport: false  (Excel export)
+
+  PRO_ENTITLEMENTS:
+    - maxCompanies: 10  (không phải unlimited! pricing page nói "10 Companies (Fair Use)")
+    - maxInvoicesPerMonth: 500
+    - adsEnabled: false
+    - canUseRecurring: true
+    - canUseAutoReminders: true
+    - canUseAdvancedBranding: true
+    - canUseAdvancedExport: true
+
+GUARD THỰC SỰ ĐÃ CÀI:
+  ✅ Company limit: dashboard/actions.ts → createCompany() kiểm tra maxCompanies
+  ✅ Invoice limit: [cần xác nhận thêm ở invoice creation flow]
+
+GUARD THIẾU HOẶC CHƯA THỰC THI:
+  ❌ canUseRecurring: Entitlement khai báo nhưng KHÔNG CÓ UIrecurring invoice nào
+  ❌ canUseAutoReminders: Cron job gửi email cho TẤT CẢ users (kể cả Free)
+  ❌ canUseAdvancedBranding: Không có guard trong invoice-form.tsx
+  ❌ canUseAdvancedExport: Cần xác nhận trong Excel export flow
+
+UpgradeModal có các trigger types:
+  "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general"
+  → Copy text đã viết sẵn cho từng trigger — tốt!
+  → UpgradeModal (upgrade-modal.tsx) dùng Paddle.Checkout.open() với items/priceId
+     KHÁC với pricing/page.tsx dùng createCheckoutTransaction (tạo transaction trước)
+     → 2 flow thanh toán khác nhau cho cùng 1 sản phẩm — cần thống nhất
+
+
+A4. ANALYTICS & DASHBOARD — dashboard/analytics/page.tsx + actions.ts
+----------------------------------------------------------------------
+KPI Cards:
+  - Outstanding: tổng tiền chưa thanh toán (tất cả invoices !paid)
+  - Overdue: số lượng invoices quá hạn
+  - Collection: tổng tiền paid trong tháng hiện tại (dùng created_at — SAI)
+  - Total Invoices: tổng số invoices (bao gồm cả deleted không? cần kiểm tra)
+
+Charts:
+  - Revenue Stream (AreaChart): paid invoices theo thời gian
+  - Aging Summary (BarChart): paid vs overdue theo thời gian
+  - Period filter: Day / Week / Month / Year
+  - Company filter: lọc theo từng company
+
+getDashboardStats() logic (actions.ts L373-481):
+  ✅ Fetch tất cả invoices của user (hoặc filtered by companyId)
+  ✅ Period mapping: day=24h/giờ, week=7d, month=30d, year=12 tháng
+  ✅ Tính totalOutstanding: sum(amount) của !paid invoices
+  ✅ Tính overdueCount: !paid + due_date < today
+  ✅ Tính paidThisMonth: paid + created_at >= firstOfMonth ← SAI LOGIC
+     → Nên dùng: ngày invoice được mark là "paid" (cần thêm field paid_at)
+
+SỐ LIỆU HARDCODE TRONG UI (CẦN FIX):
+  Dòng 218: "+12.5% vs last month" — luôn hiển thị cố định
+  Dòng 334: "+5.2%" — luôn hiển thị cố định  
+  Dòng 330: "High" (Efficiency indicator) — luôn hiển thị cố định
+  Dòng 204: w-[20%] (progress bar overdue) — luôn 20%, không tính thực tế
+
+
+A5. TỰ ĐỘNG HOÁ — Cron Jobs & Email
+------------------------------------
+Cron Job: /api/cron/invoice-check/route.ts
+  Trigger: Hàng ngày qua Vercel Cron (vercel.json)
+  Bảo vệ: Authorization header với CRON_SECRET
+  
+  Logic:
+    1. Ping Supabase (keep-alive để tránh hibernation)
+    2. Lấy invoices: !paid + !deleted + due_date <= 3 ngày từ nay
+    3. Group theo user_id
+    4. Fetch user emails từ bảng users
+    5. Gửi email reminder (overdueInvoices + upcomingInvoices)
+
+  VẤN ĐỀ: Gửi email cho TẤT CẢ users kể cả Free tier
+    → entitlements nói canUseAutoReminders: false cho Free
+    → Cần thêm check subscription trước khi gửi
+
+Email Templates (email-service.ts):
+  sendNewUserAlert()     → Thông báo admin khi có user mới (184 dòng)
+  sendInvoiceReminderEmail() → Email nhắc invoice (overdue + upcoming)
+  sendTestEmail()        → Test email từ admin panel
+
+  VẤN ĐỀ SECURITY: adminEmail = "vunguyencapital@gmail.com" hardcode trong code
+    → Cần move ra env var: ADMIN_ALERT_EMAIL
+
+
+A6. THANH TOÁN — Paddle Integration
+-------------------------------------
+Files: utils/paddle.ts, components/paddle/, app/api/paddle/webhook/
+
+paddle.ts:
+  - verifyPaddleWebhookSignature(): HMAC-SHA256 + timing-safe compare ✅
+  - getPlanFromPriceId(): map price ID → plan name ✅
+
+2 Flow Checkout khác nhau (không nhất quán):
+  Flow 1 (pricing/page.tsx):
+    createCheckoutTransaction(token, isYearly) → server tạo transaction
+    → Paddle.Checkout.open({ transactionId }) 
+    → Phức tạp hơn, đúng với best practice Paddle mới
+
+  Flow 2 (upgrade-modal.tsx):
+    Paddle.Checkout.open({ items: [{ priceId, quantity: 1 }], customer, customData })
+    → Đơn giản hơn, dùng trực tiếp priceId
+    → Có thể gây vấn đề với Paddle API version khác nhau
+
+Webhook handler /api/paddle/webhook:
+  - Xác thực signature ✅
+  - Cập nhật subscriptions table theo event type ✅
+
+Subscription lifecycle:
+  "active": user đang subscribe
+  "canceled": đã cancel nhưng chưa hết kỳ → vẫn giữ Pro features ✅
+  "past_due": thanh toán thất bại
+
+
+A7. XUẤT FILE — PDF & Excel
+-----------------------------
+PDF Export (utils/generate-pdf.ts):
+  - Dùng html-to-image (toJpeg) để capture HTML element
+  - Chuyển sang JPEG rồi nhúng vào jsPDF (A4 portrait)
+  - pixelRatio: 2 → chất lượng cao
+  - Hỗ trợ multi-page (tiling algorithm)
+  - Tạm thời force light mode khi export (remove "dark" class)
+  
+  VẤN ĐỀ: Client-side rendering → chậm trên mobile/thiết bị yếu
+  VẤN ĐỀ: Dùng JPEG (lossy) thay vì PNG → chất lượng text kém hơn
+  VẤN ĐỀ: Tiling algorithm đơn giản → có thể bị cắt đứt content ở giữa trang
+
+Excel Export (utils/export-excel.ts):
+  - Dùng ExcelJS → file .xlsx đúng chuẩn
+  - Chunked processing (500 rows mỗi chunk) → không block UI ✅
+  - Frozen header row ✅
+  - Styled header (blue background, white text) ✅
+  - Date format: "mmm dd, yyyy" ✅
+  - Currency format: "#,##0.00" ✅
+  
+  VẤN ĐỀ: Chỉ export: invoice_number, client_name, created_at, total_amount, currency
+    → Thiếu: status, due_date, tax, discount, line items detail
+    → Không đủ cho accounting/reporting chuyên nghiệp
+
+
+A8. ĐA NGÔN NGỮ — i18n
+------------------------
+22 ngôn ngữ hiện tại:
+  ar (Arabic), da (Danish), de (German), en (English), es (Spanish)
+  fi (Finnish), fr (French), hi (Hindi), id (Indonesian), it (Italian)
+  ja (Japanese), ko (Korean), nl (Dutch), no (Norwegian), pl (Polish)
+  pt (Portuguese), ru (Russian), sv (Swedish), th (Thai), tr (Turkish)
+  vn (Vietnamese), zh (Chinese)
+
+Triển khai: Context API + dictionary files trong /locales/
+  → Không dùng next-intl/next-i18next → URL không thay đổi theo ngôn ngữ
+  → Không có SEO benefit từ language-specific URLs (/vi/, /en/, v.v.)
+  → Không support RTL layout (Arabic cần RTL display)
+
+File size trung bình: ~4.5-8KB/ngôn ngữ (tùy độ phức tạp chữ viết)
+Hindi (hi.ts): 7.7KB, Thai (th.ts): 8.1KB → nhiều ký tự hơn
+
+
+A9. BẢO MẬT
+------------
+Điểm tốt:
+  ✅ Supabase RLS (Row Level Security) — mỗi user chỉ đọc data của mình
+  ✅ Server Actions dùng token để xác thực từng request
+  ✅ Paddle webhook signature verification (HMAC-SHA256 + timing-safe)
+  ✅ CRON_SECRET bảo vệ cron endpoint
+  ✅ "use server" directive trên entitlements.ts → không leak business logic
+
+Điểm cần cải thiện:
+  ❌ Admin email hardcode: "vunguyencapital@gmail.com" trong email-service.ts
+  ❌ Tester emails hardcode: ["vunguyen5127@gmail.com", ...] trong tester.ts
+  ❌ Chưa có 2FA (Two-Factor Authentication)
+  ❌ Không có rate limiting trên API routes
+  ❌ Không có CSP headers (Content Security Policy)
+
+
+================================================================================
+B. BUG TRACKER — LỖI & VẤN ĐỀ PHÁT HIỆN
+================================================================================
+
+B1. LỖI NGHIÊM TRỌNG (CRITICAL — Blocking production)
+------------------------------------------------------
+[BUG-001] Pro checkout bị khóa với user thường
+  File   : app/pricing/page.tsx, dòng 196
+  Code   : disabled={isLoading || !isTester(userEmail)}
+  Tác động: 100% user không thể nâng cấp Pro → không có doanh thu
+  Fix    : Remove isTester() guard, hoặc thêm env var ENABLE_CHECKOUT=true
+  Priority: PHẢI FIX NGAY
+
+[BUG-002] Analytics hiển thị số liệu hardcode giả
+  File   : app/dashboard/analytics/page.tsx
+  Dòng   : 218 (+12.5%), 334 (+5.2%), 330 ("High")
+  Tác động: Người dùng Pro thấy số liệu không chính xác → mất tin tưởng
+  Fix    : Tính từ DB: so sánh paidThisMonth với tháng trước
+  Priority: PHẢI FIX NGAY
+
+[BUG-003] Admin email hardcode trong source code
+  File   : utils/email-service.ts, dòng 22
+  Code   : const adminEmail = "vunguyencapital@gmail.com"
+  Tác động: Security risk, cứng nhắc khi cần thay đổi admin
+  Fix    : process.env.ADMIN_ALERT_EMAIL hoặc config.mailer.adminEmail
+  Priority: Fix sớm
+
+
+B2. LỖI TRUNG BÌNH (MEDIUM)
+----------------------------
+[BUG-004] paidThisMonth dùng sai field
+  File   : app/dashboard/actions.ts, dòng 450
+  Code   : if (isPaid && inv.created_at >= firstOfMonth)
+  Vấn đề : Nên dùng ngày mark paid (paid_at) thay vì created_at
+           Invoice tạo tháng 1 nhưng được thanh toán tháng 3 → tính vào tháng 1
+  Fix    : Thêm field paid_at vào DB, cập nhật khi status → "paid"
+  Priority: Medium
+
+[BUG-005] Cron job gửi email cho Free users
+  File   : app/api/cron/invoice-check/route.ts
+  Vấn đề : canUseAutoReminders=false cho Free tier nhưng cron không check
+  Fix    : Sau khi fetch user data, check subscription status trước khi gửi
+  Priority: Medium
+
+[BUG-006] Overdue progress bar hardcode 20%
+  File   : app/dashboard/analytics/page.tsx, dòng 204
+  Code   : <div className="h-full bg-red-500 w-[20%]" />
+  Vấn đề : Luôn hiển thị 20% bất kể số lượng overdue thực tế
+  Fix    : Tính: (overdueCount / totalInvoices) * 100
+  Priority: Medium
+
+[BUG-007] 2 checkout flows không nhất quán
+  File 1 : app/pricing/page.tsx → createCheckoutTransaction → transactionId
+  File 2 : components/upgrade-modal.tsx → trực tiếp items[{priceId}]
+  Vấn đề : 2 approaches khác nhau cho cùng 1 tác vụ → khó maintain
+  Fix    : Thống nhất dùng 1 flow (khuyên dùng transactionId approach)
+  Priority: Medium
+
+[BUG-008] maxInvoicesPerMonth chưa có guard ở invoice creation
+  Cần xác nhận: Có guard check monthly invoice count khi tạo mới không?
+  Nếu không có → Free user tạo vô hạn invoice
+  Fix    : Thêm guard giống createCompany trong createInvoice action
+  Priority: Medium — cần verify thêm
+
+
+B3. CẢI THIỆN NHỎ (MINOR)
+----------------------------
+[MINOR-001] Description character counter
+  Vấn đề : maxLength=120 nhưng không hiển thị còn bao nhiêu ký tự
+  Fix    : Thêm counter "XX/120" bên phải input
+
+[MINOR-002] Logo/company auto-fill gộp tất cả vào 1 textarea
+  Vấn đề : name, address, email, phone trong 1 field → khó validate
+  Fix    : Tách riêng từng field trong invoice state
+
+[MINOR-003] Invoice items không có giới hạn
+  Vấn đề : Có thể thêm vô hạn items → PDF rất dài, performance kém
+  Gợi ý  : Cảnh báo khi > 20 items, hoặc chặn ở ngưỡng hợp lý
+
+[MINOR-004] Excel export thiếu nhiều fields quan trọng
+  Thiếu  : status, due_date, tax_amount, discount_amount, line items
+  Fix    : Thêm columns cho accounting workflow đầy đủ hơn
+
+[MINOR-005] PDF dùng JPEG thay PNG
+  Gợi ý  : Dùng toPng() thay toJpeg() để text sắc nét hơn trong PDF
+
+[MINOR-006] i18n thiếu RTL support
+  Tiếng Arabic (ar.ts) cần direction: rtl trong layout
+  Fix    : Detect locale, thêm dir="rtl" vào html element
+
+[MINOR-007] Tester emails cần ra env var
+  File   : utils/tester.ts
+  Fix    : process.env.TESTER_EMAILS?.split(',') || []
+
+
+================================================================================
+C. PHÂN TÍCH THỊ TRƯỜNG
+================================================================================
+
+C1. QUY MÔ & XU HƯỚNG THỊ TRƯỜNG 2025
+---------------------------------------
+Thị trường toàn cầu: $12.6B – $36.1B (ước tính khác nhau)
+Tốc độ tăng (CAGR): 7% – 18% đến 2033
+Phân khúc chủ đạo: SMEs + Freelancers
+
+5 XU HƯỚNG QUAN TRỌNG NHẤT NĂM 2025:
+1. AI & Automation: OCR scan hóa đơn, auto data entry, fraud detection
+2. Real-time payments: Thanh toán trực tiếp trong invoice (embedded payments)
+3. E-invoicing mandates: Nhiều quốc gia bắt buộc hóa đơn điện tử (EU, v.v.)
+4. Cloud-first: Truy cập mọi nơi, mobile-first
+5. Integration: Kết nối accounting (QuickBooks, Xero), CRM, payment gateways
+
+
+C2. PAIN POINTS NGƯỜI DÙNG (Từ Market Research)
+------------------------------------------------
+FREELANCERS:
+  - 60% bị trả chậm → late payments là vấn đề #1
+  - Mất nhiều giờ/tháng cho manual invoicing
+  - Khó theo dõi cash flow
+  - Không có cách nhắc nhở tự động hiệu quả
+  - Phức tạp với thuế/VAT cho nhiều quốc gia
+
+SMALL BUSINESSES:
+  - 60% các chủ SME tốn nhiều giờ/tháng cho invoicing thủ công
+  - 47% có invoices overdue > 30 ngày
+  - $17,500 trung bình số tiền đang bị nợ
+  - Lỗi trong invoice (missing info, sai số) rất phổ biến
+  - Khó tích hợp với hệ thống accounting hiện có
+
+TOP 10 TÍNH NĂNG CẦN THIẾT NHẤT (Theo demand):
+  1. Recurring invoices (hóa đơn định kỳ tự động)
+  2. Direct payment link trong invoice (Stripe/PayPal)
+  3. Time tracking → tự convert thành invoice
+  4. Expense tracking
+  5. Client portal (client tự xem, download, pay)
+  6. Automated follow-up sequences
+  7. Tax reporting (VAT/GST summary)
+  8. Multi-team collaboration
+  9. Mobile app native
+  10. Integration với accounting software
+
+
+C3. SO SÁNH ĐỐI THỦ CẠNH TRANH
+---------------------------------
+                    InvoiceQuickly   Wave       FreshBooks   InvoiceNinja
+                    --------------   ----       ----------   ------------
+Giá/tháng          Free + $10       Free*      $17-55       Free(self)+$10
+UI Quality         ★★★★★ (best)    ★★★        ★★★★         ★★★
+Đa ngôn ngữ        22 ngôn ngữ     2           3            15+
+Generator (no-login)   ✅          ❌         ❌           ❌
+Dark Mode          ✅              ❌          ❌           ✅
+Recurring invoices ❌ (có guard)   ✅          ✅           ✅
+Direct payment     ❌             ✅ (pay/use) ✅           ✅
+Time tracking      ❌             ❌           ✅           ✅
+Expense tracking   ❌             ✅           ✅           ✅
+Client portal      partial*        ❌          ✅           ✅
+Multi-company      10(Pro)/1(Free) Unlimited   Requires sub  Unlimited
+Email reminders    ✅ (auto daily) ❌          ✅           ✅
+Digital signature  ✅             ❌           ❌           ❌
+PDF export         ✅             ✅           ✅           ✅
+Excel export       ✅(Pro)        ❌           ✅           ✅
+API docs (Swagger) ✅             ❌           Partial      ✅
+
+*Wave: Basic features free, Payroll & processing có phí
+*InvoiceQuickly "Client portal" = chỉ là view-only shared link, không phải portal đầy đủ
+
+
+C4. GAP ANALYSIS — THIẾU GÌ SO VỚI THỊ TRƯỜNG
+-----------------------------------------------
+MỨC ĐỘ THIẾU HỤT THEO THỨ TỰ ƯU TIÊN:
+
+HIGH IMPACT (Pain point trực tiếp ảnh hưởng doanh thu + marketing):
+  ❌ Recurring invoices: Nhóm freelancers retainer clients CẦN tính năng này
+     Có entitlement guard sẵn, chỉ thiếu UI → dễ build
+  ❌ Direct payment link: Late payment là #1 pain point
+     Stripe Express / PayPal.me link nhúng trong invoice
+  ❌ canUseAdvancedBranding chưa thực thi: Pro paid nhưng không có extra branding
+     Custom colors, custom invoice templates, remove "Powered by" footer
+
+MEDIUM IMPACT (Competitive parity — đối thủ có, mình thiếu):
+  ❌ Client portal: /share/[id] chỉ xem 1 invoice, cần portal xem tất cả + pay
+  ❌ Time tracking: FreshBooks có → là major selling point vs IQ
+  ❌ Expense tracking: Wave miễn phí có → disadvantage
+  ❌ Tax reporting: VAT/GST summary — cần cho business users
+  ❌ Bulk invoice actions: Xóa nhiều, đổi status hàng loạt
+  ❌ SMS/WhatsApp reminder: Email bị bỏ qua, SMS rate cao hơn
+
+LOW IMPACT (Future roadmap):
+  ❌ 2FA
+  ❌ AI features (auto-fill từ OCR)
+  ❌ QuickBooks/Xero integration
+  ❌ Native mobile app
+  ❌ Webhook outbound (cho 3rd party)
+
+
+================================================================================
+D. LỘ TRÌNH CẢI THIỆN
+================================================================================
+
+D1. P0 — PHẢI LÀM NGAY (Blocking)
+------------------------------------
+Estimate: 1-2 ngày dev
+
+[ ] 1. Bật Pro checkout cho tất cả users
+       File: app/pricing/page.tsx
+       Fix: Bỏ `disabled={isLoading || !isTester(userEmail)}`
+       Hoặc: Thêm env var NEXT_PUBLIC_CHECKOUT_ENABLED=true
+       
+[ ] 2. Move admin email ra env var
+       File: utils/email-service.ts, dòng 22
+       Fix: process.env.ADMIN_ALERT_EMAIL || "vunguyencapital@gmail.com"
+       Thêm: ADMIN_ALERT_EMAIL vào .env.local và Vercel env
+
+[ ] 3. Xóa tester emails khỏi code  
+       File: utils/tester.ts
+       Fix: const emails = process.env.TESTER_EMAILS?.split(',') ?? []
+
+[ ] 4. Fix số liệu hardcode trong Analytics
+       File: app/dashboard/analytics/page.tsx
+       Fix dòng 218: Tính % so sánh tháng này vs tháng trước từ DB
+       Fix dòng 330: Tính efficiency thực tế (% paid/total)
+       Fix dòng 334: Tính growth thực tế từ chartData
+
+[ ] 5. Fix overdue progress bar
+       File: app/dashboard/analytics/page.tsx, dòng 204
+       Fix: style={{ width: `${Math.min(100, (stats.overdueCount / stats.totalInvoices) * 100)}%` }}
+
+
+D2. P1 — ƯU TIÊN CAO (Sprint tiếp theo)
+-----------------------------------------
+Estimate: 1-2 tuần
+
+[ ] 6. Recurring Invoices UI
+       Entitlement canUseRecurring đã có → chỉ cần build UI
+       Cần:
+         - DB: thêm field recurring_interval (weekly/monthly/quarterly/yearly)
+                thêm field recurring_day_of_month, next_invoice_date
+         - UI: checkbox "Tạo tự động định kỳ" trong invoice form
+         - Cron: thêm logic check và tạo invoice mới theo schedule
+       Trigger UpgradeModal với "recurring" nếu Free user cố dùng
+
+[ ] 7. Fix cron chỉ gửi email cho Pro users
+       File: app/api/cron/invoice-check/route.ts
+       Fix: Sau khi fetch users, lọc chỉ những user có Pro subscription
+       Check: subscriptions table WHERE status IN ('active', 'canceled') AND plan='pro'
+
+[ ] 8. Thêm paid_at field và fix paidThisMonth
+       DB: ALTER TABLE invoices ADD COLUMN paid_at TIMESTAMPTZ
+       Code: Khi updateInvoiceStatus → 'paid' → set paid_at = now()
+       Fix analytics: dùng paid_at thay created_at
+
+[ ] 9. Thực thi canUseAdvancedBranding cho Free users
+       Invoice form: Khi Free user upload logo/signature → show UpgradeModal
+       Hoặc: Watermark "Basic" trên invoice với logo (subtle hint)
+       
+[ ] 10. Thống nhất 2 checkout flows
+        Dùng createCheckoutTransaction approach cho cả pricing page và upgrade modal
+
+
+D3. P2 — NÂNG CẤP CẠNH TRANH (Tháng tiếp theo)
+-------------------------------------------------
+[ ] 11. Direct payment link trong Invoice
+        Tích hợp Stripe Express hoặc PayPal.me
+        Hiển thị "Pay Now" button trong invoice và trong /share/[id]
+        Khi client click → redirect đến Stripe/PayPal checkout
+        Webhook → tự động update invoice status → 'paid'
+
+[ ] 12. Client Portal
+        Tạo /portal/[token] route (unique token per client email)
+        Client login bằng email magic link
+        Xem tất cả invoices gửi cho họ, lọc theo status
+        Download PDF, thanh toán trực tiếp
+        
+[ ] 13. Excel export nâng cấp
+        Thêm: status, due_date, tax_amount, discount_amount
+        Thêm: Summary tab (tổng theo tháng, theo trạng thái)
+        Thêm: Chart tab (simple bar chart)
+
+[ ] 14. Bulk actions cho invoice list
+        Checkbox chọn nhiều invoices
+        Actions: Xóa loạt / Đổi status loạt / Export chọn lọc
+
+[ ] 15. Send invoice via email trực tiếp từ app
+        "Send Invoice" button → điền email recipient → gửi PDF đính kèm
+        Track sent status, resend option
+
+[ ] 16. Thêm Tax reporting summary
+        Tab mới trong Analytics: VAT/Tax collected tổng hợp
+        Export tax report ra CSV/Excel theo quý/năm
+
+[ ] 17. RTL support cho Arabic
+        Detect lang === 'ar' → thêm dir="rtl" vào layout
+        Test UI với Arabic text
+
+
+D4. P3 — TẦM NHÌN DÀI HẠN (3-6 tháng)
+----------------------------------------
+[ ] 18. OpenAI Invoice Assistant
+        config.ts đã có openai.apiKey slot sẵn!
+        Feature: Chụp ảnh hóa đơn giấy → OCR → tự điền form
+        Feature: "Tóm tắt hoạt động tài chính" dạng ngôn ngữ tự nhiên
+        Feature: Đề xuất giá dựa trên lịch sử invoices
+
+[ ] 19. Time Tracking
+        Timer trong app (start/stop per project)
+        Log giờ làm liên kết với company/client
+        "Convert to Invoice" từ time entries
+        Cạnh tranh trực tiếp với FreshBooks
+
+[ ] 20. Expense Tracking  
+        Upload receipt (ảnh) → OCR amount
+        Categorize expenses
+        Attach expenses vào invoice như một line item
+        Cạnh tranh với Wave
+
+[ ] 21. Team Collaboration
+        Invite members vào company
+        Roles: admin/accountant/viewer
+        Activity log (ai tạo/sửa invoice gì)
+
+[ ] 22. Webhook Outbound
+        POST đến URL của user khi: invoice created/paid/overdue
+        Tích hợp với Zapier/Make (n8n)
+
+[ ] 23. Native Mobile App
+        React Native hoặc PWA nâng cấp (offline support)
+        Push notifications thay vì email
+
+[ ] 24. API Public
+        RESTful API đã có Swagger docs
+        Authentication: API Key per user
+        Cho phép 3rd party tích hợp (tạo invoice programmatically)
+
+
+================================================================================
+LỊCH SỬ CẬP NHẬT
+================================================================================
+2026-03-21 — Tạo file, phân tích lần đầu từ code review toàn bộ dự án
+             Đọc: invoice-form.tsx, upgrade-modal.tsx, analytics/page.tsx,
+             entitlements.ts, pricing/page.tsx, email-service.ts, 
+             cron/route.ts, paddle.ts, dashboard/actions.ts (482 dòng)
+             Locales: 22 ngôn ngữ xác nhận
+             Market research: FreshBooks, Wave, Invoice Ninja comparison
+
+================================================================================
+END OF ANALYSIS
+================================================================================

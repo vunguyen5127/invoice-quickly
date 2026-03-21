@@ -113,7 +113,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
     });
   };
 
+  const MAX_ITEMS = 100;
+
   const addItem = () => {
+    if (invoice.items.length >= MAX_ITEMS) return;
     setInvoice((prev) => ({
       ...prev,
       items: [
@@ -391,16 +394,27 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                   <div className="md:hidden text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">{t.description}</div>
                   
                   {/* Description (Item) Boxed */}
-                  <div className="w-full md:col-span-16">
+                  <div className="w-full md:col-span-16 relative">
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className={`w-full h-12 pl-4 md:pl-6 pr-4 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-xl text-[14px] font-bold text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
+                      className={`w-full h-12 pl-4 md:pl-6 pr-14 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-xl text-[14px] font-bold text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
                     />
+                    {item.description.length > 0 && (
+                      <span className={`absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-bold tabular-nums pointer-events-none transition-colors ${
+                        item.description.length >= 110
+                          ? "text-red-500"
+                          : item.description.length >= 90
+                          ? "text-amber-500"
+                          : "text-zinc-400"
+                      }`}>
+                        {120 - item.description.length}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex gap-3 w-full md:contents">
@@ -456,13 +470,26 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             </div>
           </div>
           
-          <button 
-            type="button"
-            onClick={addItem}
-            className="w-fit flex items-center justify-center gap-2 mt-8 px-5 py-3 bg-success text-success-foreground rounded-2xl text-[14px] font-bold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group"
-          >
-            <Plus className="w-4 h-4 text-white" /> {t.addItem}
-          </button>
+          <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
+            <button 
+              type="button"
+              onClick={addItem}
+              disabled={invoice.items.length >= MAX_ITEMS}
+              className="w-fit flex items-center justify-center gap-2 px-5 py-3 bg-success text-success-foreground rounded-2xl text-[14px] font-bold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
+            >
+              <Plus className="w-4 h-4 text-white" /> {t.addItem}
+            </button>
+            <span className={`text-[12px] font-bold tabular-nums ${
+              invoice.items.length >= MAX_ITEMS
+                ? "text-red-500 dark:text-red-400"
+                : invoice.items.length >= MAX_ITEMS - 3
+                ? "text-amber-500 dark:text-amber-400"
+                : "text-zinc-400"
+            }`}>
+              {invoice.items.length}/{MAX_ITEMS} items
+              {invoice.items.length >= MAX_ITEMS && " — limit reached"}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -494,7 +521,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <div className="grid grid-cols-2 gap-[2px] items-center">
                 <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
-                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 uppercase tracking-widest text-right focus:ring-0 p-0"
+                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 text-right focus:ring-0 p-0"
                     value={(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount}
                     onChange={(e) => handleRootChange("discountLabel", e.target.value)}
                     placeholder={t.discount}
@@ -529,7 +556,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <div className="grid grid-cols-2 gap-[2px] items-center">
                 <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
-                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 uppercase tracking-widest text-right focus:ring-0 p-0"
+                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 text-right focus:ring-0 p-0"
                     value={(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax}
                     onChange={(e) => handleRootChange("taxLabel", e.target.value)}
                     placeholder={t.tax}
@@ -564,7 +591,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
               <div className="grid grid-cols-2 gap-[2px] items-center">
                 <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
-                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 uppercase tracking-widest text-right focus:ring-0 p-0"
+                    className="w-full bg-transparent border-none outline-none text-[13px] font-bold text-zinc-500 text-right focus:ring-0 p-0"
                     value={(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}
                     onChange={(e) => handleRootChange("shippingLabel", e.target.value)}
                     placeholder={t.shipping}
@@ -604,9 +631,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <button 
                       type="button"
                       onClick={() => setIsNotesOpen(!isNotesOpen)} 
-                      className="flex-1 h-full text-left text-[13px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
+                      className="flex-1 h-full text-left text-[13px] font-bold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
                     >
-                      {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold uppercase tracking-widest">{t.addNotes}</span>}
+                      {t.notes} {invoice.notes && !isNotesOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold">{t.addNotes}</span>}
                     </button>
                   </div>
                   <button 
@@ -647,9 +674,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
                     <button 
                       type="button"
                       onClick={() => setIsTermsOpen(!isTermsOpen)} 
-                      className="flex-1 h-full text-left text-[13px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
+                      className="flex-1 h-full text-left text-[13px] font-bold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors"
                     >
-                      {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold uppercase tracking-widest">{t.addTerms}</span>}
+                      {t.termsConditions} {invoice.terms && !isTermsOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold">{t.addTerms}</span>}
                     </button>
                   </div>
                   <button 
@@ -678,10 +705,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
             {/* Signature Accordion */}
             <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
               <button 
-                className="w-full h-12 flex items-center justify-between px-4 text-[13px] font-bold uppercase tracking-widest text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
+                className="w-full h-12 flex items-center justify-between px-4 text-[13px] font-bold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
                 onClick={() => setIsSignatureOpen(!isSignatureOpen)}
               >
-                {t.signature} {(invoice.signature || invoice.signatureName) && !isSignatureOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] uppercase font-bold tracking-widest">{t.addSignature}</span>}
+                {t.signature} {(invoice.signature || invoice.signatureName) && !isSignatureOpen && <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold">{t.addSignature}</span>}
                 {isSignatureOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
               </button>
               {isSignatureOpen && (
