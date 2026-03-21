@@ -113,6 +113,39 @@ export default function AnalyticsPage() {
     return stats.chartData.reduce((acc, curr) => acc + curr.revenue, 0);
   }, [stats.chartData]);
 
+  // Computed metrics from real data
+  const overdueRate = stats.totalInvoices > 0
+    ? Math.min(100, Math.round((stats.overdueCount / stats.totalInvoices) * 100))
+    : 0;
+
+  const collectionGrowth = useMemo(() => {
+    const data = stats.chartData;
+    if (data.length < 2) return null;
+    const last = data[data.length - 1]?.revenue ?? 0;
+    const prev = data[data.length - 2]?.revenue ?? 0;
+    if (prev === 0) return last > 0 ? null : null;
+    const pct = ((last - prev) / prev) * 100;
+    return pct;
+  }, [stats.chartData]);
+
+  const monthlyGrowth = useMemo(() => {
+    const data = stats.chartData;
+    if (data.length < 2) return null;
+    const last = data[data.length - 1]?.revenue ?? 0;
+    const prev = data[data.length - 2]?.revenue ?? 0;
+    if (prev === 0) return null;
+    return ((last - prev) / prev) * 100;
+  }, [stats.chartData]);
+
+  const efficiencyLabel = useMemo(() => {
+    const total = stats.totalInvoices;
+    if (total === 0) return { text: '—', color: 'text-zinc-400' };
+    const paidRate = (total - stats.overdueCount) / total;
+    if (paidRate >= 0.85) return { text: 'High', color: 'text-emerald-500' };
+    if (paidRate >= 0.6) return { text: 'Medium', color: 'text-amber-500' };
+    return { text: 'Low', color: 'text-red-500' };
+  }, [stats.totalInvoices, stats.overdueCount]);
+
   return (
     <div className="min-h-screen bg-zinc-50/30 dark:bg-zinc-950">
     <div className="container mx-auto px-4 sm:px-8 py-10 max-w-7xl animate-in fade-in duration-700">
@@ -201,7 +234,7 @@ export default function AnalyticsPage() {
             <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{stats.overdueCount}</p>
           </div>
           <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden mt-1">
-             <div className="h-full bg-red-500 w-[20%]" />
+             <div className="h-full bg-red-500 rounded-full transition-all duration-700" style={{ width: `${overdueRate}%` }} />
           </div>
         </div>
         
@@ -214,8 +247,17 @@ export default function AnalyticsPage() {
             <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Collection</p>
             <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">${stats.paidThisMonth.toLocaleString()}</p>
           </div>
-          <div className="flex items-center gap-1.5 text-[12px] font-bold text-emerald-600 dark:text-emerald-400">
-             <TrendingUp className="w-3.5 h-3.5" /> +12.5% vs last month
+          <div className="flex items-center gap-1.5 text-[12px] font-bold">
+             {collectionGrowth !== null ? (
+               <>
+                 <TrendingUp className={`w-3.5 h-3.5 ${collectionGrowth >= 0 ? 'text-emerald-500' : 'text-red-400 rotate-180'}`} />
+                 <span className={collectionGrowth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}>
+                   {collectionGrowth >= 0 ? '+' : ''}{collectionGrowth.toFixed(1)}% vs prev period
+                 </span>
+               </>
+             ) : (
+               <span className="text-zinc-400">No comparison data</span>
+             )}
           </div>
         </div>
         
@@ -327,11 +369,11 @@ export default function AnalyticsPage() {
           <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-white/5 relative z-10 space-y-3">
              <div className="flex justify-between items-center text-[12px] font-bold uppercase tracking-widest text-zinc-400">
                 <span>Efficiency</span>
-                <span className="text-emerald-500">High</span>
+                {efficiencyLabel.text === '—' ? <span className="text-zinc-400">—</span> : <span className={efficiencyLabel.color}>{efficiencyLabel.text}</span>}
              </div>
              <div className="flex justify-between items-center text-[12px] font-bold uppercase tracking-widest text-zinc-400">
-                <span>Monthly Growth</span>
-                <span className="text-blue-500">+5.2%</span>
+                <span>Period Growth</span>
+                {monthlyGrowth !== null ? (<span className={monthlyGrowth >= 0 ? "text-blue-500" : "text-red-400"}>{monthlyGrowth >= 0 ? "+" : ""}{monthlyGrowth.toFixed(1)}%</span>) : (<span className="text-zinc-400">—</span>)}
              </div>
           </div>
         </div>

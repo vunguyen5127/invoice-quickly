@@ -34,6 +34,7 @@ interface Config {
     readonly port: number;
     readonly username: string;
     readonly password?: string;
+    readonly adminEmail: string;
   };
 
   readonly openai: { readonly apiKey?: string };
@@ -85,6 +86,7 @@ export const config: Config = {
     port: parseInt(getEnv("MAILER_PORT", false, "587"), 10),
     username: getEnv("MAILER_USERNAME", false),
     password: getEnv("MAILER_PASSWORD", false),
+    adminEmail: getEnv("ADMIN_ALERT_EMAIL", false),
   },
 
   openai: { apiKey: getEnv("OPENAI_API_KEY", false) },

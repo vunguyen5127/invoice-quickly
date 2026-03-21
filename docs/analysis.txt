@@ -97,12 +97,12 @@ VẤN ĐỀ KỸ THUẬT PHÁT HIỆN:
   ⚠️ Company auto-fill gộp tất cả thông tin vào MỘT textarea "name":
      companyDetailsString = [name, address, email, phone].join(", ")
      → Không tách riêng các fields → không thể validate từng field
-     → Ảnh hưởng đến quality của invoice preview
+     → Ảnh hưởng đến quality của invoice preview                          - ALLOW
 
-  ⚠️ Không có giới hạn số lượng line items (có thể thêm vô hạn)   - FIXED
+  ⚠️ Không có giới hạn số lượng line items (có thể thêm vô hạn)           - FIXED
      → Có thể gây performance issues và PDF quá dài
 
-  ⚠️ Description có maxLength=120 nhưng không có character counter  - FIXED
+  ⚠️ Description có maxLength=120 nhưng không có character counter        - FIXED
      → User không biết mình còn lại bao nhiêu ký tự
 
   ⚠️ canUseAdvancedBranding (Pro feature) không có guard nào trong form   - FIXED
@@ -119,8 +119,8 @@ Entitlements được định nghĩa rõ ràng, implementation sạch:
     - adsEnabled: true
     - canUseRecurring: false
     - canUseAutoReminders: false
-    - canUseAdvancedBranding: false
-    - canUseAdvancedExport: false  (Excel export)
+    - canUseAdvancedBranding: TRUE  ← đã đổi (logo/signature cho Free)
+    - canUseAdvancedExport: false  (Excel export — Pro only)
 
   PRO_ENTITLEMENTS:
     - maxCompanies: 10  (không phải unlimited! pricing page nói "10 Companies (Fair Use)")
@@ -144,9 +144,7 @@ GUARD THIẾU HOẶC CHƯA THỰC THI:
 UpgradeModal có các trigger types:
   "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general"
   → Copy text đã viết sẵn cho từng trigger — tốt!
-  → UpgradeModal (upgrade-modal.tsx) dùng Paddle.Checkout.open() với items/priceId
-     KHÁC với pricing/page.tsx dùng createCheckoutTransaction (tạo transaction trước)
-     → 2 flow thanh toán khác nhau cho cùng 1 sản phẩm — cần thống nhất
+  → UpgradeModal (upgrade-modal.tsx) dùng createCheckoutTransaction — ĐÃ THỐNG NHẤT  ✅ FIXED
 
 
 A4. ANALYTICS & DASHBOARD — dashboard/analytics/page.tsx + actions.ts
@@ -189,19 +187,17 @@ Cron Job: /api/cron/invoice-check/route.ts
     2. Lấy invoices: !paid + !deleted + due_date <= 3 ngày từ nay
     3. Group theo user_id
     4. Fetch user emails từ bảng users
+    4b. Filter chỉ Pro users (subscriptions WHERE plan='pro')
     5. Gửi email reminder (overdueInvoices + upcomingInvoices)
 
-  VẤN ĐỀ: Gửi email cho TẤT CẢ users kể cả Free tier
-    → entitlements nói canUseAutoReminders: false cho Free
-    → Cần thêm check subscription trước khi gửi
+  ✅ FIXED: Chỉ gửi email cho Pro users (canUseAutoReminders)
 
 Email Templates (email-service.ts):
   sendNewUserAlert()     → Thông báo admin khi có user mới (184 dòng)
   sendInvoiceReminderEmail() → Email nhắc invoice (overdue + upcoming)
   sendTestEmail()        → Test email từ admin panel
 
-  VẤN ĐỀ SECURITY: adminEmail = "vunguyencapital@gmail.com" hardcode trong code
-    → Cần move ra env var: ADMIN_ALERT_EMAIL
+  ✅ FIXED: adminEmail đọc từ env var ADMIN_ALERT_EMAIL (config.mailer.adminEmail)
 
 
 A6. THANH TOÁN — Paddle Integration
@@ -212,16 +208,10 @@ paddle.ts:
   - verifyPaddleWebhookSignature(): HMAC-SHA256 + timing-safe compare ✅
   - getPlanFromPriceId(): map price ID → plan name ✅
 
-2 Flow Checkout khác nhau (không nhất quán):
-  Flow 1 (pricing/page.tsx):
-    createCheckoutTransaction(token, isYearly) → server tạo transaction
-    → Paddle.Checkout.open({ transactionId }) 
-    → Phức tạp hơn, đúng với best practice Paddle mới
-
-  Flow 2 (upgrade-modal.tsx):
-    Paddle.Checkout.open({ items: [{ priceId, quantity: 1 }], customer, customData })
-    → Đơn giản hơn, dùng trực tiếp priceId
-    → Có thể gây vấn đề với Paddle API version khác nhau
+2 Flow Checkout — ĐÃ THỐNG NHẤT ✅ FIXED:
+  Cả pricing/page.tsx và upgrade-modal.tsx đều dùng:
+    createCheckoutTransaction(token, isYearly) → transactionId
+    → Paddle.Checkout.open({ transactionId })
 
 Webhook handler /api/paddle/webhook:
   - Xác thực signature ✅
@@ -287,7 +277,7 @@ A9. BẢO MẬT
   ✅ "use server" directive trên entitlements.ts → không leak business logic
 
 Điểm cần cải thiện:
-  ❌ Admin email hardcode: "vunguyencapital@gmail.com" trong email-service.ts
+  ✅ Admin email hardcode — FIXED (dùng config.mailer.adminEmail / env var)
   ❌ Tester emails hardcode: ["vunguyen5127@gmail.com", ...] trong tester.ts
   ❌ Chưa có 2FA (Two-Factor Authentication)
   ❌ Không có rate limiting trên API routes
@@ -300,12 +290,10 @@ B. BUG TRACKER — LỖI & VẤN ĐỀ PHÁT HIỆN
 
 B1. LỖI NGHIÊM TRỌNG (CRITICAL — Blocking production)
 ------------------------------------------------------
-[BUG-001] Pro checkout bị khóa với user thường
-  File   : app/pricing/page.tsx, dòng 196
-  Code   : disabled={isLoading || !isTester(userEmail)}
-  Tác động: 100% user không thể nâng cấp Pro → không có doanh thu
-  Fix    : Remove isTester() guard, hoặc thêm env var ENABLE_CHECKOUT=true
-  Priority: PHẢI FIX NGAY
+[BUG-001] ✅ FIXED — Pro checkout bị khóa với user thường
+  File   : app/pricing/page.tsx + app/pricing/actions.ts
+  Fix    : Bỏ isTester() guard ở cả UI button và server action
+           Nút từ "Coming Soon" → "Subscribe to Pro"
 
 [BUG-002] Analytics hiển thị số liệu hardcode giả
   File   : app/dashboard/analytics/page.tsx
@@ -314,12 +302,10 @@ B1. LỖI NGHIÊM TRỌNG (CRITICAL — Blocking production)
   Fix    : Tính từ DB: so sánh paidThisMonth với tháng trước
   Priority: PHẢI FIX NGAY
 
-[BUG-003] Admin email hardcode trong source code
-  File   : utils/email-service.ts, dòng 22
-  Code   : const adminEmail = "vunguyencapital@gmail.com"
-  Tác động: Security risk, cứng nhắc khi cần thay đổi admin
-  Fix    : process.env.ADMIN_ALERT_EMAIL hoặc config.mailer.adminEmail
-  Priority: Fix sớm
+[BUG-003] ✅ FIXED — Admin email hardcode trong source code
+  File   : utils/email-service.ts + utils/config.ts
+  Fix    : config.mailer.adminEmail ← env var ADMIN_ALERT_EMAIL
+  Cần    : Thêm ADMIN_ALERT_EMAIL vào Vercel env + .env.local
 
 
 B2. LỖI TRUNG BÌNH (MEDIUM)
@@ -332,11 +318,9 @@ B2. LỖI TRUNG BÌNH (MEDIUM)
   Fix    : Thêm field paid_at vào DB, cập nhật khi status → "paid"
   Priority: Medium
 
-[BUG-005] Cron job gửi email cho Free users
+[BUG-005] ✅ FIXED — Cron job gửi email cho Free users
   File   : app/api/cron/invoice-check/route.ts
-  Vấn đề : canUseAutoReminders=false cho Free tier nhưng cron không check
-  Fix    : Sau khi fetch user data, check subscription status trước khi gửi
-  Priority: Medium
+  Fix    : Query subscriptions table, lọc proUserIds Set, skip Free users
 
 [BUG-006] Overdue progress bar hardcode 20%
   File   : app/dashboard/analytics/page.tsx, dòng 204
@@ -345,12 +329,10 @@ B2. LỖI TRUNG BÌNH (MEDIUM)
   Fix    : Tính: (overdueCount / totalInvoices) * 100
   Priority: Medium
 
-[BUG-007] 2 checkout flows không nhất quán
-  File 1 : app/pricing/page.tsx → createCheckoutTransaction → transactionId
-  File 2 : components/upgrade-modal.tsx → trực tiếp items[{priceId}]
-  Vấn đề : 2 approaches khác nhau cho cùng 1 tác vụ → khó maintain
-  Fix    : Thống nhất dùng 1 flow (khuyên dùng transactionId approach)
-  Priority: Medium
+[BUG-007] ✅ FIXED — 2 checkout flows không nhất quán
+  File 1 : app/pricing/page.tsx
+  File 2 : components/upgrade-modal.tsx
+  Fix    : Cả 2 đều dùng createCheckoutTransaction → transactionId approach
 
 [BUG-008] maxInvoicesPerMonth chưa có guard ở invoice creation
   Cần xác nhận: Có guard check monthly invoice count khi tạo mới không?
@@ -361,17 +343,15 @@ B2. LỖI TRUNG BÌNH (MEDIUM)
 
 B3. CẢI THIỆN NHỎ (MINOR)
 ----------------------------
-[MINOR-001] Description character counter
-  Vấn đề : maxLength=120 nhưng không hiển thị còn bao nhiêu ký tự
-  Fix    : Thêm counter "XX/120" bên phải input
+[MINOR-001] ✅ FIXED — Description character counter
+  Fix    : Counter hiện số ký tự còn lại (màu xám→amber→đỏ theo ngưỡng)
 
 [MINOR-002] Logo/company auto-fill gộp tất cả vào 1 textarea
   Vấn đề : name, address, email, phone trong 1 field → khó validate
   Fix    : Tách riêng từng field trong invoice state
 
-[MINOR-003] Invoice items không có giới hạn
-  Vấn đề : Có thể thêm vô hạn items → PDF rất dài, performance kém
-  Gợi ý  : Cảnh báo khi > 20 items, hoặc chặn ở ngưỡng hợp lý
+[MINOR-003] ✅ FIXED — Invoice items không có giới hạn
+  Fix    : MAX_ITEMS = 100, guard trong addItem(), counter X/100 items
 
 [MINOR-004] Excel export thiếu nhiều fields quan trọng
   Thiếu  : status, due_date, tax_amount, discount_amount, line items
@@ -496,15 +476,14 @@ D1. P0 — PHẢI LÀM NGAY (Blocking)
 ------------------------------------
 Estimate: 1-2 ngày dev
 
-[ ] 1. Bật Pro checkout cho tất cả users
-       File: app/pricing/page.tsx
-       Fix: Bỏ `disabled={isLoading || !isTester(userEmail)}`
-       Hoặc: Thêm env var NEXT_PUBLIC_CHECKOUT_ENABLED=true
+[x] 1. ✅ Bật Pro checkout cho tất cả users
+       pricing/actions.ts — bỏ isTester() guard
+       pricing/page.tsx — nút luôn active, text "Subscribe to Pro"
        
-[ ] 2. Move admin email ra env var
-       File: utils/email-service.ts, dòng 22
-       Fix: process.env.ADMIN_ALERT_EMAIL || "vunguyencapital@gmail.com"
-       Thêm: ADMIN_ALERT_EMAIL vào .env.local và Vercel env
+[x] 2. ✅ Move admin email ra env var
+       utils/config.ts → config.mailer.adminEmail
+       utils/email-service.ts → dùng config, skip nếu chưa cấu hình
+       CẦN THÊM: ADMIN_ALERT_EMAIL vào Vercel env + .env.local
 
 [ ] 3. Xóa tester emails khỏi code  
        File: utils/tester.ts
@@ -534,22 +513,20 @@ Estimate: 1-2 tuần
          - Cron: thêm logic check và tạo invoice mới theo schedule
        Trigger UpgradeModal với "recurring" nếu Free user cố dùng
 
-[ ] 7. Fix cron chỉ gửi email cho Pro users
-       File: app/api/cron/invoice-check/route.ts
-       Fix: Sau khi fetch users, lọc chỉ những user có Pro subscription
-       Check: subscriptions table WHERE status IN ('active', 'canceled') AND plan='pro'
+[x] 7. ✅ Fix cron chỉ gửi email cho Pro users
+        File: app/api/cron/invoice-check/route.ts
+        Fix: Query subscriptions → proUserIds Set → skip Free users trong loop
 
 [ ] 8. Thêm paid_at field và fix paidThisMonth
        DB: ALTER TABLE invoices ADD COLUMN paid_at TIMESTAMPTZ
        Code: Khi updateInvoiceStatus → 'paid' → set paid_at = now()
        Fix analytics: dùng paid_at thay created_at
 
-[ ] 9. Thực thi canUseAdvancedBranding cho Free users
-       Invoice form: Khi Free user upload logo/signature → show UpgradeModal
-       Hoặc: Watermark "Basic" trên invoice với logo (subtle hint)
+[ ] 9. Thực thi canUseAdvancedBranding cho Free users — ĐÃ QUYẾT ĐỊNH ALLOW
+       Free users được dùng logo/signature (canUseAdvancedBranding=true)
        
-[ ] 10. Thống nhất 2 checkout flows
-        Dùng createCheckoutTransaction approach cho cả pricing page và upgrade modal
+[x] 10. ✅ Thống nhất 2 checkout flows
+         upgrade-modal.tsx → dùng createCheckoutTransaction → transactionId
 
 
 D3. P2 — NÂNG CẤP CẠNH TRANH (Tháng tiếp theo)
@@ -636,6 +613,17 @@ LỊCH SỬ CẬP NHẬT
              cron/route.ts, paddle.ts, dashboard/actions.ts (482 dòng)
              Locales: 22 ngôn ngữ xác nhận
              Market research: FreshBooks, Wave, Invoice Ninja comparison
+
+2026-03-21 — Session fixes (commit 2-4):
+  ✅ MINOR-001: Description character counter (amber/red khi gần giới hạn)
+  ✅ MINOR-003: Line items giới hạn 100, counter X/100, disable khi đầy
+  ✅ UI: Bỏ uppercase labels (Discount/Tax/Shipping/Notes/Terms/Signature)
+  ✅ Entitlements: canUseAdvancedBranding=true cho Free (logo/signature miễn phí)
+  ✅ BUG-005: Cron job chỉ gửi email cho Pro users (filter subscriptions)
+  ✅ BUG-001: Pro checkout mở cho tất cả users (bỏ isTester guard)
+  ✅ BUG-007: Thống nhất checkout flow (upgrade-modal dùng createCheckoutTransaction)
+  ✅ BUG-003: Admin email ra env var ADMIN_ALERT_EMAIL (config.mailer.adminEmail)
+  ⚠️  CẦN THÊM VÀO VERCEL ENV: ADMIN_ALERT_EMAIL=vunguyencapital@gmail.com
 
 ================================================================================
 END OF ANALYSIS

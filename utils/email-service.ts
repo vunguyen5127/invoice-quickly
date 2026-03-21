@@ -19,7 +19,11 @@ export async function sendNewUserAlert(userData: {
 }) {
   console.log(`[email-service] Attempting to send new user alert for: ${userData.email}`);
   
-  const adminEmail = "vunguyencapital@gmail.com";
+  const adminEmail = config.mailer.adminEmail;
+  if (!adminEmail) {
+    console.warn("[email-service] ADMIN_ALERT_EMAIL not configured — skipping new user alert.");
+    return { success: false, error: "Admin email not configured" };
+  }
   
   // Verify connection configuration
   try {
