@@ -1,4 +1,4 @@
-import { toJpeg } from "html-to-image";
+import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 
 export const generatePDF = async (elementId: string, filename: string) => {
@@ -40,8 +40,7 @@ export const generatePDF = async (elementId: string, filename: string) => {
 
   try {
     // We use html-to-image to capture the full content height
-    const imgDataUrl = await toJpeg(element, {
-      quality: 0.95,
+    const imgDataUrl = await toPng(element, {
       backgroundColor: "#ffffff",
       pixelRatio: 2, 
       canvasWidth: targetWidth,
@@ -66,7 +65,7 @@ export const generatePDF = async (elementId: string, filename: string) => {
     
     if (contentHeightMm <= fitThreshold) {
       // Scale to fit single page if only slightly over
-      pdf.addImage(imgDataUrl, "JPEG", 0, 0, pdfWidth, Math.min(contentHeightMm, pdfHeight));
+        pdf.addImage(imgDataUrl, "PNG", 0, 0, pdfWidth, Math.min(contentHeightMm, pdfHeight));
     } else {
       // Improved Tiling: We add a small overlap or handle the split more gracefully
       let heightLeft = contentHeightMm;
@@ -78,7 +77,7 @@ export const generatePDF = async (elementId: string, filename: string) => {
         // Add the image segment for the current page
         pdf.addImage(
           imgDataUrl, 
-          "JPEG", 
+          "PNG", 
           0, 
           -((pageNumber - 1) * pdfHeight), 
           pdfWidth, 
