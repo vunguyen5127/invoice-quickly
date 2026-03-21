@@ -58,7 +58,10 @@ export const config: Config = {
   isTest: nodeEnv === "test",
 
   // NEXT_PUBLIC_ variables must be accessed statically for Next.js inlining
-  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, ""),
+  siteUrl: (
+    process.env.NEXT_PUBLIC_SITE_URL || 
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
+  ).replace(/\/$/, ""),
 
   supabase: {
     url: process.env.NEXT_PUBLIC_SUPABASE_URL || "",

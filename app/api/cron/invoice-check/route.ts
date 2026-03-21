@@ -5,6 +5,8 @@ import { getCurrencySymbol } from "@/types/invoice";
 
 import config from "@/utils/config";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Daily cron job that:
  * 1. Keeps Supabase alive (prevents hibernation)
@@ -12,11 +14,20 @@ import config from "@/utils/config";
  * 3. Sends reminder emails to invoice owners
  */
 export async function GET(request: Request) {
-  console.log("[cron/invoice-check] triggered at:", new Date().toISOString());
+  const now = new Date().toISOString();
+  console.log(`[cron/invoice-check] Triggered at: ${now}`);
 
   const authHeader = request.headers.get("authorization");
+  if (!authHeader) {
+    console.warn("[cron/invoice-check] Missing Authorization header");
+    return new NextResponse("Unauthorized: Missing auth header", { status: 401 });
+  }
+
   if (authHeader !== `Bearer ${config.cron.secret}`) {
-    return new NextResponse("Unauthorized", { status: 401 });
+    console.error("[cron/invoice-check] Invalid Authorization header. Expected Bearer with secret.");
+    // For debugging in Vercel logs (safe because it only logs presence/length)
+    console.log(`[cron/invoice-check] Secret check: config.cron.secret defined? ${!!config.cron.secret}, length: ${config.cron.secret?.length || 0}`);
+    return new NextResponse("Unauthorized: Secret mismatch", { status: 401 });
   }
 
   const { url: supabaseUrl, serviceRole: supabaseServiceRoleKey } = config.supabase;
