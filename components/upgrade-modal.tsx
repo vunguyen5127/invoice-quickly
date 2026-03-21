@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { X, Crown, Check, Loader2, Shield } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
-import config from "@/utils/config";
+import { createCheckoutTransaction } from "@/app/pricing/actions";
 
 declare global {
   interface Window {
@@ -69,19 +69,15 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        window.location.href = "/login?redirect=/dashboard";
+        window.location.href = "/login?redirect=/pricing";
         return;
       }
 
-      const priceId = isYearly
-        ? config.paddle.prices.proYearly
-        : config.paddle.prices.proMonthly;
+      const { transactionId } = await createCheckoutTransaction(session.access_token, isYearly);
 
-      if (window.Paddle) {
+      if (window.Paddle && transactionId) {
         window.Paddle.Checkout.open({
-          items: [{ priceId, quantity: 1 }],
-          customer: { email: session.user.email },
-          customData: { user_id: session.user.id },
+          transactionId,
           settings: {
             successUrl: `${window.location.origin}/dashboard?upgraded=1`,
             displayMode: "overlay",

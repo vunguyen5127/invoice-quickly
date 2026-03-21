@@ -99,13 +99,13 @@ VẤN ĐỀ KỸ THUẬT PHÁT HIỆN:
      → Không tách riêng các fields → không thể validate từng field
      → Ảnh hưởng đến quality của invoice preview
 
-  ⚠️ Không có giới hạn số lượng line items (có thể thêm vô hạn)
+  ⚠️ Không có giới hạn số lượng line items (có thể thêm vô hạn)   - FIXED
      → Có thể gây performance issues và PDF quá dài
 
-  ⚠️ Description có maxLength=120 nhưng không có character counter
+  ⚠️ Description có maxLength=120 nhưng không có character counter  - FIXED
      → User không biết mình còn lại bao nhiêu ký tự
 
-  ⚠️ canUseAdvancedBranding (Pro feature) không có guard nào trong form
+  ⚠️ canUseAdvancedBranding (Pro feature) không có guard nào trong form   - FIXED
      → Free user vẫn dùng được logo, signature, custom colors
 
 
@@ -136,10 +136,10 @@ GUARD THỰC SỰ ĐÃ CÀI:
   ✅ Invoice limit: [cần xác nhận thêm ở invoice creation flow]
 
 GUARD THIẾU HOẶC CHƯA THỰC THI:
-  ❌ canUseRecurring: Entitlement khai báo nhưng KHÔNG CÓ UIrecurring invoice nào
-  ❌ canUseAutoReminders: Cron job gửi email cho TẤT CẢ users (kể cả Free)
-  ❌ canUseAdvancedBranding: Không có guard trong invoice-form.tsx
-  ❌ canUseAdvancedExport: Cần xác nhận trong Excel export flow
+  ❌ canUseRecurring: Entitlement khai báo nhưng KHÔNG CÓ UIrecurring invoice nào - ALLOW
+  ❌ canUseAutoReminders: Cron job gửi email cho TẤT CẢ users (kể cả Free)  - FIXED 
+  ❌ canUseAdvancedBranding: Không có guard trong invoice-form.tsx          - ALLOW
+  ❌ canUseAdvancedExport: Cần xác nhận trong Excel export flow               - FIXED 
 
 UpgradeModal có các trigger types:
   "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general"
@@ -470,8 +470,7 @@ HIGH IMPACT (Pain point trực tiếp ảnh hưởng doanh thu + marketing):
      Có entitlement guard sẵn, chỉ thiếu UI → dễ build
   ❌ Direct payment link: Late payment là #1 pain point
      Stripe Express / PayPal.me link nhúng trong invoice
-  ❌ canUseAdvancedBranding chưa thực thi: Pro paid nhưng không có extra branding
-     Custom colors, custom invoice templates, remove "Powered by" footer
+  ❌ canUseAdvancedBranding chưa thực thi: KHÔNG CẦN - đã quyết định cho Free users dùng logo/signature
 
 MEDIUM IMPACT (Competitive parity — đối thủ có, mình thiếu):
   ❌ Client portal: /share/[id] chỉ xem 1 invoice, cần portal xem tất cả + pay

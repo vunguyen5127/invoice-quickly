@@ -2,7 +2,6 @@
 
 import { createClient } from "@supabase/supabase-js";
 import { PADDLE_CONFIG } from "@/utils/paddle";
-import { isTester } from "@/utils/tester";
 
 import config from "@/utils/config";
 
@@ -44,9 +43,6 @@ export async function createCheckoutTransaction(token: string, isYearly: boolean
     throw new Error(`Authentication failed: ${authError?.message || "Auth session missing!"}`);
   }
 
-  if (!isTester(user.email)) {
-    throw new Error("Subscriptions are currently in private beta.");
-  }
 
   const priceId = isYearly ? PADDLE_CONFIG.prices.proYearly : PADDLE_CONFIG.prices.proMonthly;
 

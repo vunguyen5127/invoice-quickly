@@ -96,11 +96,24 @@ export async function GET(request: Request) {
       return NextResponse.json({ success: false, error: "Failed to fetch users" }, { status: 500 });
     }
 
-    // 5. Send reminder emails
+    // 4b. Filter to Pro users only (canUseAutoReminders = true for Pro)
+    const { data: proSubs } = await supabase
+      .from("subscriptions")
+      .select("user_id")
+      .in("user_id", userIds)
+      .eq("plan", "pro")
+      .in("status", ["active", "canceled"]); // canceled still has Pro until period end
+
+    const proUserIds = new Set((proSubs || []).map((s) => s.user_id));
+
+    // 5. Send reminder emails (Pro only)
     let emailsSent = 0;
     let emailsFailed = 0;
 
     for (const user of users) {
+      // Skip Free users — canUseAutoReminders is false for them
+      if (!proUserIds.has(user.id)) continue;
+
       const userInvs = userInvoices.get(user.id) || [];
 
       const overdueInvoices = userInvs

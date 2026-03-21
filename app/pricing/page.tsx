@@ -5,7 +5,6 @@ import { Check, X, ArrowRight, Loader2, Shield, CreditCard, Infinity, Crown, Spa
 import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
 import { createCheckoutTransaction } from "./actions";
-import { isTester } from "@/utils/tester";
 
 declare global {
   interface Window {
@@ -193,18 +192,16 @@ export default function PricingPage() {
           {!isYearly && <div className="mb-6" />}
           <button
             onClick={handleUpgrade}
-            disabled={isLoading || !isTester(userEmail)}
+            disabled={isLoading}
             className="w-full py-3 px-6 bg-blue-600 text-white rounded-xl font-bold text-sm text-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] mb-8 flex items-center justify-center gap-2 disabled:opacity-50 group"
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
-            ) : isTester(userEmail) ? (
+            ) : (
               <>
                 Subscribe to Pro
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </>
-            ) : (
-              "Coming Soon"
             )}
           </button>
 

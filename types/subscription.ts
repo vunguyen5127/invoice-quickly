@@ -39,7 +39,7 @@ export const FREE_ENTITLEMENTS: Entitlements = {
   adsEnabled: true,
   canUseRecurring: false,
   canUseAutoReminders: false,
-  canUseAdvancedBranding: false,
+  canUseAdvancedBranding: true,
   canUseAdvancedExport: false,
 };
 
