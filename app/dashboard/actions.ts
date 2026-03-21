@@ -268,7 +268,7 @@ export async function getAllCompanyInvoices(token: string, companyId: string) {
     fetchPromises.push(
       supabase
         .from("invoices")
-        .select("invoice_number, client_name, created_at, total_amount, currency")
+        .select("invoice_number, client_name, created_at, due_date, total_amount, currency, status, tax_rate, tax_amount, discount, discount_amount, subtotal, shipping")
         .eq("company_id", companyId)
         .is("deleted_at", null)
         .order("created_at", { ascending: false })

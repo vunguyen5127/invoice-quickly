@@ -346,7 +346,7 @@ B3. CẢI THIỆN NHỎ (MINOR)
 [MINOR-001] ✅ FIXED — Description character counter
   Fix    : Counter hiện số ký tự còn lại (màu xám→amber→đỏ theo ngưỡng)
 
-[MINOR-002] Logo/company auto-fill gộp tất cả vào 1 textarea
+[MINOR-002] DO NOT FIX - I WANT LIKE THAT - Logo/company auto-fill gộp tất cả vào 1 textarea
   Vấn đề : name, address, email, phone trong 1 field → khó validate
   Fix    : Tách riêng từng field trong invoice state
 
