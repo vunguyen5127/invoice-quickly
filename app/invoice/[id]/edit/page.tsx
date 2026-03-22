@@ -10,6 +10,8 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getInvoiceById } from "../actions";
 import { updateInvoiceInSupabase } from "@/utils/supabase/actions";
+import { getUserEntitlements } from "@/utils/entitlements";
+import { UpgradeModal } from "@/components/upgrade-modal";
 import Link from "next/link";
 import { use } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -26,6 +28,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
   const [loading, setLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const [companyId, setCompanyId] = useState<string | null>(null);
+  const [canUseRecurring, setCanUseRecurring] = useState(false);
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +52,11 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       const { _companyId, ...invoiceData } = data;
       setCompanyId(_companyId || null);
       setInvoice(invoiceData as InvoiceState);
+
+      // Load entitlements to check recurring
+      const ents = await getUserEntitlements(session.access_token);
+      setCanUseRecurring(ents.canUseRecurring);
+
       setLoading(false);
       // Trigger mount animation after a frame so transition plays
       requestAnimationFrame(() => {
@@ -185,7 +194,12 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Edit Invoice</h2>
             </div>
             <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 mt-[3px]">
-              <InvoiceForm invoice={invoice} setInvoice={setInvoice} />
+              <InvoiceForm
+                invoice={invoice}
+                setInvoice={setInvoice}
+                canUseRecurring={canUseRecurring}
+                onShowUpgrade={() => setIsUpgradeOpen(true)}
+              />
             </div>
           </div>
           
@@ -233,6 +247,12 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
           </button>
         </div>
       </div>
+
+      <UpgradeModal
+        isOpen={isUpgradeOpen}
+        onClose={() => setIsUpgradeOpen(false)}
+        trigger="recurring"
+      />
     </div>
   );
 }

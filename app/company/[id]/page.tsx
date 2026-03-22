@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices } from "@/app/dashboard/actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download } from "lucide-react";
+import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
@@ -421,7 +421,14 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                       {invoices.map((inv: any) => (
                         <tr key={inv.id} className="group hover:bg-zinc-50/80 dark:hover:bg-zinc-800/30 transition-colors">
                           <td className="px-6 py-5 font-bold text-zinc-900 dark:text-zinc-100">
-                            {inv.invoice_number}
+                            <div className="flex items-center gap-2">
+                              {inv.invoice_number}
+                              {inv.is_recurring && (
+                                <span title={`Recurring — ${inv.recurring_interval || ''}`}>
+                                  <RefreshCw className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-5 max-w-[200px] truncate" title={inv.client_name}>
                             {inv.client_name}
@@ -502,6 +509,12 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                   <span className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest bg-blue-50 dark:bg-blue-900/40 px-2 py-0.5 rounded-lg border border-blue-100/50 dark:border-blue-800/50">
                                     {inv.invoice_number}
                                   </span>
+                                  {inv.is_recurring && (
+                                    <span className="flex items-center gap-1 text-[10px] font-bold text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-lg border border-blue-100/50 dark:border-blue-800/40">
+                                      <RefreshCw className="w-3 h-3" />
+                                      {inv.recurring_interval || 'Recurring'}
+                                    </span>
+                                  )}
                                   <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-tight">
                                     {format(new Date(inv.created_at), "MMM dd, yyyy")}
                                   </span>

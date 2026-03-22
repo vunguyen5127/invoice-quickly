@@ -203,7 +203,7 @@ export async function getCompanyInvoices(
   // Build queries
   let query = supabase
     .from("invoices")
-    .select("id, invoice_number, client_name, created_at, total_amount, currency, status, due_date", { count: "exact" })
+    .select("id, invoice_number, client_name, created_at, total_amount, currency, status, due_date, is_recurring, recurring_interval", { count: "exact" })
     .eq("company_id", companyId)
     .is("deleted_at", null);
 

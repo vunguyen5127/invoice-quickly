@@ -1,4 +1,5 @@
 export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue';
+export type RecurringInterval = 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
 export const STATUS_CONFIG: Record<InvoiceStatus, { color: string; bg: string; darkBg: string; border: string }> = {
   draft:   { color: 'text-zinc-600 dark:text-zinc-400',   bg: 'bg-zinc-100',    darkBg: 'dark:bg-zinc-800',    border: 'border-zinc-200 dark:border-zinc-700' },
@@ -59,6 +60,10 @@ export interface InvoiceState {
   signatureName?: string;
   showNotes: boolean;
   showTerms: boolean;
+  // Recurring invoice fields
+  isRecurring?: boolean;
+  recurringInterval?: RecurringInterval;
+  nextInvoiceDate?: string; // ISO date string, auto-computed
 }
 
 export const CURRENCIES = [
@@ -150,5 +155,8 @@ export const initialInvoiceState: InvoiceState = {
   signature: "",
   signatureName: "",
   showNotes: false,
-  showTerms: false
+  showTerms: false,
+  isRecurring: false,
+  recurringInterval: undefined,
+  nextInvoiceDate: undefined,
 };

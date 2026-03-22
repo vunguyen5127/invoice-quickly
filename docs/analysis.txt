@@ -1,6 +1,6 @@
 ================================================================================
   INVOICE QUICKLY — PHÂN TÍCH CHI TIẾT DỰ ÁN & THỊ TRƯỜNG
-  Cập nhật: 2026-03-21
+  Cập nhật: 2026-03-22
   Mục đích: Tài liệu nội bộ để cải thiện dần theo thời gian
 ================================================================================
 
@@ -99,14 +99,14 @@ VẤN ĐỀ KỸ THUẬT PHÁT HIỆN:
      → Không tách riêng các fields → không thể validate từng field
      → Ảnh hưởng đến quality của invoice preview                          - ALLOW
 
-  ⚠️ Không có giới hạn số lượng line items (có thể thêm vô hạn)           - FIXED
+  ✅ Không có giới hạn số lượng line items (có thể thêm vô hạn)           - FIXED
      → Có thể gây performance issues và PDF quá dài
 
-  ⚠️ Description có maxLength=120 nhưng không có character counter        - FIXED
+  ✅ Description có maxLength=120 nhưng không có character counter        - FIXED
      → User không biết mình còn lại bao nhiêu ký tự
 
-  ⚠️ canUseAdvancedBranding (Pro feature) không có guard nào trong form   - FIXED
-     → Free user vẫn dùng được logo, signature, custom colors
+  ✅ canUseAdvancedBranding (Pro feature) không có guard nào trong form   - FIXED
+     → Free user vẫn dùng được logo, signature, custom colors (đây là chủ đích)
 
 
 A3. HỆ THỐNG PHÂN QUYỀN — entitlements.ts + types/subscription.ts
@@ -136,10 +136,10 @@ GUARD THỰC SỰ ĐÃ CÀI:
   ✅ Invoice limit: [cần xác nhận thêm ở invoice creation flow]
 
 GUARD THIẾU HOẶC CHƯA THỰC THI:
-  ❌ canUseRecurring: Entitlement khai báo nhưng KHÔNG CÓ UIrecurring invoice nào - ALLOW
-  ❌ canUseAutoReminders: Cron job gửi email cho TẤT CẢ users (kể cả Free)  - FIXED 
-  ❌ canUseAdvancedBranding: Không có guard trong invoice-form.tsx          - ALLOW
-  ❌ canUseAdvancedExport: Cần xác nhận trong Excel export flow               - FIXED 
+  ❌ canUseRecurring: Entitlement khai báo nhưng KHÔNG CÓ UI recurring invoice nào - ALLOW
+  ✅ canUseAutoReminders: Cron job chỉ gửi cho Pro users (filter proUserIds)  - FIXED 
+  ❌ canUseAdvancedBranding: Không có guard trong invoice-form.tsx          - ALLOW (chủ đích)
+  ✅ canUseAdvancedExport: Guard có trong Excel export flow (UpgradeModal)   - FIXED 
 
 UpgradeModal có các trigger types:
   "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general"
@@ -152,8 +152,8 @@ A4. ANALYTICS & DASHBOARD — dashboard/analytics/page.tsx + actions.ts
 KPI Cards:
   - Outstanding: tổng tiền chưa thanh toán (tất cả invoices !paid)
   - Overdue: số lượng invoices quá hạn
-  - Collection: tổng tiền paid trong tháng hiện tại (dùng created_at — SAI)
-  - Total Invoices: tổng số invoices (bao gồm cả deleted không? cần kiểm tra)
+  - Collection: tổng tiền paid trong tháng hiện tại (dùng created_at — SAI, chưa fix)
+  - Total Invoices: tổng số invoices (loại trừ deleted_at IS NULL — đã xác nhận đúng)
 
 Charts:
   - Revenue Stream (AreaChart): paid invoices theo thời gian
@@ -166,14 +166,13 @@ getDashboardStats() logic (actions.ts L373-481):
   ✅ Period mapping: day=24h/giờ, week=7d, month=30d, year=12 tháng
   ✅ Tính totalOutstanding: sum(amount) của !paid invoices
   ✅ Tính overdueCount: !paid + due_date < today
-  ✅ Tính paidThisMonth: paid + created_at >= firstOfMonth ← SAI LOGIC
+  ✅ Tính paidThisMonth: paid + created_at >= firstOfMonth ← SAI LOGIC (còn tồn tại, BUG-004)
      → Nên dùng: ngày invoice được mark là "paid" (cần thêm field paid_at)
 
-SỐ LIỆU HARDCODE TRONG UI (CẦN FIX):
-  Dòng 218: "+12.5% vs last month" — luôn hiển thị cố định
-  Dòng 334: "+5.2%" — luôn hiển thị cố định  
-  Dòng 330: "High" (Efficiency indicator) — luôn hiển thị cố định
-  Dòng 204: w-[20%] (progress bar overdue) — luôn 20%, không tính thực tế
+SỐ LIỆU HARDCODE TRONG UI (ĐÃ FIX):
+  ✅ Dòng 218: dùng collectionGrowth computed từ chartData (real data)
+  ✅ Dòng 334/330: dùng monthlyGrowth và efficiencyLabel computed từ real data
+  ✅ Dòng 237: style={{ width: `${overdueRate}%` }} — tính thực tế từ DB
 
 
 A5. TỰ ĐỘNG HOÁ — Cron Jobs & Email
@@ -295,12 +294,11 @@ B1. LỖI NGHIÊM TRỌNG (CRITICAL — Blocking production)
   Fix    : Bỏ isTester() guard ở cả UI button và server action
            Nút từ "Coming Soon" → "Subscribe to Pro"
 
-[BUG-002] Analytics hiển thị số liệu hardcode giả
+[BUG-002] ✅ FIXED — Analytics hiển thị số liệu hardcode giả
   File   : app/dashboard/analytics/page.tsx
-  Dòng   : 218 (+12.5%), 334 (+5.2%), 330 ("High")
-  Tác động: Người dùng Pro thấy số liệu không chính xác → mất tin tưởng
-  Fix    : Tính từ DB: so sánh paidThisMonth với tháng trước
-  Priority: PHẢI FIX NGAY
+  Fix    : collectionGrowth, monthlyGrowth, efficiencyLabel đều tính từ real stats.chartData
+           Overdue rate tính từ (overdueCount / totalInvoices) * 100
+  Verified: Xem code dòng 117-147 — tất cả là computed useMemo/const từ DB data
 
 [BUG-003] ✅ FIXED — Admin email hardcode trong source code
   File   : utils/email-service.ts + utils/config.ts
@@ -322,12 +320,10 @@ B2. LỖI TRUNG BÌNH (MEDIUM)
   File   : app/api/cron/invoice-check/route.ts
   Fix    : Query subscriptions table, lọc proUserIds Set, skip Free users
 
-[BUG-006] Overdue progress bar hardcode 20%
-  File   : app/dashboard/analytics/page.tsx, dòng 204
-  Code   : <div className="h-full bg-red-500 w-[20%]" />
-  Vấn đề : Luôn hiển thị 20% bất kể số lượng overdue thực tế
-  Fix    : Tính: (overdueCount / totalInvoices) * 100
-  Priority: Medium
+[BUG-006] ✅ FIXED — Overdue progress bar hardcode 20%
+  File   : app/dashboard/analytics/page.tsx, dòng 237
+  Fix    : style={{ width: `${overdueRate}%` }} — tính từ (overdueCount/totalInvoices)*100
+  Verified: Có Math.min(100, ...) guard, render qua biến `overdueRate` (dòng 117-119)
 
 [BUG-007] ✅ FIXED — 2 checkout flows không nhất quán
   File 1 : app/pricing/page.tsx
@@ -348,25 +344,29 @@ B3. CẢI THIỆN NHỎ (MINOR)
 
 [MINOR-002] DO NOT FIX - I WANT LIKE THAT - Logo/company auto-fill gộp tất cả vào 1 textarea
   Vấn đề : name, address, email, phone trong 1 field → khó validate
-  Fix    : Tách riêng từng field trong invoice state
+  Quyết định: KEEP AS IS
 
 [MINOR-003] ✅ FIXED — Invoice items không có giới hạn
   Fix    : MAX_ITEMS = 100, guard trong addItem(), counter X/100 items
 
-[MINOR-004] Excel export thiếu nhiều fields quan trọng
-  Thiếu  : status, due_date, tax_amount, discount_amount, line items
-  Fix    : Thêm columns cho accounting workflow đầy đủ hơn
+[MINOR-004] ✅ FIXED — Excel export thiếu nhiều fields quan trọng
+  Fix    : Đã thêm đầy đủ: status (màu sắc), due_date, subtotal, tax_amount,
+           discount_amount (âm), shipping, total_amount, currency
+  Verified: export-excel.ts dòng 35-47 — 11 columns đầy đủ
 
-[MINOR-005] PDF dùng JPEG thay PNG
-  Gợi ý  : Dùng toPng() thay toJpeg() để text sắc nét hơn trong PDF
+[MINOR-005] ✅ FIXED — PDF dùng JPEG thay PNG
+  Fix    : Đã dùng toPng() từ html-to-image (generate-pdf.ts dòng 43)
+  Verified: import { toPng } từ "html-to-image", gọi toPng() ở dòng 43
 
 [MINOR-006] i18n thiếu RTL support
   Tiếng Arabic (ar.ts) cần direction: rtl trong layout
   Fix    : Detect locale, thêm dir="rtl" vào html element
+  Status : Có rtl-provider.tsx trong /components nhưng chưa xác nhận fully integrated
 
-[MINOR-007] Tester emails cần ra env var
+[MINOR-007] ✅ FIXED — Tester emails cần ra env var
   File   : utils/tester.ts
-  Fix    : process.env.TESTER_EMAILS?.split(',') || []
+  Fix    : process.env.TESTER_EMAILS?.split(',').map(e => e.trim()).filter(Boolean) ?? []
+  Verified: Xem tester.ts dòng 1-3
 
 
 ================================================================================
@@ -485,19 +485,17 @@ Estimate: 1-2 ngày dev
        utils/email-service.ts → dùng config, skip nếu chưa cấu hình
        CẦN THÊM: ADMIN_ALERT_EMAIL vào Vercel env + .env.local
 
-[ ] 3. Xóa tester emails khỏi code  
+[x] 3. ✅ Xóa tester emails khỏi code  
        File: utils/tester.ts
-       Fix: const emails = process.env.TESTER_EMAILS?.split(',') ?? []
+       Fix: process.env.TESTER_EMAILS?.split(',').map(e => e.trim()).filter(Boolean) ?? []
 
-[ ] 4. Fix số liệu hardcode trong Analytics
+[x] 4. ✅ Fix số liệu hardcode trong Analytics
        File: app/dashboard/analytics/page.tsx
-       Fix dòng 218: Tính % so sánh tháng này vs tháng trước từ DB
-       Fix dòng 330: Tính efficiency thực tế (% paid/total)
-       Fix dòng 334: Tính growth thực tế từ chartData
+       Fix: collectionGrowth, monthlyGrowth, efficiencyLabel tính từ real chartData
 
-[ ] 5. Fix overdue progress bar
-       File: app/dashboard/analytics/page.tsx, dòng 204
-       Fix: style={{ width: `${Math.min(100, (stats.overdueCount / stats.totalInvoices) * 100)}%` }}
+[x] 5. ✅ Fix overdue progress bar
+       File: app/dashboard/analytics/page.tsx
+       Fix: style={{ width: `${overdueRate}%` }} với overdueRate = min(100, overdueCount/totalInvoices*100)
 
 
 D2. P1 — ƯU TIÊN CAO (Sprint tiếp theo)
@@ -624,6 +622,17 @@ LỊCH SỬ CẬP NHẬT
   ✅ BUG-007: Thống nhất checkout flow (upgrade-modal dùng createCheckoutTransaction)
   ✅ BUG-003: Admin email ra env var ADMIN_ALERT_EMAIL (config.mailer.adminEmail)
   ⚠️  CẦN THÊM VÀO VERCEL ENV: ADMIN_ALERT_EMAIL=vunguyencapital@gmail.com
+
+2026-03-22 — Full codebase review, cập nhật bug status:
+  ✅ BUG-002: Analytics hardcode đã fix — dùng computed useMemo từ real data
+  ✅ BUG-006: Overdue progress bar đã fix — dùng dynamic overdueRate từ DB
+  ✅ MINOR-004: Excel export đã fix — đủ 11 columns (status, due_date, tax, discount, v.v.)
+  ✅ MINOR-005: PDF đã dùng toPng() thay toJpeg() (generate-pdf.ts)
+  ✅ MINOR-007: Tester emails đã ra env var TESTER_EMAILS (tester.ts)
+  ❌ BUG-004: paidThisMonth vẫn dùng created_at (actions.ts dòng 450) — cần thêm paid_at
+  ❌ BUG-008: Không tìm thấy invoice limit guard trong invoice creation flow
+             entitlements.ts có getMonthlyInvoiceCount() nhưng không được gọi khi tạo invoice
+  ❓ MINOR-006: rtl-provider.tsx có trong /components nhưng chưa xác nhận fully integrated
 
 ================================================================================
 END OF ANALYSIS

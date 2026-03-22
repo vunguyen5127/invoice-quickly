@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { InvoiceState, InvoiceItem, CURRENCIES } from "@/types/invoice";
-import { Plus, Upload, X, Package, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar, Settings, RefreshCw } from "lucide-react";
+import { InvoiceState, InvoiceItem, CURRENCIES, RecurringInterval } from "@/types/invoice";
+import { Plus, Upload, X, Package, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar, Settings, RefreshCw, Repeat2 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { SignaturePadModal } from "./signature-pad-modal";
@@ -16,9 +16,11 @@ interface InvoiceFormProps {
   invoice: InvoiceState;
   setInvoice: React.Dispatch<React.SetStateAction<InvoiceState>>;
   defaultCompanyId?: string;
+  canUseRecurring?: boolean;
+  onShowUpgrade?: () => void;
 }
 
-export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFormProps) {
+export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
@@ -154,6 +156,58 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
   const signatureInputRef = useRef<HTMLInputElement>(null);
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
 
+  // Recurring accordion state
+  const [isRecurringOpen, setIsRecurringOpen] = useState(false);
+
+  // Compute next invoice date based on issueDate + interval
+  const computeNextDate = (issueDate: string, interval: RecurringInterval): string => {
+    const d = new Date(issueDate || new Date().toISOString().split('T')[0]);
+    switch (interval) {
+      case 'weekly':    d.setDate(d.getDate() + 7); break;
+      case 'monthly':   d.setMonth(d.getMonth() + 1); break;
+      case 'quarterly': d.setMonth(d.getMonth() + 3); break;
+      case 'yearly':    d.setFullYear(d.getFullYear() + 1); break;
+    }
+    return d.toISOString().split('T')[0];
+  };
+
+  const handleRecurringToggle = (checked: boolean) => {
+    if (checked && !canUseRecurring) {
+      onShowUpgrade?.();
+      return;
+    }
+    const interval = invoice.recurringInterval || 'monthly';
+    setInvoice(prev => ({
+      ...prev,
+      isRecurring: checked,
+      recurringInterval: checked ? interval : undefined,
+      nextInvoiceDate: checked
+        ? computeNextDate(prev.details.issueDate, interval)
+        : undefined,
+    }));
+    if (checked) setIsRecurringOpen(true);
+  };
+
+  const handleIntervalChange = (interval: RecurringInterval) => {
+    setInvoice(prev => ({
+      ...prev,
+      recurringInterval: interval,
+      // Only update nextInvoiceDate if recurring is actually enabled
+      ...(prev.isRecurring ? { nextInvoiceDate: computeNextDate(prev.details.issueDate, interval) } : {}),
+    }));
+  };
+
+  const INTERVAL_OPTIONS: { value: RecurringInterval; label: string }[] = [
+    { value: 'weekly',    label: 'Weekly' },
+    { value: 'monthly',   label: 'Monthly' },
+    { value: 'quarterly', label: 'Quarterly' },
+    { value: 'yearly',    label: 'Yearly' },
+  ];
+
+  const formatNextDate = (date: string) => {
+    try { return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); }
+    catch { return date; }
+  };
   // Accordion states
   const [isNotesOpen, setIsNotesOpen] = useState(true);
   const [isTermsOpen, setIsTermsOpen] = useState(true);
@@ -790,6 +844,113 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId }: InvoiceFo
         onClose={() => setIsSignatureModalOpen(false)} 
         onSave={(base64) => handleRootChange("signature", base64)} 
       />
+
+      {/* Recurring Invoice Accordion */}
+      <div className={sectionClass}>
+        <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+          <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
+            <div className="flex items-center gap-3 flex-1 min-w-0 h-full">
+              <label className="flex items-center gap-2 cursor-pointer shrink-0 h-full" onClick={(e) => e.stopPropagation()}>
+                <input
+                  type="checkbox"
+                  checked={!!invoice.isRecurring}
+                  onChange={(e) => handleRecurringToggle(e.target.checked)}
+                  className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer transition-all"
+                />
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!invoice.isRecurring && !canUseRecurring) { onShowUpgrade?.(); return; }
+                  setIsRecurringOpen(!isRecurringOpen);
+                }}
+                className="flex-1 h-full text-left text-[13px] font-bold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors flex items-center gap-2"
+              >
+                <Repeat2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                Recurring Invoice
+                {!canUseRecurring && (
+                  <span className="ml-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-[10px] font-bold uppercase tracking-wider">Pro</span>
+                )}
+                {invoice.isRecurring && invoice.recurringInterval && !isRecurringOpen && (
+                  <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 text-[10px] font-bold capitalize">
+                    {invoice.recurringInterval}
+                  </span>
+                )}
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                if (!invoice.isRecurring && !canUseRecurring) { onShowUpgrade?.(); return; }
+                setIsRecurringOpen(!isRecurringOpen);
+              }}
+              className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+            >
+              {isRecurringOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
+            </button>
+          </div>
+
+          {isRecurringOpen && (
+            <div className="p-5 border-t border-zinc-200/60 dark:border-zinc-800/60 space-y-4">
+              {!canUseRecurring ? (
+                // Locked state for Free users
+                <div className="text-center py-4">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-3">
+                    <Repeat2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <p className="text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-1">Recurring Invoices — Pro Feature</p>
+                  <p className="text-xs text-zinc-500 mb-3">Auto-generate invoices weekly, monthly, quarterly or yearly.</p>
+                  <button
+                    type="button"
+                    onClick={() => onShowUpgrade?.()}
+                    className="px-5 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
+                  >
+                    Upgrade to Pro
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {/* Interval selector */}
+                  <div>
+                    <p className="text-[12px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-2">Frequency</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {INTERVAL_OPTIONS.map(opt => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => handleIntervalChange(opt.value)}
+                          className={`py-2.5 rounded-xl text-[13px] font-bold transition-all border ${
+                            invoice.recurringInterval === opt.value
+                              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                              : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-blue-400'
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Next invoice date preview */}
+                  {invoice.isRecurring && invoice.nextInvoiceDate && (
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
+                      <RefreshCw className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                      <div>
+                        <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Next Invoice</p>
+                        <p className="text-[13px] font-bold text-blue-900 dark:text-blue-200">{formatNextDate(invoice.nextInvoiceDate)}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <p className="text-[11px] text-zinc-400 leading-relaxed">
+                    A new draft invoice will be automatically created on the date above. You can edit or delete it at any time.
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
     </div>
   );

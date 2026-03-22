@@ -58,6 +58,9 @@ export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState
         data: invoice, // Storing full state to easily re-hydrate the viewer
         status: 'draft',
         due_date: invoice.details.dueDate || null,
+        is_recurring: invoice.isRecurring ?? false,
+        recurring_interval: invoice.isRecurring ? (invoice.recurringInterval ?? null) : null,
+        next_invoice_date: invoice.isRecurring ? (invoice.nextInvoiceDate ?? null) : null,
       }
     ])
     .select()
@@ -107,6 +110,9 @@ export async function updateInvoiceInSupabase(token: string, invoiceId: string, 
       currency: invoice.currency,
       data: invoice,
       due_date: invoice.details.dueDate || null,
+      is_recurring: invoice.isRecurring ?? false,
+      recurring_interval: invoice.isRecurring ? (invoice.recurringInterval ?? null) : null,
+      next_invoice_date: invoice.isRecurring ? (invoice.nextInvoiceDate ?? null) : null,
     })
     .eq('id', invoiceId)
     .select();

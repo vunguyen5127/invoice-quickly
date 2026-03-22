@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { sendInvoiceReminderEmail } from "@/utils/email-service";
 import { getCurrencySymbol } from "@/types/invoice";
+import type { RecurringInterval } from "@/types/invoice";
 
 import config from "@/utils/config";
 
@@ -154,6 +155,115 @@ export async function GET(request: Request) {
 
     console.log(`[cron/invoice-check] Done. Emails sent: ${emailsSent}, failed: ${emailsFailed}`);
 
+    // ─────────────────────────────────────────────────────────────
+    // 6. Auto-generate recurring invoices for Pro users
+    // ─────────────────────────────────────────────────────────────
+    const { data: recurringInvoices } = await supabase
+      .from("invoices")
+      .select("id, invoice_number, data, company_id, user_id, currency, total_amount, client_name, recurring_interval, next_invoice_date")
+      .eq("is_recurring", true)
+      .lte("next_invoice_date", today)
+      .is("deleted_at", null);
+
+    let invoicesCreated = 0;
+
+    if (recurringInvoices && recurringInvoices.length > 0) {
+      // Query Pro users specifically for recurring — independent of email reminder proUserIds
+      // (proUserIds above only contains users with upcoming invoices, which may be empty)
+      const recurringUserIds = [...new Set(recurringInvoices.map(r => r.user_id))];
+      const { data: recurringProSubs } = await supabase
+        .from("subscriptions")
+        .select("user_id")
+        .in("user_id", recurringUserIds)
+        .eq("plan", "pro")
+        .in("status", ["active", "canceled"]);
+      const recurringProUserIds = new Set((recurringProSubs || []).map(s => s.user_id));
+      for (const rec of recurringInvoices) {
+        // Only for Pro users (uses dedicated recurringProUserIds, not email-reminder proUserIds)
+        if (!recurringProUserIds.has(rec.user_id)) continue;
+
+        // Calculate next occurrence (helper defined once, used for both newNextDate and dueDateNew)
+        const advanceDate = (current: string, interval: RecurringInterval): string => {
+          const d = new Date(current);
+          switch (interval) {
+            case 'weekly':    d.setDate(d.getDate() + 7); break;
+            case 'monthly':   d.setMonth(d.getMonth() + 1); break;
+            case 'quarterly': d.setMonth(d.getMonth() + 3); break;
+            case 'yearly':    d.setFullYear(d.getFullYear() + 1); break;
+          }
+          return d.toISOString().split('T')[0];
+        };
+
+        const interval = (rec.recurring_interval || 'monthly') as RecurringInterval;
+        const newNextDate = advanceDate(rec.next_invoice_date || today, interval);
+
+        // Build new invoice data: clone, update dates and number
+        const baseData = rec.data || {};
+        const issueDateNew = today;
+        const dueDateNew = advanceDate(today, interval);
+
+        // Generate new invoice number by bumping the last numeric segment.
+        // e.g. INV-001 → INV-002 | INV-2026-003 → INV-2026-004
+        // If no trailing digits (e.g. INVOICE-ABC), append YYYYMM of the new issue date.
+        const numMatch = rec.invoice_number?.match(/^(.*-)(\d+)$/);
+        let newInvoiceNumber: string;
+        if (numMatch) {
+          const prefix = numMatch[1];
+          const nextNum = String(parseInt(numMatch[2]) + 1).padStart(numMatch[2].length, '0');
+          newInvoiceNumber = `${prefix}${nextNum}`;
+        } else {
+          // No trailing number — append YYYYMMDD (unique per day per template)
+          const yyyymmdd = issueDateNew.replace(/-/g, ''); // e.g. "20260322"
+          const base = rec.invoice_number || 'INV';
+          newInvoiceNumber = `${base}-${yyyymmdd}`;
+        }
+
+        const newInvoiceData = {
+          ...baseData,
+          details: {
+            ...(baseData.details || {}),
+            invoiceNumber: newInvoiceNumber,
+            issueDate: issueDateNew,
+            dueDate: dueDateNew,
+          },
+          // Do NOT carry recurring flag on the cloned child invoice
+          isRecurring: false,
+          recurringInterval: undefined,
+          nextInvoiceDate: undefined,
+        };
+
+        // Insert new invoice
+        const { error: insertError } = await supabase
+          .from("invoices")
+          .insert([{
+            user_id: rec.user_id,
+            company_id: rec.company_id,
+            invoice_number: newInvoiceNumber,
+            client_name: rec.client_name,
+            currency: rec.currency,
+            total_amount: rec.total_amount,
+            status: 'draft',
+            due_date: dueDateNew,
+            data: newInvoiceData,
+            is_recurring: false,
+          }]);
+
+        if (insertError) {
+          console.error(`[cron] Failed to create recurring invoice for ${rec.id}:`, insertError);
+          continue;
+        }
+
+        // Update next_invoice_date on the original recurring invoice
+        await supabase
+          .from("invoices")
+          .update({ next_invoice_date: newNextDate })
+          .eq("id", rec.id);
+
+        invoicesCreated++;
+      }
+      console.log(`[cron/invoice-check] Recurring: ${invoicesCreated} invoices auto-created.`);
+    }
+
     return NextResponse.json({
       success: true,
       keepAlive: true,
@@ -161,6 +271,7 @@ export async function GET(request: Request) {
       invoicesFound: invoices.length,
       usersNotified: emailsSent,
       emailsFailed,
+      recurringCreated: invoicesCreated,
     });
   } catch (error: any) {
     console.error("[cron/invoice-check] Error:", error);
