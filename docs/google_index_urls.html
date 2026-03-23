@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Index URLs — Invoice-Quickly</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #e2e8f0; padding: 24px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.5rem; margin-bottom: 6px; color: #f8fafc; }
+  .subtitle { color: #94a3b8; font-size: 0.875rem; margin-bottom: 24px; }
+  h2 { font-size: 1.1rem; color: #38bdf8; margin: 24px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #1e293b; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; margin-bottom: 4px; transition: background 0.15s; }
+  .row:hover { background: #1e293b; }
+  .num { color: #64748b; font-size: 0.8rem; min-width: 24px; text-align: right; }
+  .url { flex: 1; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.85rem; color: #a5f3fc; word-break: break-all; }
+  .reason { color: #94a3b8; font-size: 0.75rem; min-width: 160px; text-align: right; }
+  .copy-btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; white-space: nowrap; }
+  .copy-btn:hover { background: #334155; color: #f8fafc; border-color: #38bdf8; }
+  .copy-btn.copied { background: #065f46; color: #6ee7b7; border-color: #059669; }
+  .summary { margin-top: 24px; padding: 16px; background: #1e293b; border-radius: 10px; color: #94a3b8; font-size: 0.85rem; }
+  .copy-all-btn { display: inline-block; margin-top: 16px; background: #1d4ed8; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.2s; }
+  .copy-all-btn:hover { background: #2563eb; }
+  .copy-all-btn.copied { background: #065f46; }
+</style>
+</head>
+<body>
+
+<h1>📋 Google Index URLs</h1>
+<p class="subtitle">Click nút Copy để copy từng URL • Mỗi ngày request 10-12 URL trong Google Search Console</p>
+
+<h2>Ngày 1 — Trang quan trọng nhất</h2>
+<div id="day1"></div>
+
+<h2>Ngày 2 — Template niche + Blog index</h2>
+<div id="day2"></div>
+
+<h2>Ngày 3 — Blog posts + Legal</h2>
+<div id="day3"></div>
+
+<div class="summary">
+  <strong>Tổng: 32 URL → Hoàn thành trong 3 ngày</strong>
+  <br><br>
+  <button class="copy-all-btn" onclick="copyAll()">📋 Copy tất cả URL</button>
+</div>
+
+<script>
+const days = {
+  day1: [
+    ["https://invoice-quickly.com", "Homepage"],
+    ["https://invoice-quickly.com/generator", "Trang chính"],
+    ["https://invoice-quickly.com/pricing", "Chuyển đổi KH"],
+    ["https://invoice-quickly.com/free-invoice-template", "Free template"],
+    ["https://invoice-quickly.com/invoice-template", "Invoice template"],
+    ["https://invoice-quickly.com/invoice-template-pdf", "PDF template"],
+    ["https://invoice-quickly.com/freelancer-invoice-template", "Freelancer"],
+    ["https://invoice-quickly.com/how-to-write-an-invoice", "Guide SEO"],
+    ["https://invoice-quickly.com/blank-invoice-template", "Blank template"],
+    ["https://invoice-quickly.com/simple-invoice-template", "Simple invoice"],
+    ["https://invoice-quickly.com/about", "Thương hiệu"],
+    ["https://invoice-quickly.com/contact", "Trust signal"],
+  ],
+  day2: [
+    ["https://invoice-quickly.com/invoice-template-excel", "Excel users"],
+    ["https://invoice-quickly.com/contractor-invoice-template", "Contractor"],
+    ["https://invoice-quickly.com/consulting-invoice-template", "Consulting"],
+    ["https://invoice-quickly.com/photography-invoice-template", "Photography"],
+    ["https://invoice-quickly.com/small-business-invoice-template", "Small business"],
+    ["https://invoice-quickly.com/proforma-invoice-template", "International"],
+    ["https://invoice-quickly.com/service-invoice-template", "Services"],
+    ["https://invoice-quickly.com/commercial-invoice-template", "Trade"],
+    ["https://invoice-quickly.com/invoice-generator-with-logo", "Invoice + logo"],
+    ["https://invoice-quickly.com/google-docs-invoice-template", "Google Docs"],
+    ["https://invoice-quickly.com/blog", "Blog index"],
+  ],
+  day3: [
+    ["https://invoice-quickly.com/blog/best-free-invoice-generators-2026", "So sánh"],
+    ["https://invoice-quickly.com/blog/how-to-create-professional-invoice", "Hướng dẫn"],
+    ["https://invoice-quickly.com/blog/invoice-vs-receipt", "Giáo dục"],
+    ["https://invoice-quickly.com/blog/invoicing-tips-freelancers", "Tips freelancer"],
+    ["https://invoice-quickly.com/blog/invoice-payment-terms-net-30-explained", "Payment terms"],
+    ["https://invoice-quickly.com/privacy-policy", "Legal"],
+    ["https://invoice-quickly.com/terms", "Legal"],
+    ["https://invoice-quickly.com/refund-policy", "Legal"],
+    ["https://invoice-quickly.com/login", "Auth"],
+  ],
+};
+
+let n = 1;
+for (const [dayId, urls] of Object.entries(days)) {
+  const container = document.getElementById(dayId);
+  for (const [url, reason] of urls) {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+      <span class="num">${n++}</span>
+      <span class="url">${url}</span>
+      <span class="reason">${reason}</span>
+      <button class="copy-btn" onclick="copyUrl(this, '${url}')">📋 Copy</button>
+    `;
+    container.appendChild(row);
+  }
+}
+
+function copyUrl(btn, url) {
+  navigator.clipboard.writeText(url);
+  btn.textContent = "✅ Copied!";
+  btn.classList.add("copied");
+  setTimeout(() => { btn.textContent = "📋 Copy"; btn.classList.remove("copied"); }, 1500);
+}
+
+function copyAll() {
+  const all = Object.values(days).flat().map(d => d[0]).join("\n");
+  navigator.clipboard.writeText(all);
+  const btn = document.querySelector(".copy-all-btn");
+  btn.textContent = "✅ Đã copy tất cả!";
+  btn.classList.add("copied");
+  setTimeout(() => { btn.textContent = "📋 Copy tất cả URL"; btn.classList.remove("copied"); }, 2000);
+}
+</script>
+</body>
+</html>
