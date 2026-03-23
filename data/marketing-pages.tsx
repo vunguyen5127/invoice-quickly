@@ -880,5 +880,272 @@ export const marketingPages: SEOPageContent[] = [
       ],
     },
   },
+  {
+    slug: "simple-invoice-template",
+    metadata: {
+      title: "Free Simple Invoice Template — Clean & Easy to Use",
+      description: "Download a free simple invoice template that's clean, easy to fill out, and perfect for any business. No clutter, no confusion — just a simple invoice.",
+    },
+    hero: {
+      badge: "Simple Invoice",
+      title: "Keep Invoicing ",
+      highlight: "Simple",
+      description: "Not every business needs a complex billing system. Our simple invoice template is clean, fast, and gets straight to the point.",
+    },
+    overview: {
+      title: "Why Simple Works Best",
+      content: "The best invoice is one that clients actually read and pay. A cluttered, over-designed invoice can confuse clients and delay payment. Our simple invoice template strips away the noise and focuses on what matters: who's billing, who's paying, what for, and how much. It's designed for speed — both for you to create and for your client to process.",
+    },
+    features: {
+      title: "Beautifully Simple",
+      items: [
+        {
+          title: "Minimal Layout",
+          description: "Clean typography, generous whitespace, and a logical flow that guides the eye naturally.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Fill & Download",
+          description: "No account needed. Just fill in your details and download a professional PDF in seconds.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Works Everywhere",
+          description: "Our simple template looks perfect on desktop, tablet, and mobile devices.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Simple Invoice Example",
+      description: "Clean, uncluttered, and to the point — exactly what a client wants to see.",
+      data: {
+        company: { name: "Clean Code Studio\n22 Dev Lane, Austin, TX 78701", logo: "", email: "hello@cleancode.io", address: "22 Dev Lane", phone: "512-555-1100" },
+        client: { name: "Startup Labs Inc\n100 Innovation Way, San Jose, CA 95110", email: "billing@startuplabs.com", address: "100 Innovation Way", phone: "408-555-2200" },
+        items: [
+          { id: "1", description: "Website Development", quantity: 1, rate: 4500 },
+          { id: "2", description: "Monthly Hosting & Support", quantity: 1, rate: 150 },
+        ],
+        details: { invoiceNumber: "INV-SIMPLE-01", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Simple Invoice FAQ",
+      items: [
+        {
+          question: "What makes a simple invoice different?",
+          answer: "A simple invoice focuses on essential information only: your details, client details, line items, and total. No unnecessary fields, no visual clutter — just clean, professional billing.",
+        },
+        {
+          question: "Is a simple invoice still legally valid?",
+          answer: "Absolutely. As long as your invoice includes a unique number, date, your business details, client details, description of services, amount due, and payment terms, it's legally valid regardless of design complexity.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "commercial-invoice-template",
+    metadata: {
+      title: "Free Commercial Invoice Template — For International Trade & Customs",
+      description: "Generate professional commercial invoices for international shipping and customs clearance. Free template with HS codes, country of origin, and trade terms.",
+    },
+    hero: {
+      badge: "Commercial Invoice",
+      title: "Professional ",
+      highlight: "Commercial Invoices",
+      description: "Shipping goods internationally? Create commercial invoices that meet customs requirements and streamline your cross-border transactions.",
+    },
+    overview: {
+      title: "What is a Commercial Invoice?",
+      content: "A commercial invoice is a legal document required for international trade. It serves as a customs declaration and provides details about the goods being shipped, their value, the buyer, the seller, and the terms of sale. Customs authorities use commercial invoices to assess duties and taxes, so accuracy is critical. Our template ensures you include all the required information for smooth customs clearance.",
+    },
+    features: {
+      title: "Trade-Ready Features",
+      items: [
+        {
+          title: "Customs Compliant",
+          description: "Include HS codes, country of origin, Incoterms, and declared values for customs clearance.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+        {
+          title: "Multi-Currency",
+          description: "Bill in any currency with automatic formatting for international transactions.",
+          icon: "creditCard",
+          color: "text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20",
+        },
+        {
+          title: "Detailed Item Descriptions",
+          description: "Add weight, dimensions, quantity, and unit price for each item in the shipment.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Commercial Invoice Example",
+      description: "A complete commercial invoice for an international shipment with customs-ready details.",
+      data: {
+        company: { name: "American Textile Exports\n2200 Commerce Dr, Dallas, TX 75201", logo: "", email: "exports@amtextile.com", address: "2200 Commerce Dr", phone: "214-555-8800" },
+        client: { name: "London Fashion House Ltd\n45 Oxford Street, London W1D 2DZ, UK", email: "procurement@londonfashion.co.uk", address: "45 Oxford Street", phone: "+44 20 5555 3300" },
+        items: [
+          { id: "1", description: "Premium Cotton Fabric - 1000m (HS: 5208.21)", quantity: 1000, rate: 8 },
+          { id: "2", description: "Silk Blend Material - 200m (HS: 5007.20)", quantity: 200, rate: 35 },
+          { id: "3", description: "Freight & Insurance (CIF London)", quantity: 1, rate: 4200 },
+        ],
+        details: { invoiceNumber: "CI-2026-0142", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Commercial Invoice FAQ",
+      items: [
+        {
+          question: "Is a commercial invoice the same as a regular invoice?",
+          answer: "No. A regular invoice is a request for payment between buyer and seller. A commercial invoice serves a dual purpose — it's both a billing document and a customs declaration required for international shipments.",
+        },
+        {
+          question: "What information must a commercial invoice include?",
+          answer: "Buyer and seller details, description of goods, HS/tariff codes, country of origin, quantity, unit value, total value, currency, Incoterms (shipping terms like FOB or CIF), and the reason for export.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "invoice-generator-with-logo",
+    metadata: {
+      title: "Free Invoice Generator with Logo — Add Your Brand Identity",
+      description: "Create invoices with your company logo for free. Upload your logo, customize your invoice, and download a branded PDF. No signup, no watermark.",
+    },
+    hero: {
+      badge: "Invoice with Logo",
+      title: "Create Branded Invoices ",
+      highlight: "with Your Logo",
+      description: "Stand out from generic invoices. Upload your company logo and create professional, branded invoices that clients remember.",
+    },
+    overview: {
+      title: "Why Your Logo Matters on Invoices",
+      content: "Your invoice is often the last touchpoint with a client after delivering work. A branded invoice with your logo reinforces your professional identity and builds trust. Studies show that branded documents get paid faster because they look more legitimate and memorable. Our free invoice generator lets you upload any logo — PNG, JPG, or SVG — and positions it perfectly on your invoice.",
+    },
+    features: {
+      title: "Brand Your Invoices",
+      items: [
+        {
+          title: "Easy Logo Upload",
+          description: "Drag and drop your logo or click to upload. Supports PNG, JPG, SVG, and WebP formats.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Perfect Positioning",
+          description: "Your logo is automatically sized and positioned in the header for a polished, professional look.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Save for Reuse",
+          description: "Create a free account to save your company profile with logo for instant invoicing next time.",
+          icon: "users",
+          color: "text-pink-600 bg-pink-50 dark:bg-pink-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Branded Invoice Example",
+      description: "See how a logo transforms an ordinary invoice into a professional brand touchpoint.",
+      data: {
+        company: { name: "Bright Spark Marketing\n55 Brand Ave, Miami, FL 33101", logo: "", email: "hello@brightspark.co", address: "55 Brand Ave", phone: "305-555-7700" },
+        client: { name: "Oceanview Hotels Group\n800 Beach Blvd, Fort Lauderdale, FL 33304", email: "finance@oceanviewhotels.com", address: "800 Beach Blvd", phone: "954-555-3300" },
+        items: [
+          { id: "1", description: "Social Media Campaign - Q1 2026", quantity: 1, rate: 5500 },
+          { id: "2", description: "Brand Photography (50 images)", quantity: 1, rate: 2000 },
+          { id: "3", description: "Google Ads Management (Monthly)", quantity: 1, rate: 1200 },
+        ],
+        details: { invoiceNumber: "INV-BSM-026", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Logo Invoice FAQ",
+      items: [
+        {
+          question: "What logo format works best?",
+          answer: "PNG with a transparent background works best for most invoices. SVG files also work perfectly. We recommend a logo that's at least 200px wide for crisp results on the PDF.",
+        },
+        {
+          question: "Can I use this for free without a watermark?",
+          answer: "Yes! Unlike other invoice generators, we never add watermarks to your PDFs — even on the free plan. Your brand is the only one that appears on your invoice.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "google-docs-invoice-template",
+    metadata: {
+      title: "Google Docs Invoice Template Alternative — Why Online Generators Are Better",
+      description: "Looking for a Google Docs invoice template? Discover why a dedicated free invoice generator creates better results than Google Docs — with live preview, auto math, and instant PDF.",
+    },
+    hero: {
+      badge: "Better than Google Docs",
+      title: "Skip Google Docs. Use a ",
+      highlight: "Real Invoice Generator",
+      description: "Google Docs wasn't built for invoicing. Switch to a purpose-built tool that handles formatting, math, and PDF export automatically.",
+    },
+    overview: {
+      title: "Google Docs vs Dedicated Invoice Generator",
+      content: "Many freelancers start with Google Docs invoice templates because it's free and familiar. But Google Docs has limitations: manual math calculations, inconsistent formatting across devices, no automatic numbering, and clunky PDF exports. A dedicated invoice generator like Invoice-Quickly gives you live preview, automatic tax calculations, professional PDF output, and the ability to save client details — all for free. It's everything Google Docs can't do for invoicing.",
+    },
+    features: {
+      title: "Why Switch from Google Docs?",
+      items: [
+        {
+          title: "Automatic Calculations",
+          description: "No more manual math or broken formulas. Taxes, discounts, and totals update instantly.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Professional PDF Export",
+          description: "One-click PDF download that looks perfect every time — no page break issues or font problems.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Built-In Client Management",
+          description: "Save client details and company profiles for instant reuse. No copying between documents.",
+          icon: "users",
+          color: "text-pink-600 bg-pink-50 dark:bg-pink-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Professional Invoice (No Google Docs Needed)",
+      description: "Compare this clean, automatically formatted invoice to a typical Google Docs template.",
+      data: {
+        company: { name: "Digital Nomad Studio\n Remote Worldwide", logo: "", email: "hello@nomadstudio.dev", address: "Remote", phone: "+1 555-0199" },
+        client: { name: "TechCorp Solutions\n1200 Enterprise Way, San Francisco, CA 94105", email: "ap@techcorp.com", address: "1200 Enterprise Way", phone: "415-555-9900" },
+        items: [
+          { id: "1", description: "Full-Stack Web Application Development", quantity: 1, rate: 8000 },
+          { id: "2", description: "API Integration & Testing", quantity: 1, rate: 2500 },
+          { id: "3", description: "30-Day Post-Launch Support", quantity: 1, rate: 1000 },
+        ],
+        details: { invoiceNumber: "INV-DNS-2026-03", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Google Docs vs Invoice Generator FAQ",
+      items: [
+        {
+          question: "Can I import my Google Docs template?",
+          answer: "You don't need to! Our generator is faster than filling out a Google Docs template. Just enter your details in our form and you'll have a professional invoice in under 60 seconds.",
+        },
+        {
+          question: "Is this really free like Google Docs?",
+          answer: "Yes — our core invoice generator is 100% free with no watermarks and no signup required. Unlike Google Docs, it's purpose-built for invoicing with live preview, auto calculations, and professional PDF output.",
+        },
+      ],
+    },
+  },
 ];
 
