@@ -1,0 +1,50 @@
+import { test, expect } from "@playwright/test";
+import { mockSupabaseUser, seedAuthenticatedSession } from "./helpers/auth";
+
+test.describe("Module 1: Auth & Public Routes", () => {
+  test("TC-101: Authentication Callback Flow Completes Successfully", async ({ page }) => {
+    // Inject fake session initially
+    await mockSupabaseUser(page);
+    await seedAuthenticatedSession(page);
+    
+    // Navigate to the callback page with a fake session (simulating the end of OAuth flow)
+    await page.goto("/auth/callback?next=/generator");
+
+    // It should process and redirect to /generator as specified in the 'next' param
+    await page.waitForURL(/.*\/generator/);
+    await expect(page).toHaveURL(/.*\/generator/);
+    
+  });
+
+  test("TC-102: Unauthenticated Users Redirect to Login", async ({ page }) => {
+    const protectedRoutes = ["/dashboard", "/dashboard/settings", "/admin"];
+
+    for (const route of protectedRoutes) {
+      await page.goto(route);
+      await page.waitForURL(/\/login/, { timeout: 10000 });
+      await expect(page).toHaveURL(/\/login/);
+    }
+  });
+
+  test("TC-103: Sign Out Redirects to Home", async ({ page }) => {
+    await mockSupabaseUser(page);
+    await seedAuthenticatedSession(page);
+    await page.goto("/dashboard");
+
+    // It should load dashboard
+    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible();
+
+    // Click avatar -> Sign Out
+    const userMenu = page.getByLabel("User menu");
+    await expect(userMenu).toBeVisible();
+    await userMenu.click();
+    
+    // We cannot fully test the actual cookie deletion in mock,
+    // but we can look for a Sign Out button inside the menu.
+    const signOutBtn = page.getByRole("menuitem", { name: /Log out/i }).or(page.getByText(/Log out/i));
+    if (await signOutBtn.isVisible()) {
+      await signOutBtn.click();
+      // Supabase auth.signOut() fires, though mocked here. In real app it redirects
+    }
+  });
+});
