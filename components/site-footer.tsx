@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/contexts/language-context";
 import { ShieldCheck, Zap, Heart } from "lucide-react";
 import { marketingPages } from "@/data/marketing-pages";
@@ -26,7 +27,7 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-12 mb-16">
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 font-bold text-lg text-slate-900 dark:text-white mb-4">
-              <img src="/logo.svg" alt="Logo" className="w-6 h-6" />
+              <Image src="/logo.svg" alt="Logo" width={24} height={24} className="w-6 h-6" />
               Invoice-Quickly
             </Link>
             <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed mb-6">
@@ -105,6 +106,11 @@ export function SiteFooter() {
               <li>
                 <Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   {t.footerLinkContact}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  Blog
                 </Link>
               </li>
               <li>

@@ -7,6 +7,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { useLanguage } from "@/contexts/language-context";
 import { LayoutDashboard } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { marketingPages } from "@/data/marketing-pages";
@@ -66,7 +67,7 @@ export function SiteHeader() {
             className="flex items-center gap-2.5 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80"
             aria-label="Invoice-Quickly — Free Invoice Generator"
           >
-            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 sm:h-7 sm:w-7 object-contain" width={28} height={28} />
+            <Image src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 sm:h-7 sm:w-7 object-contain" width={28} height={28} />
             <span className="text-base sm:text-lg">Invoice-Quickly</span>
           </Link>
 

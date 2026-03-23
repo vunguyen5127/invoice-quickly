@@ -545,4 +545,340 @@ export const marketingPages: SEOPageContent[] = [
       ],
     },
   },
+  {
+    slug: "consulting-invoice-template",
+    metadata: {
+      title: "Free Consulting Invoice Template — Professional Billing for Consultants",
+      description: "Download a free consulting invoice template. Perfect for management, IT, and business consultants. Itemize hourly rates, retainers, and project fees easily.",
+    },
+    hero: {
+      badge: "Consulting Invoice",
+      title: "Professional Invoicing for ",
+      highlight: "Consultants",
+      description: "Whether you bill hourly or per project, create polished consulting invoices that reflect the quality of your advisory services.",
+    },
+    overview: {
+      title: "Why Consultants Need Great Invoices",
+      content: "As a consultant, your invoice is an extension of your professional brand. Clients expect the same level of clarity and precision in your billing as they do in your advice. A well-structured consulting invoice should clearly differentiate between different types of engagement—hourly advisory, fixed-fee projects, and ongoing retainers—while maintaining a clean, executive-level presentation.",
+    },
+    features: {
+      title: "Tailored for Consulting",
+      items: [
+        {
+          title: "Hourly & Retainer Billing",
+          description: "Easily switch between hourly rates, fixed project fees, and monthly retainer structures.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Executive Presentation",
+          description: "Clean, minimal design that conveys professionalism to C-suite clients.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+        {
+          title: "Expense Tracking",
+          description: "Add travel, software, and other reimbursable expenses as separate line items.",
+          icon: "creditCard",
+          color: "text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Consulting Invoice",
+      description: "See how a consulting engagement can be clearly itemized with different billing types.",
+      data: {
+        company: { name: "McKinley Strategy Group\n200 Advisory Blvd, Boston, MA 02101", logo: "", email: "billing@mckinleystrategy.com", address: "200 Advisory Blvd", phone: "617-555-3000" },
+        client: { name: "HealthTech Innovations\n900 Biotech Park, San Diego, CA 92121", email: "finance@healthtechinno.com", address: "900 Biotech Park", phone: "858-555-4500" },
+        items: [
+          { id: "1", description: "Strategic Market Analysis - 40 hours @ $250/hr", quantity: 40, rate: 250 },
+          { id: "2", description: "Executive Presentation & Report Delivery", quantity: 1, rate: 1500 },
+          { id: "3", description: "Travel Expenses (Client Site Visit)", quantity: 1, rate: 850 },
+        ],
+        details: { invoiceNumber: "INV-MSG-047", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Consulting Invoice FAQ",
+      items: [
+        {
+          question: "How should I bill for travel expenses?",
+          answer: "Best practice is to list travel as a separate line item with receipts available upon request. This keeps your professional fees transparent and easy to audit.",
+        },
+        {
+          question: "Should I include a detailed time log?",
+          answer: "For hourly engagements, yes. Include a summary of hours on the invoice and offer a detailed timesheet as an attachment. This builds trust and reduces payment disputes.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "photography-invoice-template",
+    metadata: {
+      title: "Free Photography Invoice Template — Bill Clients for Photo Shoots",
+      description: "Professional photography invoice templates for weddings, events, portraits, and commercial shoots. Itemize sessions, edits, and prints. Free to use.",
+    },
+    hero: {
+      badge: "Photography Invoice",
+      title: "Beautiful Invoices for ",
+      highlight: "Photographers",
+      description: "Your photos tell a story—your invoices should too. Create professional billing documents that match the quality of your creative work.",
+    },
+    overview: {
+      title: "Invoicing for the Creative Eye",
+      content: "Photography billing can be complex—you may charge for a shoot session, post-processing hours, print licenses, and travel. Our template makes it easy to break down each component so clients understand exactly what they're paying for. Whether you're a wedding photographer or a commercial studio, clear invoicing helps you get paid on time and maintain strong client relationships.",
+    },
+    features: {
+      title: "Built for Photographers",
+      items: [
+        {
+          title: "Session & Editing Breakdown",
+          description: "Separate shoot time from post-processing hours for complete transparency.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "License & Usage Rights",
+          description: "Add notes about image licensing, usage rights, and print permissions.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+        {
+          title: "Package Pricing",
+          description: "Create invoices for preset packages or à la carte services with ease.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Photography Invoice",
+      description: "A clean breakdown of a wedding photography engagement with editing and prints.",
+      data: {
+        company: { name: "Lens & Light Studio\n88 Shutter Lane, Nashville, TN 37203", logo: "", email: "hello@lensandlight.com", address: "88 Shutter Lane", phone: "615-555-2200" },
+        client: { name: "Sarah & James Thompson\n45 Maple Drive, Franklin, TN 37064", email: "sarah.thompson@email.com", address: "45 Maple Drive", phone: "615-555-8800" },
+        items: [
+          { id: "1", description: "Wedding Photography - Full Day (8 hours)", quantity: 1, rate: 3500 },
+          { id: "2", description: "Photo Editing & Color Grading (200 images)", quantity: 1, rate: 800 },
+          { id: "3", description: "Premium Photo Album (12x12, 40 pages)", quantity: 1, rate: 450 },
+        ],
+        details: { invoiceNumber: "INV-LL-089", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Photography Invoicing FAQ",
+      items: [
+        {
+          question: "Should I charge separately for editing?",
+          answer: "It depends on your business model. Many photographers include basic editing in their session fee and charge extra for advanced retouching. Being transparent about this in your invoice avoids confusion.",
+        },
+        {
+          question: "How do I handle deposits and final payments?",
+          answer: "Use the notes section to reference any deposits already paid. Show the deposit as a negative line item or a 'Less: Deposit Paid' entry to clearly show the remaining balance due.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "small-business-invoice-template",
+    metadata: {
+      title: "Free Small Business Invoice Template — Simple & Professional",
+      description: "Free invoice templates designed for small businesses. Easy to customize, professional layouts. Perfect for shops, services, and startups. No signup required.",
+    },
+    hero: {
+      badge: "Small Business",
+      title: "Simple Invoicing for ",
+      highlight: "Small Businesses",
+      description: "You started a business to do what you love, not to wrestle with paperwork. Get professional invoices out the door in under a minute.",
+    },
+    overview: {
+      title: "Invoicing Shouldn't Slow You Down",
+      content: "Small business owners wear many hats, and invoicing shouldn't take more than a few minutes. Our templates are pre-structured with everything a small business needs: your company details, client info, itemized services or products, tax calculations, and payment terms. Just fill in the blanks, download the PDF, and send it off. It's that simple.",
+    },
+    features: {
+      title: "Small Business Essentials",
+      items: [
+        {
+          title: "Quick Setup",
+          description: "No complex configuration. Enter your details once and start invoicing immediately.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Tax Ready",
+          description: "Built-in tax calculation fields so your invoices are compliant from day one.",
+          icon: "creditCard",
+          color: "text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20",
+        },
+        {
+          title: "Multi-Currency",
+          description: "Bill international clients in their preferred currency with easy currency switching.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Small Business Invoice Example",
+      description: "A straightforward invoice for a local service business — clean, simple, and effective.",
+      data: {
+        company: { name: "Green Thumb Landscaping\n340 Garden Way, Portland, OR 97205", logo: "", email: "info@greenthumbpdx.com", address: "340 Garden Way", phone: "503-555-7700" },
+        client: { name: "Riverside Apartments\n120 River Rd, Portland, OR 97201", email: "manager@riversideapts.com", address: "120 River Rd", phone: "503-555-3300" },
+        items: [
+          { id: "1", description: "Monthly Lawn Maintenance", quantity: 1, rate: 350 },
+          { id: "2", description: "Spring Flower Bed Installation", quantity: 1, rate: 1200 },
+          { id: "3", description: "Irrigation System Repair", quantity: 2, rate: 175 },
+        ],
+        details: { invoiceNumber: "INV-GT-2026-03", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Small Business Invoicing FAQ",
+      items: [
+        {
+          question: "Do I need a business license number on my invoice?",
+          answer: "Requirements vary by location. In many jurisdictions, including your business registration or license number adds credibility and may be legally required for tax purposes.",
+        },
+        {
+          question: "How do I handle late payments?",
+          answer: "Include clear payment terms (e.g., 'Net 15' or 'Due on Receipt') on every invoice. You can also add a late payment fee policy in the notes section to encourage timely payment.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "proforma-invoice-template",
+    metadata: {
+      title: "Free Proforma Invoice Template — Pre-Sales Quotation Document",
+      description: "Create professional proforma invoices for international trade, customs, and pre-sales estimates. Free template with no signup required.",
+    },
+    hero: {
+      badge: "Proforma Invoice",
+      title: "Professional ",
+      highlight: "Proforma Invoices",
+      description: "Need to provide a pre-sales estimate or customs declaration? Create accurate proforma invoices that pave the way for smooth transactions.",
+    },
+    overview: {
+      title: "What is a Proforma Invoice?",
+      content: "A proforma invoice is a preliminary document sent before a sale is finalized. It's commonly used in international trade for customs declarations, import/export documentation, and as a formal price quotation. Unlike a standard invoice, a proforma is not a demand for payment—it's a good-faith estimate that helps both buyer and seller agree on terms before committing to a transaction.",
+    },
+    features: {
+      title: "Proforma Essentials",
+      items: [
+        {
+          title: "Pre-Sale Estimates",
+          description: "Provide detailed cost breakdowns before finalizing a deal to set clear expectations.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Customs & Trade Ready",
+          description: "Include HS codes, country of origin, and shipping terms for international shipments.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+        {
+          title: "Convert to Invoice",
+          description: "Easily convert your proforma into a final invoice once the deal is confirmed.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Proforma Invoice Example",
+      description: "A proforma for an international trade transaction with itemized goods and shipping details.",
+      data: {
+        company: { name: "Pacific Export Co.\n1500 Harbor Blvd, Long Beach, CA 90802", logo: "", email: "exports@pacificexport.com", address: "1500 Harbor Blvd", phone: "562-555-9100" },
+        client: { name: "EuroTrade GmbH\nIndustriestraße 42, 60329 Frankfurt, Germany", email: "procurement@eurotrade.de", address: "Industriestraße 42", phone: "+49 69 555 2200" },
+        items: [
+          { id: "1", description: "Organic Green Tea - 500kg (HS Code: 0902.10)", quantity: 500, rate: 12 },
+          { id: "2", description: "International Freight (FOB Long Beach)", quantity: 1, rate: 2800 },
+          { id: "3", description: "Export Documentation & Certification", quantity: 1, rate: 350 },
+        ],
+        details: { invoiceNumber: "PI-2026-0088", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Proforma Invoice FAQ",
+      items: [
+        {
+          question: "Is a proforma invoice legally binding?",
+          answer: "No, a proforma invoice is not a legally binding demand for payment. It's a preliminary estimate or quotation. Once both parties agree, a formal commercial invoice should be issued.",
+        },
+        {
+          question: "When should I use a proforma invoice?",
+          answer: "Use proformas for international trade customs declarations, when a buyer requests a formal quote before purchase, or when you need to provide cost estimates for budgeting or financing purposes.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "service-invoice-template",
+    metadata: {
+      title: "Free Service Invoice Template — Bill for Professional Services",
+      description: "Create service invoices for any professional service business. Perfect for plumbers, electricians, cleaners, lawyers, and more. Free, no signup.",
+    },
+    hero: {
+      badge: "Service Invoice",
+      title: "Invoicing for ",
+      highlight: "Service Professionals",
+      description: "From home repairs to legal advice—create clean, professional invoices for any service-based business in seconds.",
+    },
+    overview: {
+      title: "Billing for Services Done Right",
+      content: "Service businesses have unique invoicing needs. You might charge by the hour, per visit, or per project. You may need to account for parts and materials alongside labor. Our service invoice template handles all of these scenarios with a flexible layout that keeps your billing clear and professional, no matter what service you provide.",
+    },
+    features: {
+      title: "Service Business Ready",
+      items: [
+        {
+          title: "Labor & Materials",
+          description: "Clearly separate service charges from parts or materials used on the job.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Service Descriptions",
+          description: "Add detailed descriptions of work performed for full transparency.",
+          icon: "users",
+          color: "text-pink-600 bg-pink-50 dark:bg-pink-900/20",
+        },
+        {
+          title: "Warranty & Guarantee Notes",
+          description: "Include warranty periods and service guarantees directly on your invoice.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Service Invoice Example",
+      description: "A plumbing service invoice showing labor, parts, and a clear total.",
+      data: {
+        company: { name: "QuickFix Plumbing\n78 Pipe Lane, Houston, TX 77001", logo: "", email: "service@quickfixplumbing.com", address: "78 Pipe Lane", phone: "713-555-4400" },
+        client: { name: "Oak Park Community Center\n200 Community Dr, Houston, TX 77005", email: "facilities@oakparkcenter.org", address: "200 Community Dr", phone: "713-555-6600" },
+        items: [
+          { id: "1", description: "Emergency Pipe Repair - Labor (3 hours)", quantity: 3, rate: 120 },
+          { id: "2", description: "PVC Pipe Fittings & Connectors", quantity: 1, rate: 85 },
+          { id: "3", description: "Water Heater Inspection & Flush", quantity: 1, rate: 150 },
+        ],
+        details: { invoiceNumber: "SVC-2026-0331", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Service Invoicing FAQ",
+      items: [
+        {
+          question: "Should I charge a call-out fee?",
+          answer: "Many service professionals charge a call-out or dispatch fee to cover travel time and fuel. List it as a separate line item on your invoice for transparency.",
+        },
+        {
+          question: "How do I invoice for recurring services?",
+          answer: "For regular clients, you can create a recurring invoice with the same line items each period. Our Pro plan includes automated recurring invoices to save you even more time.",
+        },
+      ],
+    },
+  },
 ];
+

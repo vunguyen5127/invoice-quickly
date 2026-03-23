@@ -13,6 +13,7 @@ import { updateInvoiceInSupabase } from "@/utils/supabase/actions";
 import { getUserEntitlements } from "@/utils/entitlements";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import Link from "next/link";
+import Image from "next/image";
 import { use } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
@@ -133,7 +134,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
         <div className="container flex h-14 items-center justify-between px-4 sm:px-8 max-w-[1600px] mx-auto">
           <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80">
-            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-7 w-7 object-contain" />
+            <Image src="/logo.svg" alt="Invoice-Quickly Logo" width={28} height={28} className="h-7 w-7 object-contain" />
             <span className="inline-block">Invoice-Quickly</span>
           </Link>
           <div className="flex items-center gap-3">

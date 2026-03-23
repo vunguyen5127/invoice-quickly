@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies } from "@/app/dashboard/actions";
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
+import Image from "next/image";
 import { getBaseUrl } from "@/utils/url";
 import dynamic from "next/dynamic";
 import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
@@ -268,7 +269,7 @@ function CreateInvoiceContent() {
             href="/"
             className="flex items-center gap-2.5 font-bold text-base tracking-tight text-zinc-900 dark:text-zinc-100 transition-opacity hover:opacity-80"
           >
-            <img src="/logo.svg" alt="Invoice-Quickly Logo" className="h-6 w-6 sm:h-7 sm:w-7 object-contain" />
+            <Image src="/logo.svg" alt="Invoice-Quickly Logo" width={28} height={28} className="h-6 w-6 sm:h-7 sm:w-7 object-contain" />
             <span className="text-sm sm:text-base">Invoice-Quickly</span>
           </Link>
           <div className="flex items-center gap-3">
