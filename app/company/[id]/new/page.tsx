@@ -17,6 +17,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 
+import { getUserEntitlements } from "@/utils/entitlements";
+import { UpgradeModal } from "@/components/upgrade-modal";
 import { CreateInvoiceSkeleton } from "@/components/create-invoice-skeleton";
 
 export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
@@ -30,6 +32,9 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   const [companyName, setCompanyName] = useState("");
   const [initialNotesOpen, setInitialNotesOpen] = useState(false);
   const [initialTermsOpen, setInitialTermsOpen] = useState(false);
+  const [canUseRecurring, setCanUseRecurring] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general">("general");
   const router = useRouter();
   const searchParams = useSearchParams();
   const duplicateId = searchParams.get("duplicate");
@@ -48,6 +53,10 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       }
 
       const companyData = await getCompanyById(session.access_token, resolvedParams.id);
+
+      // Load entitlements for free user guards
+      const entitlements = await getUserEntitlements(session.access_token);
+      setCanUseRecurring(entitlements.canUseRecurring);
       if (!companyData) {
         alert("Company not found");
         router.push("/dashboard");
@@ -159,8 +168,13 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       await saveInvoiceToSupabase(session.access_token, invoice, resolvedParams.id);
       router.push(`/company/${resolvedParams.id}`);
     } catch (e: any) {
-      alert("Error saving invoice. Please check your config.");
-      console.error(e);
+      if (e?.message === 'INVOICE_LIMIT_REACHED') {
+        setUpgradeTrigger('invoice_limit');
+        setIsUpgradeModalOpen(true);
+      } else {
+        alert("Error saving invoice. Please check your config.");
+        console.error(e);
+      }
     } finally {
       setIsSaving(false);
     }
@@ -233,7 +247,13 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.createInvoice}</h2>
             </div>
             <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 mt-[3px]">
-              <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={resolvedParams.id} />
+              <InvoiceForm
+                invoice={invoice}
+                setInvoice={setInvoice}
+                defaultCompanyId={resolvedParams.id}
+                canUseRecurring={canUseRecurring}
+                onShowUpgrade={() => { setUpgradeTrigger('recurring'); setIsUpgradeModalOpen(true); }}
+              />
             </div>
           </div>
 
@@ -282,6 +302,12 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         </div>
 
       </div>
+
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        trigger={upgradeTrigger}
+      />
     </div>
   );
 }
