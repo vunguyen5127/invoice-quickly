@@ -6,7 +6,7 @@ async function verifyBillingHistory() {
   console.log('--- Testing recordBillingEvent ---');
   await recordBillingEvent({
     user_id: testUserId,
-    paddle_subscription_id: 'sub_test_123',
+    subscription_id: 'sub_test_123',
     event_type: 'subscription_payment',
     amount_cents: 2900,
     currency: 'USD',
@@ -19,7 +19,7 @@ async function verifyBillingHistory() {
 
   await recordBillingEvent({
     user_id: testUserId,
-    paddle_subscription_id: 'sub_test_123',
+    subscription_id: 'sub_test_123',
     event_type: 'subscription.canceled',
     amount_cents: 0,
     currency: 'USD',

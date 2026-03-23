@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     const supabase = getServiceSupabase();
     const mappedStatus = billing.mapStatus(event.status);
 
-    // Try to find existing subscription by paddle_subscription_id
+    // Try to find existing subscription by subscription_id
     const { data: existingSub } = await supabase
       .from("subscriptions")
       .select("user_id")
