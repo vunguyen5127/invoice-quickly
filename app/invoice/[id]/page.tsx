@@ -12,7 +12,7 @@ import { ArrowLeft, Download, Trash2, Loader2, Share2, ChevronRight, Send, Check
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
-import { updateInvoiceStatus } from "@/app/dashboard/actions";
+import { bulkUpdateInvoiceStatus } from "@/app/dashboard/actions";
 import { STATUS_CONFIG, InvoiceStatus } from "@/types/invoice";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
@@ -118,8 +118,8 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       if (session) token = session.access_token;
     }
     if (token) {
-      const success = await updateInvoiceStatus(token, id, newStatus);
-      if (success) {
+      const result = await bulkUpdateInvoiceStatus(token, [id], newStatus);
+      if (result.success) {
         setCurrentStatus(newStatus);
       }
     }
