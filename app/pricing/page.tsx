@@ -299,7 +299,7 @@ export default function PricingPage() {
             <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
               <CreditCard className="w-4 h-4 text-blue-500" />
             </div>
-            Secure payments by Paddle
+            Secure payments guaranteed
           </div>
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">

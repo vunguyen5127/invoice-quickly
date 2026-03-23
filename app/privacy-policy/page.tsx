@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
               <li><strong>Company Details:</strong> Information about the businesses you manage, including company name, email, physical address, phone number, and logo images.</li>
               <li><strong>Client Details:</strong> Information about your clients that you input into invoices, such as their name, email, and address.</li>
               <li><strong>Invoice Details:</strong> Line items, prices, taxes, notes, and digital signature images.</li>
-              <li><strong>Billing Information:</strong> If you upgrade to a paid plan, your payment and billing information is collected and processed directly by our payment provider, Paddle. We do not store your full credit card details.</li>
+              <li><strong>Billing Information:</strong> If you upgrade to a paid plan, your payment and billing information is collected and processed directly by our payment provider. We do not store your full credit card details.</li>
             </ul>
           </section>
 
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
             <p className="mb-4">We rely on trusted third-party services to operate Invoice-Quickly. We share your information only as necessary for them to provide their services:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Supabase:</strong> We use Supabase as our backend database and authentication provider. Your invoice and company data is stored securely on their servers.</li>
-              <li><strong>Paddle:</strong> We use Paddle as our Merchant of Record to process payments for our Pro plan. Paddle handles your payment information in accordance with their own privacy policy.</li>
+              <li><strong>Payment Provider:</strong> We use a third-party payment provider as our Merchant of Record to process payments for our Pro plan. They handle your payment information in accordance with their own privacy policy.</li>
               <li><strong>Google AdSense:</strong> Used for serving advertisements (as detailed above).</li>
             </ul>
           </section>
@@ -142,7 +142,7 @@ export default function PrivacyPolicyPage() {
               International Data Transfers
             </h2>
             <p>
-              Our servers and third-party service providers (such as Supabase and Paddle) may be located outside of your home country. Your information may be transferred to, stored, and processed in regions with different data protection laws.
+              Our servers and third-party service providers (such as Supabase and our payment provider) may be located outside of your home country. Your information may be transferred to, stored, and processed in regions with different data protection laws.
             </p>
           </section>
 
