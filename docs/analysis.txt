@@ -1,6 +1,6 @@
 ================================================================================
   INVOICE QUICKLY — PHÂN TÍCH CHI TIẾT DỰ ÁN & THỊ TRƯỜNG
-  Cập nhật: 2026-03-22
+  Cập nhật: 2026-03-23
   Mục đích: Tài liệu nội bộ để cải thiện dần theo thời gian
 ================================================================================
 
@@ -186,10 +186,22 @@ Cron Job: /api/cron/invoice-check/route.ts
     2. Lấy invoices: !paid + !deleted + due_date <= 3 ngày từ nay
     3. Group theo user_id
     4. Fetch user emails từ bảng users
-    4b. Filter chỉ Pro users (subscriptions WHERE plan='pro')
-    5. Gửi email reminder (overdueInvoices + upcomingInvoices)
+    4b. Filter 2 Sets riêng: proUserIds (email reminder) + recurringProUserIds (recurring gen)
+    5. Gửi email reminder cho proUserIds (overdueInvoices + upcomingInvoices)
+    6. Tạo Recurring invoices mới cho recurringProUserIds đến next_invoice_date
 
   ✅ FIXED: Chỉ gửi email cho Pro users (canUseAutoReminders)
+  ✅ FIXED (2026-03-22): Bug cron skip Pro users — tách thành 2 Sets riêng
+  ✅ IMPLEMENTED (2026-03-22): Recurring Invoice generation trong cron
+     - Copy invoice gốc (is_recurring=true), bump invoice number
+     - Advance next_invoice_date theo recurring_interval
+
+Recurring Invoices (invoice-form.tsx):
+  ✅ UI: Toggle "Recurring Invoice" → chọn interval (weekly/biweekly/monthly/quarterly/yearly)
+  ✅ DB fields: is_recurring, recurring_interval, next_invoice_date, last_recurring_date
+  ✅ Guard: Pro-only (UpgradeModal trigger "recurring" cho Free users)
+  ✅ UI indicator: RefreshCw icon trong company list + share page
+  ✅ Bug fixed: handleIntervalChange chỉ update next_invoice_date khi isRecurring=true
 
 Email Templates (email-service.ts):
   sendNewUserAlert()     → Thông báo admin khi có user mới (184 dòng)
@@ -197,6 +209,8 @@ Email Templates (email-service.ts):
   sendTestEmail()        → Test email từ admin panel
 
   ✅ FIXED: adminEmail đọc từ env var ADMIN_ALERT_EMAIL (config.mailer.adminEmail)
+
+
 
 
 A6. THANH TOÁN — Paddle Integration
@@ -220,6 +234,11 @@ Subscription lifecycle:
   "active": user đang subscribe
   "canceled": đã cancel nhưng chưa hết kỳ → vẫn giữ Pro features ✅
   "past_due": thanh toán thất bại
+
+⚠️  TRẠNG THÁI HIỆN TẠI (2026-03-23):
+  Paddle CHƯA APPROVE domain → nút Subscribe bị disable cho user thường
+  Chỉ 2 email test thấy nút thật: vunguyen5127@gmail.com, vunguyencapital@gmail.com
+  Pricing page hiển thị "🚀 Coming Soon" cho tất cả user khác
 
 
 A7. XUẤT FILE — PDF & Excel
@@ -289,10 +308,11 @@ B. BUG TRACKER — LỖI & VẤN ĐỀ PHÁT HIỆN
 
 B1. LỖI NGHIÊM TRỌNG (CRITICAL — Blocking production)
 ------------------------------------------------------
-[BUG-001] ✅ FIXED — Pro checkout bị khóa với user thường
-  File   : app/pricing/page.tsx + app/pricing/actions.ts
-  Fix    : Bỏ isTester() guard ở cả UI button và server action
-           Nút từ "Coming Soon" → "Subscribe to Pro"
+[BUG-001] ⚠️ TEMPORARILY REVERTED — Paddle domain chưa approved
+  File   : app/pricing/page.tsx
+  Status : Nút "Subscribe to Pro" disabled cho user thường, hiển thị "🚀 Coming Soon"
+  Test   : Chỉ 2 email thấy nút thật: vunguyen5127@gmail.com, vunguyencapital@gmail.com
+  Action : Khi Paddle approve domain → xóa isTestUser check, bật cho tất cả users
 
 [BUG-002] ✅ FIXED — Analytics hiển thị số liệu hardcode giả
   File   : app/dashboard/analytics/page.tsx
@@ -425,7 +445,7 @@ UI Quality         ★★★★★ (best)    ★★★        ★★★★      
 Đa ngôn ngữ        22 ngôn ngữ     2           3            15+
 Generator (no-login)   ✅          ❌         ❌           ❌
 Dark Mode          ✅              ❌          ❌           ✅
-Recurring invoices ❌ (có guard)   ✅          ✅           ✅
+Recurring invoices ✅ (Pro only)   ✅          ✅           ✅
 Direct payment     ❌             ✅ (pay/use) ✅           ✅
 Time tracking      ❌             ❌           ✅           ✅
 Expense tracking   ❌             ✅           ✅           ✅
@@ -446,8 +466,7 @@ C4. GAP ANALYSIS — THIẾU GÌ SO VỚI THỊ TRƯỜNG
 MỨC ĐỘ THIẾU HỤT THEO THỨ TỰ ƯU TIÊN:
 
 HIGH IMPACT (Pain point trực tiếp ảnh hưởng doanh thu + marketing):
-  ❌ Recurring invoices: Nhóm freelancers retainer clients CẦN tính năng này
-     Có entitlement guard sẵn, chỉ thiếu UI → dễ build
+  ✅ Recurring invoices: DONE (2026-03-22) — UI, cron generation, Pro-only guard
   ❌ Direct payment link: Late payment là #1 pain point
      Stripe Express / PayPal.me link nhúng trong invoice
   ❌ canUseAdvancedBranding chưa thực thi: KHÔNG CẦN - đã quyết định cho Free users dùng logo/signature
@@ -457,7 +476,7 @@ MEDIUM IMPACT (Competitive parity — đối thủ có, mình thiếu):
   ❌ Time tracking: FreshBooks có → là major selling point vs IQ
   ❌ Expense tracking: Wave miễn phí có → disadvantage
   ❌ Tax reporting: VAT/GST summary — cần cho business users
-  ❌ Bulk invoice actions: Xóa nhiều, đổi status hàng loạt
+  ✅ Bulk invoice actions: DONE (2026-03-23) — Checkbox, Select All, Mark as Paid, Delete
   ❌ SMS/WhatsApp reminder: Email bị bỏ qua, SMS rate cao hơn
 
 LOW IMPACT (Future roadmap):
@@ -476,9 +495,10 @@ D1. P0 — PHẢI LÀM NGAY (Blocking)
 ------------------------------------
 Estimate: 1-2 ngày dev
 
-[x] 1. ✅ Bật Pro checkout cho tất cả users
-       pricing/actions.ts — bỏ isTester() guard
-       pricing/page.tsx — nút luôn active, text "Subscribe to Pro"
+[x] 1. ⚠️ TEMP REVERTED — Paddle domain chưa approved
+       pricing/page.tsx — nút "Coming Soon" disable cho user thường
+       Chỉ 2 test emails thấy nút thật
+       TODO: Khi Paddle approve → xóa isTestUser check
        
 [x] 2. ✅ Move admin email ra env var
        utils/config.ts → config.mailer.adminEmail
@@ -502,14 +522,13 @@ D2. P1 — ƯU TIÊN CAO (Sprint tiếp theo)
 -----------------------------------------
 Estimate: 1-2 tuần
 
-[ ] 6. Recurring Invoices UI
-       Entitlement canUseRecurring đã có → chỉ cần build UI
-       Cần:
-         - DB: thêm field recurring_interval (weekly/monthly/quarterly/yearly)
-                thêm field recurring_day_of_month, next_invoice_date
-         - UI: checkbox "Tạo tự động định kỳ" trong invoice form
-         - Cron: thêm logic check và tạo invoice mới theo schedule
-       Trigger UpgradeModal với "recurring" nếu Free user cố dùng
+[x] 6. ✅ DONE (2026-03-22) — Recurring Invoices
+       DB: is_recurring, recurring_interval, next_invoice_date, last_recurring_date
+       UI: Toggle trong invoice form, interval selector, next date picker
+       Cron: Tạo invoice mới tự động, bump invoice number, advance next_invoice_date
+       Guard: Pro-only (UpgradeModal trigger "recurring")
+       Bug fixed: cron Pro user Set tách riêng cho email vs recurring
+       Bug fixed: handleIntervalChange không update date khi isRecurring=false
 
 [x] 7. ✅ Fix cron chỉ gửi email cho Pro users
         File: app/api/cron/invoice-check/route.ts
@@ -546,9 +565,11 @@ D3. P2 — NÂNG CẤP CẠNH TRANH (Tháng tiếp theo)
         Thêm: Summary tab (tổng theo tháng, theo trạng thái)
         Thêm: Chart tab (simple bar chart)
 
-[ ] 14. Bulk actions cho invoice list
-        Checkbox chọn nhiều invoices
-        Actions: Xóa loạt / Đổi status loạt / Export chọn lọc
+[x] 14. ✅ DONE (2026-03-23) — Bulk actions cho invoice list
+        Checkbox per-row + Select All header checkbox (desktop table)
+        Toolbar hiện khi có selection: nút "Mark as Paid" + "Delete"
+        Server actions: bulkDeleteInvoices, bulkUpdateInvoiceStatus (actions.ts)
+        Guard: không đổi status invoice đã paid thành status khác
 
 [ ] 15. Send invoice via email trực tiếp từ app
         "Send Invoice" button → điền email recipient → gửi PDF đính kèm
@@ -633,6 +654,27 @@ LỊCH SỬ CẬP NHẬT
   ❌ BUG-008: Không tìm thấy invoice limit guard trong invoice creation flow
              entitlements.ts có getMonthlyInvoiceCount() nhưng không được gọi khi tạo invoice
   ❓ MINOR-006: rtl-provider.tsx có trong /components nhưng chưa xác nhận fully integrated
+
+2026-03-22 — Recurring Invoices (D2 item 6 — DONE):
+  ✅ invoice-form.tsx: Toggle recurring, interval selector, next_invoice_date picker
+  ✅ cron/route.ts: Generation logic, invoice number bumping, advance next date
+  ✅ Bug fix: cron dùng 2 Set riêng (recurringProUserIds vs proUserIds)
+  ✅ Bug fix: handleIntervalChange guard khi isRecurring=false
+  ✅ UI indicator: RefreshCw icon trong company list + share page
+  ⚠️  Minor risk: invoice number regex /(.*-)(\d+)$/ — fallback với non-numeric suffix
+  ⚠️  Minor: next_invoice_date format YYYYMM-NNN có thể trùng với nhiều invoice/ngày
+
+2026-03-23 — Bulk Invoice Actions (D3 item 14 — DONE):
+  ✅ actions.ts: bulkDeleteInvoices, bulkUpdateInvoiceStatus server actions
+  ✅ company/[id]/page.tsx: selectedIds state, isBulkProcessing state
+  ✅ UI: Checkbox per-row + Select All trong table header (desktop)
+  ✅ UI: Bulk action toolbar hiện khi selected: "Mark as Paid" + "Delete"
+  ✅ Guard: không cho đổi status của paid invoices (bulkUpdateInvoiceStatus)
+
+2026-03-23 — Pricing Coming Soon (Paddle domain pending):
+  ⚠️ BUG-001 TEMP REVERTED: Nút Subscribe disabled, hiện "🚀 Coming Soon"
+  ⚠️ Chỉ 2 email test thấy nút subscribe thật
+  TODO: Khi Paddle approve domain → xóa isTestUser check trong pricing/page.tsx
 
 ================================================================================
 END OF ANALYSIS
