@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, AlertTriangle, ShieldCheck, Zap, Settings } from "lucide-react";
+import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, ShieldCheck, Zap, Settings } from "lucide-react";
 import { useLanguage } from "@/contexts/language-context";
 import { ThemeSelector } from "@/components/theme-toggle";
 import { languages } from "@/components/language-toggle";

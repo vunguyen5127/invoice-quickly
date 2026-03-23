@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import { getDashboardStats, getUserCompanies } from "../actions";
-import { DollarSign, AlertTriangle, CheckCircle2, FileText, ChevronLeft, Loader2, Building2, TrendingUp, Filter, Calendar, LayoutGrid, Download } from "lucide-react";
+import { DollarSign, AlertTriangle, CheckCircle2, FileText, ChevronLeft, Loader2, Building2, TrendingUp, LayoutGrid, Download } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/language-context";
 import { useAuth } from "@/contexts/auth-context";
@@ -16,8 +16,7 @@ import {
   Tooltip, 
   ResponsiveContainer, 
   BarChart, 
-  Bar, 
-  Legend,
+  Bar,
   Cell
 } from "recharts";
 

@@ -68,9 +68,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   // Load saved language from local storage on mount
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const saved = localStorage.getItem("iq_language");
+    if (saved) {
       setLang(saved as LanguageCode);
+    }
   }, []);
 
   const handleSetLang = (code: LanguageCode) => {

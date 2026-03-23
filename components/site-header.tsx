@@ -39,7 +39,6 @@ export function SiteHeader() {
     };
     checkUser();
 
-    // @ts-ignore
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {

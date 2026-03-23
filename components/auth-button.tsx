@@ -3,7 +3,7 @@
 import { useLanguage } from "@/contexts/language-context";
 import { supabase } from "@/utils/supabase/client";
 import { getBaseUrl } from "@/utils/url";
-import { BarChart2, CreditCard, Loader2, LogIn, LogOut, Settings, UserCircle, LayoutDashboard } from "lucide-react";
+import { BarChart2, CreditCard, Loader2, LogOut, Settings, UserCircle, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";

@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { getUserEntitlements } from "@/utils/entitlements";
-import { Loader2, Trash2, Plus, Building2, ArrowRight, PenLine, ChevronLeft, ChevronRight, Crown, Zap } from "lucide-react";
+import { Trash2, Plus, Building2, PenLine, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
