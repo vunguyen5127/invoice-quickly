@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Check, X, ArrowRight, Loader2, Shield, CreditCard, Infinity, Crown, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
-import { createCheckoutTransaction } from "./actions";
+import { createCheckout, getBillingProviderName } from "./actions";
 
 declare global {
   interface Window {
@@ -18,17 +18,20 @@ export default function PricingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [billingProvider, setBillingProvider] = useState<string>("paddle");
 
   useEffect(() => {
-    const getUser = async () => {
+    const init = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         setUserId(session.user.id);
         setUserEmail(session.user.email || null);
       }
+      const provider = await getBillingProviderName();
+      setBillingProvider(provider);
     };
-    getUser();
+    init();
   }, []);
 
   const TEST_EMAILS = ["vunguyen5127@gmail.com", "vunguyencapital@gmail.com"];
@@ -44,16 +47,22 @@ export default function PricingPage() {
         return; 
       }
       
-      const { transactionId } = await createCheckoutTransaction(session.access_token, isYearly);
+      const result = await createCheckout(session.access_token, isYearly);
       
-      if (window.Paddle) {
+      if (billingProvider === "paddle" && result.transactionId && window.Paddle) {
+        // Paddle: overlay checkout
         window.Paddle.Checkout.open({
-          transactionId,
+          transactionId: result.transactionId,
           settings: { 
             successUrl: `${window.location.origin}/dashboard?upgraded=1`, 
             displayMode: "overlay" 
           },
         });
+      } else if (billingProvider === "lemon" && result.checkoutUrl) {
+        // Lemon Squeezy: redirect to hosted checkout
+        window.location.href = result.checkoutUrl;
+      } else {
+        throw new Error("No checkout result returned");
       }
     } catch (err: any) { 
       console.error("Failed to open checkout:", err); 

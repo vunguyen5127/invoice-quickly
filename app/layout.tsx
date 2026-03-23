@@ -149,7 +149,7 @@ export const viewport: Viewport = {
   themeColor: "#2563eb",
 };
 
-import PaddleScript from "@/components/paddle/PaddleScript";
+import BillingScript from "@/components/billing-script";
 
 import ClientMetadata from "@/components/client-metadata";
 
@@ -172,7 +172,7 @@ export default function RootLayout({
           <AuthProvider>
             <LanguageProvider>
               <RtlProvider />
-              <PaddleScript />
+              <BillingScript />
               <LogUserSession />
               <div className="flex flex-col min-h-screen">
                 <SiteHeader />

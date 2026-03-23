@@ -14,32 +14,30 @@ function getServiceSupabase() {
 export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
-    const signatureHeader = request.headers.get("paddle-signature") || "";
+    const signatureHeader = request.headers.get("x-signature") || "";
 
-    console.log(`[Paddle Webhook] Incoming request: ${signatureHeader ? "Has signature" : "No signature"}`);
+    console.log(`[Lemon Webhook] Incoming request: ${signatureHeader ? "Has signature" : "No signature"}`);
 
     const billing = getBillingProvider();
 
     if (!billing.verifyWebhook(rawBody, signatureHeader)) {
-      console.error("[Paddle Webhook] Signature verification failed");
+      console.error("[Lemon Webhook] Signature verification failed");
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
     const event = billing.parseWebhookEvent(rawBody);
 
     if (!event) {
-      // Could be a transaction.completed or other unhandled event
-      const parsed = JSON.parse(rawBody);
-      console.log(`[Paddle Webhook] Unhandled event: ${parsed.event_type}`);
+      console.log("[Lemon Webhook] Unhandled event type");
       return NextResponse.json({ received: true });
     }
 
-    console.log(`[Paddle Webhook] Event action: ${event.action}, subscription: ${event.providerSubscriptionId}`);
+    console.log(`[Lemon Webhook] Event action: ${event.action}, subscription: ${event.providerSubscriptionId}`);
 
     const supabase = getServiceSupabase();
     const mappedStatus = billing.mapStatus(event.status);
 
-    // Try to find existing subscription by paddle_subscription_id
+    // Try to find existing subscription by lemon_subscription_id
     const { data: existingSub } = await supabase
       .from("subscriptions")
       .select("user_id")
@@ -75,7 +73,7 @@ export async function POST(request: NextRequest) {
         .from("subscriptions")
         .upsert({
           user_id: event.userId,
-          provider: "paddle",
+          provider: "lemon",
           subscription_id: event.providerSubscriptionId,
           customer_id: event.providerCustomerId,
           status: mappedStatus,
@@ -98,7 +96,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ received: true });
   } catch (err) {
-    console.error("Paddle webhook error:", err);
+    console.error("Lemon webhook error:", err);
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
   }
 }

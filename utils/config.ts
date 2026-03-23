@@ -5,12 +5,15 @@
 
 type Environment = "development" | "production" | "test";
 
+type BillingProviderType = "paddle" | "lemon";
+
 interface Config {
   readonly env: Environment;
   readonly isDev: boolean;
   readonly isProd: boolean;
   readonly isTest: boolean;
   readonly siteUrl: string;
+  readonly billingProvider: BillingProviderType;
 
   readonly supabase: {
     readonly url: string;
@@ -24,6 +27,16 @@ interface Config {
     readonly apiKey: string;
     readonly webhookSecret: string;
     readonly prices: {
+      readonly proMonthly: string;
+      readonly proYearly: string;
+    };
+  };
+
+  readonly lemon: {
+    readonly apiKey: string;
+    readonly webhookSecret: string;
+    readonly storeId: string;
+    readonly variants: {
       readonly proMonthly: string;
       readonly proYearly: string;
     };
@@ -64,6 +77,8 @@ export const config: Config = {
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000")
   ).replace(/\/$/, ""),
 
+  billingProvider: (process.env.BILLING_PROVIDER as BillingProviderType) || "paddle",
+
   supabase: {
     url: process.env.NEXT_PUBLIC_SUPABASE_URL || "",
     anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
@@ -76,8 +91,18 @@ export const config: Config = {
     apiKey: getEnv("PADDLE_API_KEY", false),
     webhookSecret: getEnv("PADDLE_WEBHOOK_SECRET", false),
     prices: {
-      proMonthly: process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_MONTHLY || "",
-      proYearly: process.env.NEXT_PUBLIC_PADDLE_PRICE_PRO_YEARLY || "",
+      proMonthly: process.env.PADDLE_PRICE_PRO_MONTHLY || "",
+      proYearly: process.env.PADDLE_PRICE_PRO_YEARLY || "",
+    },
+  },
+
+  lemon: {
+    apiKey: getEnv("LEMONSQUEEZY_API_KEY", false),
+    webhookSecret: getEnv("LEMONSQUEEZY_WEBHOOK_SECRET", false),
+    storeId: process.env.LEMONSQUEEZY_STORE_ID || "",
+    variants: {
+      proMonthly: process.env.LEMON_VARIANT_MONTHLY || "",
+      proYearly: process.env.LEMON_VARIANT_YEARLY || "",
     },
   },
 

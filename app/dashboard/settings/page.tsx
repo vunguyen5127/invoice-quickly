@@ -43,13 +43,14 @@ export default function SettingsPage() {
   }, [router]);
 
   const handleCancelSubscription = async () => {
-    if (!subscription?.paddle_subscription_id) return;
+    if (!subscription?.subscription_id) return;
     
     setIsCancelling(true);
     const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
     
     if (session) {
-      const result = await cancelSubscription(session.access_token, subscription.paddle_subscription_id);
+      const subId = subscription.subscription_id || '';
+      const result = await cancelSubscription(session.access_token, subId);
       if ("success" in result) {
         // Refresh subscription data
         const sub = await getUserSubscription(session.access_token);
@@ -64,13 +65,14 @@ export default function SettingsPage() {
   };
 
   const handleResumeSubscription = async () => {
-    if (!subscription?.paddle_subscription_id) return;
+    if (!subscription?.subscription_id) return;
     
     setIsResuming(true);
     const { data: { session } } = await supabase?.auth.getSession() || { data: { session: null }};
     
     if (session) {
-      const result = await resumeSubscription(session.access_token, subscription.paddle_subscription_id);
+      const subId = subscription.subscription_id || '';
+      const result = await resumeSubscription(session.access_token, subId);
       if ("success" in result) {
         // Refresh subscription data
         const sub = await getUserSubscription(session.access_token);

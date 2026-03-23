@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { X, Crown, Check, Loader2, Shield } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
-import { createCheckoutTransaction } from "@/app/pricing/actions";
+import { createCheckout, getBillingProviderName } from "@/app/pricing/actions";
 
 declare global {
   interface Window {
@@ -73,16 +73,19 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
         return;
       }
 
-      const { transactionId } = await createCheckoutTransaction(session.access_token, isYearly);
+      const result = await createCheckout(session.access_token, isYearly);
+      const provider = await getBillingProviderName();
 
-      if (window.Paddle && transactionId) {
+      if (provider === "paddle" && result.transactionId && window.Paddle) {
         window.Paddle.Checkout.open({
-          transactionId,
+          transactionId: result.transactionId,
           settings: {
             successUrl: `${window.location.origin}/dashboard?upgraded=1`,
             displayMode: "overlay",
           },
         });
+      } else if (provider === "lemon" && result.checkoutUrl) {
+        window.location.href = result.checkoutUrl;
       }
     } catch (err) {
       console.error("Failed to open checkout:", err);

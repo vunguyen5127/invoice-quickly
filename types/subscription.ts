@@ -4,8 +4,9 @@ export type SubscriptionStatus = 'free' | 'active' | 'canceled' | 'past_due';
 export interface Subscription {
   id: string;
   user_id: string;
-  paddle_subscription_id: string | null;
-  paddle_customer_id: string | null;
+  provider: 'paddle' | 'lemon';
+  subscription_id: string | null;
+  customer_id: string | null;
   status: SubscriptionStatus;
   plan: PlanType;
   price_id: string | null;
