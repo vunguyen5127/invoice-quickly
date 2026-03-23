@@ -352,22 +352,56 @@ export async function getNextInvoiceNumber(token: string, companyId: string): Pr
   return `INV-${currentYear}-${nextIndex}`;
 }
 
-export async function updateInvoiceStatus(token: string, invoiceId: string, status: string) {
+export async function bulkDeleteInvoices(token: string, ids: string[]) {
   const supabase = getServerSupabase(token);
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return false;
+  if (!user) return { success: false, error: 'Unauthenticated' };
 
   const { error } = await supabase
-    .from("invoices")
-    .update({ status })
-    .eq("id", invoiceId)
-    .eq("user_id", user.id);
+    .from('invoices')
+    .delete()
+    .in('id', ids)
+    .eq('user_id', user.id);
 
   if (error) {
-    console.error("Error updating invoice status:", error);
-    return false;
+    console.error('[bulkDeleteInvoices] error:', error);
+    return { success: false, error: error.message };
   }
-  return true;
+  return { success: true };
+}
+
+export async function bulkUpdateInvoiceStatus(token: string, ids: string[], newStatus: string) {
+  const supabase = getServerSupabase(token);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { success: false, error: 'Unauthenticated' };
+
+  // Optional guard: prevent un‑paying a paid invoice
+  const { data: invoices, error: fetchError } = await supabase
+    .from('invoices')
+    .select('id, status')
+    .in('id', ids)
+    .eq('user_id', user.id);
+  if (fetchError) {
+    console.error('[bulkUpdateInvoiceStatus] fetch error:', fetchError);
+    return { success: false, error: fetchError.message };
+  }
+  const updatableIds = invoices?.filter(inv => !(inv.status === 'paid' && newStatus !== 'paid')).map(inv => inv.id) || [];
+
+  if (updatableIds.length === 0) {
+    return { success: true, skipped: true };
+  }
+
+  const { error: updateError } = await supabase
+    .from('invoices')
+    .update({ status: newStatus })
+    .in('id', updatableIds)
+    .eq('user_id', user.id);
+
+  if (updateError) {
+    console.error('[bulkUpdateInvoiceStatus] update error:', updateError);
+    return { success: false, error: updateError.message };
+  }
+  return { success: true, updatedIds: updatableIds };
 }
 
 export async function getDashboardStats(token: string, options: { companyId?: string, period?: 'day' | 'week' | 'month' | 'year' } = {}) {

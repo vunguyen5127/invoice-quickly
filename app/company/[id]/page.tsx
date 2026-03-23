@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices } from "@/app/dashboard/actions";
+import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices, bulkDeleteInvoices, bulkUpdateInvoiceStatus } from "@/app/dashboard/actions";
 import { format } from "date-fns";
 import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download, RefreshCw } from "lucide-react";
 import Link from "next/link";
@@ -63,6 +63,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  // Bulk selection state
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false);
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -204,6 +207,50 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       setIsUpgradeModalOpen(true);
     }
   };
+
+  // Bulk action handlers
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    setIsBulkProcessing(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error('Unauthenticated');
+      const result = await bulkDeleteInvoices(token, selectedIds);
+      if (result.success) {
+        await loadInvoices();
+        setSelectedIds([]);
+      } else {
+        console.error('Bulk delete failed:', result.error);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsBulkProcessing(false);
+    }
+  };
+
+  const handleBulkMarkPaid = async () => {
+    if (selectedIds.length === 0) return;
+    setIsBulkProcessing(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error('Unauthenticated');
+      const result = await bulkUpdateInvoiceStatus(token, selectedIds, 'paid');
+      if (result.success) {
+        await loadInvoices();
+        setSelectedIds([]);
+      } else {
+        console.error('Bulk status update failed:', result.error);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsBulkProcessing(false);
+    }
+  };
+
 
   if (loading) {
     return <InvoicesSkeleton />;
@@ -379,11 +426,44 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             ) : (
               <>
                 {/* Desktop Table View */}
+                {selectedIds.length > 0 && (
+                  <div className="flex items-center gap-2 mb-4 p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-sm">
+                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">{selectedIds.length} selected</span>
+                    <button
+                      onClick={handleBulkMarkPaid}
+                      disabled={isBulkProcessing}
+                      className="px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 disabled:opacity-50"
+                    >
+                      Mark as Paid
+                    </button>
+                    <button
+                      onClick={handleBulkDelete}
+                      disabled={isBulkProcessing}
+                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
                 <div className="hidden sm:block overflow-x-auto">
                   <table className="w-full text-left text-sm whitespace-nowrap">
                     <thead className="bg-white dark:bg-zinc-900/50 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
                       <tr>
-                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
+                        <th className="px-4 py-4">
+  <input
+    type="checkbox"
+    checked={selectedIds.length === invoices.length && invoices.length > 0}
+    onChange={(e) => {
+      if (e.target.checked) {
+        setSelectedIds(invoices.map((inv) => inv.id));
+      } else {
+        setSelectedIds([]);
+      }
+    }}
+    className="form-checkbox h-4 w-4 text-emerald-600 border-gray-300 rounded"
+  />
+</th>
+<th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
                           <Tooltip content="Sort by Invoice Number">
                              <div className="flex items-center gap-1">
                                Invoice Number <SortIcon field="invoice_number" />
@@ -420,7 +500,21 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10 font-medium">
                       {invoices.map((inv: any) => (
                         <tr key={inv.id} className="group hover:bg-zinc-50/80 dark:hover:bg-zinc-800/30 transition-colors">
-                          <td className="px-6 py-5 font-bold text-zinc-900 dark:text-zinc-100">
+                          <td className="px-4 py-5">
+  <input
+    type="checkbox"
+    checked={selectedIds.includes(inv.id)}
+    onChange={(e) => {
+      if (e.target.checked) {
+        setSelectedIds([...selectedIds, inv.id]);
+      } else {
+        setSelectedIds(selectedIds.filter((id) => id !== inv.id));
+      }
+    }}
+    className="form-checkbox h-4 w-4 text-emerald-600 border-gray-300 rounded"
+  />
+</td>
+<td className="px-6 py-5 font-bold text-zinc-900 dark:text-zinc-100">
                             <div className="flex items-center gap-2">
                               {inv.invoice_number}
                               {inv.is_recurring && (
