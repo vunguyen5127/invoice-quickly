@@ -31,6 +31,9 @@ export default function PricingPage() {
     getUser();
   }, []);
 
+  const TEST_EMAILS = ["vunguyen5127@gmail.com", "vunguyencapital@gmail.com"];
+  const isTestUser = userEmail && TEST_EMAILS.includes(userEmail);
+
   const handleUpgrade = async () => {
     if (!supabase) return;
     setIsLoading(true);
@@ -59,6 +62,7 @@ export default function PricingPage() {
       setIsLoading(false); 
     }
   };
+
 
   const monthlyPrice = 10;
   const yearlyPrice = 99;
@@ -190,20 +194,30 @@ export default function PricingPage() {
             </p>
           )}
           {!isYearly && <div className="mb-6" />}
-          <button
-            onClick={handleUpgrade}
-            disabled={isLoading}
-            className="w-full py-3 px-6 bg-blue-600 text-white rounded-xl font-bold text-sm text-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] mb-8 flex items-center justify-center gap-2 disabled:opacity-50 group"
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <>
-                Subscribe to Pro
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </>
-            )}
-          </button>
+          {isTestUser ? (
+            <button
+              onClick={handleUpgrade}
+              disabled={isLoading}
+              className="w-full py-3 px-6 bg-blue-600 text-white rounded-xl font-bold text-sm text-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] mb-8 flex items-center justify-center gap-2 disabled:opacity-50 group"
+            >
+              {isLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  Subscribe to Pro
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </>
+              )}
+            </button>
+          ) : (
+            <button
+              disabled
+              className="w-full py-3 px-6 bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 rounded-xl font-bold text-sm text-center mb-8 flex items-center justify-center gap-2 cursor-not-allowed"
+            >
+              🚀 Coming Soon
+            </button>
+          )}
+
 
           <div className="space-y-4 flex-1">
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Everything in Free, plus</p>
