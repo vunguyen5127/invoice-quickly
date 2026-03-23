@@ -214,7 +214,7 @@ export default function SettingsPage() {
             </button>
           )}
 
-          {subscription.status === 'active' && subscription.cancel_at && (
+          {((subscription.status === 'active' && subscription.cancel_at) || subscription.status === 'canceled') && (
             <button 
               onClick={handleResumeSubscription}
               disabled={isResuming}
