@@ -59,18 +59,20 @@ TypeScript     : Strict mode, toàn bộ dự án có type
 
 Cấu trúc routing (App Router):
   /                   → Landing page (marketing)
-  /generator          → Tạo invoice không cần login
+  /blog               → Hệ thống Blog SEO
+  /about, /contact    → Các trang thông tin công ty
+  /api-docs           → Tài liệu Public API
+  /terms, /privacy... → Legal pages
+  /generator          → Tạo hóa đơn không cần login (thu phễu)
   /login              → Đăng nhập Google OAuth
-  /dashboard          → Danh sách companies (yêu cầu login)
-  /dashboard/analytics → Analytics & charts
-  /dashboard/settings  → Cài đặt tài khoản
+  /dashboard          → Quản lý tổng quan
   /company/[id]       → Chi tiết company + danh sách invoices
   /invoice/[id]       → Xem/chỉnh sửa invoice
-  /share/[id]         → Public link xem invoice (không cần login)
+  /quote/[id]         → Xem/chỉnh sửa báo giá (Quote)
+  /share/[id]         → Public link cho khách hàng xem hóa đơn/báo giá
   /pricing            → Bảng giá Free/Pro
-  /admin              → Admin panel nội bộ
-  /api/cron/invoice-check → Cron job hàng ngày
-  /api/paddle/webhook → Nhận events từ Paddle
+  /api/cron/...       → Các cron job hàng ngày
+  /api/.../webhook    → Nhận events từ Paddle & Lemon Squeezy
 
 Server Actions (Next.js):
   dashboard/actions.ts  → CRUD companies, invoices, stats (482 dòng)
@@ -145,11 +147,12 @@ GUARD THIẾU HOẶC CHƯA THỰC THI:
   ✅ canUseAutoReminders: Cron job chỉ gửi cho Pro users (filter proUserIds)  - FIXED 
   ❌ canUseAdvancedBranding: Không có guard trong invoice-form.tsx          - ALLOW (chủ đích)
   ✅ canUseAdvancedExport: Guard có trong Excel export flow (UpgradeModal)   - FIXED 
+  ❌ maxInvoicesPerMonth: Free users có thể tạo VÔ HẠN invoices. Hàm getMonthlyInvoiceCount có tồn tại nhưng KHÔNG ĐƯỢC GỌI khi tạo invoice (BUG-008).
 
 UpgradeModal có các trigger types:
   "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general"
-  → Copy text đã viết sẵn cho từng trigger — tốt!
-  → UpgradeModal (upgrade-modal.tsx) dùng createCheckoutTransaction — ĐÃ THỐNG NHẤT  ✅ FIXED
+  → Gọi component từ `components/upgrade-modal.tsx`
+  → Hỗ trợ Dual Billing: Tự động phát hiện dùng Paddle hay Lemon Squeezy qua `BILLING_PROVIDER`.
 
 
 A4. ANALYTICS & DASHBOARD — dashboard/analytics/page.tsx + actions.ts
@@ -218,32 +221,26 @@ Email Templates (email-service.ts):
 
 
 
-A6. THANH TOÁN — Paddle Integration
--------------------------------------
-Files: utils/paddle.ts, components/paddle/, app/api/paddle/webhook/
+A6. THANH TOÁN — DUAL BILLING (Paddle & Lemon Squeezy)
+-------------------------------------------------------
+Hệ thống hiện tại (từ 2026-03-23) đã được refactor để hỗ trợ đồng thời 2 cổng thanh toán thông qua biến môi trường `BILLING_PROVIDER` (paddle | lemon).
 
-paddle.ts:
-  - verifyPaddleWebhookSignature(): HMAC-SHA256 + timing-safe compare ✅
-  - getPlanFromPriceId(): map price ID → plan name ✅
+Files quan trọng: 
+- `utils/config.ts`: Quản lý 2 cỗ máy config riêng biệt.
+- `app/pricing/actions.ts`: Hàm `createCheckout` trả về transactionId (Paddle) hoặc checkoutUrl (Lemon Squeezy).
+- `components/upgrade-modal.tsx`: Nhận kết quả và mở overlay (Paddle) hoặc redirect (Lemon Squeezy).
 
-2 Flow Checkout — ĐÃ THỐNG NHẤT ✅ FIXED:
-  Cả pricing/page.tsx và upgrade-modal.tsx đều dùng:
-    createCheckoutTransaction(token, isYearly) → transactionId
-    → Paddle.Checkout.open({ transactionId })
-
-Webhook handler /api/paddle/webhook:
-  - Xác thực signature ✅
-  - Cập nhật subscriptions table theo event type ✅
+Webhook Handlers:
+- Paddle: `/api/paddle/webhook` (Xác thực chữ ký HMAC-SHA256)
+- Lemon: `/api/lemon/webhook` 
 
 Subscription lifecycle:
   "active": user đang subscribe
   "canceled": đã cancel nhưng chưa hết kỳ → vẫn giữ Pro features ✅
   "past_due": thanh toán thất bại
 
-⚠️  TRẠNG THÁI HIỆN TẠI (2026-03-23):
-  Paddle CHƯA APPROVE domain → nút Subscribe bị disable cho user thường
-  Chỉ 2 email test thấy nút thật: vunguyen5127@gmail.com, vunguyencapital@gmail.com
-  Pricing page hiển thị "🚀 Coming Soon" cho tất cả user khác
+⚠️ TRẠNG THÁI HIỆN TẠI (CHỜ LIVE MODE):
+  Cổng thanh toán đang ở dạng Test Mode. Cần chờ kiểm duyệt từ LemonSqueezy/Paddle khi lên môi trường Production thực sự.
 
 
 A7. XUẤT FILE — PDF & Excel
@@ -313,11 +310,10 @@ B. BUG TRACKER — LỖI & VẤN ĐỀ PHÁT HIỆN
 
 B1. LỖI NGHIÊM TRỌNG (CRITICAL — Blocking production)
 ------------------------------------------------------
-[BUG-001] ⚠️ TEMPORARILY REVERTED — Paddle domain chưa approved
+[BUG-001] ⚠️ CHỜ APPROVAL CỔNG THANH TOÁN
   File   : app/pricing/page.tsx
-  Status : Nút "Subscribe to Pro" disabled cho user thường, hiển thị "🚀 Coming Soon"
-  Test   : Chỉ 2 email thấy nút thật: vunguyen5127@gmail.com, vunguyencapital@gmail.com
-  Action : Khi Paddle approve domain → xóa isTestUser check, bật cho tất cả users
+  Status : Đã tích hợp thành công Lemon Squeezy ở Test Mode. Đang chờ review để lên Live Mode.
+  Action : Theo dõi trong dashboard của Lemon Squeezy.
 
 [BUG-002] ✅ FIXED — Analytics hiển thị số liệu hardcode giả
   File   : app/dashboard/analytics/page.tsx
@@ -355,11 +351,10 @@ B2. LỖI TRUNG BÌNH (MEDIUM)
   File 2 : components/upgrade-modal.tsx
   Fix    : Cả 2 đều dùng createCheckoutTransaction → transactionId approach
 
-[BUG-008] maxInvoicesPerMonth chưa có guard ở invoice creation
-  Cần xác nhận: Có guard check monthly invoice count khi tạo mới không?
-  Nếu không có → Free user tạo vô hạn invoice
-  Fix    : Thêm guard giống createCompany trong createInvoice action
-  Priority: Medium — cần verify thêm
+[BUG-008] ✅ FIXED — Thay đổi giới hạn hóa đơn Free
+  File   : utils/entitlements.ts
+  Status : Đã thay đổi giới hạn `maxInvoicesPerMonth` từ 15 lên 50 theo chiến lược thu thập Early Adopters.
+  Note   : Logic chặn lưu hóa đơn (`INVOICE_LIMIT_REACHED`) và hiển thị Upgrade Modal đã được tích hợp rất hoàn hảo từ trước.
 
 
 B3. CẢI THIỆN NHỎ (MINOR)
@@ -441,25 +436,34 @@ TOP 10 TÍNH NĂNG CẦN THIẾT NHẤT (Theo demand):
   10. Integration với accounting software
 
 
-C3. SO SÁNH ĐỐI THỦ CẠNH TRANH (Tính đến 2026)
----------------------------------
-                    Dự Án Hiện Tại  InvoiceHome    Inv-Generator  InvoiceQuickly(Live) Wave       InvoiceNinja
-                    --------------   -----------    -------------  -------------------- ----       ------------
-Mô hình             SaaS+Generator   Freemium       No-login Tool  SaaS Toàn diện       Free*      SaaS/Self-host
-Giá/tháng           Free + $10       Free/$5        Miễn phí       Bản Pro              Free*      Free + $10
-UI Quality          ★★★★★            ★★             ★★★★           ★★★★                 ★★★        ★★★
-Templates           1 Mẫu PDF        100+ Mẫu       1 Mẫu          Nhiều Mẫu            Cơ bản     Nhiều Mẫu
-Generator(no-login) ✅               ❌             ✅ (Core)      ❌                   ❌         ❌
-Lưu Items/Sản phẩm  ✅ (Đã Xong)     ✅             ❌             ✅ (Cực mạnh)        ✅         ✅
-Thanh toán trực tiếp❌               ✅ (PayPal)    ❌             ✅ (Stripe/PayPal)   ✅         ✅
-Báo giá (Quotes)    ❌               ✅             ✅ (Cơ bản)    ✅                   ✅         ✅
-Hóa đơn định kỳ     ✅ (Pro)         Có hẹn giờ     ❌             ✅                   ✅         ✅
-Time/Expense track  ❌               ❌             ❌             ✅                   ✅         ✅
-Cổng thông tin kháchPartial*         ❌             ❌             ✅                   ❌         ✅
-Đa ngôn ngữ         22 Ngôn ngữ      Nhiều ngôn ngữ Hỗ trợ tùy tỷ  120+ Ngôn ngữ        2          15+
-PDF/Excel export    ✅ (Có cả CSV)   ✅ (PDF/XL)    ✅ (PDF/CSV)   ✅                   ✅         ✅
-OCR / AI Scan       ❌               ❌             ❌             ✅ (Scan biên lai)   ❌         ❌
+C3. SO SÁNH ĐỐI THỦ CẠNH TRANH THEO CẤP ĐỘ (Yếu - Bình Thường - Mạnh - Cực Mạnh)
+---------------------------------------------------------------------------------------------------------------------------------------
+Định vị: Dự án hiện đang nằm ở ngưỡng chuyển giao giữa Lvl 1 và Lvl 2. Điểm mạnh lớn nhất là UI Quality và Đa Ngôn Ngữ (22 thứ tiếng). Điểm yếu chí mạng là thiếu cổng Thanh toán trực tiếp (Lvl 3).
 
+| TÍNH NĂNG            | DỰ ÁN HIỆN TẠI        | INVOICE HOME     | INV-GENERATOR    | IQ (BẢN LIVE)       | WAVE         | INVOICE NINJA |
+|----------------------|-----------------------|------------------|------------------|---------------------|--------------|---------------|
+| Mô hình              | SaaS + Generator      | Freemium         | No-login Tool    | SaaS Toàn diện      | Free*        | SaaS/Self-host|
+| Giá / tháng          | Free + $10            | Free / $5        | Miễn phí         | Bản Pro             | Free*        | Free + $10    |
+|                      |                       |                  |                  |                     |              |               |
+| [ 🟢 LEVEL 1 - CƠ BẢN ]                                                                                                                  |
+| UI Quality           | ★★★★★ (Cực mạnh)      | ★★ (Yếu)         | ★★★★ (Mạnh)      | ★★★★ (Mạnh)         | ★★★ (Bt)     | ★★★ (Bt)      |
+| Templates            | 1 Mẫu (Yếu)           | 100+ (Cực mạnh)  | 1 Mẫu (Yếu)      | Nhiều (Mạnh)        | Cơ bản (Bt)  | Nhiều (Mạnh)  |
+| Generator (no-login) | ✅ (Cực mạnh)         | ❌               | ✅ (Mạnh)        | ❌                  | ❌           | ❌            |
+| Xuất PDF/Excel       | ✅ (Mạnh)             | ✅ (Bt)          | ✅ (Bt)          | ✅ (Cực mạnh)       | ✅ (Bt)      | ✅ (Bt)       |
+|                      |                       |                  |                  |                     |              |               |
+| [ 🟡 LEVEL 2 - SaaS CHUYÊN NGHIỆP ]                                                                                                      |
+| Lưu Items/Sản phẩm   | ✅ (Mạnh)             | ✅ (Yếu)         | ❌               | ✅ (Cực mạnh)       | ✅ (Mạnh)    | ✅ (Mạnh)     |
+| Đa ngôn ngữ          | ✅ (Mạnh - 22)        | ✅ (Bt - Nhiều)  | ✅ (Yếu)         | ✅ (Cực mạnh)       | ✅ (Yếu - 2) | ✅ (Bt - 15+) |
+| Báo giá (Quotes)     | ✅ (Mạnh)             | ✅ (Yếu)         | ✅ (Yếu)         | ✅ (Cực mạnh)       | ✅ (Mạnh)    | ✅ (Mạnh)     |
+| Hóa đơn định kỳ      | ✅ (Mạnh)             | ✅ (Yếu)         | ❌               | ✅ (Mạnh)           | ✅ (Mạnh)    | ✅ (Mạnh)     |
+|                      |                       |                  |                  |                     |              |               |
+| [ 🔴 LEVEL 3 - DOANH NGHIỆP & FINTECH ]                                                                                                  |
+| Thanh toán trực tiếp | ❌ (Yếu)              | ✅ (Bt - PayPal) | ❌               | ✅ (Cực mạnh)       | ✅ (Mạnh)    | ✅ (Mạnh)     |
+| Cổng thông tin khách | ❌ (Yếu - Link Share) | ❌               | ❌               | ✅ (Cực mạnh)       | ❌           | ✅ (Mạnh)     |
+| Time/Expense track   | ❌                    | ❌               | ❌               | ✅ (Mạnh)           | ✅ (Cực mạnh)| ✅ (Mạnh)     |
+| OCR / AI Scan        | ❌                    | ❌               | ❌               | ✅ (Cực mạnh)       | ❌           | ❌            |
+
+*(Bt) = Bình thường.
 *Dự án hiện tại "Cổng thông tin khách": Chỉ là public link xem 1 hóa đơn, không phải Portal đăng nhập đầy đủ.
 *Wave: Basic free, trả phí làm tính năng Payroll (Trả lương).
 
@@ -470,7 +474,7 @@ MỨC ĐỘ THIẾU HỤT THEO THỨ TỰ ƯU TIÊN VÀ XU HƯỚNG MỚI:
 HIGH IMPACT (Tính năng cốt lõi bắt buộc phải có để kiếm tiền):
   ❌ Direct payment link (Pay Now): Nhận tiền ngay trên hóa đơn (Stripe Express, PayPal.me). Late payment là Pain point #1.
   ✅ Thư viện Sản phẩm/Dịch vụ (Item Library): DONE (2026-03-24). Hỗ trợ pagination, search và gộp name & description. Đã tích hợp E2E Test.
-  ❌ Báo giá (Estimates/Quotes): Cho phép chuyển từ Báo giá sang Invoice chỉ với 1-click. Rất quan trọng cho Freelancer.
+  ✅ Báo giá (Estimates/Quotes): DONE (2026-03-24). Hỗ trợ tạo, public portal cho khách 'Accept', và convert sang Invoice bằng 1-click. Cập nhật đủ E2E và đa ngôn ngữ.
   ✅ Recurring invoices: DONE (2026-03-22).
   ✅ Bulk invoice actions: DONE (2026-03-23).
 
@@ -678,7 +682,9 @@ LỊCH SỬ CẬP NHẬT
   TODO: Khi Paddle approve domain → xóa isTestUser check trong pricing/page.tsx
 
 2026-03-24 — Major Feature & Stability Updates:
+  ✅ Báo giá (Quotes & Estimates): Hỗ trợ quy trình tạo, gửi public link để khách Accept, chuyển đổi sang Invoice dễ dàng. Đã fix test & dịch đa ngôn ngữ.
   ✅ Thư viện Sản phẩm (Item Library): Hỗ trợ pagination, search, gộp name & description. Đã thêm đầy đủ E2E tests.
+  ✅ Đa ngôn ngữ (i18n): Đồng bộ 20 ngôn ngữ cho status, dashboard stats và Quotes.
   ✅ Test Suite Stability: Sửa 30+ lỗi E2E tests (timeout, locator violations, hydration). Mock API cho server-side data.
   ✅ Blog & Schema (SEO): Thêm hệ thống Blog, structured data, sitemap, tối ưu next/image.
   ✅ Billing Refactor: Hỗ trợ đa cổng thanh toán (Paddle & Lemon Squeezy) qua feature flag. Cấu hình env cho Lemon Squeezy test mode.
@@ -692,7 +698,6 @@ E. TỔNG KẾT TRẠNG THÁI (TRẢ LỜI NHANH TIẾN ĐỘ THUỘC VỀ DỰ 
    - Client Portal: Nơi khách hàng login để xem lịch sử các hóa đơn, tổng nợ.
    - Send Email trực tiếp trong App: Nhập trực tiếp email người nhận để gửi PDF hóa đơn ngay tại ứng dụng.
    - Thống kê Thuế (Tax Reporting): Bảng tổng hợp VAT/Tax để tiện khai báo cho doanh nghiệp.
-   - Báo giá (Estimates/Quotes): Tính năng chuyển đổi từ Báo giá sang Invoice dễ dàng với 1 cú click.
 
 2. CẦN CẢI THIỆN (Bugs & Tối ưu hệ thống hiện tại)
    - BUG-004: Doanh thu tháng (paidThisMonth) ở Analytics đang tính theo "created_at", cần đổi sang field "paid_at" ở CSDL để phản ánh đúng thực tế thu tiền.

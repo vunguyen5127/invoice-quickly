@@ -36,7 +36,7 @@ export const FREE_ENTITLEMENTS: Entitlements = {
   plan: 'free',
   status: 'free',
   maxCompanies: 1,
-  maxInvoicesPerMonth: 15,
+  maxInvoicesPerMonth: 50,
   adsEnabled: true,
   canUseRecurring: false,
   canUseAutoReminders: false,

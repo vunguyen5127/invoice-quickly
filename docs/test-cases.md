@@ -317,14 +317,6 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
-## TỔNG KẾT
-- Tổng test cases: 38
-- Pass: ___
-- Fail: ___
-- Ghi chú lỗi phát sinh:
-  1. 
-  2. 
-  3. 
 
 ---
 
@@ -465,3 +457,68 @@ Base URL: http://localhost:3000 (hoặc production URL)
 **Result:** [ ]
 
 ---
+
+## MODULE 17: ITEM LIBRARY
+
+### TC-1701: Truy cập và hiển thị Empty State
+**Steps:**
+1. Dashboard → Items
+2. Kiểm tra nếu chưa có item nào, trang sẽ báo "Your library is empty"
+3. Click nút "Create Item" từ Empty State
+
+**Expected:** Form "New Item" modal hiện ra  
+**Result:** [ ]
+
+---
+
+### TC-1702: Tạo Item mới và hiển thị trong danh sách
+**Steps:**
+1. Trong modal "New Item", điền Name, Description, Rate
+2. Click Save
+
+**Expected:** Modal đóng, Item xuất hiện trong danh sách Item Library  
+**Result:** [ ]
+
+---
+
+## MODULE 18: QUOTES & ESTIMATES
+
+### TC-1801: Tạo báo giá (Quote) mới
+**Steps:**
+1. Dashboard → Quotes → Click "New Quote"
+2. Điền thông tin Client, thêm Item, Rate, Tax...
+3. Click "Save Quote"
+
+**Expected:** Quote lưu thành công, URL chuyển sang `/quote/[id]` và trạng thái là Draft  
+**Result:** [ ]
+
+---
+
+### TC-1802: Khách hàng chấp nhận Quote
+**Steps:**
+1. Từ trang edit Quote (đã lưu), click nút Share và copy public link
+2. Mở link trên tab ẩn danh, click "Accept Quote"
+
+**Expected:** Hiển thị thông báo "This quote has been accepted. Thank you!"  
+**Result:** [ ]
+
+---
+
+### TC-1803: Chuyển đổi Quote sang Invoice
+**Steps:**
+1. Trở lại trang edit Quote sau khi khách đã accept
+2. Click nút "Convert to Invoice" trên thanh Header
+
+**Expected:** Redirect sang trang tạo/edit Invoice với toàn bộ dữ liệu từ Quote giữ nguyên  
+**Result:** [ ]
+
+---
+
+## TỔNG KẾT CHUNG
+- Tổng bài kiểm tra (Total Test Cases): 44
+- Số bài Pass: ___
+- Số bài Fail: ___
+- Ghi chú lỗi phát sinh:
+  1. 
+  2. 
+  3. 
