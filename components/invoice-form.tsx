@@ -16,7 +16,7 @@ import { SavedItem } from "@/types/item";
 
 interface InvoiceFormProps {
   invoice: any;
-  setInvoice: any;
+  setInvoice: React.Dispatch<React.SetStateAction<any>>;
   defaultCompanyId?: string;
   canUseRecurring?: boolean;
   onShowUpgrade?: () => void;
@@ -61,7 +61,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
         .filter(Boolean)
         .join(", ");
 
-      setInvoice(prev => ({
+      setInvoice((prev: any) => ({
         ...prev,
         company: {
            name: companyDetailsString,
@@ -86,7 +86,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   };
   
   const handleSectionChange = (section: keyof InvoiceState, field: string, value: any) => {
-    setInvoice((prev) => ({
+    setInvoice((prev: any) => ({
       ...prev,
       [section]: {
         ...(prev[section] as any),
@@ -96,14 +96,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   };
 
   const handleRootChange = (field: keyof InvoiceState, value: any) => {
-    setInvoice((prev) => ({
+    setInvoice((prev: any) => ({
       ...prev,
       [field]: value,
     }));
   };
 
   const handleItemChange = (index: number, field: keyof InvoiceItem, value: any) => {
-    setInvoice((prev) => {
+    setInvoice((prev: any) => {
       const newItems = [...prev.items];
       const item = { ...newItems[index], [field]: value };
       
@@ -130,7 +130,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
   const addItem = () => {
     if (invoice.items.length >= MAX_ITEMS) return;
-    setInvoice((prev) => ({
+    setInvoice((prev: any) => ({
       ...prev,
       items: [
         ...prev.items,
@@ -140,9 +140,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   };
 
   const removeItem = (id: string) => {
-    setInvoice((prev) => ({
+    setInvoice((prev: any) => ({
       ...prev,
-      items: prev.items.filter((item) => item.id !== id),
+      items: prev.items.filter((item: any) => item.id !== id),
     }));
   };
 
@@ -188,7 +188,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       return;
     }
     const interval = invoice.recurringInterval || 'monthly';
-    setInvoice(prev => ({
+    setInvoice((prev: any) => ({
       ...prev,
       isRecurring: checked,
       recurringInterval: checked ? interval : undefined,
@@ -200,7 +200,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   };
 
   const handleIntervalChange = (interval: RecurringInterval) => {
-    setInvoice(prev => ({
+    setInvoice((prev: any) => ({
       ...prev,
       recurringInterval: interval,
       // Only update nextInvoiceDate if recurring is actually enabled
@@ -450,7 +450,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
             </div>
 
             <div className="space-y-4 md:space-y-[2px]">
-              {invoice.items.map((item, index) => (
+              {invoice.items.map((item: any, index: number) => (
                 <div 
                   key={item.id} 
                   className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-5 md:p-0 md:pr-8 bg-zinc-50/50 dark:bg-zinc-900/20 md:bg-transparent rounded-2xl md:rounded-none border md:border-none border-zinc-200 dark:border-zinc-800 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
@@ -820,7 +820,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                           <img src={invoice.signature} alt="Signature" className="max-w-full max-h-full object-contain dark:invert" />
                           <button 
                             onClick={() => {
-                              setInvoice(prev => ({
+                              setInvoice((prev: any) => ({
                                 ...prev,
                                 signature: undefined,
                                 signatureName: ""
@@ -887,7 +887,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       <SignaturePadModal 
         isOpen={isSignatureModalOpen} 
         onClose={() => setIsSignatureModalOpen(false)} 
-        onSave={(base64) => handleRootChange("signature", base64)} 
+        onSave={(data: any) => handleRootChange("signature", data)} 
       />
 
       {/* Recurring Invoice Accordion */}
