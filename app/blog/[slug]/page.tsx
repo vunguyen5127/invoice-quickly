@@ -2,7 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { blogPosts } from "@/data/blog-posts";
-import { ArrowLeft, Calendar, Clock, Tag } from "lucide-react";
+import { marketingPages } from "@/data/marketing-pages";
+import { ArrowLeft, ArrowRight, Calendar, Clock, Tag, FileText } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -42,6 +43,14 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) {
     notFound();
   }
+
+  // Related posts: same category first, then fill with others, max 3
+  const sameCat = blogPosts.filter((p) => p.slug !== slug && p.category === post.category);
+  const others = blogPosts.filter((p) => p.slug !== slug && p.category !== post.category);
+  const relatedPosts = [...sameCat, ...others].slice(0, 3);
+
+  // Related templates: pick 3 marketing pages
+  const relatedTemplates = marketingPages.slice(0, 3);
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -229,6 +238,72 @@ export default async function BlogPostPage({ params }: Props) {
             >
               Create Free Invoice →
             </Link>
+          </div>
+
+          {/* Related Articles */}
+          {relatedPosts.length > 0 && (
+            <div className="mt-16">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Related Articles</h2>
+                <Link href="/blog" className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                  View All <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {relatedPosts.map((related) => (
+                  <Link
+                    key={related.slug}
+                    href={`/blog/${related.slug}`}
+                    className="group flex flex-col bg-zinc-50 dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md transition-all"
+                  >
+                    <span className="inline-flex items-center gap-1 rounded-full bg-zinc-200 dark:bg-zinc-800 px-2 py-0.5 text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3 w-fit">
+                      <Tag className="w-2.5 h-2.5" />
+                      {related.category}
+                    </span>
+                    <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {related.title}
+                    </h3>
+                    <div className="mt-auto flex items-center gap-3 text-xs text-zinc-400 dark:text-zinc-500 pt-3">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {related.readTime}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Related Templates */}
+          <div className="mt-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Free Invoice Templates</h2>
+              <Link href="/how-to-write-an-invoice" className="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                All Templates <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {relatedTemplates.map((tmpl) => (
+                <Link
+                  key={tmpl.slug}
+                  href={`/${tmpl.slug}`}
+                  className="group flex items-start gap-3 bg-zinc-50 dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md transition-all"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">
+                    <FileText className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1">
+                      {tmpl.hero.badge.replace("Free ", "")}
+                    </p>
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {tmpl.metadata.title.replace(" — ", " – ")}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </article>
       </div>
