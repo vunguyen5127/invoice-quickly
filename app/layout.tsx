@@ -116,7 +116,7 @@ export const metadata: Metadata = {
     url: "https://invoice-quickly.com",
     images: [
       {
-        url: "https://invoice-quickly.com/icon.png",
+        url: "https://invoice-quickly.com/android-chrome-512x512.png",
         width: 512,
         height: 512,
         alt: "Invoice-Quickly Logo",
@@ -127,7 +127,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Free Invoice Generator Online | Invoice-Quickly",
     description: "Create and download professional PDF invoices for free. No signup, no watermark — the best free online invoice generator.",
-    images: ["https://invoice-quickly.com/icon.png"],
+    images: ["https://invoice-quickly.com/android-chrome-512x512.png"],
   },
   robots: {
     index: true,
@@ -145,14 +145,14 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
-      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
       { url: "/favicon.ico", sizes: "48x48" },
     ],
     apple: [
-      { url: "/icon.png", sizes: "512x512" },
+      { url: "/apple-touch-icon.png", sizes: "180x180" },
     ],
-    shortcut: "/icon.png",
+    shortcut: "/favicon-32x32.png",
     other: [
       { rel: "manifest", url: "/site.webmanifest" },
     ],
@@ -174,7 +174,7 @@ const organizationSchema = {
   url: "https://invoice-quickly.com",
   logo: {
     "@type": "ImageObject",
-    url: "https://invoice-quickly.com/icon.png",
+    url: "https://invoice-quickly.com/android-chrome-512x512.png",
     width: 512,
     height: 512,
   },
