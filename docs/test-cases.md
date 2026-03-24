@@ -70,7 +70,7 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ## MODULE 3: FREE USER — INVOICE LIMITS
 
-### TC-301: Tạo invoice bình thường (< 50/ngày)
+### TC-301: Tạo invoice bình thường (< 50/tháng)
 **Steps:**
 1. Vào Company → "Create Invoice"
 2. Điền Client Name, thêm ít nhất 1 line item có description
@@ -81,10 +81,10 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
-### TC-302: Tạo invoice thứ 51 trong ngày (Free user bị chặn)
-**Chuẩn bị:** Cần tạo đúng 50 invoices trong ngày hôm nay (dùng script hoặc test thủ công)  
+### TC-302: Tạo invoice thứ 51 trong tháng (Free user bị chặn)
+**Chuẩn bị:** Cần tạo đúng 50 invoices trong tháng này (dùng script hoặc test thủ công)  
 **Steps:**
-1. Thử tạo invoice thứ 51 trong ngày
+1. Thử tạo invoice thứ 51
 2. Click Save
 
 **Expected:** UpgradeModal hiện ra với "invoice_limit" message (KHÔNG phải generic alert)  
@@ -262,24 +262,24 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
-## MODULE 9: PRICING PAGE
+## MODULE 9: PRICING PAGE & CHECKOUT
 
-### TC-901: Non-test user thấy Coming Soon
+### TC-901: Click Checkout Button (Lemon Squeezy Test Mode)
 **Steps:**
-1. Đăng nhập tài khoản thường (không phải 2 test email)
-2. Truy cập `/pricing`
+1. Mở `/pricing`
+2. Bấm nút "Upgrade to Pro" (Gói Monthly hoặc Yearly)
 
-**Expected:** Nút "🚀 Coming Soon" màu xám, disabled  
+**Expected:** Redirect mở cổng thanh toán Lemon Squeezy (Test Mode)  
 **Result:** [ ]
 
 ---
 
-### TC-902: Test user thấy Subscribe to Pro
+### TC-902: Nâng cấp thành công (Test card)
 **Steps:**
-1. Đăng nhập bằng `vunguyen5127@gmail.com` hoặc `vunguyencapital@gmail.com`
-2. Truy cập `/pricing`
+1. Trên cổng thanh toán Test, nhập thẻ giả (Ví dụ thẻ 4242... của Stripe/Lemon)
+2. Hoàn tất thanh toán
 
-**Expected:** Nút "Subscribe to Pro" màu xanh, clickable  
+**Expected:** Quay về `/dashboard`, Webhook hoạt động, account chuyển sang trạng thái Pro (Vô hạn company).  
 **Result:** [ ]
 
 ---
@@ -312,7 +312,7 @@ Base URL: http://localhost:3000 (hoặc production URL)
 1. Dashboard → Settings
 2. Kiểm tra plan hiện tại
 
-**Expected:** Hiện "Free Plan" với giới hạn: 3 companies, 50 invoices/ngày  
+**Expected:** Hiện "Free Plan" với giới hạn: 1 company, 50 invoices/tháng  
 **Result:** [ ]
 
 ---
@@ -514,8 +514,41 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
+## MODULE 19: BLOG & SEO SYSTEM
+
+### TC-1901: Hiển thị Blog Index
+**Steps:**
+1. Truy cập `/blog`
+2. Kiểm tra danh sách bài viết
+
+**Expected:** Các bài viết load thành công, component ArticleCard hiển thị đúng Date/Author  
+**Result:** [ ]
+
+---
+
+### TC-1902: Hiển thị Blog Post (Chi tiết bài viết)
+**Steps:**
+1. Click vào một bài viết từ `/blog`
+2. Mở cửa sổ DevTools → Check phần `<head>` để xem SEO tags (ld+json)
+
+**Expected:** Bài viết render đúng cấu trúc Markdown/MDX, có thẻ Meta SEO hợp lệ  
+**Result:** [ ]
+
+---
+
+## MODULE 20: LEGAL & STATIC PAGES
+
+### TC-2001: Hiển thị trang Chính sách & Liên hệ
+**Steps:**
+1. Lần lượt truy cập `/about`, `/contact`, `/privacy-policy`, `/terms`, `/refund-policy`
+
+**Expected:** Tất cả trang load thành công định dạng tài liệu Text, không lỗi 404  
+**Result:** [ ]
+
+---
+
 ## TỔNG KẾT CHUNG
-- Tổng bài kiểm tra (Total Test Cases): 44
+- Tổng bài kiểm tra (Total Test Cases): 48
 - Số bài Pass: ___
 - Số bài Fail: ___
 - Ghi chú lỗi phát sinh:
