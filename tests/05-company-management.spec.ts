@@ -24,6 +24,17 @@ test.describe('Module 12: Company Management UI', () => {
   });
   
   test('TC-1201: Edit Company Modal Opens from Dashboard', async ({ page }) => {
+    await page.route("**/rest/v1/companies*", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "content-range": "0-1/1" },
+        body: JSON.stringify([{
+           id: "1", name: "Mock Company", address: "123 Main St", email: "mock@example.com"
+        }])
+      });
+    });
+    
     await page.goto('/dashboard');
     
     // There might be edit buttons on the company card

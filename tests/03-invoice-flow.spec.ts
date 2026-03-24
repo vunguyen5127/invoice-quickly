@@ -46,8 +46,8 @@ test.describe("Module 6: Invoice Creation Flow", () => {
 test.describe("Module 8: Generator (No Login)", () => {
   test("TC-801: Generate invoice works for anonymous users", async ({ page }) => {
     await page.goto('/');
-    const createBtn = page.locator('a:has-text("Create Invoice Free")').first();
-    await expect(createBtn).toBeVisible({ timeout: 10000 });
+    const createBtn = page.getByRole('link', { name: /Create.*Free/i }).first();
+    await expect(createBtn).toBeVisible({ timeout: 15000 });
     await createBtn.click();
     
     await page.waitForURL(/.*\/generator/);

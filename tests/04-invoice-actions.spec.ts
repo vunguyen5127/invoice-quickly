@@ -6,8 +6,19 @@ test.describe("Module 7: Invoice Status & Bulk Actions", () => {
     await mockSupabaseUser(page);
     await seedAuthenticatedSession(page);
   });
-
+  
   test("TC-702, TC-703, TC-704: Bulk actions appear on checkbox select", async ({ page }) => {
+    await page.route("**/rest/v1/invoices*", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "content-range": "0-1/1" },
+        body: JSON.stringify([{
+           id: "1", invoice_number: "INV-1", client_name: "Mock Client", total_amount: 100, currency: "USD", status: "draft"
+        }])
+      });
+    });
+    
     // We navigate to a company page. If there are no invoices, the test won't see the checkboxes.
     // In a real e2e environment with a seeded DB, we expect rows.
     await page.goto("/company/test-company-id");
@@ -24,6 +35,17 @@ test.describe("Module 7: Invoice Status & Bulk Actions", () => {
   
   // TC-604: Duplicate invoice is tested here as it's an action on an existing invoice
   test("TC-604: Duplicate invoice button redirects to generator", async ({ page }) => {
+     await page.route("**/rest/v1/invoices*", async (route) => {
+       await route.fulfill({
+         status: 200,
+         contentType: "application/json",
+         headers: { "content-range": "0-1/1" },
+         body: JSON.stringify([{
+            id: "1", invoice_number: "INV-1", client_name: "Mock Client", total_amount: 100, currency: "USD", status: "draft"
+         }])
+       });
+     });
+     
      await page.goto("/company/test-company-id");
      
      // Find the copy icon
