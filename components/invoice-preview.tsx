@@ -6,12 +6,13 @@ import { format } from "date-fns";
 import { useLanguage } from "@/contexts/language-context";
 
 interface InvoicePreviewProps {
-  invoice: InvoiceState;
+  invoice: any;
   isLoggedIn?: boolean;
   compact?: boolean;
+  docType?: 'invoice' | 'quote';
 }
 
-export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }: InvoicePreviewProps) {
+export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, docType = 'invoice' }: InvoicePreviewProps) {
   const [scale, setScale] = React.useState(1);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -38,7 +39,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
   const { t } = useLanguage();
   const symbol = getCurrencySymbol(invoice.currency);
 
-  const subTotal = invoice.items.filter(item => item.description || item.quantity || item.rate).reduce((acc, item) => acc + (item.quantity * item.rate), 0);
+  const subTotal = invoice.items.filter((item: any) => item.description || item.quantity || item.rate).reduce((acc: number, item: any) => acc + (item.quantity * item.rate), 0);
   
   const discountAmount = invoice.discountType === 'percentage' 
     ? subTotal * (invoice.discount / 100) 
@@ -89,7 +90,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
            <div className="space-y-1 flex-1 min-w-0">
              <h2 className="text-2xl font-black tracking-tighter uppercase">{invoice.company.name.split(/,|\n/)[0]}</h2>
              <div className="text-[12px] text-zinc-500 max-w-xs">
-                {invoice.company.name.split(/,|\n/).slice(1).map((line, idx) => (
+                {invoice.company.name.split(/,|\n/).slice(1).map((line: string, idx: number) => (
                   <p key={idx}>{line.trim()}</p>
                 ))}
              </div>
@@ -110,7 +111,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
              <div className="text-zinc-600 space-y-0.5 leading-tight break-words">
                <p className="font-bold text-zinc-900 text-[15px]">{invoice.client.name.split(/,|\n/)[0] || "-"}</p>
                <div className="text-[13px] text-zinc-600">
-                  {invoice.client.name.split(/,|\n/).slice(1).map((line, idx) => (
+                  {invoice.client.name.split(/,|\n/).slice(1).map((line: string, idx: number) => (
                     <p key={idx}>{line.trim()}</p>
                   ))}
                </div>
@@ -132,13 +133,13 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
            {/* Column 3: Invoice Details Block */}
             <div className="flex-1 min-w-0 flex justify-end">
               <div className="grid grid-cols-[auto_auto] gap-x-5 gap-y-2 text-left">
-                <span className="font-bold whitespace-nowrap">{t.invoiceNumber}:{"\u00A0"}</span>
-                <span className="text-zinc-600 whitespace-nowrap">#{invoice.details.invoiceNumber}</span>
+                <span className="font-bold whitespace-nowrap">{docType === 'quote' ? 'Quote Number' : t.invoiceNumber}:{"\u00A0"}</span>
+                <span className="text-zinc-600 whitespace-nowrap">#{docType === 'quote' ? invoice.details.quoteNumber : invoice.details.invoiceNumber}</span>
                 
                 <span className="font-bold whitespace-nowrap">{t.issueDate}:{"\u00A0"}</span>
                 <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.issueDate)}</span>
                 
-                <span className="font-bold whitespace-nowrap">{t.dueDate}:{"\u00A0"}</span>
+                <span className="font-bold whitespace-nowrap">{docType === 'quote' ? 'Valid Until' : t.dueDate}:{"\u00A0"}</span>
                 <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.dueDate)}</span>
               </div>
             </div>
@@ -156,7 +157,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false }:
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-300">
-              {invoice.items.filter(item => item.description || item.quantity || item.rate).map((item) => (
+              {invoice.items.filter((item: any) => item.description || item.quantity || item.rate).map((item: any) => (
                 <tr key={item.id} className="divide-x divide-zinc-300">
                   <td className="py-3 px-3 text-left align-top whitespace-pre-wrap text-[13px] font-medium text-zinc-700">{item.description || "-"}</td>
                   <td className="py-3 px-3 text-center align-top text-[13px] text-zinc-700">{item.quantity}</td>

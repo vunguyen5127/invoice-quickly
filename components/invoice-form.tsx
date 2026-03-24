@@ -15,14 +15,15 @@ import { convertToWebP } from "@/utils/image-utils";
 import { SavedItem } from "@/types/item";
 
 interface InvoiceFormProps {
-  invoice: InvoiceState;
-  setInvoice: React.Dispatch<React.SetStateAction<InvoiceState>>;
+  invoice: any;
+  setInvoice: any;
   defaultCompanyId?: string;
   canUseRecurring?: boolean;
   onShowUpgrade?: () => void;
+  docType?: 'invoice' | 'quote';
 }
 
-export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade }: InvoiceFormProps) {
+export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade, docType = 'invoice' }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [myItems, setMyItems] = useState<SavedItem[]>([]);
@@ -262,16 +263,16 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       
       {/* Details Section */}
       <div className={sectionClass}>
-        <h3 className={sectionTitleClass}>{t.invoiceDetails}</h3>
+        <h3 className={sectionTitleClass}>{docType === 'quote' ? 'Quote Details' : t.invoiceDetails}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <fieldset className={`${fieldsetBaseClass} ${!invoice.details.invoiceNumber ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
-            <legend className={legendClass}>{t.invoiceNumber}</legend>
-            <ClearBtn value={invoice.details.invoiceNumber} onClear={() => handleSectionChange('details', 'invoiceNumber', '')} />
+          <fieldset className={`${fieldsetBaseClass} ${(docType === 'quote' ? !invoice.details.quoteNumber : !invoice.details.invoiceNumber) ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
+            <legend className={legendClass}>{docType === 'quote' ? 'Quote Number' : t.invoiceNumber}</legend>
+            <ClearBtn value={docType === 'quote' ? invoice.details.quoteNumber : invoice.details.invoiceNumber} onClear={() => handleSectionChange('details', docType === 'quote' ? 'quoteNumber' : 'invoiceNumber', '')} />
             <input 
               type="text" 
               className={inputInnerClass} 
-              value={invoice.details.invoiceNumber} 
-              onChange={(e) => handleSectionChange('details', 'invoiceNumber', e.target.value)}
+              value={docType === 'quote' ? invoice.details.quoteNumber : invoice.details.invoiceNumber} 
+              onChange={(e) => handleSectionChange('details', docType === 'quote' ? 'quoteNumber' : 'invoiceNumber', e.target.value)}
             />
           </fieldset>
           <fieldset className={`${fieldsetBaseClass} ${!invoice.details.issueDate ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
@@ -287,7 +288,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
             </div>
           </fieldset>
           <fieldset className={`${fieldsetBaseClass} ${fieldsetBorderDefault}`}>
-            <legend className={legendClass}>{t.dueDate}</legend>
+            <legend className={legendClass}>{docType === 'quote' ? 'Valid Until' : t.dueDate}</legend>
             <div className="relative flex items-center">
               <input 
                 type="date" 
@@ -888,6 +889,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       />
 
       {/* Recurring Invoice Accordion */}
+      {docType === 'invoice' && (
       <div className={sectionClass}>
         <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
           <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
@@ -993,6 +995,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
           )}
         </div>
       </div>
+      )}
 
     </div>
   );

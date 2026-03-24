@@ -34,6 +34,11 @@ D. LỘ TRÌNH CẢI THIỆN
    D3. P2 — Nâng cấp cạnh tranh
    D4. P3 — Tầm nhìn dài hạn
 
+E. TỔNG KẾT TRẠNG THÁI (TRẢ LỜI NHANH)
+   1. Những gì chưa làm
+   2. Cần cải thiện (Bugs & Tối ưu)
+   3. Sẽ phát triển trong tương lai
+
 ================================================================================
 A. PHÂN TÍCH CODE THỰC TẾ
 ================================================================================
@@ -445,7 +450,7 @@ Giá/tháng           Free + $10       Free/$5        Miễn phí       Bản Pr
 UI Quality          ★★★★★            ★★             ★★★★           ★★★★                 ★★★        ★★★
 Templates           1 Mẫu PDF        100+ Mẫu       1 Mẫu          Nhiều Mẫu            Cơ bản     Nhiều Mẫu
 Generator(no-login) ✅               ❌             ✅ (Core)      ❌                   ❌         ❌
-Lưu Items/Sản phẩm  ❌ (Nhập tay)    ✅             ❌             ✅ (Cực mạnh)        ✅         ✅
+Lưu Items/Sản phẩm  ✅ (Đã Xong)     ✅             ❌             ✅ (Cực mạnh)        ✅         ✅
 Thanh toán trực tiếp❌               ✅ (PayPal)    ❌             ✅ (Stripe/PayPal)   ✅         ✅
 Báo giá (Quotes)    ❌               ✅             ✅ (Cơ bản)    ✅                   ✅         ✅
 Hóa đơn định kỳ     ✅ (Pro)         Có hẹn giờ     ❌             ✅                   ✅         ✅
@@ -464,7 +469,7 @@ MỨC ĐỘ THIẾU HỤT THEO THỨ TỰ ƯU TIÊN VÀ XU HƯỚNG MỚI:
 
 HIGH IMPACT (Tính năng cốt lõi bắt buộc phải có để kiếm tiền):
   ❌ Direct payment link (Pay Now): Nhận tiền ngay trên hóa đơn (Stripe Express, PayPal.me). Late payment là Pain point #1.
-  ❌ Thư viện Sản phẩm/Dịch vụ (Item Library): Hiện tại phải gõ tay từng dòng line-item. InvoiceQuickly bản live làm rất mạnh tính năng Autofill này.
+  ✅ Thư viện Sản phẩm/Dịch vụ (Item Library): DONE (2026-03-24). Hỗ trợ pagination, search và gộp name & description. Đã tích hợp E2E Test.
   ❌ Báo giá (Estimates/Quotes): Cho phép chuyển từ Báo giá sang Invoice chỉ với 1-click. Rất quan trọng cho Freelancer.
   ✅ Recurring invoices: DONE (2026-03-22).
   ✅ Bulk invoice actions: DONE (2026-03-23).
@@ -671,6 +676,36 @@ LỊCH SỬ CẬP NHẬT
   ⚠️ BUG-001 TEMP REVERTED: Nút Subscribe disabled, hiện "🚀 Coming Soon"
   ⚠️ Chỉ 2 email test thấy nút subscribe thật
   TODO: Khi Paddle approve domain → xóa isTestUser check trong pricing/page.tsx
+
+2026-03-24 — Major Feature & Stability Updates:
+  ✅ Thư viện Sản phẩm (Item Library): Hỗ trợ pagination, search, gộp name & description. Đã thêm đầy đủ E2E tests.
+  ✅ Test Suite Stability: Sửa 30+ lỗi E2E tests (timeout, locator violations, hydration). Mock API cho server-side data.
+  ✅ Blog & Schema (SEO): Thêm hệ thống Blog, structured data, sitemap, tối ưu next/image.
+  ✅ Billing Refactor: Hỗ trợ đa cổng thanh toán (Paddle & Lemon Squeezy) qua feature flag. Cấu hình env cho Lemon Squeezy test mode.
+
+================================================================================
+E. TỔNG KẾT TRẠNG THÁI (TRẢ LỜI NHANH TIẾN ĐỘ THUỘC VỀ DỰ ÁN)
+================================================================================
+
+1. NHỮNG GÌ CHƯA LÀM (Tính năng còn thiếu để cạnh tranh)
+   - Direct payment link: Khách click "Pay Now" thanh toán ngay trên Invoice (Stripe/PayPal).
+   - Client Portal: Nơi khách hàng login để xem lịch sử các hóa đơn, tổng nợ.
+   - Send Email trực tiếp trong App: Nhập trực tiếp email người nhận để gửi PDF hóa đơn ngay tại ứng dụng.
+   - Thống kê Thuế (Tax Reporting): Bảng tổng hợp VAT/Tax để tiện khai báo cho doanh nghiệp.
+   - Báo giá (Estimates/Quotes): Tính năng chuyển đổi từ Báo giá sang Invoice dễ dàng với 1 cú click.
+
+2. CẦN CẢI THIỆN (Bugs & Tối ưu hệ thống hiện tại)
+   - BUG-004: Doanh thu tháng (paidThisMonth) ở Analytics đang tính theo "created_at", cần đổi sang field "paid_at" ở CSDL để phản ánh đúng thực tế thu tiền.
+   - Excel Export: Cần xuất file chuyên nghiệp hơn (hiện tại tính năng khá cơ bản, chưa có sheet Summary, Biểu đồ).
+   - Cổng Thanh Toán Online: Đang chờ Paddle approve domain để bật cho mọi users, hoặc hoàn thiện Lemon Squeezy live mode.
+   - Đa ngôn ngữ (i18n): Cần thiết lập CSS layout Support cho tiếng Ả Rập lật layout từ Phải-Sang-Trái (RTL layout) trên component `rtl-provider`.
+
+3. SẼ PHÁT TRIỂN TRONG TƯƠNG LAI (Tầm nhìn dài hạn & Bỏ xa đối thủ)
+   - OpenAI Invoice Assistant: Dùng AI OCR - Chụp ảnh hóa đơn giấy/biên lai → AI tự động nhận dạng text và điền vào form hóa đơn.
+   - Time & Expense Tracking: Tính năng chấm công, ghi chép chi phí cho Freelancers (nhằm cạnh tranh ngang hàng với Wave/FreshBooks).
+   - Team Collaboration: Tính năng phân quyền (Admin, Kế toán, Viewer) cho các team lớn hoạt động chung trên 1 Company.
+   - Public API & Webhooks: Cung cấp API Public / Post webhook cho phép tích hợp Zapier, Make để tự động hóa tạo hóa đơn cho User.
+   - Native Mobile App: Phiên bản App cài vào điện thoại (iOS/Android) để tạo hóa đơn mượt hơn lúc offline & nhận Push Notifications.
 
 ================================================================================
 END OF ANALYSIS
