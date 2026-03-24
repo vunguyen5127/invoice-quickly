@@ -6,6 +6,56 @@
 
 ---
 
+## ⚡ Bắt đầu từ đây — Dễ nhất, không cần tạo account phức tạp
+
+### 🟢 Chỉ submit form (5-10 phút tổng)
+
+| Trang | Link submit | Ghi chú |
+|-------|------------|---------|
+| **uneed.best** | https://www.uneed.best/submit | Form ngắn, không cần account |
+| **toools.io** | https://toools.io/submit | Email + URL là xong |
+| **startupstash.com** | https://startupstash.com/add-resource/ | Form trực tiếp |
+| **betalist.com** | https://betalist.com/submit | Chỉ cần email |
+| **toolfolio.co** | https://toolfolio.co/ | 1 trang form |
+| **startuplister.com** | https://startuplister.com/ | Form đơn giản |
+| **saasworthy.com** | https://www.saasworthy.com/ | Không cần approval dài |
+
+### 🟡 Dùng Google Login — Không cần tạo account mới
+
+| Trang | Login | Impact |
+|-------|-------|--------|
+| **Product Hunt** | Google / Twitter | 🔥🔥🔥 Cao nhất |
+| **Indie Hackers** | Google | 🔥🔥 Cao |
+| **G2** | Google | 🔥🔥 Cao |
+
+### 🔴 Cần tạo account riêng (làm sau, impact cao)
+
+| Trang | Impact |
+|-------|--------|
+| Capterra | 🔥🔥🔥 Cao nhất — DA 90+ |
+| AlternativeTo | 🔥🔥 Cao |
+
+---
+
+## 🚀 Thứ tự làm khuyến nghị
+
+```
+Hôm nay (30 phút):
+1. uneed.best        ← 2 phút
+2. toools.io         ← 2 phút
+3. startupstash.com  ← 3 phút
+4. betalist.com      ← 2 phút
+5. Product Hunt      ← login Google, 20 phút chuẩn bị
+
+Tuần sau:
+6. Capterra          ← phức tạp hơn nhưng impact cao nhất
+7. G2                ← login Google
+```
+
+---
+
+---
+
 ## 📋 Mô tả sản phẩm chuẩn (dùng cho tất cả directories)
 
 **Tên:** Invoice-Quickly
