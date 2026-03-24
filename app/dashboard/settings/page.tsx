@@ -175,11 +175,7 @@ export default function SettingsPage() {
                 }`}>
                   {subscription?.status === 'active' && subscription.cancel_at ? "Cancels Soon" : (subscription?.status || "Free")}
                 </span>
-                {subscription?.card_brand && subscription?.card_last4 && (
-                  <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">
-                    {subscription.card_brand} •••• {subscription.card_last4}
-                  </p>
-                )}
+
               </>
             )}
           </div>
