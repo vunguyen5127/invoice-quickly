@@ -21,9 +21,10 @@ interface InvoiceFormProps {
   canUseRecurring?: boolean;
   onShowUpgrade?: () => void;
   docType?: 'invoice' | 'quote';
+  onCompanySelect?: (companyId: string) => void;
 }
 
-export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade, docType = 'invoice' }: InvoiceFormProps) {
+export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade, docType = 'invoice', onCompanySelect }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [myItems, setMyItems] = useState<SavedItem[]>([]);
@@ -81,6 +82,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       }));
     }
     setSelectedCompanyId(selectedId);
+    if (onCompanySelect) onCompanySelect(selectedId);
   };
   
   const handleSectionChange = (section: keyof InvoiceState, field: string, value: any) => {

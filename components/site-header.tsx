@@ -54,7 +54,7 @@ export function SiteHeader() {
   const dropdownTemplates = marketingPages.slice(0, 5);
 
   // Hide global header on editor pages so they can render their own custom sticky header
-  if (pathname === "/generator" || pathname.includes("/new") || pathname.includes("/edit")) {
+  if (pathname === "/generator" || pathname.includes("/new") || pathname.includes("/edit") || pathname.startsWith("/quote/")) {
     return null;
   }
 

@@ -61,6 +61,8 @@ export async function getCompanyQuotes(
     return { data: [], totalCount: 0 };
   }
 
+  console.log(`[DEBUG] getCompanyQuotes for company ${companyId}`, `Found ${count} quotes`, data);
+
   return { data: data || [], totalCount: count || 0 };
 }
 
@@ -99,9 +101,10 @@ export async function createQuote(token: string, quoteData: any) {
     .single();
 
   if (error) {
-    console.error("Error creating quote:", error);
+    console.error("Error creating quote IN DB:", error, payload);
     return { success: false, error: error.message };
   }
+  console.log("[DEBUG] Successfully created quote IN DB:", data.id, "Payload company_id:", payload.company_id);
 
   return { success: true, id: data.id };
 }

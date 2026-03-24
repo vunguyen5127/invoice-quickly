@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import { getPublicQuote, acceptQuote, rejectQuote } from "@/app/dashboard/quotes/actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
@@ -8,7 +8,8 @@ import { Download, Loader2, CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 
-export default function ShareQuotePage({ params }: { params: { id: string } }) {
+export default function ShareQuotePage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
   const [quote, setQuote] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -16,11 +17,11 @@ export default function ShareQuotePage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     fetchData();
-  }, [params]);
+  }, [resolvedParams.id]);
 
   const fetchData = async () => {
     try {
-      const data = await getPublicQuote(params.id);
+      const data = await getPublicQuote(resolvedParams.id);
       if (data) {
         setQuote(data);
       }
@@ -40,7 +41,7 @@ export default function ShareQuotePage({ params }: { params: { id: string } }) {
 
   const handleAccept = async () => {
     setIsActionLoading(true);
-    const res = await acceptQuote(params.id);
+    const res = await acceptQuote(resolvedParams.id);
     if (res.success) {
       setQuote({ ...quote, status: 'accepted' });
     } else {
@@ -51,7 +52,7 @@ export default function ShareQuotePage({ params }: { params: { id: string } }) {
 
   const handleReject = async () => {
     setIsActionLoading(true);
-    const res = await rejectQuote(params.id);
+    const res = await rejectQuote(resolvedParams.id);
     if (res.success) {
       setQuote({ ...quote, status: 'rejected' });
     } else {
