@@ -1147,5 +1147,345 @@ export const marketingPages: SEOPageContent[] = [
       ],
     },
   },
+  {
+    slug: "plumber-invoice-template",
+    metadata: {
+      title: "Free Plumber Invoice Template — Professional Billing for Plumbing Services",
+      description: "Create professional plumber invoices in minutes. Itemize labor, parts, callout fees, and emergency rates. Free PDF download, no signup required.",
+    },
+    hero: {
+      badge: "Plumbing Invoice",
+      title: "Professional Invoices for ",
+      highlight: "Plumbing Businesses",
+      description: "Stop writing invoices on paper. Create professional plumbing invoices on any device, download the PDF, and get paid faster.",
+    },
+    overview: {
+      title: "Why Plumbers Need Professional Invoices",
+      content: "A clear, professional invoice protects you legally and helps you get paid faster. For plumbing businesses, invoices need to itemize labor hours separately from parts and materials, include your plumber's license number, and clearly state callout fees, emergency rates, and warranty terms. Our template handles all of this in a clean, professional format your residential and commercial clients will trust.",
+    },
+    features: {
+      title: "Built for Plumbing Pros",
+      items: [
+        {
+          title: "Labor & Parts Breakdown",
+          description: "Separate your hourly labor charges from the cost of fittings, pipes, and materials used on the job.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Callout & Emergency Fees",
+          description: "Easily add callout fees, after-hours rates, and weekend surcharges as separate line items.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "License & Insurance Fields",
+          description: "Add your plumber's license number and insurance details in the notes to build trust with clients.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Plumbing Invoice",
+      description: "A professional breakdown of labor, materials, and callout fees for a residential repair.",
+      data: {
+        company: { name: "RapidFlow Plumbing Services\n12 Pipeline Rd, Houston, TX 77001", logo: "", email: "jobs@rapidflowplumbing.com", address: "12 Pipeline Rd", phone: "713-555-8800" },
+        client: { name: "Johnson Residence\n45 Oak Street, Houston, TX 77002", email: "m.johnson@email.com", address: "45 Oak Street", phone: "713-555-2200" },
+        items: [
+          { id: "1", description: "Callout Fee - Emergency Weekend Service", quantity: 1, rate: 150 },
+          { id: "2", description: "Labor - Burst pipe repair (2.5 hours @ $90/hr)", quantity: 2.5, rate: 90 },
+          { id: "3", description: "Materials - 15mm copper pipe, fittings, solder", quantity: 1, rate: 85 },
+          { id: "4", description: "Hot water system inspection", quantity: 1, rate: 120 },
+        ],
+        details: { invoiceNumber: "PLMB-2026-089", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Plumbing Invoice FAQ",
+      items: [
+        {
+          question: "Should I include my plumber's license number?",
+          answer: "Yes, absolutely. Including your license number on every invoice is a best practice in most jurisdictions and builds immediate trust with new clients. Add it to the Notes section.",
+        },
+        {
+          question: "How do I handle warranty on my invoices?",
+          answer: "Add your warranty terms to the Notes field: for example, 'All workmanship is guaranteed for 12 months from date of service. Parts carry manufacturer warranty.'",
+        },
+      ],
+    },
+  },
+  {
+    slug: "web-developer-invoice-template",
+    metadata: {
+      title: "Free Web Developer Invoice Template — Bill for Websites & Dev Projects",
+      description: "Professional invoice templates for web developers and agencies. Itemize development hours, hosting, maintenance, and project milestones. Free, no signup.",
+    },
+    hero: {
+      badge: "Web Dev Invoice",
+      title: "Invoices Built for ",
+      highlight: "Web Developers",
+      description: "From freelance dev to full agency — create professional invoices that accurately reflect the value of your technical work.",
+    },
+    overview: {
+      title: "Invoicing Complexity Made Simple",
+      content: "Web development projects are complex: they span multiple phases, mix hourly and fixed-fee work, and often include ongoing costs like hosting and maintenance. Our invoice generator lets you break down each phase clearly—discovery, design, development, testing, and deployment—so clients understand exactly what they're paying for. You can also set up separate invoices for recurring monthly maintenance retainers.",
+    },
+    features: {
+      title: "Dev-Friendly Features",
+      items: [
+        {
+          title: "Milestone Billing",
+          description: "Create invoices for each project phase: discovery, wireframes, development, and launch.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Hourly & Fixed Rates",
+          description: "Mix hourly development work with fixed-price deliverables on the same invoice.",
+          icon: "creditCard",
+          color: "text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20",
+        },
+        {
+          title: "Shareable Link",
+          description: "Send clients a link to view their invoice online — no PDF attachment needed.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Web Development Invoice",
+      description: "A clear project breakdown for a full website build, mixing phase-based and hourly billing.",
+      data: {
+        company: { name: "DevCraft Studio\n77 Code Street, Austin, TX 78701", logo: "", email: "billing@devcraft.io", address: "77 Code Street", phone: "512-555-0100" },
+        client: { name: "Sunrise Retail Co.\n200 Commerce Ave, Dallas, TX 75201", email: "projects@sunriseretail.com", address: "200 Commerce Ave", phone: "214-555-0200" },
+        items: [
+          { id: "1", description: "Website Design - 5-page Figma prototype", quantity: 1, rate: 2000 },
+          { id: "2", description: "Frontend Development (React/Next.js)", quantity: 40, rate: 120 },
+          { id: "3", description: "CMS Integration (Shopify)", quantity: 16, rate: 120 },
+          { id: "4", description: "SEO Setup & Analytics Configuration", quantity: 1, rate: 600 },
+          { id: "5", description: "Monthly Maintenance Retainer (Month 1)", quantity: 1, rate: 350 },
+        ],
+        details: { invoiceNumber: "INV-DC-2026-014", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Web Developer Invoicing FAQ",
+      items: [
+        {
+          question: "How should I handle scope creep on my invoice?",
+          answer: "Add a line item clearly labeled 'Additional Work - Out of Scope' with a description of what was added and why. This creates a clear paper trail and justifies the extra charge.",
+        },
+        {
+          question: "Can I invoice for hosting and domain renewals?",
+          answer: "Yes. Add these as separate line items: 'Annual Hosting - [Provider]' and 'Domain Renewal - example.com'. Include the renewal period so clients understand the value.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "cleaning-service-invoice-template",
+    metadata: {
+      title: "Free Cleaning Service Invoice Template — Professional Billing for Cleaners",
+      description: "Professional invoice templates for cleaning businesses. Bill for residential, commercial, and deep cleaning services. Free PDF download, no signup needed.",
+    },
+    hero: {
+      badge: "Cleaning Invoice",
+      title: "Professional Invoices for ",
+      highlight: "Cleaning Services",
+      description: "Run a cleaner business — literally. Create professional invoices for your cleaning service in under 60 seconds.",
+    },
+    overview: {
+      title: "Get Your Cleaning Business Paid Faster",
+      content: "Whether you run a one-person residential cleaning operation or a multi-crew commercial cleaning company, professional invoices project credibility and help you get paid faster. Our template makes it easy to itemize different services—regular clean, deep clean, carpet cleaning, post-construction cleanup—and apply the right pricing for each. You can also set up recurring invoices for regular weekly or monthly clients.",
+    },
+    features: {
+      title: "Clean Billing for Clean Homes",
+      items: [
+        {
+          title: "Service Packages",
+          description: "Bill for standard cleans, deep cleans, move-in/out services, and specialty add-ons separately.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+        {
+          title: "Recurring Clients",
+          description: "Set up consistent invoices for weekly or bi-weekly clients to maintain professional records.",
+          icon: "users",
+          color: "text-pink-600 bg-pink-50 dark:bg-pink-900/20",
+        },
+        {
+          title: "Instant PDF",
+          description: "Download your invoice as a PDF and email it, print it, or share it via link immediately.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Cleaning Service Invoice",
+      description: "A professional invoice for a commercial cleaning contract covering multiple service types.",
+      data: {
+        company: { name: "SparkleClean Professional Services\n88 Fresh Ave, Chicago, IL 60601", logo: "", email: "billing@sparkleclean.net", address: "88 Fresh Ave", phone: "312-555-4400" },
+        client: { name: "Lakeside Office Park\n500 Business Blvd, Chicago, IL 60602", email: "facilities@lakesideoffice.com", address: "500 Business Blvd", phone: "312-555-6600" },
+        items: [
+          { id: "1", description: "Weekly Office Cleaning (4 visits × 3,000 sq ft)", quantity: 4, rate: 280 },
+          { id: "2", description: "Monthly Deep Clean - Restrooms & Kitchen", quantity: 1, rate: 350 },
+          { id: "3", description: "Carpet Steam Cleaning (Conference Room)", quantity: 1, rate: 220 },
+          { id: "4", description: "Window Cleaning (exterior, 12 windows)", quantity: 1, rate: 180 },
+        ],
+        details: { invoiceNumber: "INV-SC-2026-031", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Cleaning Business Invoicing FAQ",
+      items: [
+        {
+          question: "Should I charge per hour or per job?",
+          answer: "Many cleaning businesses charge per job (flat rate) for standard recurring cleans for predictability, and per hour for deep cleans or specialty work. Include the basis of your charge clearly on the invoice.",
+        },
+        {
+          question: "How do I handle cancellation fees?",
+          answer: "Add your cancellation policy to the Notes section: e.g., 'Cancellations with less than 24 hours notice will incur a $50 cancellation fee.' If you need to charge it, add it as a line item on the next invoice.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "personal-trainer-invoice-template",
+    metadata: {
+      title: "Free Personal Trainer Invoice Template — Bill for Fitness Sessions",
+      description: "Professional invoice templates for personal trainers and fitness coaches. Bill for sessions, packages, and online coaching. Free, no signup required.",
+    },
+    hero: {
+      badge: "Fitness Invoice",
+      title: "Invoices for ",
+      highlight: "Personal Trainers",
+      description: "Focus on your clients' fitness, not your paperwork. Create professional invoices for personal training sessions in under a minute.",
+    },
+    overview: {
+      title: "Professional Billing for Fitness Coaches",
+      content: "As a personal trainer, your income depends on consistently billing clients in a clear and professional way. Whether you offer one-on-one gym sessions, online coaching packages, nutrition plans, or group fitness classes, our invoice template lets you itemize each service clearly. Clients appreciate knowing exactly what they're paying for, and professional invoices help you stand out in a crowded fitness market.",
+    },
+    features: {
+      title: "Fit for Purpose",
+      items: [
+        {
+          title: "Session & Package Billing",
+          description: "Invoice for single sessions, monthly packages, or bundled training programs with ease.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Online & In-Person",
+          description: "Clearly differentiate between gym-based training, home visits, and virtual coaching sessions.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+        {
+          title: "No Signup Needed",
+          description: "Open the generator from your phone between sessions and have a PDF invoice in under 60 seconds.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Personal Training Invoice",
+      description: "Clear itemization of sessions, a nutrition plan, and a training package for a regular client.",
+      data: {
+        company: { name: "Peak Performance Training\nJordan Lee, CPT\n300 Fitness Way, Miami, FL 33101", logo: "", email: "jordan@peakperformance.fit", address: "300 Fitness Way", phone: "305-555-7700" },
+        client: { name: "Michael Torres\n14 Bayview Dr, Miami, FL 33102", email: "m.torres@email.com", address: "14 Bayview Dr", phone: "305-555-3300" },
+        items: [
+          { id: "1", description: "Personal Training Sessions - March (8 × 60 min)", quantity: 8, rate: 85 },
+          { id: "2", description: "Custom Nutrition Plan (Monthly)", quantity: 1, rate: 150 },
+          { id: "3", description: "Online Check-in Calls (4 × 15 min)", quantity: 4, rate: 25 },
+        ],
+        details: { invoiceNumber: "INV-PPT-2026-033", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Personal Trainer Invoicing FAQ",
+      items: [
+        {
+          question: "Should I invoice per session or monthly?",
+          answer: "Monthly invoicing is better for cash flow and client retention. It's easier for clients to budget, and you spend less time chasing individual session payments. Offer a slight discount for monthly packages to encourage upfront payment.",
+        },
+        {
+          question: "How do I handle missed sessions?",
+          answer: "Add your cancellation policy to the Notes/Terms section: e.g., 'Sessions cancelled with less than 24 hours notice will be charged at 50% of the session rate.' This protects your income and sets clear expectations.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "virtual-assistant-invoice-template",
+    metadata: {
+      title: "Free Virtual Assistant Invoice Template — Professional VA Billing",
+      description: "Invoice templates for virtual assistants and online business managers. Bill for hourly work, retainers, and individual tasks. Free, no signup required.",
+    },
+    hero: {
+      badge: "VA Invoice",
+      title: "Professional Invoices for ",
+      highlight: "Virtual Assistants",
+      description: "Get paid for your remote work with professional invoices that detail your hours, tasks, and value — all in one clean document.",
+    },
+    overview: {
+      title: "VA Billing Made Easy",
+      content: "As a virtual assistant, your work often spans dozens of different tasks across multiple clients. A professional invoice helps you communicate your value clearly, tracks your billable hours, and gives clients the transparency they need to approve payment quickly. Our generator supports hourly billing, retainer packages, and task-based pricing—whatever billing structure works best for your VA business.",
+    },
+    features: {
+      title: "Designed for Remote Work",
+      items: [
+        {
+          title: "Hourly Time Tracking",
+          description: "Log hours by task category: admin, social media, email management, research, and more.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "Multi-Client Ready",
+          description: "Manage invoices for multiple clients easily — each with their own invoice history and details.",
+          icon: "users",
+          color: "text-pink-600 bg-pink-50 dark:bg-pink-900/20",
+        },
+        {
+          title: "Shareable Links",
+          description: "Share a link to your invoice instead of emailing a PDF. Professional and convenient for remote clients.",
+          icon: "globe",
+          color: "text-violet-600 bg-violet-50 dark:bg-violet-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Sample Virtual Assistant Invoice",
+      description: "A detailed breakdown of VA services for a small business client — covering admin, social, and research tasks.",
+      data: {
+        company: { name: "Clarity VA Services\nAmanda Pierce | Virtual Assistant\nRemote — Based in Toronto, Canada", logo: "", email: "amanda@clarityva.com", address: "Toronto, Canada", phone: "+1 647-555-0198" },
+        client: { name: "BuildRight Consulting\n33 Commerce St, New York, NY 10001", email: "ops@buildright.co", address: "33 Commerce St", phone: "212-555-0145" },
+        items: [
+          { id: "1", description: "Email Management & Calendar Scheduling (March)", quantity: 14, rate: 35 },
+          { id: "2", description: "Social Media Scheduling (Instagram, LinkedIn — 20 posts)", quantity: 1, rate: 280 },
+          { id: "3", description: "Market Research Report — Competitor Analysis", quantity: 6, rate: 40 },
+          { id: "4", description: "Travel Booking & Expense Reconciliation", quantity: 3, rate: 35 },
+        ],
+        details: { invoiceNumber: "INV-CVA-2026-027", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Virtual Assistant Invoicing FAQ",
+      items: [
+        {
+          question: "Should I use a retainer or hourly billing?",
+          answer: "Retainers are better for long-term clients — they provide predictable income for you and a guaranteed allocation of your time for the client. Hourly billing works well for new clients or one-off projects while you're establishing the relationship.",
+        },
+        {
+          question: "How do I invoice clients in a different country?",
+          answer: "Invoice-Quickly supports 50+ currencies. Set the currency to match your client's local currency, or agree on USD as a common standard. Add your international bank details or payment platform (PayPal, Wise, etc.) to the Notes section.",
+        },
+      ],
+    },
+  },
 ];
 
