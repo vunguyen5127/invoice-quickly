@@ -8,9 +8,11 @@ import { v4 as uuidv4 } from "uuid";
 import { SignaturePadModal } from "./signature-pad-modal";
 import { useLanguage } from "@/contexts/language-context";
 import { getUserCompanies } from "@/app/dashboard/actions";
+import { getItems } from "@/app/dashboard/items/actions";
 import { supabase } from "@/utils/supabase/client";
 import { Tooltip } from "./tooltip";
 import { convertToWebP } from "@/utils/image-utils";
+import { SavedItem } from "@/types/item";
 
 interface InvoiceFormProps {
   invoice: InvoiceState;
@@ -23,22 +25,28 @@ interface InvoiceFormProps {
 export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade }: InvoiceFormProps) {
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
+  const [myItems, setMyItems] = useState<SavedItem[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
+  const [focusedItemIndex, setFocusedItemIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchCompanies = async () => {
+    const fetchData = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
       
       try {
-        const result = await getUserCompanies(session.access_token);
-        setMyCompanies(result.data || []);
+        const [companiesResult, itemsResult] = await Promise.all([
+          getUserCompanies(session.access_token),
+          getItems(session.access_token, { pageSize: 1000 })
+        ]);
+        setMyCompanies(companiesResult.data || []);
+        setMyItems(itemsResult.data || []);
       } catch (e) {
-        console.error("Failed to fetch companies for auto-fill", e);
+        console.error("Failed to fetch data for auto-fill", e);
       }
     };
-    fetchCompanies();
+    fetchData();
   }, []);
 
   const handleCompanyAutoFill = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -456,6 +464,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
+                      onFocus={() => setFocusedItemIndex(index)}
+                      onBlur={() => setTimeout(() => setFocusedItemIndex(null), 200)}
                       onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addItem(); } }}
                     />
                     {item.description.length > 0 && (
@@ -468,6 +478,38 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       }`}>
                         {120 - item.description.length}
                       </span>
+                    )}
+                    {focusedItemIndex === index && myItems.length > 0 && (
+                      <div className="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 md:w-[150%]">
+                        <div className="max-h-[200px] overflow-y-auto p-1">
+                          {myItems.filter(i => i.name.toLowerCase().includes(item.description.toLowerCase())).length === 0 ? (
+                            <div className="p-3 text-center text-xs text-zinc-500 font-medium">No saved items found</div>
+                          ) : (
+                            myItems
+                              .filter(i => i.name.toLowerCase().includes(item.description.toLowerCase()))
+                              .map(savedItem => (
+                                <button
+                                  key={savedItem.id}
+                                  type="button"
+                                  className="w-full text-left px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors flex flex-col gap-0.5"
+                                  onClick={() => {
+                                    handleItemChange(index, "description", savedItem.name);
+                                    if (savedItem.rate) {
+                                      handleItemChange(index, "rate", savedItem.rate);
+                                    }
+                                  }}
+                                >
+                                  <div className="flex justify-between items-start gap-3 w-full">
+                                    <span className="text-[13px] font-bold text-zinc-900 dark:text-zinc-100 whitespace-pre-wrap">{savedItem.name}</span>
+                                    <span className="text-[12px] font-bold text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5">
+                                      {new Intl.NumberFormat('en-US', { style: 'currency', currency: invoice.currency }).format(savedItem.rate)}
+                                    </span>
+                                  </div>
+                                </button>
+                              ))
+                          )}
+                        </div>
+                      </div>
                     )}
                   </div>
 

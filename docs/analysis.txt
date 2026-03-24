@@ -436,55 +436,51 @@ TOP 10 TÍNH NĂNG CẦN THIẾT NHẤT (Theo demand):
   10. Integration với accounting software
 
 
-C3. SO SÁNH ĐỐI THỦ CẠNH TRANH
+C3. SO SÁNH ĐỐI THỦ CẠNH TRANH (Tính đến 2026)
 ---------------------------------
-                    InvoiceQuickly   Wave       FreshBooks   InvoiceNinja
-                    --------------   ----       ----------   ------------
-Giá/tháng          Free + $10       Free*      $17-55       Free(self)+$10
-UI Quality         ★★★★★ (best)    ★★★        ★★★★         ★★★
-Đa ngôn ngữ        22 ngôn ngữ     2           3            15+
-Generator (no-login)   ✅          ❌         ❌           ❌
-Dark Mode          ✅              ❌          ❌           ✅
-Recurring invoices ✅ (Pro only)   ✅          ✅           ✅
-Direct payment     ❌             ✅ (pay/use) ✅           ✅
-Time tracking      ❌             ❌           ✅           ✅
-Expense tracking   ❌             ✅           ✅           ✅
-Client portal      partial*        ❌          ✅           ✅
-Multi-company      10(Pro)/1(Free) Unlimited   Requires sub  Unlimited
-Email reminders    ✅ (auto daily) ❌          ✅           ✅
-Digital signature  ✅             ❌           ❌           ❌
-PDF export         ✅             ✅           ✅           ✅
-Excel export       ✅(Pro)        ❌           ✅           ✅
-API docs (Swagger) ✅             ❌           Partial      ✅
+                    Dự Án Hiện Tại  InvoiceHome    Inv-Generator  InvoiceQuickly(Live) Wave       InvoiceNinja
+                    --------------   -----------    -------------  -------------------- ----       ------------
+Mô hình             SaaS+Generator   Freemium       No-login Tool  SaaS Toàn diện       Free*      SaaS/Self-host
+Giá/tháng           Free + $10       Free/$5        Miễn phí       Bản Pro              Free*      Free + $10
+UI Quality          ★★★★★            ★★             ★★★★           ★★★★                 ★★★        ★★★
+Templates           1 Mẫu PDF        100+ Mẫu       1 Mẫu          Nhiều Mẫu            Cơ bản     Nhiều Mẫu
+Generator(no-login) ✅               ❌             ✅ (Core)      ❌                   ❌         ❌
+Lưu Items/Sản phẩm  ❌ (Nhập tay)    ✅             ❌             ✅ (Cực mạnh)        ✅         ✅
+Thanh toán trực tiếp❌               ✅ (PayPal)    ❌             ✅ (Stripe/PayPal)   ✅         ✅
+Báo giá (Quotes)    ❌               ✅             ✅ (Cơ bản)    ✅                   ✅         ✅
+Hóa đơn định kỳ     ✅ (Pro)         Có hẹn giờ     ❌             ✅                   ✅         ✅
+Time/Expense track  ❌               ❌             ❌             ✅                   ✅         ✅
+Cổng thông tin kháchPartial*         ❌             ❌             ✅                   ❌         ✅
+Đa ngôn ngữ         22 Ngôn ngữ      Nhiều ngôn ngữ Hỗ trợ tùy tỷ  120+ Ngôn ngữ        2          15+
+PDF/Excel export    ✅ (Có cả CSV)   ✅ (PDF/XL)    ✅ (PDF/CSV)   ✅                   ✅         ✅
+OCR / AI Scan       ❌               ❌             ❌             ✅ (Scan biên lai)   ❌         ❌
 
-*Wave: Basic features free, Payroll & processing có phí
-*InvoiceQuickly "Client portal" = chỉ là view-only shared link, không phải portal đầy đủ
-
+*Dự án hiện tại "Cổng thông tin khách": Chỉ là public link xem 1 hóa đơn, không phải Portal đăng nhập đầy đủ.
+*Wave: Basic free, trả phí làm tính năng Payroll (Trả lương).
 
 C4. GAP ANALYSIS — THIẾU GÌ SO VỚI THỊ TRƯỜNG
 -----------------------------------------------
-MỨC ĐỘ THIẾU HỤT THEO THỨ TỰ ƯU TIÊN:
+MỨC ĐỘ THIẾU HỤT THEO THỨ TỰ ƯU TIÊN VÀ XU HƯỚNG MỚI:
 
-HIGH IMPACT (Pain point trực tiếp ảnh hưởng doanh thu + marketing):
-  ✅ Recurring invoices: DONE (2026-03-22) — UI, cron generation, Pro-only guard
-  ❌ Direct payment link: Late payment là #1 pain point
-     Stripe Express / PayPal.me link nhúng trong invoice
-  ❌ canUseAdvancedBranding chưa thực thi: KHÔNG CẦN - đã quyết định cho Free users dùng logo/signature
+HIGH IMPACT (Tính năng cốt lõi bắt buộc phải có để kiếm tiền):
+  ❌ Direct payment link (Pay Now): Nhận tiền ngay trên hóa đơn (Stripe Express, PayPal.me). Late payment là Pain point #1.
+  ❌ Thư viện Sản phẩm/Dịch vụ (Item Library): Hiện tại phải gõ tay từng dòng line-item. InvoiceQuickly bản live làm rất mạnh tính năng Autofill này.
+  ❌ Báo giá (Estimates/Quotes): Cho phép chuyển từ Báo giá sang Invoice chỉ với 1-click. Rất quan trọng cho Freelancer.
+  ✅ Recurring invoices: DONE (2026-03-22).
+  ✅ Bulk invoice actions: DONE (2026-03-23).
 
-MEDIUM IMPACT (Competitive parity — đối thủ có, mình thiếu):
-  ❌ Client portal: /share/[id] chỉ xem 1 invoice, cần portal xem tất cả + pay
-  ❌ Time tracking: FreshBooks có → là major selling point vs IQ
-  ❌ Expense tracking: Wave miễn phí có → disadvantage
-  ❌ Tax reporting: VAT/GST summary — cần cho business users
-  ✅ Bulk invoice actions: DONE (2026-03-23) — Checkbox, Select All, Mark as Paid, Delete
-  ❌ SMS/WhatsApp reminder: Email bị bỏ qua, SMS rate cao hơn
+MEDIUM IMPACT (Nâng cấp sức cạnh tranh so với đối thủ):
+  ❌ Mẫu thiết kế Hóa đơn (Templates): Mở rộng từ 1 mẫu PDF lên 3-5 mẫu có sẵn (Minimalist, Bold, Classic) để bù đắp điểm yếu so với InvoiceHome (100+ mẫu).
+  ❌ Client portal: Nâng cấp /share/[id] thành một portal để khách login và xem nợ tổng.
+  ❌ Expense tracking: Wave có lợi thế rất lớn vì cái này miễn phí. Track thu/chi để xem Profit.
+  ❌ Tax reporting: VAT/GST summary cuối tháng/năm.
+  ❌ Gửi Document PDF trực tiếp qua Email ngay từ App.
 
-LOW IMPACT (Future roadmap):
-  ❌ 2FA
-  ❌ AI features (auto-fill từ OCR)
-  ❌ QuickBooks/Xero integration
-  ❌ Native mobile app
-  ❌ Webhook outbound (cho 3rd party)
+LOW IMPACT (Tương lai dài hạn):
+  ❌ AI/OCR (Đã có bên InvoiceQuickly bản live): Upload hình chụp tự điền dòng giá.
+  ❌ 2FA (Bảo mật).
+  ❌ Time tracking (Cho Freelancer tính giờ).
+  ❌ SMS/WhatsApp reminder.
 
 
 ================================================================================
