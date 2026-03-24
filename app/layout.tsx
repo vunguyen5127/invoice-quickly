@@ -1,23 +1,23 @@
+import { LogUserSession } from "@/components/log-user-session";
+import { RtlProvider } from "@/components/rtl-provider";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { ThemeProvider } from "@/components/theme-provider";
+import { LanguageProvider } from "@/contexts/language-context";
 import type { Metadata, Viewport } from "next";
 import {
+  Be_Vietnam_Pro,
   Geist,
   Geist_Mono,
   Noto_Sans,
+  Noto_Sans_Arabic,
+  Noto_Sans_Devanagari,
   Noto_Sans_JP,
   Noto_Sans_KR,
   Noto_Sans_SC,
-  Noto_Sans_Arabic,
-  Noto_Sans_Devanagari,
   Noto_Sans_Thai,
-  Be_Vietnam_Pro,
 } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { LanguageProvider } from "@/contexts/language-context";
-import { RtlProvider } from "@/components/rtl-provider";
-import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
-import { LogUserSession } from "@/components/log-user-session";
-import { SiteFooter } from "@/components/site-footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -114,11 +114,20 @@ export const metadata: Metadata = {
     title: "Free Invoice Generator Online — Create & Download PDF Invoices | Invoice-Quickly",
     description: "Generate invoices for free with Invoice-Quickly. Create professional PDF invoices in seconds — no signup, no watermark, free forever.",
     url: "https://invoice-quickly.com",
+    images: [
+      {
+        url: "https://invoice-quickly.com/icon.png",
+        width: 512,
+        height: 512,
+        alt: "Invoice-Quickly Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Free Invoice Generator Online | Invoice-Quickly",
     description: "Create and download professional PDF invoices for free. No signup, no watermark — the best free online invoice generator.",
+    images: ["https://invoice-quickly.com/icon.png"],
   },
   robots: {
     index: true,
@@ -136,11 +145,16 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon.ico", sizes: "48x48" },
     ],
     apple: [
-      { url: "/logo.svg" },
+      { url: "/icon.png", sizes: "512x512" },
+    ],
+    shortcut: "/icon.png",
+    other: [
+      { rel: "manifest", url: "/site.webmanifest" },
     ],
   },
 };
@@ -150,10 +164,21 @@ export const viewport: Viewport = {
 };
 
 import BillingScript from "@/components/billing-script";
-
 import ClientMetadata from "@/components/client-metadata";
-
 import { AuthProvider } from "@/contexts/auth-context";
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Invoice-Quickly",
+  url: "https://invoice-quickly.com",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://invoice-quickly.com/icon.png",
+    width: 512,
+    height: 512,
+  },
+};
 
 export default function RootLayout({
   children,
@@ -164,6 +189,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <ClientMetadata />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${beVietnam.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} antialiased min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans`}
