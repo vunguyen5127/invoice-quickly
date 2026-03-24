@@ -11,11 +11,11 @@
 ### 🟢 Chỉ submit form (5-10 phút tổng)
 
 | Trang | Link submit | Ghi chú |
+| Trang | Link submit | Ghi chú |
 |-------|------------|---------|
-| **uneed.best** | https://www.uneed.best/submit | Form ngắn, không cần account |
-| **toools.io** | https://toools.io/submit | Email + URL là xong |
+| **uneed.best** | https://www.uneed.best/submit-a-tool | Nhanh, signup bằng email đơn giản |
 | **startupstash.com** | https://startupstash.com/add-resource/ | Form trực tiếp |
-| **betalist.com** | https://betalist.com/submit | Chỉ cần email |
+| **betalist.com** | https://betalist.com/sign_in | Login bằng Twitter/Email |
 | **toolfolio.co** | https://toolfolio.co/ | 1 trang form |
 | **startuplister.com** | https://startuplister.com/ | Form đơn giản |
 | **saasworthy.com** | https://www.saasworthy.com/ | Không cần approval dài |
@@ -37,22 +37,149 @@
 
 ---
 
-## 🚀 Thứ tự làm khuyến nghị
+## 📝 Hướng dẫn chi tiết từng trang — Copy-paste sẵn
 
+---
+
+### 1. 🟢 uneed.best — 2 phút
+**Link:** https://www.uneed.best/submit-a-tool
+**Signup nhanh:** Điền email -> confirm email -> paste content
+
+| Field | Điền gì |
+|-------|---------|
+| Product name | `Invoice-Quickly` |
+| URL | `https://invoice-quickly.com` |
+| Tagline | `Free invoice generator — no signup, no watermark, PDF in 60 seconds` |
+| Description | Copy đoạn dưới |
+| Category | Productivity / Business Tools |
+| Logo | Upload `public/android-chrome-512x512.png` |
+
+**Description copy-paste:**
 ```
-Hôm nay (30 phút):
-1. uneed.best        ← 2 phút
-2. toools.io         ← 2 phút
-3. startupstash.com  ← 3 phút
-4. betalist.com      ← 2 phút
-5. Product Hunt      ← login Google, 20 phút chuẩn bị
+Invoice-Quickly is the fastest free invoice generator online. Create professional PDF invoices in under 60 seconds — no signup required, no watermarks ever.
 
-Tuần sau:
-6. Capterra          ← phức tạp hơn nhưng impact cao nhất
-7. G2                ← login Google
+Features:
+• Live preview as you type
+• 18 currencies supported
+• 20+ languages (including Arabic RTL)
+• Shareable invoice links
+• Auto invoice numbering
+• Tax, discount & shipping fields
+
+Free plan: 1 company, 15 invoices/month. Pro from $10/month.
 ```
 
 ---
+
+### 2. 🟢 startupstash.com — 3 phút
+**Link:** https://startupstash.com/add-resource/
+**Không cần account**
+
+| Field | Điền gì |
+|-------|---------|
+| Name | `Invoice-Quickly` |
+| URL | `https://invoice-quickly.com` |
+| Description | `Free online invoice generator for freelancers and small businesses. No signup, no watermark. Create PDF invoices in 60 seconds with live preview, 20+ languages, and shareable links.` |
+| Category | Business Tools / Finance |
+| Tags | `free, invoice, pdf, freelance, billing` |
+
+---
+
+### 3. 🟢 betalist.com — 2 phút
+**Link:** https://betalist.com/sign_in
+**Đăng ký nhanh:** Dùng tài khoản Twitter (ưu tiên) hoặc Magic link qua Email
+
+| Field | Điền gì |
+|-------|---------|
+| Startup name | `Invoice-Quickly` |
+| URL | `https://invoice-quickly.com` |
+| Tagline | `Free invoice generator — no signup, no watermark, PDF in 60 seconds` |
+| Description | Copy đoạn dưới |
+| Your email | `vunguyencapital@gmail.com` |
+
+**Description copy-paste:**
+```
+Invoice-Quickly helps freelancers and small businesses create professional invoices in seconds — completely free, no account required.
+
+Unlike other tools, Invoice-Quickly never adds watermarks and doesn't hide features behind paywalls. Just open the site, fill in your details, and download a clean PDF.
+
+Key features: live preview, 18 currencies, 20+ languages, shareable links, auto numbering.
+```
+
+---
+
+### 4. 🟡 Product Hunt — 20 phút (login bằng Google)
+**Link:** https://www.producthunt.com/
+**Login:** nhấn "Sign in with Google" → dùng `vunguyencapital@gmail.com`
+
+#### Bước 1: Setup profile (2 phút)
+- Username: `invoicequickly`
+- Name: `Vu @ Invoice-Quickly`
+- Bio: `Building Invoice-Quickly — free invoice generator for freelancers`
+- Website: `https://invoice-quickly.com`
+- Avatar: upload `public/android-chrome-512x512.png`
+
+#### Bước 2: Build karma — QUAN TRỌNG (5 phút)
+Trước khi submit, **upvote 5-10 products khác** để account không bị coi là spam.
+
+#### Bước 3: Submit product
+Nhấn "Submit" → điền:
+
+| Field | Điền gì |
+|-------|---------|
+| Name | `Invoice-Quickly` |
+| Tagline | `Free invoice generator — no signup, no watermark, PDF in 60 seconds` |
+| URL | `https://invoice-quickly.com` |
+| Topics | `Productivity`, `SaaS`, `Finance`, `Freelance` |
+
+**Description (copy-paste):**
+```
+Invoice-Quickly is the fastest way to create a professional invoice online.
+
+⚡ No signup required — start immediately
+📄 No watermarks — ever, on any plan
+🌍 20+ languages including Arabic RTL
+💰 18 currencies (USD, EUR, GBP, VND...)
+🔗 Shareable invoice links for clients
+📊 Multi-company dashboard
+🔢 Auto invoice numbering (INV-2026-001)
+
+Free plan: 1 company, 15 invoices/month.
+Pro plan: $10/month — 10 companies, 500 invoices, no ads, CSV export.
+
+Built for freelancers, contractors, and small businesses who want to look professional without paying for bloated accounting software.
+```
+
+**First comment (viết ngay sau khi submit):**
+```
+Hey Product Hunt! 👋
+
+I built Invoice-Quickly because I was frustrated with two things:
+1. Free invoice tools that slap watermarks on your PDF
+2. Tools that hide basic features behind $30/month subscriptions
+
+Invoice-Quickly is genuinely free — no watermarks, no signup needed, 
+no tricks. Just open the site and create a professional invoice in under 
+60 seconds.
+
+Would love your feedback! What features would make this more useful for you?
+```
+
+#### Bước 4: Thời điểm launch
+- **Tốt nhất:** Thứ 3 hoặc Thứ 4
+- **Giờ submit:** 2:01 PM Vietnam time (= 12:01 AM PST)
+- **Sau khi submit:** Share link cho bạn bè upvote trong 2-3 giờ đầu
+
+---
+
+## 🚀 Checklist hoàn thành
+
+- [ ] uneed.best submitted
+- [ ] startupstash.com submitted
+- [ ] betalist.com submitted
+- [ ] Product Hunt — profile setup done
+- [ ] Product Hunt — karma built (upvote 10 products)
+- [ ] Product Hunt — launched
 
 ---
 
