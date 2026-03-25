@@ -54,7 +54,6 @@ export function AuthButton() {
 
   const handleLogout = async () => {
     await signOut();
-    router.push("/");
   };
 
   if (loading) {
