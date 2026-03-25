@@ -28,7 +28,19 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 border-b border-zinc-100 dark:border-zinc-800 pb-2">
               2. Description of Service
             </h2>
-            <p>Invoice-Quickly is an online invoice generation and management tool. We provide features to create, save, and download professional invoices.</p>
+            <p>Invoice-Quickly is an online invoice generation and management tool. Our payment processing services are provided by <strong>Lemon Squeezy</strong>. By subscribing to our Pro plan, you also agree to be bound by Lemon Squeezy's Terms of Service.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 border-b border-zinc-100 dark:border-zinc-800 pb-2">
+              3. Payments and Subscriptions
+            </h2>
+            <p className="mb-4">Invoice-Quickly uses Lemon Squeezy as our Merchant of Record for all Pro subscription payments. Lemon Squeezy handles all payment processing, invoicing, and tax collection for these transactions.</p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Billing Cycle: Paid subscriptions are billed on a recurring basis as selected during checkout.</li>
+              <li>Cancellation: You can cancel your subscription at any time through your account dashboard.</li>
+              <li>Refunds: Refund requests are handled according to our <a href="/refund-policy" className="text-blue-600 hover:underline">Refund Policy</a>.</li>
+            </ul>
           </section>
 
           <section>

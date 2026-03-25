@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
             <p className="mb-4">We rely on trusted third-party services to operate Invoice-Quickly. We share your information only as necessary for them to provide their services:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Supabase:</strong> We use Supabase as our backend database and authentication provider. Your invoice and company data is stored securely on their servers.</li>
-              <li><strong>Payment Provider:</strong> We use a third-party payment provider as our Merchant of Record to process payments for our Pro plan. They handle your payment information in accordance with their own privacy policy.</li>
+              <li><strong>Lemon Squeezy:</strong> We use Lemon Squeezy as our Merchant of Record and payment processor. They collect and process your payment information in accordance with their privacy policy to facilitate subscription management and tax compliance.</li>
               <li><strong>Google AdSense:</strong> Used for serving advertisements (as detailed above).</li>
             </ul>
           </section>

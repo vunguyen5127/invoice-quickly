@@ -44,7 +44,7 @@ export default function RefundPolicyPage() {
                 <h2 className="text-2xl font-bold mb-3">7-Day Money-Back Guarantee</h2>
                 <p className="text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">
                   We offer a <strong>risk-free 7-day money-back guarantee</strong> for all initial Pro subscription purchases. 
-                  If Invoice-Quickly doesn&apos;t meet your business needs within the first 7 days, we will provide a full refund — <strong>no questions asked.</strong>
+                  Our transactions are processed by <strong>Lemon Squeezy</strong> (Merchant of Record). All refund requests will be reviewed and processed via Lemon Squeezy's system to ensure security and transparency. If Invoice-Quickly doesn't meet your business needs within the first 7 days, we will provide a full refund — <strong>no questions asked.</strong>
                 </p>
                 <div className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-sm">
                    <FileCheck className="w-4 h-4" />
