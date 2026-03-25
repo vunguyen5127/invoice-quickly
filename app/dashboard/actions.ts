@@ -410,27 +410,27 @@ export async function getDashboardStats(token: string, options: { companyId?: st
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0, chartData: [] };
 
-  // Fetch all non-deleted invoices for this user
-  let query = supabase
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+
+  // Optimization: Fetch aggregate stats directly from DB
+  let statsQuery = supabase
     .from("invoices")
-    .select("total_amount, status, due_date, currency, created_at")
+    .select("total_amount, status, due_date, created_at", { count: "exact" })
     .eq("user_id", user.id)
     .is("deleted_at", null);
 
   if (companyId) {
-    query = query.eq("company_id", companyId);
+    statsQuery = statsQuery.eq("company_id", companyId);
   }
 
-  const { data: invoices, error } = await query;
+  const { data: invoices, count, error } = await statsQuery;
 
   if (error || !invoices) {
     console.error("Error fetching dashboard stats:", error);
     return { totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0, chartData: [] };
   }
-
-  const now = new Date();
-  const today = now.toISOString().split('T')[0];
-  const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
 
   let totalOutstanding = 0;
   let overdueCount = 0;
@@ -505,7 +505,7 @@ export async function getDashboardStats(token: string, options: { companyId?: st
     totalOutstanding: Math.round(totalOutstanding * 100) / 100,
     overdueCount,
     paidThisMonth: Math.round(paidThisMonth * 100) / 100,
-    totalInvoices: invoices.length,
+    totalInvoices: count || 0,
     chartData: Array.from(chartMap.values()).map(d => ({
        ...d,
        revenue: Math.round(d.revenue * 100) / 100,
@@ -513,3 +513,4 @@ export async function getDashboardStats(token: string, options: { companyId?: st
     }))
   };
 }
+

@@ -7,8 +7,6 @@ import { LanguageProvider } from "@/contexts/language-context";
 import type { Metadata, Viewport } from "next";
 import {
   Inter,
-  Geist,
-  Geist_Mono,
   Noto_Sans,
   Noto_Sans_Arabic,
   Noto_Sans_Devanagari,
@@ -19,25 +17,17 @@ import {
 } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const inter = Inter({
   variable: "--font-inter",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   display: "swap",
 });
 
 const notoGlobal = Noto_Sans({
   variable: "--font-noto-sans",
-  subsets: ["latin", "latin-ext", "cyrillic", "vietnamese"],
+  subsets: ["cyrillic"],
   weight: ["400", "500", "700", "800", "900"],
   display: "swap",
 });
@@ -188,7 +178,7 @@ export default function RootLayout({
     <html 
       lang="en" 
       suppressHydrationWarning 
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} font-sans`}
+      className={`${inter.variable} ${notoGlobal.variable} ${notoJP.variable} ${notoKR.variable} ${notoSC.variable} ${notoArabic.variable} ${notoDevanagari.variable} ${notoThai.variable} font-sans`}
     >
       <head>
         <ClientMetadata />

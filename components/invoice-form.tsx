@@ -40,7 +40,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       try {
         const [companiesResult, itemsResult] = await Promise.all([
           getUserCompanies(session.access_token),
-          getItems(session.access_token, { pageSize: 1000 })
+          getItems(session.access_token, { pageSize: 50 })
         ]);
         setMyCompanies(companiesResult.data || []);
         setMyItems(itemsResult.data || []);

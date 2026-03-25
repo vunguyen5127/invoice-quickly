@@ -204,7 +204,7 @@ export async function GET(request: Request) {
 
         // Generate new invoice number by bumping the last numeric segment.
         // e.g. INV-001 → INV-002 | INV-2026-003 → INV-2026-004
-        // If no trailing digits (e.g. INVOICE-ABC), append YYYYMM of the new issue date.
+        // If no trailing digits (e.g. INVOICE-ABC), use INV-YYYY-001 format.
         const numMatch = rec.invoice_number?.match(/^(.*-)(\d+)$/);
         let newInvoiceNumber: string;
         if (numMatch) {
@@ -212,10 +212,9 @@ export async function GET(request: Request) {
           const nextNum = String(parseInt(numMatch[2]) + 1).padStart(numMatch[2].length, '0');
           newInvoiceNumber = `${prefix}${nextNum}`;
         } else {
-          // No trailing number — append YYYYMMDD (unique per day per template)
-          const yyyymmdd = issueDateNew.replace(/-/g, ''); // e.g. "20260322"
-          const base = rec.invoice_number || 'INV';
-          newInvoiceNumber = `${base}-${yyyymmdd}`;
+          // Fallback to standard year-based format
+          const currentYear = new Date().getFullYear();
+          newInvoiceNumber = `INV-${currentYear}-001`;
         }
 
         const newInvoiceData = {
