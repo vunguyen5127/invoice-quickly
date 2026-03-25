@@ -1,0 +1,21 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Runs every 10 minutes (*)
+    - cron: '*/10 * * * *'
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Keep-Alive Ping
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: "https://invoice-quickly.com" # Or use your domain
+        run: |
+          # Use a secret 'CRON_SECRET' to authorize the ping
+          curl -X GET "${SITE_URL}/api/cron/ping" \
+          -H "Authorization: Bearer ${CRON_SECRET}"
