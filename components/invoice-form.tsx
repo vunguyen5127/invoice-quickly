@@ -233,14 +233,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     setIsTermsOpen(invoice.showTerms);
   }, [invoice.showTerms]);
 
-  const inputBaseClass = "w-full rounded-xl border border-border bg-background px-3 py-2 text-[14px] font-medium transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
+  const inputBaseClass = "w-full rounded-xl border border-border bg-background px-3 py-2 text-[14px] font-normal transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
   const fieldsetBaseClass = "relative w-full rounded-xl border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
   const fieldsetBorderDefault = "border-border";
   const fieldsetBorderRequired = "border-destructive/40 bg-destructive/5 dark:bg-destructive/10";
   const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-500 px-1 ml-[-4px] group-focus-within:text-primary transition-colors empty:hidden max-w-full block truncate text-slate-400";
-  const inputInnerClass = "w-full bg-transparent text-[14px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none pr-6";
+  const inputInnerClass = "w-full bg-transparent text-[14px] font-normal text-foreground placeholder:text-zinc-400 focus:outline-none pr-6";
 
   const ClearBtn = ({ value, onClear }: { value: string; onClear: () => void }) => {
     if (!value) return null;
@@ -327,10 +327,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <ClearBtn value={invoice.company.name} onClear={() => handleSectionChange('company', 'name', '')} />
                   <textarea 
                     placeholder={`${t.companyName}, ${t.yourAddress}, ${t.yourEmail}, ${t.companyPhone}`}
-                    className={`${inputInnerClass} flex-1 resize-none h-[52px] mt-1 pr-6 leading-snug`} 
+                    className={`${inputInnerClass} flex-1 resize-y min-h-[80px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
                     value={invoice.company.name} 
                     onChange={(e) => handleSectionChange('company', 'name', e.target.value)}
-                    rows={2}
+                    rows={3}
                   />
                 </div>
               </fieldset>
@@ -409,10 +409,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <ClearBtn value={invoice.client.name} onClear={() => handleSectionChange('client', 'name', '')} />
                   <textarea 
                     placeholder={`${t.clientName}, ${t.clientAddress}, ${t.clientEmail}, ${t.clientPhone}`}
-                    className={`${inputInnerClass} resize-y h-[52px] min-h-[52px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
+                    className={`${inputInnerClass} resize-y min-h-[80px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
                     value={invoice.client.name} 
                     onChange={(e) => handleSectionChange('client', 'name', e.target.value)}
-                    rows={2}
+                    rows={3}
                   />
                 </div>
               </fieldset>
@@ -421,10 +421,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                 <legend className={legendClass}>{`${t.shipTo} ${t.clientPhone.includes('(') ? t.clientPhone.match(/\(.*\)/)?.[0] || '(Optional)' : '(Optional)'}`}</legend>
                 <ClearBtn value={invoice.client.shipTo || ""} onClear={() => handleSectionChange('client', 'shipTo', '')} />
                 <textarea 
-                  className={`${inputInnerClass} resize-y h-[52px] min-h-[52px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
+                  className={`${inputInnerClass} resize-y min-h-[80px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
                   value={invoice.client.shipTo || ""} 
                   onChange={(e) => handleSectionChange('client', 'shipTo', e.target.value)}
-                  rows={2}
+                  rows={3}
                 />
               </fieldset>
             </div>
@@ -463,7 +463,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className={`w-full h-12 pl-4 md:pl-6 pr-14 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-xl text-[14px] font-medium text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
+                      className={`w-full h-12 pl-4 md:pl-6 pr-14 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-xl text-[14px] font-normal text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
@@ -516,7 +516,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       <div className="md:hidden text-[10px] font-semibold text-zinc-400 uppercase tracking-widest ml-1 mb-1">{t.qty}</div>
                       <input 
                         type="number" 
-                        className="w-full h-12 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl md:rounded-lg text-center text-[14px] font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm transition-all"
+                        className="w-full h-12 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl md:rounded-lg text-center text-[14px] font-normal text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm transition-all"
                         value={item.quantity}
                         min="0"
                         onChange={(e) => handleItemChange(index, "quantity", Number(e.target.value))}
@@ -530,7 +530,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       <input 
                         type="number" 
                         placeholder="0.00"
-                        className={`w-full h-12 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-xl md:rounded-lg text-left text-[14px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm`}
+                        className={`w-full h-12 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-xl md:rounded-lg text-left text-[14px] font-normal text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm`}
                         value={item.rate || ''}
                         onChange={(e) => {
                           const val = e.target.value;

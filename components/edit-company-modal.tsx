@@ -55,7 +55,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
 
   const fs = "w-full rounded-[5px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-3 pb-2 pt-0 transition-all focus-within:border-blue-500 dark:focus-within:border-blue-500 hover:border-zinc-300 dark:hover:border-zinc-700 group";
   const lg = "text-[11px] font-medium text-zinc-400 dark:text-zinc-500 px-1 ml-[-4px] group-focus-within:text-blue-500 transition-colors empty:hidden";
-  const ic = "w-full bg-transparent text-[13px] font-medium text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none";
+  const ic = "w-full bg-transparent text-[13px] font-normal text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none";
 
   useEffect(() => {
     if (initialData) {
