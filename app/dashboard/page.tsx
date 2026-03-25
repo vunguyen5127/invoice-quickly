@@ -72,7 +72,8 @@ export default function Dashboard() {
   }, [router, currentPage, session, authLoading]);
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
-    e.preventDefault(); // Prevent navigating to company link
+    e.preventDefault();
+    e.stopPropagation(); // Prevent navigating to company link
     setCompanyToDelete(id);
   };
 
@@ -102,7 +103,8 @@ export default function Dashboard() {
   };
 
   const handleEdit = (e: React.MouseEvent, company: any) => {
-    e.preventDefault(); // Prevent navigating to company link
+    e.preventDefault();
+    e.stopPropagation(); // Prevent navigating to company link
     setEditingCompany(company);
   };
 
@@ -211,7 +213,7 @@ export default function Dashboard() {
                         {new Date(company.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-5">
-                        <div className="flex items-center justify-end gap-1 transition-opacity">
+                        <div className="flex items-center justify-end gap-1 transition-opacity" onClick={(e) => e.stopPropagation()}>
                           <Tooltip content="Edit Company">
                             <button
                               onClick={(e) => handleEdit(e, company)}

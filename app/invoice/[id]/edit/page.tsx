@@ -5,7 +5,7 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { InvoiceState, initialInvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Save, ChevronRight, Share2 } from "lucide-react";
+import { Download, Save, ChevronRight, Share2, Loader2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getInvoiceById } from "../actions";
@@ -151,7 +151,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
                 disabled={isGenerating}
                 className="flex items-center gap-2 px-5 h-10 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 bg-primary text-primary-foreground hover:opacity-90 transition-all disabled:opacity-75"
               >
-                <Download className="w-4 h-4" /> <span className="hidden lg:inline">{isGenerating ? t.wait : t.download}</span>
+                {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                <span className="hidden lg:inline">{t.download}</span>
               </button>
             </div>
             <ThemeToggle />
@@ -244,7 +245,8 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
             disabled={isGenerating}
             className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl font-bold text-sm bg-primary text-primary-foreground hover:opacity-90 transition-all disabled:opacity-75 shadow-lg shadow-primary/10"
           >
-            <Download className="w-4 h-4" /> {isGenerating ? t.wait : t.download}
+            {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            {t.download}
           </button>
         </div>
       </div>
