@@ -218,6 +218,7 @@ export const ja: Translations = {
 
   // Items Library
   itemLibraryDesc: "迅速な請求書作成のために製品とサービスを管理します。",
+  createItem: "Create Item",
   newItem: "新規アイテム",
   searchItems: "名前または説明でアイテムを検索...",
   emptyLibrary: "ライブラリは空です",

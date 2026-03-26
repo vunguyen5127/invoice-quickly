@@ -218,6 +218,7 @@ export const sv: Translations = {
 
   // Items Library
   itemLibraryDesc: "Hantera dina produkter och tjänster för snabb fakturering.",
+  createItem: "Create Item",
   newItem: "Ny artikel",
   searchItems: "Sök artiklar efter namn eller beskrivning...",
   emptyLibrary: "Ditt register är tomt",

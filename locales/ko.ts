@@ -218,6 +218,7 @@ export const ko: Translations = {
 
   // Items Library
   itemLibraryDesc: "간편한 송장 발행을 위해 제품 및 서비스를 관리하세요.",
+  createItem: "Create Item",
   newItem: "새 항목",
   searchItems: "이름 또는 설명으로 항목 검색...",
   emptyLibrary: "라이브러리가 비어 있습니다",

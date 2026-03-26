@@ -223,6 +223,7 @@ export const vn: Translations = {
 
   // Items Library
   itemLibraryDesc: "Quản lý sản phẩm và dịch vụ để tạo hóa đơn nhanh chóng.",
+  createItem: "Create Item",
   newItem: "Mặt hàng mới",
   searchItems: "Tìm kiếm mặt hàng theo tên hoặc mô tả...",
   emptyLibrary: "Thư viện của bạn đang trống",

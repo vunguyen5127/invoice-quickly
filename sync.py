@@ -17,7 +17,7 @@ def main():
     en_keys.discard('Translations')
     en_keys.discard('K')
     
-    files = [f for f in os.listdir(locales_dir) if f.endswith('.ts') and f not in ('en.ts', 'vn.ts')]
+    files = [f for f in os.listdir(locales_dir) if f.endswith('.ts') and f not in ('en.ts')]
     
     for filename in files:
         with open(os.path.join(locales_dir, filename), 'r', encoding='utf-8') as f:

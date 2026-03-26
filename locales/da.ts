@@ -218,6 +218,7 @@ export const da: Translations = {
 
   // Items Library
   itemLibraryDesc: "Administrer dine produkter og tjenester for hurtig fakturering.",
+  createItem: "Create Item",
   newItem: "Ny vare",
   searchItems: "Søg efter varer med navn eller beskrivelse...",
   emptyLibrary: "Dit kartotek er tomt",

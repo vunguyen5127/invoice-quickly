@@ -220,6 +220,7 @@ export const en = {
 
   // Items Library
   itemLibraryDesc: "Manage your products and services for quick invoicing.",
+  createItem: "Create Item",
   newItem: "New Item",
   searchItems: "Search items by name or description...",
   emptyLibrary: "Your library is empty",

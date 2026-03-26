@@ -218,6 +218,7 @@ export const no: Translations = {
 
   // Items Library
   itemLibraryDesc: "Administrer dine produkter og tjenester for rask fakturering.",
+  createItem: "Create Item",
   newItem: "Ny vare",
   searchItems: "Søk etter varer med navn eller beskrivelse...",
   emptyLibrary: "Katalogen din er tom",

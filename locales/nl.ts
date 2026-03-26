@@ -218,6 +218,7 @@ export const nl: Translations = {
 
   // Items Library
   itemLibraryDesc: "Beheer uw producten en diensten voor snelle facturatie.",
+  createItem: "Create Item",
   newItem: "Nieuw artikel",
   searchItems: "Zoek artikelen op naam of beschrijving...",
   emptyLibrary: "Uw lijst is leeg",

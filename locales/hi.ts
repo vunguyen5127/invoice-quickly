@@ -218,6 +218,7 @@ export const hi: Translations = {
 
   // Items Library
   itemLibraryDesc: "त्वरित चालान के लिए अपने उत्पादों और सेवाओं का प्रबंधन करें।",
+  createItem: "Create Item",
   newItem: "नया आइटम",
   searchItems: "नाम या विवरण के द्वारा आइटम खोजें...",
   emptyLibrary: "आपकी लाइब्रेरी खाली है",

@@ -218,6 +218,7 @@ export const es: Translations = {
 
   // Items Library
   itemLibraryDesc: "Gestione sus productos y servicios para una facturación rápida.",
+  createItem: "Create Item",
   newItem: "Nuevo Artículo",
   searchItems: "Buscar artículos por nombre o descripción...",
   emptyLibrary: "Tu librería está vacía",

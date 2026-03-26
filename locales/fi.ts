@@ -218,6 +218,7 @@ export const fi: Translations = {
 
   // Items Library
   itemLibraryDesc: "Hallitse tuotteitasi ja palveluitasi nopeaa laskutusta varten.",
+  createItem: "Create Item",
   newItem: "Uusi tuote",
   searchItems: "Hae tuotteita nimellä tai kuvauksella...",
   emptyLibrary: "Kirjastosi on tyhjä",

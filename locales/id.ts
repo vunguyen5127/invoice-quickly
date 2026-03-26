@@ -218,6 +218,7 @@ export const id: Translations = {
 
   // Items Library
   itemLibraryDesc: "Kelola produk dan layanan Anda untuk pembuatan faktur yang cepat.",
+  createItem: "Create Item",
   newItem: "Item Baru",
   searchItems: "Cari item berdasarkan nama atau deskripsi...",
   emptyLibrary: "Daftar item Anda kosong",

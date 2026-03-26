@@ -218,6 +218,7 @@ export const zh: Translations = {
 
   // Items Library
   itemLibraryDesc: "管理您的产品和服务，实现快速开票。",
+  createItem: "Create Item",
   newItem: "新项目",
   searchItems: "按名称或描述搜索项目...",
   emptyLibrary: "您的库是空的",

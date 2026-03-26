@@ -218,6 +218,7 @@ export const ar: Translations = {
 
   // Items Library
   itemLibraryDesc: "إدارة المنتجات والخدمات الخاصة بك لإصدار الفواتير بسرعة.",
+  createItem: "Create Item",
   newItem: "صنف جديد",
   searchItems: "البحث عن الأصناف بالاسم أو الوصف...",
   emptyLibrary: "المكتبة فارغة",

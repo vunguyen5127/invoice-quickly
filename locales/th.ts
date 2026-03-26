@@ -218,6 +218,7 @@ export const th: Translations = {
 
   // Items Library
   itemLibraryDesc: "จัดการผลิตภัณฑ์และบริการของคุณเพื่อการออกใบแจ้งหนี้ที่รวดเร็ว",
+  createItem: "Create Item",
   newItem: "สินค้าใหม่",
   searchItems: "ค้นหาสินค้าตามชื่อหรือคำอธิบาย...",
   emptyLibrary: "ห้องสมุดของคุณว่างเปล่า",

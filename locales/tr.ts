@@ -218,6 +218,7 @@ export const tr: Translations = {
 
   // Items Library
   itemLibraryDesc: "Hızlı faturalandırma için ürünlerinizi ve hizmetlerinizi yönetin.",
+  createItem: "Create Item",
   newItem: "Yeni Ürün",
   searchItems: "Ürünleri ada veya açıklamaya göre arayın...",
   emptyLibrary: "Kütüphaneniz boş",
