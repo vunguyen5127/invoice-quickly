@@ -42,13 +42,13 @@ export interface QuoteState {
 
 export const initialQuoteState: QuoteState = {
   company: {
-    name: "Bright Studio Design, 742 Evergreen Ave Suite 200, San Francisco CA 94107, hello@brightstudio.io, +1 (415) 555-0192",
+    name: "",
     email: "",
     address: "",
     phone: ""
   },
   client: {
-    name: "Greenfield Properties LLC, 1200 Market Street, Floor 8 New York, NY 10001, ap@greenfieldproperties.com, (212) 555-0847",
+    name: "",
     email: "",
     address: "",
     phone: ""
@@ -61,18 +61,12 @@ export const initialQuoteState: QuoteState = {
   items: [
     {
       id: "1",
-      description: "Website Redesign & Development",
+      description: "",
       quantity: 1,
-      rate: 2500,
-    },
-    {
-      id: "2",
-      description: "Logo & Brand Identity Guidelines",
-      quantity: 1,
-      rate: 800,
+      rate: 0,
     }
   ],
-  taxRate: 10,
+  taxRate: 0,
   taxLabel: "",
   discount: 0,
   discountLabel: "",
@@ -80,8 +74,8 @@ export const initialQuoteState: QuoteState = {
   taxType: 'percentage',
   shipping: 0,
   shippingLabel: "",
-  notes: "Looking forward to working with you! This is an estimate based on our initial discussions.",
-  terms: "This quote is valid for 30 days. To proceed, please accept this quote. We will then send an invoice for the 50% deposit.",
+  notes: "",
+  terms: "",
   currency: "USD",
   signature: "",
   signatureName: "",

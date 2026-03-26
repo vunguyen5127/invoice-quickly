@@ -73,7 +73,7 @@ export async function createQuote(token: string, quoteData: any) {
 
   // Generate next quote number if not provided
   let quoteNumber = quoteData.details?.quoteNumber;
-  if (!quoteNumber) {
+  if (!quoteData.details?.quoteNumber || quoteData.details.quoteNumber === "EST-2026-001" || quoteData.details.quoteNumber === `EST-${new Date().getFullYear()}-001` || quoteData.details.quoteNumber === "QUO-2026-001") {
     quoteNumber = await getNextQuoteNumber(token, quoteData.companyId);
   }
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { InvoiceForm } from "@/components/invoice-form";
 import { initialQuoteState, QuoteState } from "@/types/quote";
-import { createQuote, updateQuote, getQuote, convertQuoteToInvoice } from "@/app/dashboard/quotes/actions";
+import { createQuote, updateQuote, getQuote, convertQuoteToInvoice, getNextQuoteNumber } from "@/app/dashboard/quotes/actions";
 import { supabase } from "@/utils/supabase/client";
 import { Save, Share, ArrowRight, Loader2, ChevronRight } from "lucide-react";
 import { InvoicePreview } from "@/components/invoice-preview";
@@ -41,6 +41,28 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
       }
     }
   }, [resolvedParams.id]);
+
+  // Auto-increment Quote Number when company is selected for new quotes
+  useEffect(() => {
+    const fetchNextQuoteNum = async () => {
+      if (!supabase) return;
+      if (isNew && companyId && (quote.details.quoteNumber === "EST-2026-001" || quote.details.quoteNumber === `EST-${new Date().getFullYear()}-001`)) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          try {
+            const nextNum = await getNextQuoteNumber(session.access_token, companyId);
+            setQuote((prev: any) => ({
+              ...prev,
+              details: { ...prev.details, quoteNumber: nextNum }
+            }));
+          } catch (error) {
+            console.error("Failed to fetch next quote number", error);
+          }
+        }
+      }
+    };
+    fetchNextQuoteNum();
+  }, [companyId, isNew]);
 
   const fetchQuote = async () => {
     if (!supabase) return;
@@ -107,9 +129,9 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
     if (session) {
       const res = await convertQuoteToInvoice(session.access_token, quote.id);
       if (res.success && res.invoiceId) {
-        router.push(`/invoice/${res.invoiceId}`);
+        router.push(`/invoice/${res.invoiceId}/edit`);
       } else if (res.invoiceId) {
-        router.push(`/invoice/${res.invoiceId}`); // was already invoiced
+        router.push(`/invoice/${res.invoiceId}/edit`); // was already invoiced
       }
     }
     setConverting(false);
@@ -213,8 +235,8 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
             <p className="text-sm font-bold text-purple-800 dark:text-purple-300">
               🎉 This quote was successfully converted to an invoice.
             </p>
-            <button onClick={() => router.push(`/invoice/${quote.invoice_id}`)} className="text-sm font-bold text-purple-600 dark:text-purple-400 hover:underline">
-               View Invoice →
+            <button onClick={() => router.push(`/invoice/${quote.invoice_id}/edit`)} className="text-sm font-bold text-purple-600 dark:text-purple-400 hover:underline">
+               Edit Invoice →
             </button>
           </div>
         )}
@@ -259,6 +281,38 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
               <InvoicePreview invoice={quote} isLoggedIn={true} docType="quote" />
             </div>
           </div>
+        </div>
+
+        {/* Mobile bottom bar */}
+        <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 p-3 px-4 flex gap-2 z-50 pb-safe shadow-[0_-2px_16px_rgba(0,0,0,0.06)]">
+          {!isNew && quote.status === 'accepted' && (
+            <button
+              onClick={handleConvertToInvoice}
+              disabled={converting}
+              className="flex-1 flex items-center justify-center gap-1.5 px-2 py-3 rounded-xl font-bold text-xs bg-purple-600 text-white hover:bg-purple-700 transition-all disabled:opacity-75 shadow-lg shadow-purple-600/20"
+            >
+              {converting ? <Loader2 className="w-4 h-4 animate-spin" /> : <ArrowRight className="w-4 h-4" />}
+              Convert
+            </button>
+          )}
+          
+          {!isNew && (
+            <button
+              onClick={handleShare}
+              className="flex-1 flex items-center justify-center gap-1.5 px-2 py-3 rounded-xl font-bold text-xs bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 transition-all hover:bg-zinc-200 dark:hover:bg-zinc-700 shadow-sm"
+            >
+              <Share className="w-4 h-4" /> Share
+            </button>
+          )}
+          
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex-1 flex items-center justify-center gap-1.5 px-2 py-3 rounded-xl font-bold text-xs bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-75 shadow-lg shadow-green-600/20"
+          >
+            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            {saving ? 'Saving...' : 'Save'}
+          </button>
         </div>
       </div>
     </div>
