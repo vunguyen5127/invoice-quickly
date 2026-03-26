@@ -32,6 +32,12 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   const [focusedItemIndex, setFocusedItemIndex] = useState<number | null>(null);
 
   useEffect(() => {
+    if (defaultCompanyId) {
+      setSelectedCompanyId(defaultCompanyId);
+    }
+  }, [defaultCompanyId]);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
@@ -57,9 +63,13 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     
     const comp = myCompanies.find(c => c.id === selectedId);
     if (comp) {
-      const companyDetailsString = [comp.name, comp.address, comp.email, comp.phone]
-        .filter(Boolean)
-        .join(", ");
+      const details = [];
+      if (comp.name) details.push(comp.name);
+      if (comp.address) details.push(comp.address);
+      if (comp.email) details.push(comp.email);
+      if (comp.phone) details.push(comp.phone);
+      
+      const companyDetailsString = details.filter(Boolean).join(", ");
 
       setInvoice((prev: any) => ({
         ...prev,

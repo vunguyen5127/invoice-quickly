@@ -2,8 +2,8 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    # Runs every 10 minutes (*)
-    - cron: '*/10 * * * *'
+    # Runs once a day at midnight UTC to prevent Supabase from pausing
+    - cron: '0 0 * * *'
   # Allow manual trigger for testing
   workflow_dispatch:
 

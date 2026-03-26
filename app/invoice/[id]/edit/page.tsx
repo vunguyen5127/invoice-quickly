@@ -199,6 +199,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
               <InvoiceForm
                 invoice={invoice}
                 setInvoice={setInvoice}
+                defaultCompanyId={companyId || ""}
                 canUseRecurring={canUseRecurring}
                 onShowUpgrade={() => setIsUpgradeOpen(true)}
               />

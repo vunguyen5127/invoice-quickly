@@ -28,7 +28,18 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
       id, 
       name, 
       email, 
+      address,
+      phone,
       logo_url, 
+      signature_url,
+      signer_name,
+      default_currency,
+      default_notes,
+      default_terms,
+      show_notes,
+      show_terms,
+      default_tax,
+      default_discount,
       created_at
     `, { count: "exact" })
     .order("created_at", { ascending: false })

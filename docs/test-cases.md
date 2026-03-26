@@ -21,7 +21,7 @@ Base URL: http://localhost:3000 (hoặc production URL)
 4. Xác nhận redirect về `/dashboard`
 
 **Expected:** Redirect về dashboard, thấy tên email ở header  
-**Result:** [ ]
+**Result:** [ ✅]
 
 ---
 
