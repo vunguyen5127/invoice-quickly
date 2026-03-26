@@ -31,10 +31,22 @@ test.describe("Module 1: Auth & Public Routes", () => {
   test("TC-103: Sign Out Redirects to Home", async ({ page }) => {
     await mockSupabaseUser(page);
     await seedAuthenticatedSession(page);
+    
+    // Mock companies so the dashboard loads quickly instead of timing out on a real request with a fake token
+    const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://wvugwussemvlmupmpwcq.supabase.co";
+    await page.route(`${SUPABASE_URL}/rest/v1/companies*`, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "content-range": "0-1/1" },
+        body: JSON.stringify([]),
+      });
+    });
+
     await page.goto("/dashboard");
 
     // It should load dashboard
-    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /dashboard/i })).toBeVisible({ timeout: 15000 });
 
     // Click avatar -> Sign Out
     const userMenu = page.getByLabel("User menu");

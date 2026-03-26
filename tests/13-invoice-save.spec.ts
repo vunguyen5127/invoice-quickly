@@ -54,6 +54,16 @@ test.describe("Module 24: Invoice Save & Persistence", () => {
       });
     });
 
+    // Mock companies so we can actually save
+    await page.route(`${SUPABASE_URL}/rest/v1/companies*`, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+         headers: { "content-range": "0-1/1" },
+        body: JSON.stringify([{ id: "mock-company-id", name: "Mock Company" }]),
+      });
+    });
+
     await page.goto("/generator");
 
     await expect(
