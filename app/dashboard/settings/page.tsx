@@ -118,7 +118,7 @@ export default function SettingsPage() {
       <div className={sectionClass}>
         <div className={headerClass}>
           <User className="w-4 h-4 text-blue-500" />
-          {"Profile"}
+          {t.profile || "Profile"}
         </div>
         <div className="p-6 flex items-center gap-4">
           <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-pink-500 text-white border-2 border-white dark:border-zinc-800 text-2xl font-black shadow-lg">
@@ -143,7 +143,7 @@ export default function SettingsPage() {
       <div className={sectionClass}>
         <div className={headerClass}>
           <Crown className="w-4 h-4 text-yellow-500" />
-          Subscription
+          {t.subscriptionPlan || "Subscription"}
         </div>
         <div className={itemClass}>
           <div className="flex items-center gap-3">
@@ -151,8 +151,8 @@ export default function SettingsPage() {
                <CreditCard className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Current Plan</p>
-              <p className="text-xs text-zinc-500 capitalize">{subscription?.plan || "Free"} Plan</p>
+              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{t.currentPlan || "Current Plan"}</p>
+              <p className="text-xs text-zinc-500 capitalize">{(subscription?.plan === 'free' ? (t.freePlan || "Free") : subscription?.plan === 'pro' ? (t.proPlan || "Pro") : (subscription?.plan || "Free"))} {t.plan || "Plan"}</p>
             </div>
           </div>
           <div className="flex flex-col items-end gap-1.5">
@@ -162,7 +162,7 @@ export default function SettingsPage() {
                 className="px-3 py-1.5 rounded-lg bg-blue-600 text-[11px] font-bold text-white hover:bg-blue-500 active:bg-blue-700 transition-all shadow-sm shadow-blue-600/20 flex items-center gap-1.5"
               >
                 <Zap className="w-3 h-3" />
-                Upgrade
+                {t.upgrade || "Upgrade"}
               </Link>
             ) : (
               <>
@@ -173,7 +173,7 @@ export default function SettingsPage() {
                     ? "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200/50 dark:ring-amber-800/50"
                     : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 ring-1 ring-zinc-200 dark:ring-zinc-700"
                 }`}>
-                  {subscription?.status === 'active' && subscription.cancel_at ? "Cancels Soon" : (subscription?.status || "Free")}
+                  {subscription?.status === 'active' && subscription.cancel_at ? (t.cancelsSoon || "Cancels Soon") : (subscription?.status || (t.freePlan || "Free"))}
                 </span>
 
               </>
@@ -190,12 +190,12 @@ export default function SettingsPage() {
                 </div>
                 <div>
                   <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                    {(subscription.status === 'canceled' || subscription.cancel_at) ? "Expires on" : "Renews on"}
+                    {(subscription.status === 'canceled' || subscription.cancel_at) ? (t.billingExpiresOn || "Expires on") : (t.billingRenewsOn || "Renews on")}
                   </p>
                   <p className="text-xs text-zinc-500">
                     {(subscription.cancel_at || subscription.next_billed_at || subscription.current_period_end) 
                       ? format(new Date(subscription.cancel_at || subscription.next_billed_at || subscription.current_period_end!), "MMMM dd, yyyy") 
-                      : "N/A"}
+                      : (t.nA || "N/A")}
                   </p>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function SettingsPage() {
               onClick={() => setIsCancelModalOpen(true)}
               className="px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/30 text-[11px] font-bold text-red-500 hover:bg-red-100 dark:hover:bg-red-950/50 transition-all border border-red-100 dark:border-red-900/30 uppercase tracking-wider"
             >
-              Cancel
+              {t.cancel || "Cancel"}
             </button>
           )}
 
@@ -217,7 +217,7 @@ export default function SettingsPage() {
               className="px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 text-[11px] font-bold text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-all border border-blue-100 dark:border-blue-900/30 uppercase tracking-wider flex items-center gap-1.5"
             >
               {isResuming ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldCheck className="w-3.5 h-3.5" />}
-              Resume
+              {t.resumeAction || "Resume"}
             </button>
           )}
             </div>
@@ -260,8 +260,8 @@ export default function SettingsPage() {
                <Moon className="w-4 h-4 hidden dark:block" />
             </div>
             <div>
-              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Theme</p>
-              <p className="text-xs text-zinc-500">Switch between light and dark mode</p>
+              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{t.theme || "Theme"}</p>
+              <p className="text-xs text-zinc-500">{t.theme_desc || "Switch between light and dark mode"}</p>
             </div>
           </div>
           <ThemeSelector />
@@ -272,7 +272,7 @@ export default function SettingsPage() {
       <div className={sectionClass}>
         <div className={headerClass}>
           <Settings className="w-4 h-4 text-blue-500" />
-          Preferences
+          {t.settings_preferences || "Preferences"}
         </div>
         <div className={itemClass}>
            <div className="flex items-center gap-3">
@@ -280,8 +280,8 @@ export default function SettingsPage() {
                <Bell className="w-4 h-4" />
             </div>
             <div>
-              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">Notifications</p>
-              <p className="text-xs text-zinc-500">Manage your email notifications</p>
+              <p className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">{t.notifications || "Notifications"}</p>
+              <p className="text-xs text-zinc-500">{t.notifications_desc || "Manage your email notifications"}</p>
             </div>
           </div>
           <div className="w-10 h-6 bg-zinc-200 dark:bg-zinc-800 rounded-full cursor-not-allowed opacity-40 relative shrink-0">
@@ -296,8 +296,8 @@ export default function SettingsPage() {
                 <Shield className="w-4 h-4" />
               </div>
               <div>
-                <p className="font-semibold text-sm text-indigo-900 dark:text-indigo-100">Admin Panel</p>
-                <p className="text-xs text-indigo-700/70 dark:text-indigo-400/70">View system login logs and statistics</p>
+                <p className="font-semibold text-sm text-indigo-900 dark:text-indigo-100">{t.admin_panel || "Admin Panel"}</p>
+                <p className="text-xs text-indigo-700/70 dark:text-indigo-400/70">{t.admin_panel_desc || "View system login logs and statistics"}</p>
               </div>
             </div>
             <ChevronLeft className="w-4 h-4 text-zinc-400 rotate-180" />
@@ -308,7 +308,7 @@ export default function SettingsPage() {
           className="w-full px-6 py-4 flex items-center gap-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors border-t border-zinc-50 dark:border-zinc-800/50"
         >
           <LogOut className="w-4 h-4" />
-          <span className="font-semibold text-sm">Sign Out</span>
+          <span className="font-semibold text-sm">{t.sign_out || "Sign Out"}</span>
         </button>
       </div>
 
@@ -317,9 +317,9 @@ export default function SettingsPage() {
         onClose={() => setIsCancelModalOpen(false)}
         onConfirm={handleCancelSubscription}
         isProcessing={isCancelling}
-        title="Cancel Subscription"
-        message="Are you sure you want to cancel your subscription? You will lose access to Pro features at the end of your current billing period."
-        confirmText="Cancel Subscription"
+        title={t.cancel_subscription || "Cancel Subscription"}
+        message={t.cancel_subscription_confirm || "Are you sure you want to cancel your subscription? You will lose access to Pro features at the end of your current billing period."}
+        confirmText={t.cancel_subscription || "Cancel Subscription"}
       />
     </div>
   );

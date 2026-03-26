@@ -118,9 +118,9 @@ export default function Dashboard() {
       <div className="flex flex-row items-center justify-between mb-4 sm:mb-12">
         <div className="space-y-1">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-            Dashboard
+            {t.dashboard || "Dashboard"}
           </h1>
-          <p className="text-zinc-500 text-xs sm:text-sm font-medium">Manage your business entities and invoices.</p>
+          <p className="text-zinc-500 text-xs sm:text-sm font-medium">{t.businessEntities || "Manage your business entities and invoices."}</p>
         </div>
         
         {/* Desktop Create Button */}
@@ -129,7 +129,7 @@ export default function Dashboard() {
           className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Create Company</span>
+          <span>{t.createCompany || "Create Company"}</span>
         </button>
 
         {/* Mobile Create Button (Alternative header style or hidden for FAB) */}
@@ -141,7 +141,7 @@ export default function Dashboard() {
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
               <Zap className="w-3.5 h-3.5 relative z-10" />
-              <span className="hidden sm:inline relative z-10">Upgrade</span>
+              <span className="hidden sm:inline relative z-10">{t.upgrade || "Upgrade"}</span>
             </Link>
           )}
         </div>
@@ -157,14 +157,14 @@ export default function Dashboard() {
           <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Building2 className="w-8 h-8 text-zinc-400" />
           </div>
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">No companies yet</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">Create your first company to start generating professional invoices.</p>
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{t.noCompaniesYet || "No companies yet"}</h3>
+          <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">{t.createFirstCompanyDesc || "Create your first company to start generating professional invoices."}</p>
           <button
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25"
           >
             <Plus className="w-5 h-5" />
-            <span>Get Started</span>
+            <span>{t.getStarted || "Get Started"}</span>
           </button>
         </div>
       ) : (
@@ -175,10 +175,10 @@ export default function Dashboard() {
               <table className="w-full text-left">
                 <thead className="bg-zinc-50/50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
                   <tr>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Company</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Invoices</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Created</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400 text-right">Actions</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.company || "Company"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.invoices || "Invoices"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.created || "Created"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400 text-right">{t.actions || "Actions"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50 font-medium">
@@ -200,7 +200,7 @@ export default function Dashboard() {
                           </div>
                           <div>
                             <p className="font-bold text-zinc-900 dark:text-zinc-100 line-clamp-1">{company.name}</p>
-                            <p className="text-xs text-zinc-500 line-clamp-1">{company.address || "No address provided"}</p>
+                            <p className="text-xs text-zinc-500 line-clamp-1">{company.address || (t.noAddressProvided || "No address provided")}</p>
                           </div>
                         </div>
                       </td>
@@ -214,7 +214,7 @@ export default function Dashboard() {
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center justify-end gap-1 transition-opacity" onClick={(e) => e.stopPropagation()}>
-                          <Tooltip content="Edit Company">
+                          <Tooltip content={t.edit || "Edit"}>
                             <button
                               onClick={(e) => handleEdit(e, company)}
                               className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded-lg transition-colors cursor-pointer"
@@ -222,7 +222,7 @@ export default function Dashboard() {
                               <PenLine className="w-4 h-4" />
                             </button>
                           </Tooltip>
-                          <Tooltip content="Delete Company">
+                          <Tooltip content={t.delete || "Delete"}>
                             <button
                               onClick={(e) => handleDeleteClick(e, company.id)}
                               className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/40 rounded-lg transition-colors cursor-pointer"
@@ -267,7 +267,7 @@ export default function Dashboard() {
                        </div>
                     </div>
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                       <Tooltip content="Edit">
+                       <Tooltip content={t.edit || "Edit"}>
                          <button 
                            onClick={(e) => handleEdit(e, company)} 
                            className="p-2.5 text-zinc-500 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-100 dark:active:bg-zinc-700 transition-colors cursor-pointer"
@@ -275,7 +275,7 @@ export default function Dashboard() {
                             <PenLine className="w-4 h-4" />
                          </button>
                        </Tooltip>
-                       <Tooltip content="Delete">
+                       <Tooltip content={t.delete || "Delete"}>
                          <button 
                            onClick={(e) => handleDeleteClick(e, company.id)} 
                            className="p-2.5 text-red-500 bg-red-50/50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/50 rounded-xl active:bg-red-100 dark:active:bg-red-900/40 transition-colors cursor-pointer"
@@ -288,11 +288,11 @@ export default function Dashboard() {
                  
                  <div className="flex items-center justify-between pt-4 border-t border-zinc-50 dark:border-zinc-800/50">
                     <div className="flex flex-col">
-                       <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter mb-0.5">Total Invoices</span>
+                       <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-tighter mb-0.5">{t.totalInvoices || "Total Invoices"}</span>
                        <span className="font-bold text-base text-zinc-900 dark:text-zinc-100">{company.invoices?.length || 0}</span>
                     </div>
                     <button className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 cursor-pointer">
-                      View details <ChevronRight className="w-3 h-3" />
+                      {t.viewDetails || "View details"} <ChevronRight className="w-3 h-3" />
                     </button>
                  </div>
               </div>
@@ -303,10 +303,10 @@ export default function Dashboard() {
           {totalCount > PAGE_SIZE && (
             <div className="mt-8 flex items-center justify-between pb-20 sm:pb-0">
               <p className="text-xs sm:text-sm text-zinc-500 font-medium">
-                Showing <span className="text-zinc-900 dark:text-zinc-100">{(currentPage - 1) * PAGE_SIZE + 1}</span> to <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * PAGE_SIZE, totalCount)}</span> of <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
+                {t.showing || "Showing"} <span className="text-zinc-900 dark:text-zinc-100">{(currentPage - 1) * PAGE_SIZE + 1}</span> {t.of || "to"} <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * PAGE_SIZE, totalCount)}</span> {t.of || "of"} <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
               </p>
               <div className="flex items-center gap-2">
-                <Tooltip content="Previous Page">
+                <Tooltip content={t.previousPage || "Previous Page"}>
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1 || isRefreshing}
@@ -327,7 +327,7 @@ export default function Dashboard() {
                      </button>
                    ))}
                 </div>
-                <Tooltip content="Next Page">
+                <Tooltip content={t.nextPage || "Next Page"}>
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(Math.ceil(totalCount / PAGE_SIZE), p + 1))}
                     disabled={currentPage === Math.ceil(totalCount / PAGE_SIZE) || isRefreshing}
@@ -368,8 +368,8 @@ export default function Dashboard() {
         isOpen={!!companyToDelete}
         onClose={() => setCompanyToDelete(null)}
         onConfirm={confirmDelete}
-        title="Delete Company?"
-        message="Are you sure you want to delete this company? All invoices associated with it will also be deleted."
+        title={t.deleteCompanyTitle || "Delete Company?"}
+        message={t.deleteCompanyConfirm || "Are you sure you want to delete this company? All invoices associated with it will also be deleted."}
         isProcessing={isDeleting}
       />
     </div>

@@ -145,7 +145,7 @@ export function AuthButton() {
                   className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <FileText className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
-                  {(t as any).quotesEstimates || "Quotes & Estimates"}
+                  {t.quotesEstimates || "Quotes & Estimates"}
                 </Link>
 
                 <Link
@@ -154,7 +154,7 @@ export function AuthButton() {
                   className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <Package className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
-                  {(t as any).itemsLibrary || "Item Library"}
+                  {t.itemsLibrary || "Item Library"}
                 </Link>
 
                 <Link
@@ -163,7 +163,7 @@ export function AuthButton() {
                   className="group w-full text-left px-3 py-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100/80 dark:hover:bg-white/5 hover:text-zinc-900 dark:hover:text-white transition-all duration-200 flex items-center gap-3 text-[13px] font-medium"
                 >
                   <BarChart2 className="w-4 h-4 text-zinc-400 group-hover:text-blue-500 transition-colors" />
-                  {(t as any).analytics || "Analytics"}
+                  {t.analytics || "Analytics"}
                 </Link>
 
                 <Link

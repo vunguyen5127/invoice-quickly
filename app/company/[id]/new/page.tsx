@@ -59,7 +59,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       const entitlements = await getUserEntitlements(session.access_token);
       setCanUseRecurring(entitlements.canUseRecurring);
       if (!companyData) {
-        alert("Company not found");
+        alert(t.companyNotFound || "Company not found");
         router.push("/dashboard");
         return;
       }
@@ -150,7 +150,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   };
 
   const handleShare = async () => {
-    alert("Please save the invoice first to generate a shareable public link.");
+    alert(t.saveToSharePrompt || "Please save the invoice first to generate a shareable public link.");
     handleSave();
   };
 
@@ -173,7 +173,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         setUpgradeTrigger('invoice_limit');
         setIsUpgradeModalOpen(true);
       } else {
-        alert("Error saving invoice. Please check your config.");
+        alert(t.errorSavingInvoice || "Error saving invoice. Please check your config.");
         console.error(e);
       }
     } finally {

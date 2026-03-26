@@ -45,7 +45,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
 
       const data = await getInvoiceById(session.access_token, resolvedParams.id);
       if (!data) {
-        alert("Invoice not found");
+        alert(t.invoiceNotFound || "Invoice not found");
         router.push("/dashboard");
         return;
       }
@@ -90,7 +90,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         });
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied to clipboard!");
+        alert(t.linkCopied || "Link copied to clipboard!");
       }
     } catch (err) {
       console.error("Error sharing", err);
@@ -118,7 +118,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         router.push("/dashboard");
       }
     } catch (e: any) {
-      alert("Error saving invoice. Please check your config.");
+      alert(t.errorSavingInvoice || "Error saving invoice. Please check your config.");
       console.error(e);
     } finally {
       setIsSaving(false);
@@ -178,7 +178,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
               <ChevronRight className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0" />
             </>
           )}
-          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">Edit #{invoice.details.invoiceNumber}</span>
+          <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[120px] sm:max-w-[160px]">{t.editInvoice || "Edit"} #{invoice.details.invoiceNumber}</span>
         </nav>
 
         <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
@@ -193,7 +193,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
             }}
           >
             <div className="flex items-center justify-between h-10">
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Edit Invoice</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.editInvoice || "Edit Invoice"}</h2>
             </div>
             <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 mt-[3px]">
               <InvoiceForm

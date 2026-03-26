@@ -77,7 +77,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         });
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied to clipboard!");
+        alert(t.linkCopied || "Link copied to clipboard!");
       }
     } catch (err) {
       console.error("Error sharing", err);
@@ -95,7 +95,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     }
 
     if (!token) {
-      alert("Session expired");
+      alert(t.sessionExpired || "Session expired");
       setIsDeleting(false);
       return;
     }
@@ -133,13 +133,13 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   if (!invoice) {
     return (
       <div className="container mx-auto px-4 py-16 text-center max-w-xl">
-        <h1 className="text-2xl font-bold mb-4 text-zinc-900 dark:text-zinc-100">Invoice Not Found</h1>
-        <p className="text-zinc-500 mb-8">This invoice either doesn't exist or you don't have permission to view it.</p>
+        <h1 className="text-2xl font-bold mb-4 text-zinc-900 dark:text-zinc-100">{t.invoiceNotFound || "Invoice Not Found"}</h1>
+        <p className="text-zinc-500 mb-8">{t.invoiceNotFoundDesc || "This invoice either doesn't exist or you don't have permission to view it."}</p>
         <Link 
           href="/dashboard"
           className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl hover:opacity-90 font-bold transition-all shadow-lg shadow-primary/20 active:scale-[0.98]"
         >
-          <ArrowLeft className="w-4 h-4" /> Return to Dashboard
+          <ArrowLeft className="w-4 h-4" /> {t.returnToDashboard || "Return to Dashboard"}
         </Link>
       </div>
     );
@@ -184,19 +184,19 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         <div className="flex items-center gap-2 w-full sm:w-auto md:justify-end">
           {/* Status action buttons */}
           {currentStatus === 'draft' && (
-            <Tooltip content="Mark as Sent">
-              <button
-                onClick={() => handleStatusChange('sent')}
-                disabled={isUpdatingStatus}
-                className="flex items-center gap-1.5 px-4 h-10 text-sm font-semibold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-xl transition-all disabled:opacity-50 cursor-pointer"
-              >
-                <Send className="w-4 h-4" />
-                <span className="hidden sm:inline">{t.markAsSent}</span>
-              </button>
-            </Tooltip>
+          <Tooltip content={t.markAsSent || "Mark as Sent"}>
+            <button
+              onClick={() => handleStatusChange('sent')}
+              disabled={isUpdatingStatus}
+              className="flex items-center gap-1.5 px-4 h-10 text-sm font-semibold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-xl transition-all disabled:opacity-50 cursor-pointer"
+            >
+              <Send className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.markAsSent}</span>
+            </button>
+          </Tooltip>
           )}
           {(currentStatus === 'draft' || currentStatus === 'sent') && (
-            <Tooltip content="Mark as Paid">
+            <Tooltip content={t.markAsPaid || "Mark as Paid"}>
               <button
                 onClick={() => handleStatusChange('paid')}
                 disabled={isUpdatingStatus}
@@ -210,7 +210,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
 
           <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800 mx-0.5 hidden sm:block" />
 
-          <Tooltip content="Delete Invoice">
+          <Tooltip content={t.deleteItem || "Delete Invoice"}>
             <button
               onClick={() => setShowDeleteModal(true)}
               className="p-2.5 text-zinc-400 hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all border border-transparent hover:border-destructive/20 cursor-pointer"
@@ -219,7 +219,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
             </button>
           </Tooltip>
           
-          <Tooltip content="Share Invoice">
+          <Tooltip content={t.shareInvoice || "Share Invoice"}>
             <button 
               onClick={handleShare}
               className="p-2.5 text-zinc-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all border border-transparent hover:border-primary/20 cursor-pointer"
@@ -230,7 +230,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           
           <div className="w-px h-6 bg-zinc-200 dark:bg-zinc-800 mx-1 hidden sm:block" />
 
-          <Tooltip content={isGenerating ? "Generating..." : "Download PDF"}>
+          <Tooltip content={isGenerating ? (t.exporting || "Generating...") : (t.downloadPdf || "Download PDF")}>
             <button 
               onClick={handleDownload}
               disabled={isGenerating}
@@ -249,8 +249,8 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={confirmDelete}
-        title="Delete Invoice?"
-        message="Are you sure you want to delete this invoice? This action cannot be undone."
+        title={t.deleteInvoiceTitle || "Delete Invoice?"}
+        message={t.deleteInvoiceConfirm || "Are you sure you want to delete this invoice? This action cannot be undone."}
         isProcessing={isDeleting}
       />
     </div>

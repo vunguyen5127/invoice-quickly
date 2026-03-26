@@ -102,10 +102,10 @@ export default function AnalyticsPage() {
   };
 
   const periods: { value: Period, label: string }[] = [
-    { value: 'day', label: 'Day' },
-    { value: 'week', label: 'Week' },
-    { value: 'month', label: 'Month' },
-    { value: 'year', label: 'Year' },
+    { value: 'day', label: t.day || 'Day' },
+    { value: 'week', label: t.week || 'Week' },
+    { value: 'month', label: t.month || 'Month' },
+    { value: 'year', label: t.year || 'Year' },
   ];
 
   const totalRevenue = useMemo(() => {
@@ -140,10 +140,10 @@ export default function AnalyticsPage() {
     const total = stats.totalInvoices;
     if (total === 0) return { text: '—', color: 'text-zinc-400' };
     const paidRate = (total - stats.overdueCount) / total;
-    if (paidRate >= 0.85) return { text: 'High', color: 'text-emerald-500' };
-    if (paidRate >= 0.6) return { text: 'Medium', color: 'text-amber-500' };
-    return { text: 'Low', color: 'text-red-500' };
-  }, [stats.totalInvoices, stats.overdueCount]);
+    if (paidRate >= 0.85) return { text: t.high || 'High', color: 'text-emerald-500' };
+    if (paidRate >= 0.6) return { text: t.medium || 'Medium', color: 'text-amber-500' };
+    return { text: t.low || 'Low', color: 'text-red-500' };
+  }, [stats.totalInvoices, stats.overdueCount, t.high, t.low, t.medium]);
 
   return (
     <div className="min-h-screen bg-zinc-50/30 dark:bg-zinc-950">
@@ -161,12 +161,12 @@ export default function AnalyticsPage() {
           <div>
             <div className="flex items-center gap-3 mb-1">
                <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                 Analytics 
+                 {t.analytics || "Analytics"} 
                </h1>
                {statsLoading && <Loader2 className="w-5 h-5 animate-spin text-blue-500 ml-1" />}
             </div>
             <p className="text-zinc-500 font-medium text-sm leading-none pt-0.5">
-              Financial breakdown and document performance.
+              {t.financialBreakdown || "Financial breakdown and document performance."}
             </p>
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function AnalyticsPage() {
               onChange={(e) => setSelectedCompanyId(e.target.value)}
               className="w-full pl-10 pr-10 h-full bg-transparent border-none text-[13px] font-bold text-zinc-900 dark:text-zinc-100 focus:outline-none appearance-none cursor-pointer"
             >
-              <option value="">All Companies</option>
+              <option value="">{t.allCompanies || "All Companies"}</option>
               {companies.map(c => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -218,7 +218,7 @@ export default function AnalyticsPage() {
             <DollarSign className="w-6 h-6 text-orange-600 dark:text-orange-400" />
           </div>
           <div className="space-y-1">
-            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Outstanding</p>
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.totalOutstanding || "Outstanding"}</p>
             <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">${stats.totalOutstanding.toLocaleString()}</p>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function AnalyticsPage() {
             <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
           </div>
           <div className="space-y-1">
-            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Overdue</p>
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.overdueInvoices || "Overdue"}</p>
             <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{stats.overdueCount}</p>
           </div>
           <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden mt-1">
@@ -243,7 +243,7 @@ export default function AnalyticsPage() {
             <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
           </div>
           <div className="space-y-1">
-            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Collection</p>
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.collection || "Collection"}</p>
             <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">${stats.paidThisMonth.toLocaleString()}</p>
           </div>
           <div className="flex items-center gap-1.5 text-[12px] font-bold">
@@ -251,11 +251,11 @@ export default function AnalyticsPage() {
                <>
                  <TrendingUp className={`w-3.5 h-3.5 ${collectionGrowth >= 0 ? 'text-emerald-500' : 'text-red-400 rotate-180'}`} />
                  <span className={collectionGrowth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}>
-                   {collectionGrowth >= 0 ? '+' : ''}{collectionGrowth.toFixed(1)}% vs prev period
+                   {collectionGrowth >= 0 ? '+' : ''}{collectionGrowth.toFixed(1)}% {t.vsPrevPeriod || "vs prev period"}
                  </span>
                </>
              ) : (
-               <span className="text-zinc-400">No comparison data</span>
+               <span className="text-zinc-400">{t.noComparisonData || "No comparison data"}</span>
              )}
           </div>
         </div>
@@ -266,10 +266,10 @@ export default function AnalyticsPage() {
             <FileText className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="space-y-1">
-            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Invoices</p>
+            <p className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{t.totalInvoices || "Invoices"}</p>
             <p className="text-3xl font-black text-zinc-900 dark:text-white tracking-tighter">{stats.totalInvoices}</p>
           </div>
-          <p className="text-[12px] text-zinc-500 font-medium">Active document cycles</p>
+          <p className="text-[12px] text-zinc-500 font-medium">{t.activeDocCycles || "Active document cycles"}</p>
         </div>
       </div>
 
@@ -281,9 +281,9 @@ export default function AnalyticsPage() {
           <div className="flex items-center justify-between mb-8">
              <div className="space-y-0.5">
                <h3 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2.5">
-                 <LayoutGrid className="w-5 h-5 text-blue-500" /> Revenue Stream
+                 <LayoutGrid className="w-5 h-5 text-blue-500" /> {t.revenueStream || "Revenue Stream"}
                </h3>
-               <p className="text-zinc-500 text-[13px] font-medium">Collected: <span className="text-emerald-500 font-bold">${totalRevenue.toLocaleString()}</span></p>
+               <p className="text-zinc-500 text-[13px] font-medium">{t.collected || "Collected"}: <span className="text-emerald-500 font-bold">${totalRevenue.toLocaleString()}</span></p>
              </div>
              <button className="p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all text-zinc-400 hover:text-zinc-900">
                 <Download className="w-4 h-4" />
@@ -316,7 +316,7 @@ export default function AnalyticsPage() {
                   <Area 
                     type="monotone" 
                     dataKey="revenue" 
-                    name="Paid"
+                    name={t.paidLabel || "Paid"}
                     stroke="#0070f3" 
                     strokeWidth={3}
                     fillOpacity={1} 
@@ -335,8 +335,8 @@ export default function AnalyticsPage() {
            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/[0.03] rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
            
            <div className="flex flex-col gap-0.5 mb-8 relative z-10">
-             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">Aging Summary</h3>
-             <p className="text-zinc-500 text-[13px] font-medium">Comparison across {period}</p>
+             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">{t.agingSummary || "Aging Summary"}</h3>
+             <p className="text-zinc-500 text-[13px] font-medium">{t.comparisonAcross || "Comparison across"} {period === 'day' ? (t.day || 'day') : period === 'week' ? (t.week || 'week') : period === 'month' ? (t.month || 'month') : (t.year || 'year')}</p>
            </div>
 
           <div className="flex-1 w-full min-h-0 relative z-10">
@@ -351,12 +351,12 @@ export default function AnalyticsPage() {
                     hide={period === 'month'}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="revenue" name="Paid Collection" radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
+                  <Bar dataKey="revenue" name={t.paidCollection || "Paid Collection"} radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
                      {stats.chartData.map((entry, index) => (
                        <Cell key={`cell-${index}`} fill="#3b82f6" />
                      ))}
                   </Bar>
-                  <Bar dataKey="overdue" name="Overdue Balance" radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
+                  <Bar dataKey="overdue" name={t.overdueBalance || "Overdue Balance"} radius={[4, 4, 4, 4]} barSize={period === 'month' ? 3 : 8}>
                      {stats.chartData.map((entry, index) => (
                        <Cell key={`cell-${index}`} fill="#ef4444" />
                      ))}
@@ -367,11 +367,11 @@ export default function AnalyticsPage() {
 
           <div className="mt-8 pt-6 border-t border-zinc-100 dark:border-white/5 relative z-10 space-y-3">
              <div className="flex justify-between items-center text-[12px] font-bold uppercase tracking-widest text-zinc-400">
-                <span>Efficiency</span>
+                <span>{t.efficiency || "Efficiency"}</span>
                 {efficiencyLabel.text === '—' ? <span className="text-zinc-400">—</span> : <span className={efficiencyLabel.color}>{efficiencyLabel.text}</span>}
              </div>
              <div className="flex justify-between items-center text-[12px] font-bold uppercase tracking-widest text-zinc-400">
-                <span>Period Growth</span>
+                <span>{t.periodGrowth || "Period Growth"}</span>
                 {monthlyGrowth !== null ? (<span className={monthlyGrowth >= 0 ? "text-blue-500" : "text-red-400"}>{monthlyGrowth >= 0 ? "+" : ""}{monthlyGrowth.toFixed(1)}%</span>) : (<span className="text-zinc-400">—</span>)}
              </div>
           </div>

@@ -271,7 +271,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             <span className="text-zinc-700 dark:text-zinc-200 font-medium truncate max-w-[180px] sm:max-w-[300px]">
               {(company.name || "").split(/,|\n/)[0]}
             </span>
-            <Tooltip content="Edit Company Details">
+            <Tooltip content={t.editCompanyDetails || "Edit Company Details"}>
               <button
                  onClick={() => setIsEditModalOpen(true)}
                  className="p-1 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
@@ -303,7 +303,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                ) : (
                  <Download className="w-4 h-4 text-emerald-500 transition-transform group-hover:-translate-y-0.5" />
                )}
-               <span className="relative">{isExporting ? "Exporting..." : "Export Excel"}</span>
+               <span className="relative">{isExporting ? (t.exporting || "Exporting...") : (t.exportExcel || "Export Excel")}</span>
             </button>
           </Tooltip>
           <Link 
@@ -311,7 +311,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             className="hidden sm:flex items-center justify-center gap-2.5 px-8 h-11 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] whitespace-nowrap cursor-pointer"
           >
             <Plus className="w-4.5 h-4.5" />
-            <span>Create Invoice</span>
+            <span>{t.createInvoice || "Create Invoice"}</span>
           </Link>
         </div>
       </div>
@@ -322,7 +322,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
             <div className="flex items-center justify-between sm:justify-start gap-4">
               <h2 className="font-semibold text-zinc-900 dark:text-zinc-100 shrink-0">
-                Invoices
+                {t.invoices || "Invoices"}
                 <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
               </h2>
 
@@ -347,11 +347,11 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                     className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[90px]"
                     style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.4rem center', backgroundSize: '0.8rem' }}
                   >
-                    <option value="all">All</option>
-                    <option value="draft">Draft</option>
-                    <option value="sent">Sent</option>
-                    <option value="paid">Paid</option>
-                    <option value="overdue">Overdue</option>
+                    <option value="all">{t.allStatus || "All Status"}</option>
+                    <option value="draft">{t.statusDraft || "Draft"}</option>
+                    <option value="sent">{t.statusSent || "Sent"}</option>
+                    <option value="paid">{t.statusPaid || "Paid"}</option>
+                    <option value="overdue">{t.statusOverdue || "Overdue"}</option>
                   </select>
                 </div>
               )}
@@ -381,18 +381,18 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                     className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[100px]"
                     style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}
                   >
-                    <option value="all">All Status</option>
-                    <option value="draft">Draft</option>
-                    <option value="sent">Sent</option>
-                    <option value="paid">Paid</option>
-                    <option value="overdue">Overdue</option>
+                    <option value="all">{t.allStatus || "All Status"}</option>
+                    <option value="draft">{t.statusDraft || "Draft"}</option>
+                    <option value="sent">{t.statusSent || "Sent"}</option>
+                    <option value="paid">{t.statusPaid || "Paid"}</option>
+                    <option value="overdue">{t.statusOverdue || "Overdue"}</option>
                   </select>
                 </div>
                 <div className="relative w-full sm:w-64">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
                   <input
                     type="text"
-                    placeholder="Search invoices..."
+                    placeholder={t.searchInvoices || "Search invoices..."}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-border bg-background text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm"
@@ -405,12 +405,12 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
 
         {invoices.length === 0 && !debouncedSearch ? (
           <div className="p-12 text-center">
-            <p className="text-zinc-500 mb-4">No invoices created for this company yet.</p>
+            <p className="text-zinc-500 mb-4">{t.noInvoicesCreated || "No invoices created for this company yet."}</p>
             <Link 
               href={`/company/${resolvedParams.id}/new`}
               className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
-              Create your first invoice &rarr;
+              {t.createFirstInvoice || "Create your first invoice"} &rarr;
             </Link>
           </div>
         ) : (
@@ -423,27 +423,27 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
             
             {invoices.length === 0 && debouncedSearch ? (
               <div className="p-12 text-center">
-                <p className="text-zinc-500">No invoices match &quot;{searchQuery}&quot;</p>
+                <p className="text-zinc-500">{t.noInvoicesMatch || "No invoices match"} &quot;{searchQuery}&quot;</p>
               </div>
             ) : (
               <>
                 {/* Desktop Table View */}
                 {selectedIds.length > 0 && (
                   <div className="flex items-center gap-2 mb-4 p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-sm">
-                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">{selectedIds.length} selected</span>
+                    <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200">{selectedIds.length} {t.items || "items"} {(t.selected || "selected")}</span>
                     <button
                       onClick={handleBulkMarkPaid}
                       disabled={isBulkProcessing}
                       className="px-3 py-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 disabled:opacity-50"
                     >
-                      Mark as Paid
+                      {t.markAsPaid || "Mark as Paid"}
                     </button>
                     <button
                       onClick={handleBulkDelete}
                       disabled={isBulkProcessing}
                       className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
                     >
-                      Delete
+                      {t.delete || "Delete"}
                     </button>
                   </div>
                 )}
@@ -466,37 +466,37 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   />
 </th>
 <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("invoice_number")}>
-                          <Tooltip content="Sort by Invoice Number">
+                          <Tooltip content={t.sortByInvoiceNumber || "Sort by Invoice Number"}>
                              <div className="flex items-center gap-1">
-                               Invoice Number <SortIcon field="invoice_number" />
+                               {t.invoiceNumberTable || "Invoice Number"} <SortIcon field="invoice_number" />
                              </div>
                           </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("client_name")}>
-                          <Tooltip content="Sort by Client Name">
+                          <Tooltip content={t.sortByClientName || "Sort by Client Name"}>
                              <div className="flex items-center gap-1">
-                               Client <SortIcon field="client_name" />
+                               {t.clientTable || "Client"} <SortIcon field="client_name" />
                              </div>
                           </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("created_at")}>
-                          <Tooltip content="Sort by Date Created">
+                          <Tooltip content={t.sortByDateCreated || "Sort by Date Created"}>
                              <div className="flex items-center gap-1">
-                               Date Created <SortIcon field="created_at" />
+                               {t.dateCreatedTable || "Date Created"} <SortIcon field="created_at" />
                              </div>
                           </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-right cursor-pointer select-none hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors" onClick={() => handleSort("total_amount")}>
-                          <Tooltip content="Sort by Total Amount">
+                          <Tooltip content={t.sortByTotalAmount || "Sort by Total Amount"}>
                              <div className="flex items-center justify-end gap-1">
-                               Amount <SortIcon field="total_amount" />
+                               {t.amountTable || "Amount"} <SortIcon field="total_amount" />
                              </div>
                           </Tooltip>
                         </th>
                         <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-center">
                           {t.status}
                         </th>
-                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-right">Actions</th>
+                        <th className="px-6 py-4 font-bold uppercase tracking-wider text-[11px] text-right">{t.actions || "Actions"}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-900/10 font-medium">
@@ -540,7 +540,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </td>
                           <td className="px-6 py-5 text-right">
                             <div className="flex items-center justify-end gap-1 transition-opacity">
-                               <Tooltip content={inv.status === 'paid' ? "Paid invoices cannot be edited" : "Edit Invoice"}>
+                               <Tooltip content={inv.status === 'paid' ? (t.paidEditWarning || "Paid invoices cannot be edited") : (t.editItem || "Edit Invoice")}>
                                  <Link
                                     href={`/invoice/${inv.id}/edit`}
                                     className={`p-2 rounded-lg transition-colors cursor-pointer ${
@@ -552,7 +552,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                     <PenLine className="w-4 h-4" />
                                   </Link>
                                </Tooltip>
-                               <Tooltip content="Duplicate Invoice">
+                               <Tooltip content={t.duplicateInvoice || "Duplicate Invoice"}>
                                   <button
                                     onClick={() => handleDuplicate(inv.id)}
                                     className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all cursor-pointer"
@@ -560,7 +560,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                     <Copy className="w-4 h-4" />
                                   </button>
                                </Tooltip>
-                               <Tooltip content="View Invoice">
+                               <Tooltip content={t.viewDetails || "View Invoice"}>
                                   <Link
                                     href={`/invoice/${inv.id}`}
                                     className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors cursor-pointer"
@@ -568,7 +568,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                     <Eye className="w-4 h-4" />
                                   </Link>
                                </Tooltip>
-                               <Tooltip content="Delete Invoice">
+                               <Tooltip content={t.deleteItem || "Delete Invoice"}>
                                   <button
                                     onClick={() => handleDeleteClick(inv.id)}
                                     className="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors cursor-pointer"
@@ -625,7 +625,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </div>
                           
                           <div className="flex items-baseline gap-2.5 mb-6 py-3 border-y border-zinc-50 dark:border-zinc-800/50">
-                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest shrink-0">Amount</span>
+                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest shrink-0">{t.amountTable || "Amount"}</span>
                              <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight flex items-baseline gap-1">
                                <span className="text-sm font-bold text-zinc-400">{getCurrencySymbol(inv.currency)}</span>
                                {Number(inv.total_amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -633,7 +633,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                           </div>
                           
                           <div className="flex items-center gap-2 p-1.5 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-100 dark:border-zinc-800" onClick={(e) => e.stopPropagation()}>
-                             <Tooltip content={inv.status === 'paid' ? "Paid invoices cannot be edited" : "Edit"}>
+                             <Tooltip content={inv.status === 'paid' ? (t.paidEditWarning || "Paid invoices cannot be edited") : (t.edit || "Edit")}>
                                <Link 
                                  href={`/invoice/${inv.id}/edit`} 
                                  className={`flex-1 flex items-center justify-center p-3 rounded-xl transition-all ${
@@ -645,15 +645,15 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                   <PenLine className="w-4 h-4" />
                                </Link>
                              </Tooltip>
-                             <Tooltip content="Duplicate">
+                             <Tooltip content={t.duplicate || "Duplicate"}>
                                <button 
                                  onClick={() => handleDuplicate(inv.id)} 
-                                 className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all"
+                                 className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-100 dark:active:bg-zinc-700 transition-all"
                                >
                                   <Copy className="w-4 h-4" />
                                </button>
                              </Tooltip>
-                             <Tooltip content="View">
+                             <Tooltip content={t.viewDetails || "View"}>
                                <Link 
                                  href={`/invoice/${inv.id}`} 
                                  className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all"
@@ -661,7 +661,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                                   <Eye className="w-4 h-4" />
                                </Link>
                              </Tooltip>
-                             <Tooltip content="Delete">
+                             <Tooltip content={t.delete || "Delete"}>
                                <button 
                                  onClick={() => handleDeleteClick(inv.id)} 
                                  className="flex-1 flex items-center justify-center p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-red-100 transition-all"
@@ -679,7 +679,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                 {totalPages > 1 && (
                   <div className="px-6 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 flex items-center justify-between pb-24 sm:pb-4">
                     <p className="text-xs sm:text-sm text-zinc-500 font-medium">
-                      Showing <span className="text-zinc-900 dark:text-zinc-100">{((currentPage - 1) * itemsPerPage) + 1}</span> to <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * itemsPerPage, totalCount)}</span> of <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
+                      {t.showing || "Showing"} <span className="text-zinc-900 dark:text-zinc-100">{((currentPage - 1) * itemsPerPage) + 1}</span> {t.of || "to"} <span className="text-zinc-900 dark:text-zinc-100">{Math.min(currentPage * itemsPerPage, totalCount)}</span> {t.of || "of"} <span className="text-zinc-900 dark:text-zinc-100">{totalCount}</span>
                     </p>
                     <div className="flex items-center gap-1">
                       <Tooltip content="Previous Page">
@@ -744,8 +744,8 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         isOpen={!!invoiceToDelete}
         onClose={() => setInvoiceToDelete(null)}
         onConfirm={confirmDelete}
-        title="Delete Invoice?"
-        message="Are you sure you want to delete this invoice? This action cannot be undone."
+        title={t.deleteInvoiceTitle || "Delete Invoice?"}
+        message={t.deleteInvoiceConfirm || "Are you sure you want to delete this invoice? This action cannot be undone."}
         isProcessing={isDeleting}
       />
 

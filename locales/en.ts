@@ -108,6 +108,28 @@ export const en = {
   settings_preferences: "Preferences",
   language: "Language",
   language_preference_desc: "Choose your preferred display language",
+  
+  // Settings Page
+  profile: "Profile",
+  subscriptionPlan: "Subscription",
+  currentPlan: "Current Plan",
+  plan: "Plan",
+  freePlan: "Free",
+  proPlan: "Pro",
+  cancelsSoon: "Cancels Soon",
+  billingExpiresOn: "Expires on",
+  billingRenewsOn: "Renews on",
+  resumeAction: "Resume",
+  nA: "N/A",
+  theme: "Theme",
+  theme_desc: "Switch between light and dark mode",
+  notifications: "Notifications",
+  notifications_desc: "Manage your email notifications",
+  admin_panel: "Admin Panel",
+  admin_panel_desc: "View system login logs and statistics",
+  sign_out: "Sign Out",
+  cancel_subscription: "Cancel Subscription",
+  cancel_subscription_confirm: "Are you sure you want to cancel your subscription? You will lose access to Pro features at the end of your current billing period.",
   // Footer
   footerLinkProduct: "Product",
   footerLinkResources: "Resources",
@@ -143,27 +165,129 @@ export const en = {
   overdueInvoices: "Overdue",
   paidThisMonth: "Paid This Month",
   totalInvoices: "Total Invoices",
+
+  // Dashboard
+  businessEntities: "Manage your business entities and invoices.",
+  createCompany: "Create Company",
+  createFirstCompanyDesc: "Create your first company to start generating professional invoices.",
+  getStarted: "Get Started",
+  invoices: "Invoices",
+  created: "Created",
+  noAddressProvided: "No address provided",
+  viewDetails: "View details",
+  upgrade: "Upgrade",
+  previousPage: "Previous Page",
+  nextPage: "Next Page",
+  deleteCompanyTitle: "Delete Company?",
+  deleteCompanyConfirm: "Are you sure you want to delete this company? All invoices associated with it will also be deleted.",
+  edit: "Edit",
+  delete: "Delete",
+  companyNotFound: "Company not found",
+  saveToSharePrompt: "Please save the invoice first to generate a shareable public link.",
+  errorSavingInvoice: "Error saving invoice. Please check your config.",
+  linkCopied: "Link copied to clipboard!",
+  sessionExpired: "Session expired",
+  invoiceNotFound: "Invoice Not Found",
+  invoiceNotFoundDesc: "This invoice either doesn't exist or you don't have permission to view it.",
+  returnToDashboard: "Return to Dashboard",
+  shareInvoice: "Share Invoice",
+  downloadPdf: "Download PDF",
+
+  // Sidebar & Menu
+  quotesEstimates: "Quotes & Estimates",
+  itemsLibrary: "Item Library",
+  analytics: "Analytics",
+  signOutMsg: "Sign Out",
+
+  // Quotes Dashboard
+  manageQuotes: "Manage all your project estimates and quotes.",
+  noCompaniesFound: "No Companies Found",
+  createCompanyFirst: "Please create a company first to create quotes.",
+  goToDashboard: "Go to Dashboard",
+  allCompanies: "All Companies",
+  newQuote: "New Quote",
+  totalQuotes: "Total Quotes",
+  accepted: "Accepted",
+  rejected: "Rejected",
+  noQuotesFound: "No quotes found",
+  createFirstQuote: "Create your first quote to get started estimating projects.",
+  quote: "Quote",
+  client: "Client",
+  amount: "Amount",
+  actions: "Actions",
+  unknownClient: "Unknown Client",
+  unknown: "Unknown",
+
+  // Items Library
+  itemLibraryDesc: "Manage your products and services for quick invoicing.",
+  newItem: "New Item",
+  searchItems: "Search items by name or description...",
+  emptyLibrary: "Your library is empty",
+  saveItemsSpeed: "Save your frequently billed products or services to speed up invoice creation.",
+  itemNameDesc: "Item Name & Description",
+  ratePrice: "Rate / Price",
+  addedDate: "Added Date",
+  noItemsMatching: "No items found matching",
+  showing: "Showing",
+  of: "of",
+  previous: "Previous",
+  next: "Next",
+  editItem: "Edit Item",
+  deleteItem: "Delete Item",
+  deleteItemConfirm: "Are you sure you want to delete this item? This action cannot be undone.",
+  items: "items",
+  invoiced: "Invoiced",
+
+  // Analytics
+  financialBreakdown: "Financial breakdown and document performance.",
+  collection: "Collection",
+  activeDocCycles: "Active document cycles",
+  revenueStream: "Revenue Stream",
+  collected: "Collected",
+  paidLabel: "Paid",
+  agingSummary: "Aging Summary",
+  comparisonAcross: "Comparison across",
+  efficiency: "Efficiency",
+  periodGrowth: "Period Growth",
+  vsPrevPeriod: "vs prev period",
+  noComparisonData: "No comparison data",
+  high: "High",
+  medium: "Medium",
+  low: "Low",
+  paidCollection: "Paid Collection",
+  overdueBalance: "Overdue Balance",
+  day: "Day",
+  week: "Week",
+  month: "Month",
+  year: "Year",
+  
+  // Company Dashboard
+  editCompanyDetails: "Edit Company Details",
+  exportExcel: "Export Excel",
+  exporting: "Exporting...",
+  allStatus: "All Status",
+  searchInvoices: "Search invoices...",
+  noInvoicesCreated: "No invoices created for this company yet.",
+  createFirstInvoice: "Create your first invoice",
+  noInvoicesMatch: "No invoices match",
+  invoiceNumberTable: "Invoice Number",
+  clientTable: "Client",
+  dateCreatedTable: "Date Created",
+  amountTable: "Amount",
+  deleteInvoiceTitle: "Delete Invoice?",
+  deleteInvoiceConfirm: "Are you sure you want to delete this invoice? This action cannot be undone.",
+  sortByInvoiceNumber: "Sort by Invoice Number",
+  sortByClientName: "Sort by Client Name",
+  sortByDateCreated: "Sort by Date Created",
+  sortByTotalAmount: "Sort by Total Amount",
+  showLabel: "Show",
+  selected: "selected",
+  paidEditWarning: "Paid invoices cannot be edited",
+  duplicateInvoice: "Duplicate Invoice",
+  duplicate: "Duplicate",
+  editInvoice: "Edit Invoice",
 };
 
-export type Translations = Omit<typeof en, 'noWatermark' | 'instantPdf' | 'templates' | 'viewAllHub' | 'template_invoice' | 'template_pdf' | 'template_excel' | 'template_free' | 'pricing' | 'statusDraft' | 'statusSent' | 'statusPaid' | 'statusOverdue' | 'markAsSent' | 'markAsPaid' | 'status' | 'totalOutstanding' | 'overdueInvoices' | 'paidThisMonth' | 'totalInvoices'> & {
-  noWatermark?: string;
-  instantPdf?: string;
-  templates?: string;
-  viewAllHub?: string;
-  template_invoice?: string;
-  template_pdf?: string;
-  template_excel?: string;
-  template_free?: string;
-  pricing?: string;
-  statusDraft?: string;
-  statusSent?: string;
-  statusPaid?: string;
-  statusOverdue?: string;
-  markAsSent?: string;
-  markAsPaid?: string;
-  status?: string;
-  totalOutstanding?: string;
-  overdueInvoices?: string;
-  paidThisMonth?: string;
-  totalInvoices?: string;
+export type Translations = {
+  [K in keyof typeof en]: string;
 };

@@ -75,9 +75,9 @@ export default function QuotesDashboard() {
         <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-6">
           <FileText className="w-8 h-8 text-blue-500" />
         </div>
-        <h3 className="text-xl font-bold mb-2">No Companies Found</h3>
-        <p className="text-zinc-500 dark:text-zinc-400 mb-6">Please create a company first to create quotes.</p>
-        <button onClick={() => router.push('/dashboard')} className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl">Go to Dashboard</button>
+        <h3 className="text-xl font-bold mb-2">{t.noCompaniesFound || "No Companies Found"}</h3>
+        <p className="text-zinc-500 dark:text-zinc-400 mb-6">{t.createCompanyFirst || "Please create a company first to create quotes."}</p>
+        <button onClick={() => router.push('/dashboard')} className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl">{t.goToDashboard || "Go to Dashboard"}</button>
       </div>
     )
   }
@@ -88,9 +88,9 @@ export default function QuotesDashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-12 gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
-             Quotes & Estimates
+             {t.quotesEstimates || "Quotes & Estimates"}
           </h1>
-          <p className="text-zinc-500 text-xs sm:text-sm font-medium">Manage all your project estimates and quotes.</p>
+          <p className="text-zinc-500 text-xs sm:text-sm font-medium">{t.manageQuotes || "Manage all your project estimates and quotes."}</p>
         </div>
         
         <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -108,22 +108,22 @@ export default function QuotesDashboard() {
              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
           >
              <Plus className="w-4 h-4" />
-             <span>New Quote</span>
+             <span>{t.newQuote || "New Quote"}</span>
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-8 sm:mb-10">
         <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center">
-           <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 sm:mb-2 truncate">Total Quotes</h3>
+           <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 sm:mb-2 truncate">{t.totalQuotes || "Total Quotes"}</h3>
            <p className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white">{stats.total}</p>
         </div>
         <div className="bg-emerald-50 dark:bg-emerald-950/20 rounded-2xl p-4 sm:p-6 border border-emerald-100 dark:border-emerald-900/30 shadow-sm flex flex-col justify-center">
-           <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-500 mb-1 sm:mb-2 truncate">Accepted</h3>
+           <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-500 mb-1 sm:mb-2 truncate">{t.accepted || "Accepted"}</h3>
            <p className="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-emerald-400">{stats.accepted}</p>
         </div>
         <div className="bg-red-50 dark:bg-red-950/20 rounded-2xl p-4 sm:p-6 border border-red-100 dark:border-red-900/30 shadow-sm flex flex-col justify-center">
-           <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-500 mb-1 sm:mb-2 truncate">Rejected</h3>
+           <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-500 mb-1 sm:mb-2 truncate">{t.rejected || "Rejected"}</h3>
            <p className="text-2xl sm:text-3xl font-black text-red-700 dark:text-red-400">{stats.rejected}</p>
         </div>
       </div>
@@ -133,14 +133,14 @@ export default function QuotesDashboard() {
           <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <FileText className="w-8 h-8 text-zinc-400" />
           </div>
-          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">No quotes found</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">Create your first quote to get started estimating projects.</p>
+          <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{t.noQuotesFound || "No quotes found"}</h3>
+          <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">{t.createFirstQuote || "Create your first quote to get started estimating projects."}</p>
           <button
             onClick={() => router.push(`/quote/new?company=${selectedCompanyId}`)}
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
           >
             <Plus className="w-5 h-5" />
-            <span>Create Quote</span>
+            <span>{t.newQuote || "Create Quote"}</span>
           </button>
         </div>
       ) : (
@@ -151,11 +151,11 @@ export default function QuotesDashboard() {
               <table className="w-full text-left">
                 <thead className="bg-zinc-50/50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
                   <tr>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Quote</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Client</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Amount</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">Status</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400 text-right">Actions</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.quote || "Quote"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.client || "Client"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.amount || "Amount"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400">{t.status || "Status"}</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-zinc-400 text-right">{t.actions || "Actions"}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/50 font-medium">
@@ -175,7 +175,7 @@ export default function QuotesDashboard() {
                       </td>
                       <td className="px-6 py-5">
                         <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 max-w-[300px] leading-relaxed">
-                          {quote.client_name || "Unknown"}
+                          {quote.client_name || t.unknownClient || "Unknown"}
                         </p>
                       </td>
                       <td className="px-6 py-5 font-bold text-sm text-zinc-900 dark:text-zinc-100">
@@ -188,7 +188,7 @@ export default function QuotesDashboard() {
                           quote.status === 'invoiced' ? 'bg-purple-50 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800' :
                           'bg-zinc-100 text-zinc-700 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
                         }`}>
-                          {quote.status}
+                          {quote.status === "accepted" ? (t.accepted || "Accepted") : quote.status === "rejected" ? (t.rejected || "Rejected") : quote.status === "invoiced" ? "Invoiced" : (t.draft || "Draft")}
                         </span>
                       </td>
                       <td className="px-6 py-5">
@@ -196,7 +196,7 @@ export default function QuotesDashboard() {
                           <button
                             onClick={(e) => { e.stopPropagation(); router.push(`/share/quote/${quote.id}`); }}
                             className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded-lg transition-colors cursor-pointer"
-                            title="Share Quote"
+                            title={t.share || "Share Quote"}
                           >
                             <Share className="w-4 h-4" />
                           </button>
@@ -217,7 +217,6 @@ export default function QuotesDashboard() {
           </div>
 
           {/* Mobile Card View */}
-                {/* Mobile Card View */}
                 <div className="sm:hidden px-4 py-8 space-y-6">
                   {quotes.map((quote) => (
                     <div 
@@ -243,7 +242,7 @@ export default function QuotesDashboard() {
                                   </span>
                                 </div>
                                 <h4 className="font-bold text-zinc-900 dark:text-zinc-100 truncate text-xl tracking-tight leading-tight">
-                                  {quote.client_name?.split(',')[0] || "Unknown Client"}
+                                  {quote.client_name?.split(',')[0] || t.unknownClient || "Unknown Client"}
                                 </h4>
                              </div>
                              <div className="shrink-0 pt-1">
@@ -253,13 +252,13 @@ export default function QuotesDashboard() {
                                   quote.status === 'invoiced' ? 'bg-purple-50 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800' :
                                   'bg-zinc-100 text-zinc-700 border border-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
                                 }`}>
-                                  {quote.status}
+                                  {quote.status === "accepted" ? (t.accepted || "Accepted") : quote.status === "rejected" ? (t.rejected || "Rejected") : quote.status === "invoiced" ? "Invoiced" : (t.draft || "Draft")}
                                 </span>
                              </div>
                           </div>
                           
                           <div className="flex items-baseline gap-2.5 mb-6 py-3 border-y border-zinc-50 dark:border-zinc-800/50">
-                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest shrink-0">Amount</span>
+                             <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest shrink-0">{t.amount || "Amount"}</span>
                              <p className="text-xl font-black text-zinc-900 dark:text-zinc-100 tracking-tight flex items-baseline gap-1">
                                <span className="text-sm font-bold text-zinc-400">
                                   {new Intl.NumberFormat('en-US', { style: 'currency', currency: quote.currency }).format(0).replace(/[0-9.,]/g, '')}
@@ -269,7 +268,7 @@ export default function QuotesDashboard() {
                           </div>
                           
                           <div className="flex items-center gap-2 p-1.5 bg-zinc-50 dark:bg-zinc-800/50 rounded-2xl border border-zinc-100 dark:border-zinc-800" onClick={(e) => e.stopPropagation()}>
-                             <Tooltip content="Edit Quote">
+                             <Tooltip content={t.editCompany || "Edit"}>
                                <button 
                                  onClick={() => router.push(`/quote/${quote.id}/edit`)} 
                                  className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all cursor-pointer"
@@ -277,7 +276,7 @@ export default function QuotesDashboard() {
                                   <PenLine className="w-4 h-4" />
                                </button>
                              </Tooltip>
-                             <Tooltip content="Share Quote">
+                             <Tooltip content={t.share || "Share"}>
                                <button 
                                  onClick={() => {
                                    navigator.clipboard.writeText(`${window.location.origin}/quote/${quote.id}/public`);
@@ -288,7 +287,7 @@ export default function QuotesDashboard() {
                                   <Share2 className="w-4 h-4" />
                                </button>
                              </Tooltip>
-                             <Tooltip content="View Quote">
+                             <Tooltip content={t.livePreview || "View"}>
                                <button 
                                  onClick={() => router.push(`/quote/${quote.id}`)} 
                                  className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all cursor-pointer"
