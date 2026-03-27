@@ -7,7 +7,7 @@ import { format, parseISO } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 import { SignaturePadModal } from "./signature-pad-modal";
 import { useLanguage } from "@/contexts/language-context";
-import { getUserCompanies } from "@/app/dashboard/actions";
+import { getUserCompanies, getNextInvoiceNumber } from "@/app/dashboard/actions";
 import { getItems } from "@/app/dashboard/items/actions";
 import { supabase } from "@/utils/supabase/client";
 import { Tooltip } from "./tooltip";
@@ -37,31 +37,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     }
   }, [defaultCompanyId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!supabase) return;
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-      
-      try {
-        const [companiesResult, itemsResult] = await Promise.all([
-          getUserCompanies(session.access_token),
-          getItems(session.access_token, { pageSize: 50 })
-        ]);
-        setMyCompanies(companiesResult.data || []);
-        setMyItems(itemsResult.data || []);
-      } catch (e) {
-        console.error("Failed to fetch data for auto-fill", e);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleCompanyAutoFill = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedId = e.target.value;
+  const applyCompanyData = async (selectedId: string, availableCompanies: any[]) => {
     if (!selectedId) return;
     
-    const comp = myCompanies.find(c => c.id === selectedId);
+    const comp = availableCompanies.find(c => c.id === selectedId);
     if (comp) {
       const details = [];
       if (comp.name) details.push(comp.name);
@@ -71,8 +50,24 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       
       const companyDetailsString = details.filter(Boolean).join(", ");
 
+      let fetchedNextInvNum: string | null = null;
+      try {
+        if (docType === 'invoice' && supabase) {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            fetchedNextInvNum = await getNextInvoiceNumber(session.access_token, selectedId);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch next invoice number", e);
+      }
+
       setInvoice((prev: any) => ({
         ...prev,
+        details: {
+          ...prev.details,
+          invoiceNumber: fetchedNextInvNum || prev.details.invoiceNumber
+        },
         company: {
            name: companyDetailsString,
            email: "",
@@ -93,6 +88,32 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     }
     setSelectedCompanyId(selectedId);
     if (onCompanySelect) onCompanySelect(selectedId);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!supabase) return;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      
+      try {
+        const [companiesResult, itemsResult] = await Promise.all([
+          getUserCompanies(session.access_token),
+          getItems(session.access_token, { pageSize: 50 })
+        ]);
+        const fetchedCompanies = companiesResult.data || [];
+        setMyCompanies(fetchedCompanies);
+        setMyItems(itemsResult.data || []);
+      } catch (e) {
+        console.error("Failed to fetch data for auto-fill", e);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleCompanyAutoFill = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    applyCompanyData(e.target.value, myCompanies);
   };
   
   const handleSectionChange = (section: keyof InvoiceState, field: string, value: any) => {
@@ -348,8 +369,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
             {/* Right Column: Dropdown + Logo Upload */}
             <div className="w-full md:w-[130px] flex-shrink-0 flex flex-col gap-3">
-              {myCompanies.length > 0 ? (
-                <div className="h-[32px]">
+              <div className="h-[32px] w-full">
+                {myCompanies.length > 0 ? (
                   <select 
                     value={selectedCompanyId}
                     onChange={handleCompanyAutoFill}
@@ -361,10 +382,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       <option key={c.id} value={c.id}>{c.name}</option>
                     ))}
                   </select>
-                </div>
-              ) : (
-                <div className="h-[32px] hidden md:block" />
-              )}
+                ) : (
+                  <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800/50 animate-pulse rounded-lg border border-zinc-200/50 dark:border-zinc-700/50" />
+                )}
+              </div>
               
               <div className="w-[100px] h-[100px] ml-auto md:mx-0">
                 {invoice.company.logo ? (

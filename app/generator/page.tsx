@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
@@ -42,12 +42,16 @@ function CreateInvoiceContent() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isGuestSaveModalOpen, setIsGuestSaveModalOpen] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [initialCompanyId, setInitialCompanyId] = useState<string>("");
 
   const searchParams = useSearchParams();
+  const initRef = useRef(false);
 
   // Load from localStorage on mount and prefill user name
   useEffect(() => {
     if (authLoading) return;
+    if (initRef.current) return;
+    initRef.current = true;
     
     const initData = async () => {
       let draftInvoice = initialInvoiceState;
@@ -61,21 +65,73 @@ function CreateInvoiceContent() {
         window.history.replaceState({}, "", "/generator");
 
         if (userIsLoggedIn) {
-          // Logged-in users get a blank invoice (no demo data)
+          // Logged-in users get a blank invoice (no demo data), prefilled if only 1 company
+          let companyData = { name: "", email: "", address: "", phone: "", logo: "" };
+          let nextInvNum = "";
+          let sigName = "";
+          let sigUrl = "";
+          let currency = initialInvoiceState.currency;
+          let notes = initialInvoiceState.notes;
+          let terms = initialInvoiceState.terms;
+          let taxRate = 0;
+          let discount = 0;
+          
+          if (session) {
+            try {
+              const res = await getUserCompanies(session.access_token);
+              if (res.data && res.data.length === 1) {
+                const autoCompany = res.data[0];
+                setInitialCompanyId(autoCompany.id);
+                
+                const tmpDetails = [];
+                if (autoCompany.name) tmpDetails.push(autoCompany.name);
+                if (autoCompany.address) tmpDetails.push(autoCompany.address);
+                if (autoCompany.email) tmpDetails.push(autoCompany.email);
+                if (autoCompany.phone) tmpDetails.push(autoCompany.phone);
+                
+                companyData = {
+                  ...companyData,
+                  name: tmpDetails.join(", "),
+                  logo: autoCompany.logo_url || "",
+                };
+                sigName = autoCompany.signer_name || "";
+                sigUrl = autoCompany.signature_url || "";
+                currency = autoCompany.default_currency || initialInvoiceState.currency;
+                notes = autoCompany.default_notes || initialInvoiceState.notes;
+                terms = autoCompany.default_terms || initialInvoiceState.terms;
+                taxRate = autoCompany.default_tax !== null && autoCompany.default_tax !== undefined ? autoCompany.default_tax : 0;
+                discount = autoCompany.default_discount !== null && autoCompany.default_discount !== undefined ? autoCompany.default_discount : 0;
+
+                // Load invoice number non-blockingly
+                getNextInvoiceNumber(session.access_token, autoCompany.id).then(num => {
+                  setInvoice(prev => ({
+                    ...prev,
+                    details: { ...prev.details, invoiceNumber: num }
+                  }));
+                }).catch(console.error);
+              }
+            } catch (e) {
+              console.error("Failed to fetch initial company data", e);
+            }
+          }
+
           draftInvoice = {
             ...initialInvoiceState,
-            company: { name: "", email: "", address: "", phone: "" },
+            company: companyData,
             client: { name: "", email: "", address: "", phone: "" },
             details: {
-              invoiceNumber: "",
+              invoiceNumber: nextInvNum,
               issueDate: new Date().toISOString().split("T")[0],
               dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
             },
             items: [{ id: "1", description: "", quantity: 1, rate: 0 }],
-            taxRate: 0,
-            discount: 0,
-            notes: "",
-            terms: "",
+            taxRate: taxRate,
+            discount: discount,
+            notes: notes,
+            terms: terms,
+            signatureName: sigName,
+            signature: sigUrl,
+            currency: currency,
           };
         }
       } else {
@@ -108,7 +164,8 @@ function CreateInvoiceContent() {
     };
 
     initData();
-  }, [authLoading, session, searchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, session]);
 
   // Save to localStorage on change
   useEffect(() => {
@@ -227,48 +284,37 @@ function CreateInvoiceContent() {
   };
 
   // Don't render interactive parts until loaded to prevent hydration mismatch
-  const mainContent = !isLoaded ? (
-    <div className="flex-1">
-      <div className="h-10 flex items-center mb-6">
-        <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Editor</h2>
-      </div>
-      <div className="bg-white dark:bg-zinc-900/50 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
-        <InvoiceEditSkeleton />
-      </div>
-    </div>
-  ) : (
+  const mainContent = (
     <>
       {/* Left Column: Form */}
-      <div
-        className="w-full flex-1 overflow-hidden"
-        style={{
-          width: isMounted ? '100%' : '0%',
-          opacity: isMounted ? 1 : 0,
-          transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
-        }}
-      >
+      <div className="w-full flex-1 overflow-hidden animate-in fade-in duration-500">
         <div className="h-10 flex items-center mb-6">
-          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.editor}</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">
+            {!isLoaded ? "Editor" : t.editor}
+          </h2>
         </div>
         <div className="bg-white dark:bg-zinc-900/50 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
-          <InvoiceForm invoice={invoice} setInvoice={setInvoice} />
+          {!isLoaded ? (
+            <InvoiceEditSkeleton />
+          ) : (
+            <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={initialCompanyId} />
+          )}
         </div>
       </div>
 
       {/* Right Column: Preview */}
-      <div
-        className="w-full flex-1 xl:sticky xl:top-14 overflow-hidden"
-        style={{
-          width: isMounted ? '100%' : '0%',
-          opacity: isMounted ? 1 : 0,
-          transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
-        }}
-      >
+      <div className="w-full flex-1 xl:sticky xl:top-14 overflow-hidden animate-in fade-in duration-700">
         <div className="h-10 flex items-center mb-6">
-          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">{t.livePreview}</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">
+            {!isLoaded ? "Live Preview" : t.livePreview}
+          </h2>
         </div>
         <div className="rounded-[5px] overflow-hidden mt-1">
-          <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
+          {!isLoaded ? (
+            <div className="w-full aspect-[1/1.4] bg-zinc-100 dark:bg-zinc-800/50 animate-pulse rounded-md border border-zinc-200 dark:border-zinc-700" />
+          ) : (
+            <InvoicePreview invoice={invoice} isLoggedIn={isLoggedIn} />
+          )}
         </div>
       </div>
     </>
