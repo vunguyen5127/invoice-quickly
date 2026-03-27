@@ -70,8 +70,8 @@ export async function sendNewUserAlert(userData: {
 export async function sendInvoiceReminderEmail(userData: {
   email: string;
   name?: string;
-  overdueInvoices: { invoiceNumber: string; clientName: string; amount: string; currency: string; dueDate: string }[];
-  upcomingInvoices: { invoiceNumber: string; clientName: string; amount: string; currency: string; dueDate: string }[];
+  overdueInvoices: { invoiceId: string; invoiceNumber: string; clientName: string; amount: string; currency: string; dueDate: string }[];
+  upcomingInvoices: { invoiceId: string; invoiceNumber: string; clientName: string; amount: string; currency: string; dueDate: string }[];
 }) {
   const { email, name, overdueInvoices, upcomingInvoices } = userData;
   const totalItems = overdueInvoices.length + upcomingInvoices.length;
@@ -79,45 +79,46 @@ export async function sendInvoiceReminderEmail(userData: {
 
   console.log(`[email-service] Sending invoice reminder to: ${email} (${overdueInvoices.length} overdue, ${upcomingInvoices.length} upcoming)`);
 
-  const overdueSection = overdueInvoices.length > 0 ? `
-    <h3 style="color: #dc2626; margin-top: 20px;">⚠️ Overdue Invoices (${overdueInvoices.length})</h3>
-    <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
-      <tr style="background: #fef2f2; text-align: left;">
-        <th style="padding: 8px 12px; border: 1px solid #fecaca;">Invoice</th>
-        <th style="padding: 8px 12px; border: 1px solid #fecaca;">Client</th>
-        <th style="padding: 8px 12px; border: 1px solid #fecaca;">Amount</th>
-        <th style="padding: 8px 12px; border: 1px solid #fecaca;">Due Date</th>
-      </tr>
-      ${overdueInvoices.map(inv => `
-        <tr>
-          <td style="padding: 8px 12px; border: 1px solid #fee2e2;">${inv.invoiceNumber}</td>
-          <td style="padding: 8px 12px; border: 1px solid #fee2e2;">${inv.clientName}</td>
-          <td style="padding: 8px 12px; border: 1px solid #fee2e2;">${inv.currency} ${inv.amount}</td>
-          <td style="padding: 8px 12px; border: 1px solid #fee2e2; color: #dc2626; font-weight: bold;">${inv.dueDate}</td>
-        </tr>
-      `).join('')}
-    </table>
-  ` : '';
+  const formatTable = (invoices: any[], isOverdue: boolean) => {
+    if (invoices.length === 0) return '';
+    const title = isOverdue ? `⚠️ Overdue Invoices (${invoices.length})` : `📋 Due Soon (${invoices.length})`;
+    const titleColor = isOverdue ? '#dc2626' : '#2563eb';
+    const headerBg = isOverdue ? '#fef2f2' : '#f8fafc';
+    const borderColor = isOverdue ? '#fecaca' : '#e2e8f0';
+    const buttonBg = isOverdue ? '#fee2e2' : '#e0f2fe';
+    const buttonColor = isOverdue ? '#b91c1c' : '#0284c7';
 
-  const upcomingSection = upcomingInvoices.length > 0 ? `
-    <h3 style="color: #2563eb; margin-top: 20px;">📋 Due Soon (${upcomingInvoices.length})</h3>
-    <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
-      <tr style="background: #eff6ff; text-align: left;">
-        <th style="padding: 8px 12px; border: 1px solid #bfdbfe;">Invoice</th>
-        <th style="padding: 8px 12px; border: 1px solid #bfdbfe;">Client</th>
-        <th style="padding: 8px 12px; border: 1px solid #bfdbfe;">Amount</th>
-        <th style="padding: 8px 12px; border: 1px solid #bfdbfe;">Due Date</th>
-      </tr>
-      ${upcomingInvoices.map(inv => `
-        <tr>
-          <td style="padding: 8px 12px; border: 1px solid #dbeafe;">${inv.invoiceNumber}</td>
-          <td style="padding: 8px 12px; border: 1px solid #dbeafe;">${inv.clientName}</td>
-          <td style="padding: 8px 12px; border: 1px solid #dbeafe;">${inv.currency} ${inv.amount}</td>
-          <td style="padding: 8px 12px; border: 1px solid #dbeafe;">${inv.dueDate}</td>
-        </tr>
-      `).join('')}
-    </table>
-  ` : '';
+    return `
+      <h3 style="color: ${titleColor}; margin-top: 32px; margin-bottom: 16px; font-size: 16px; font-weight: 600;">${title}</h3>
+      <div style="overflow-x: auto; margin-bottom: 24px;">
+        <table style="width: 100%; min-width: 500px; border-collapse: collapse; text-align: left; background: #ffffff; border: 1px solid ${borderColor};">
+          <tr style="background: ${headerBg};">
+            <th style="width: 18%; padding: 14px 12px; border: 1px solid ${borderColor}; font-weight: 600; color: #1e293b; font-size: 13px;">Invoice</th>
+            <th style="width: 36%; padding: 14px 12px; border: 1px solid ${borderColor}; font-weight: 600; color: #1e293b; font-size: 13px;">Client</th>
+            <th style="width: 15%; padding: 14px 12px; border: 1px solid ${borderColor}; font-weight: 600; color: #1e293b; font-size: 13px; text-align: center;">Amount</th>
+            <th style="width: 16%; padding: 14px 12px; border: 1px solid ${borderColor}; font-weight: 600; color: #1e293b; font-size: 13px; text-align: center;">Due Date</th>
+            <th style="width: 15%; padding: 14px 12px; border: 1px solid ${borderColor}; font-weight: 600; color: #1e293b; font-size: 13px; text-align: center;">Action</th>
+          </tr>
+          ${invoices.map((inv) => `
+            <tr>
+              <td style="padding: 14px 12px; border: 1px solid ${borderColor}; font-size: 13px; color: #475569; word-break: break-all;">
+                <a href="${config.siteUrl}/invoice/${inv.invoiceId}" style="color: #0070f3; text-decoration: underline; font-weight: 500; display: inline-block;">${inv.invoiceNumber}</a>
+              </td>
+              <td style="padding: 14px 12px; border: 1px solid ${borderColor}; font-size: 13px; color: #475569; line-height: 1.5; word-break: break-word;">${inv.clientName}</td>
+              <td style="padding: 14px 12px; border: 1px solid ${borderColor}; font-size: 13px; color: #475569; text-align: center;">${inv.currency} ${inv.amount}</td>
+              <td style="padding: 14px 12px; border: 1px solid ${borderColor}; font-size: 13px; color: #475569; text-align: center;">${inv.dueDate}</td>
+              <td style="padding: 14px 12px; border: 1px solid ${borderColor}; text-align: center;">
+                <a href="${config.siteUrl}/invoice/${inv.invoiceId}" style="display: inline-block; padding: 6px 12px; background: ${buttonBg}; color: ${buttonColor}; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 12px;">View</a>
+              </td>
+            </tr>
+          `).join('')}
+        </table>
+      </div>
+    `;
+  };
+
+  const overdueSection = formatTable(overdueInvoices, true);
+  const upcomingSection = formatTable(upcomingInvoices, false);
 
   const subject = overdueInvoices.length > 0
     ? `🔴 You have ${overdueInvoices.length} overdue invoice${overdueInvoices.length > 1 ? 's' : ''}`
@@ -128,19 +129,32 @@ export async function sendInvoiceReminderEmail(userData: {
     to: email,
     subject,
     html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; color: #333;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <img src="${config.siteUrl}/logo.svg" alt="Invoice Quickly" style="width: 48px; height: 48px;">
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          @media screen and (max-width: 600px) {
+            .email-container { padding: 20px 10px !important; }
+          }
+        </style>
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+        <div class="email-container" style="max-width: 650px; padding: 40px 10px;">
+          <p style="font-size: 15px; color: #334155; margin-bottom: 24px; font-weight: 400;">Hi${name ? ` ${name}` : ''},</p>
+          <p style="font-size: 15px; color: #334155; margin-bottom: 32px; font-weight: 400;">Here's your daily invoice payment summary:</p>
+          
+          ${overdueSection}
+          ${upcomingSection}
+          
+          <p style="color: #94a3b8; font-size: 13px; margin-top: 40px; text-align: left; line-height: 1.6;">
+            This is an automated daily reminder from Invoice-Quickly.<br/>
+            You can manage your invoices at <a href="${config.siteUrl}/dashboard" style="color: #0070f3; text-decoration: underline;">${config.siteUrl.replace(/^https?:\/\//, '')}</a>
+          </p>
         </div>
-        <p>Hi${name ? ` ${name}` : ''},</p>
-        <p>Here's your daily invoice payment summary:</p>
-        ${overdueSection}
-        ${upcomingSection}
-        <div style="margin-top: 30px; padding: 15px; background: #f9fafb; border-radius: 8px; text-align: center;">
-          <a href="${config.siteUrl}/dashboard" style="display: inline-block; padding: 10px 24px; background: #0070f3; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">View Dashboard</a>
-        </div>
-        <p style="color: #9ca3af; margin-top: 30px; text-align: center;">This is an automated daily reminder from Invoice Quickly.<br/>You can manage your invoices at <a href="${config.siteUrl}/dashboard" style="color: #0070f3;">${config.siteUrl.replace(/^https?:\/\//, '')}</a></p>
-      </div>
+      </body>
+      </html>
     `,
   };
 

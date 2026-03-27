@@ -35,12 +35,12 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       if (!supabase) return;
       
       const { data: { session } } = await supabase.auth.getSession();
+      const { id } = await params;
       if (!session) {
-        router.push("/login?redirect=/dashboard");
+        router.push(`/login?redirect=/invoice/${id}`);
         return;
       }
 
-      const { id } = await params;
       const data = await getInvoiceById(session.access_token, id);
       
       if (data) {

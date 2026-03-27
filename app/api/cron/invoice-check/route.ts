@@ -120,6 +120,7 @@ export async function GET(request: Request) {
       const overdueInvoices = userInvs
         .filter((inv) => inv.due_date < today)
         .map((inv) => ({
+          invoiceId: inv.id,
           invoiceNumber: inv.invoice_number,
           clientName: inv.client_name || "Unknown",
           amount: Number(inv.total_amount).toFixed(2),
@@ -130,6 +131,7 @@ export async function GET(request: Request) {
       const upcomingInvoices = userInvs
         .filter((inv) => inv.due_date >= today && inv.due_date <= threeDaysFromNow)
         .map((inv) => ({
+          invoiceId: inv.id,
           invoiceNumber: inv.invoice_number,
           clientName: inv.client_name || "Unknown",
           amount: Number(inv.total_amount).toFixed(2),
