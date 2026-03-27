@@ -85,7 +85,7 @@ export default function QuotesDashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-12 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-3">
              {t.quotesEstimates || "Quotes & Estimates"}
@@ -93,19 +93,10 @@ export default function QuotesDashboard() {
           <p className="text-zinc-500 text-xs sm:text-sm font-medium">{t.manageQuotes || "Manage all your project estimates and quotes."}</p>
         </div>
         
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <select 
-            value={selectedCompanyId} 
-            onChange={handleCompanyChange}
-            className="flex-1 sm:flex-none h-10 px-4 text-sm font-bold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20"
-          >
-            {companies.map(c => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
+        <div className="hidden sm:flex items-center gap-3">
           <button 
              onClick={() => router.push(`/quote/new?company=${selectedCompanyId}`)}
-             className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
+             className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
           >
              <Plus className="w-4 h-4" />
              <span>{t.newQuote || "New Quote"}</span>
@@ -113,7 +104,7 @@ export default function QuotesDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-8 sm:mb-10">
+      <div className="grid grid-cols-3 gap-3 sm:gap-6 mb-6">
         <div className="bg-white dark:bg-zinc-900 rounded-2xl p-4 sm:p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col justify-center">
            <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-zinc-500 mb-1 sm:mb-2 truncate">{t.totalQuotes || "Total Quotes"}</h3>
            <p className="text-2xl sm:text-3xl font-black text-zinc-900 dark:text-white">{stats.total}</p>
@@ -126,6 +117,19 @@ export default function QuotesDashboard() {
            <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-600 dark:text-red-500 mb-1 sm:mb-2 truncate">{t.rejected || "Rejected"}</h3>
            <p className="text-2xl sm:text-3xl font-black text-red-700 dark:text-red-400">{stats.rejected}</p>
         </div>
+      </div>
+
+      <div className="flex items-center w-full mb-8 sm:mb-10 sm:max-w-md">
+        <select 
+          value={selectedCompanyId} 
+          onChange={handleCompanyChange}
+          className="w-full h-11 px-4 text-sm font-bold bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm appearance-none cursor-pointer text-zinc-800 dark:text-zinc-200"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2371717a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundPosition: `right 1rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `1.2em 1.2em`, paddingRight: `2.5rem` }}
+        >
+          {companies.map(c => (
+            <option key={c.id} value={c.id}>{c.name}</option>
+          ))}
+        </select>
       </div>
 
       {quotes.length === 0 ? (
@@ -217,7 +221,7 @@ export default function QuotesDashboard() {
           </div>
 
           {/* Mobile Card View */}
-                <div className="sm:hidden px-4 py-8 space-y-6">
+          <div className="sm:hidden pb-8 space-y-6">
                   {quotes.map((quote) => (
                     <div 
                       key={quote.id} 

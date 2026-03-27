@@ -88,7 +88,7 @@ export default function ItemsPage() {
         
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
+          className="hidden sm:flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" />
           <span>{t.newItem || "New Item"}</span>
@@ -234,6 +234,14 @@ export default function ItemsPage() {
         message={t.deleteItemConfirm || "Are you sure you want to delete this item? This action cannot be undone."}
         isProcessing={isDeleting}
       />
+
+      {/* Floating Action Button (Mobile Only) */}
+      <button
+        onClick={() => setIsCreateModalOpen(true)}
+        className="sm:hidden fixed bottom-24 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40 border-4 border-white dark:border-zinc-950"
+      >
+        <Plus className="w-7 h-7" />
+      </button>
     </div>
   );
 }
