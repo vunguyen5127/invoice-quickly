@@ -86,19 +86,27 @@ function DashboardContent() {
     loadData(loading ? false : true);
   }, [router, currentPage, session, authLoading]);
 
-  // If redirected from checkout, poll until webhook finishes processing
+  // If redirected from checkout, check immediately then poll every 1.5s
   useEffect(() => {
     if (isUpgradedParam && entitlements.plan === "free" && !loading) {
-      const interval = setInterval(async () => {
-        if (!session) return;
+      let cancelled = false;
+
+      const check = async () => {
+        if (cancelled || !session) return;
         const ent = await loadData(false);
         if (ent?.plan === "pro") {
-          clearInterval(interval);
-          // Optional: remove query param from URL without reload
+          cancelled = true;
           router.replace("/dashboard", { scroll: false });
         }
-      }, 2000);
-      return () => clearInterval(interval);
+      };
+
+      // Fire immediately, then poll
+      check();
+      const interval = setInterval(check, 1500);
+      return () => {
+        cancelled = true;
+        clearInterval(interval);
+      };
     }
   }, [isUpgradedParam, entitlements.plan, loading, session, router]);
 
