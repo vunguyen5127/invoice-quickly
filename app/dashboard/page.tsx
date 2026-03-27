@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
 import { getUserEntitlements } from "@/utils/entitlements";
 import { Trash2, Plus, Building2, PenLine, ChevronLeft, ChevronRight, Zap } from "lucide-react";
@@ -36,6 +36,8 @@ export default function Dashboard() {
   const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "general">("company_limit");
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isUpgradedParam = searchParams.get("upgraded") === "1";
 
   const PAGE_SIZE = 12;
 
@@ -72,6 +74,7 @@ export default function Dashboard() {
 
     setLoading(false);
     setIsRefreshing(false);
+    return ent;
   };
 
   useEffect(() => {
@@ -82,6 +85,22 @@ export default function Dashboard() {
     }
     loadData(loading ? false : true);
   }, [router, currentPage, session, authLoading]);
+
+  // If redirected from checkout, poll until webhook finishes processing
+  useEffect(() => {
+    if (isUpgradedParam && entitlements.plan === "free" && !loading) {
+      const interval = setInterval(async () => {
+        if (!session) return;
+        const ent = await loadData(false);
+        if (ent?.plan === "pro") {
+          clearInterval(interval);
+          // Optional: remove query param from URL without reload
+          router.replace("/dashboard", { scroll: false });
+        }
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [isUpgradedParam, entitlements.plan, loading, session, router]);
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
