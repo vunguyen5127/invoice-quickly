@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, FileText, Zap, Shield, Globe, Users, Sparkles
 import { FeatureCard, FAQItem, TestimonialCard, StepCard } from "@/components/marketing-components";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator Online — Create PDF Invoices | Invoice-Quickly",
+  title: "Free Invoice Generator Online - Create PDF Invoices | Invoice-Quickly",
   description:
     "Use our free invoice generator to create professional PDF invoices online in seconds. No signup, no watermark. The best free online invoice generator for freelancers and small businesses.",
   alternates: { canonical: "/" },
@@ -20,7 +20,7 @@ export default function LandingPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebApplication",
-            name: "Invoice-Quickly — Free Invoice Generator",
+            name: "Invoice-Quickly - Free Invoice Generator",
             url: "https://invoice-quickly.com",
             applicationCategory: "BusinessApplication",
             operatingSystem: "Any",
@@ -37,7 +37,7 @@ export default function LandingPage() {
               worstRating: "1",
             },
             description:
-              "Free online invoice generator. Create and download professional PDF invoices for free — no signup, no watermark. Generate invoices for free in 20+ languages.",
+              "Free online invoice generator. Create and download professional PDF invoices for free. No signup, no watermark. Generate invoices for free in 20+ languages.",
             featureList: [
               "Free PDF invoice generator",
               "No signup required",
@@ -62,7 +62,7 @@ export default function LandingPage() {
                 name: "Is Invoice-Quickly really a free invoice generator?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes — Invoice-Quickly is a completely free invoice generator with no credit card required. You can generate invoices for free forever with no watermark.",
+                  text: "Yes, Invoice-Quickly is a completely free invoice generator with no credit card required. You can generate invoices for free forever with no watermark.",
                 },
               },
               {
@@ -78,7 +78,7 @@ export default function LandingPage() {
                 name: "Can I download a free PDF invoice?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes — our free PDF invoice generator lets you download perfectly formatted, print-ready PDF invoices with zero watermarks.",
+                  text: "Yes, our free PDF invoice generator lets you download perfectly formatted, print-ready PDF invoices with zero watermarks.",
                 },
               },
               {
@@ -110,7 +110,7 @@ export default function LandingPage() {
                 name: "How is this different from other free invoice generators?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Invoice-Quickly stands out with real-time live preview, 20+ language support including RTL, zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports — all 100% free.",
+                  text: "Invoice-Quickly stands out with real-time live preview, 20+ language support including RTL, zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports, all 100% free.",
                 },
               },
             ],
@@ -154,18 +154,19 @@ export default function LandingPage() {
           {/* Badge */}
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-sm dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
             <Sparkles className="h-4 w-4" />
-            Free Forever — No Credit Card Required
+            Free Forever • No Credit Card Required
           </div>
 
           {/* H1 */}
           <h1 className="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl text-center max-w-4xl mx-auto">
-            Free Invoice Generator — <span className="text-blue-600 dark:text-blue-400">Create & Download PDF Invoices</span>
+            Free Invoice Generator <br className="hidden md:block" />
+            <span className="text-blue-600 dark:text-blue-400">Create & Download PDF Invoices</span>
             <br />
             Online in Seconds
           </h1>
 
           <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
-            The fastest free online invoice generator. Create beautiful, PDF-ready invoices and share with clients — no signup, no watermark.
+            The fastest free online invoice generator. Create beautiful, PDF-ready invoices and share with clients. No signup, no watermark.
           </p>
 
           {/* CTAs */}
@@ -257,7 +258,7 @@ export default function LandingPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/videos/demo.webp"
-                    alt="Free invoice generator online — Invoice-Quickly live preview showing PDF invoice creation with line items, tax, and instant download"
+                    alt="Free invoice generator online - Invoice-Quickly live preview showing PDF invoice creation with line items, tax, and instant download"
                     className="w-full h-full object-cover"
                     width={960}
                     height={600}
@@ -313,14 +314,14 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <TestimonialCard
-              quote="Invoice-Quickly saved me hours every week. I used to fight with Word templates — now I hit export in under a minute. The PDF quality is insane."
+              quote="Invoice-Quickly saved me hours every week. I used to fight with Word templates. Now I hit export in under a minute. The PDF quality is insane."
               name="Sarah L."
               role="Freelance Designer"
               avatar="from-pink-400 to-rose-500"
               initials="SL"
             />
             <TestimonialCard
-              quote="No watermarks, no hidden fees — and it actually looks better than what agencies charge $50/mo for. My clients are impressed every time."
+              quote="No watermarks, no hidden fees, and it actually looks better than what agencies charge $50/mo for. My clients are impressed every time."
               name="Tom R."
               role="Web Developer"
               avatar="from-blue-400 to-indigo-500"
@@ -363,7 +364,7 @@ export default function LandingPage() {
             <StepCard
               number="03"
               title="Download or share"
-              description="Export as a perfect PDF or share a public link with your client — one click is all it takes."
+              description="Export as a perfect PDF or share a public link with your client. One click is all it takes."
               icon={<Send className="w-5 h-5" />}
             />
           </div>
@@ -379,7 +380,7 @@ export default function LandingPage() {
             <p className="mb-2 text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Features</p>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Everything you need in a free invoice generator.</h2>
             <p className="mt-4 text-lg text-slate-600 dark:text-zinc-400">
-              A streamlined free online invoice generator designed to help you get paid faster — without the headache of complex accounting software.
+              A streamlined free online invoice generator designed to help you get paid faster, without the headache of complex accounting software.
             </p>
           </div>
 
@@ -406,7 +407,7 @@ export default function LandingPage() {
               icon={<Globe className="w-6 h-6" />}
               iconColor="text-violet-600 bg-violet-50 dark:bg-violet-900/20"
               title="20+ Languages"
-              description="Create invoices in any language — from English and Vietnamese to Arabic, Japanese, Chinese, and more."
+              description="Create invoices in any language: from English and Vietnamese to Arabic, Japanese, Chinese, and more."
             />
             <FeatureCard
               icon={<Users className="w-6 h-6" />}
@@ -436,7 +437,7 @@ export default function LandingPage() {
           <div className="space-y-3">
             <FAQItem
               question="Is this invoice generator really free forever?"
-              answer="Yes — our free invoice generator is completely free with no credit card required. You can generate invoices for free, download free PDF invoices, and share them online — forever. We offer paid plans for advanced dashboard features, but the core free online invoice generator will always be free."
+              answer="Yes, our free invoice generator is completely free with no credit card required. You can generate invoices for free, download free PDF invoices, and share them online forever. We offer paid plans for advanced dashboard features, but the core free online invoice generator will always be free."
             />
             <FAQItem
               question="Does this free invoice generator add a watermark?"
@@ -448,11 +449,11 @@ export default function LandingPage() {
             />
             <FAQItem
               question="Can I add tax, discounts, and multiple line items?"
-              answer="Yes — our free invoice generator supports multiple line items, percentage or fixed discounts, and configurable tax rates. Notes, shipping, and payment terms are also supported. Generate invoice for free with all the features you need."
+              answer="Yes, our free invoice generator supports multiple line items, percentage or fixed discounts, and configurable tax rates. Notes, shipping, and payment terms are also supported. Generate invoice for free with all the features you need."
             />
             <FAQItem
               question="How does sharing work?"
-              answer="Our free invoice generator lets you create a secure public link and share it directly with your client. Only people with the link can view the invoice — it's fast, private, and included free."
+              answer="Our free invoice generator lets you create a secure public link and share it directly with your client. Only people with the link can view the invoice. It's fast, private, and included free."
             />
             <FAQItem
               question="Which languages are supported?"
@@ -468,7 +469,7 @@ export default function LandingPage() {
             />
             <FAQItem
               question="How is this different from other free invoice generators?"
-              answer="Invoice-Quickly stands out with real-time live preview, 20+ language support (including RTL), zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports — all 100% free. Most other free invoice generators add watermarks or limit features."
+              answer="Invoice-Quickly stands out with real-time live preview, 20+ language support (including RTL), zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports, all 100% free. Most other free invoice generators add watermarks or limit features."
             />
           </div>
         </div>
