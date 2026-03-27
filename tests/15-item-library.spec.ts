@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { mockSupabaseUser, seedAuthenticatedSession } from "./helpers/auth";
 
 test.describe('Module: Item Library Management UI', () => {
@@ -12,7 +12,7 @@ test.describe('Module: Item Library Management UI', () => {
     await page.goto('/dashboard/items');
     
     // Heading
-    await expect(page.getByRole('heading', { name: /Item Library/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /^Library$/i })).toBeVisible();
     
     // New Item Button
     const createBtn = page.getByRole('button', { name: /New Item/i }).first();
@@ -40,7 +40,7 @@ test.describe('Module: Item Library Management UI', () => {
     await expect(page.getByText('Save your frequently billed products or services to speed up invoice creation.')).toBeVisible();
     
     // Empty state has its own Create Item button
-    const emptyStateBtn = page.getByRole('button', { name: /Create Item/i });
+    const emptyStateBtn = page.getByRole('button', { name: /New Item/i }).last();
     await expect(emptyStateBtn).toBeVisible();
     await emptyStateBtn.click();
     
