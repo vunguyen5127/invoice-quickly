@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies, deleteCompany } from "./actions";
@@ -18,7 +18,7 @@ import { UpgradeModal } from "@/components/upgrade-modal";
 
 import { useAuth } from "@/contexts/auth-context";
 
-export default function Dashboard() {
+function DashboardContent() {
   const { t } = useLanguage();
   const { session, loading: authLoading } = useAuth();
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -410,5 +410,13 @@ export default function Dashboard() {
         isProcessing={isDeleting}
       />
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<DashboardSkeleton />}>
+      <DashboardContent />
+    </Suspense>
   );
 }
