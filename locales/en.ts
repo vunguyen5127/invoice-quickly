@@ -219,7 +219,9 @@ export const en = {
   unknownClient: "Unknown Client",
   unknown: "Unknown",
 
-  // Items Library
+  // Items & Clients Library
+  library: "Library",
+  libraryDesc: "Manage your saved items and clients for quick invoicing.",
   itemLibraryDesc: "Manage your products and services for quick invoicing.",
   createItem: "Create Item",
   newItem: "New Item",
@@ -239,6 +241,18 @@ export const en = {
   deleteItemConfirm: "Are you sure you want to delete this item? This action cannot be undone.",
   items: "items",
   invoiced: "Invoiced",
+  
+  clients: "Clients",
+  newClient: "New Client",
+  searchClients: "Search clients by name, email or phone...",
+  emptyClientsLibrary: "Your clients library is empty",
+  saveClientsSpeed: "Save your frequently billed clients to speed up invoice creation.",
+  contactInfo: "Contact Info",
+  editClient: "Edit Client",
+  deleteClient: "Delete Client",
+  deleteClientConfirm: "Are you sure you want to delete this client? This action cannot be undone.",
+  noClientsMatching: "No clients found matching",
+  saveClient: "Save Client",
 
   // Analytics
   financialBreakdown: "Financial breakdown and document performance.",
