@@ -79,7 +79,7 @@ export default function PricingPage() {
   const comparisons = [
     { feature: "Invoice & Quote creation", free: true, pro: true },
     { feature: "Advanced branding (logo, colors)", free: true, pro: true },
-    { feature: "Invoices & Quotes per month", free: "15", pro: "500" },
+    { feature: "Invoices & Quotes per month", free: "50", pro: "500" },
     { feature: "Library (Saved clients)", free: "5", pro: "Unlimited" },
     { feature: "Library (Saved items)", free: "10", pro: "Unlimited" },
     { feature: "Companies", free: "1", pro: "10" },
@@ -162,7 +162,7 @@ export default function PricingPage() {
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Includes</p>
             {[
               "1 Company",
-              "15 Invoices & Quotes / month",
+              "50 Invoices & Quotes / month",
               "Save up to 5 Clients",
               "Save up to 10 Items",
               "Create Invoices & Quotes",

@@ -46,9 +46,15 @@ export function CreateClientModal({ isOpen, onClose, onSuccess }: CreateClientMo
       setAddress("");
       setPhone("");
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to create client.");
+      if (error.message?.includes("CLIENT_LIMIT_REACHED")) {
+        alert("You have reached the maximum number of saved clients for the Free plan (5). Please upgrade to Pro to save unlimited clients.");
+        onClose(); // Optional: close it if they need to upgrade
+        // TODO: better to trigger onShowUpgrade if it was passed down, but alert works for now.
+      } else {
+        alert("Failed to create client.");
+      }
     } finally {
       setIsSubmitting(false);
     }

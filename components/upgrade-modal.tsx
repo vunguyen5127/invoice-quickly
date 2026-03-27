@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { X, Crown, Check, Loader2, Shield } from "lucide-react";
-import { supabase } from "@/utils/supabase/client";
 import { createCheckout, getBillingProviderName } from "@/app/pricing/actions";
+import { supabase } from "@/utils/supabase/client";
+import { Check, Crown, Loader2, Shield, X } from "lucide-react";
+import { useState } from "react";
 
 declare global {
   interface Window {
@@ -21,7 +21,7 @@ const TRIGGER_COPY: Record<UpgradeTrigger, { title: string; body: string }> = {
   },
   invoice_limit: {
     title: "You've reached your monthly invoice limit",
-    body: "Free plan includes up to 15 invoices/month. Upgrade to Pro for 500 invoices/month and no ads.",
+    body: "Free plan includes up to 50 invoices/month. Upgrade to Pro for 500 invoices/month and no ads.",
   },
   recurring: {
     title: "Recurring Invoices are a Pro feature",
@@ -36,17 +36,21 @@ const TRIGGER_COPY: Record<UpgradeTrigger, { title: string; body: string }> = {
     body: "Export your invoices to CSV for easy accounting. Upgrade to Pro to unlock this and more.",
   },
   general: {
-    title: "Unlock the full power of InvoiceQuickly",
+    title: "Unlock the full power of Invoice-Quickly",
     body: "Upgrade to Pro for unlimited companies, invoices, advanced branding, and more.",
   },
 };
 
 const PRO_HIGHLIGHTS = [
   "10 Companies",
-  "500 Invoices / month",
-  "No ads",
-  "Advanced branding",
-  "Priority support",
+  "500 Invoices & Quotes / month",
+  "Unlimited Library Storage",
+  "Advanced Branding (Logo, Colors)",
+  "1-Click Convert Quote to Invoice",
+  "Send Emails & Reminders",
+  "CSV / Excel Exporting",
+  "No Ads",
+  "Priority Support",
 ];
 
 interface UpgradeModalProps {
@@ -96,7 +100,7 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200 border border-zinc-200 dark:border-zinc-800">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200 border border-zinc-200 dark:border-zinc-800 max-h-[90vh] flex flex-col">
         {/* Header with gradient */}
         <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-8 text-center">
           <button
@@ -113,10 +117,10 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
         </div>
 
         {/* Body */}
-        <div className="px-6 py-6">
+        <div className="px-6 py-6 overflow-y-auto">
           {/* Billing toggle */}
           <div className="flex items-center justify-center gap-3 mb-6">
-            <span className={`text-xs font-semibold ${!isYearly ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`}>
+            <span className={`text-base font-bold ${!isYearly ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 transition-colors"}`}>
               $10/mo
             </span>
             <button
@@ -125,7 +129,7 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
             >
               <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${isYearly ? "translate-x-5.5" : "translate-x-0.5"}`} />
             </button>
-            <span className={`text-xs font-semibold ${isYearly ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`}>
+            <span className={`text-base font-bold ${isYearly ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400 transition-colors"}`}>
               $99/yr
             </span>
             {isYearly && (

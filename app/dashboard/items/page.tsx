@@ -14,6 +14,9 @@ import { SavedItem } from "@/types/item";
 import { SavedClient } from "@/types/client";
 import { useAuth } from "@/contexts/auth-context";
 import { useLanguage } from "@/contexts/language-context";
+import { getUserEntitlements } from "@/utils/entitlements";
+import { FREE_ENTITLEMENTS } from "@/types/subscription";
+import { UpgradeModal } from "@/components/upgrade-modal";
 
 export default function ItemsPage() {
   const { session } = useAuth();
@@ -41,6 +44,28 @@ export default function ItemsPage() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 10;
+  
+  const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [upgradeTrigger, setUpgradeTrigger] = useState<"general" | "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export">("general");
+
+  const handleCreateNewClick = () => {
+    if (activeTab === "items") {
+      if (entitlements.maxSavedItems !== null && totalItemsCount >= entitlements.maxSavedItems) {
+        setUpgradeTrigger("general"); // or a specific library trigger if you have one
+        setIsUpgradeModalOpen(true);
+      } else {
+        setIsCreateItemModalOpen(true);
+      }
+    } else {
+      if (entitlements.maxSavedClients !== null && totalClientsCount >= entitlements.maxSavedClients) {
+        setUpgradeTrigger("general");
+        setIsUpgradeModalOpen(true);
+      } else {
+        setIsCreateClientModalOpen(true);
+      }
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 300);
@@ -55,6 +80,8 @@ export default function ItemsPage() {
     if (!session) return;
     try {
       setLoading(true);
+      const ent = await getUserEntitlements(session.access_token);
+      setEntitlements(ent);
       if (activeTab === "items") {
         const { data, totalCount } = await getItems(session.access_token, { page, pageSize, search: debouncedSearch });
         setItems(data);
@@ -125,7 +152,7 @@ export default function ItemsPage() {
         </div>
         
         <button
-          onClick={() => activeTab === "items" ? setIsCreateItemModalOpen(true) : setIsCreateClientModalOpen(true)}
+          onClick={handleCreateNewClick}
           className="hidden sm:flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" />
@@ -178,7 +205,7 @@ export default function ItemsPage() {
             <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{t.emptyLibrary || "Your items library is empty"}</h3>
             <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">{t.saveItemsSpeed || "Save your frequently billed products or services to speed up invoice creation."}</p>
             <button
-              onClick={() => setIsCreateItemModalOpen(true)}
+              onClick={handleCreateNewClick}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25"
             >
               <Plus className="w-5 h-5" />
@@ -247,7 +274,7 @@ export default function ItemsPage() {
             <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{t.emptyClientsLibrary || "Your clients library is empty"}</h3>
             <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">{t.saveClientsSpeed || "Save your frequently billed clients to speed up invoice creation."}</p>
             <button
-              onClick={() => setIsCreateClientModalOpen(true)}
+              onClick={handleCreateNewClick}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25"
             >
               <Plus className="w-5 h-5" />
@@ -370,11 +397,17 @@ export default function ItemsPage() {
 
       {/* Floating Action Button (Mobile Only) */}
       <button
-        onClick={() => activeTab === "items" ? setIsCreateItemModalOpen(true) : setIsCreateClientModalOpen(true)}
+        onClick={handleCreateNewClick}
         className="sm:hidden fixed bottom-24 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40 border-4 border-white dark:border-zinc-950"
       >
         <Plus className="w-7 h-7" />
       </button>
+
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        trigger={upgradeTrigger}
+      />
     </div>
   );
 }

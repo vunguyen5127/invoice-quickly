@@ -14,6 +14,7 @@ import { Tooltip } from "@/components/tooltip";
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import { FREE_ENTITLEMENTS } from "@/types/subscription";
 import { useLanguage } from "@/contexts/language-context";
+import { UpgradeModal } from "@/components/upgrade-modal";
 
 import { useAuth } from "@/contexts/auth-context";
 
@@ -31,10 +32,21 @@ export default function Dashboard() {
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "general">("company_limit");
 
   const router = useRouter();
 
   const PAGE_SIZE = 12;
+
+  const handleCreateCompanyClick = () => {
+    if (entitlements.maxCompanies !== null && companies.length >= entitlements.maxCompanies) {
+      setUpgradeTrigger("company_limit");
+      setIsUpgradeModalOpen(true);
+    } else {
+      setIsModalOpen(true);
+    }
+  };
 
   const loadData = async (showRefreshLoader = false) => {
     if (!session) return;
@@ -125,7 +137,7 @@ export default function Dashboard() {
         
         {/* Desktop Create Button */}
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleCreateCompanyClick}
           className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
         >
           <Plus className="w-4 h-4" />
@@ -160,7 +172,7 @@ export default function Dashboard() {
           <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{t.noCompaniesYet || "No companies yet"}</h3>
           <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">{t.createFirstCompanyDesc || "Create your first company to start generating professional invoices."}</p>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleCreateCompanyClick}
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25"
           >
             <Plus className="w-5 h-5" />
@@ -343,7 +355,7 @@ export default function Dashboard() {
       )}
       
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={handleCreateCompanyClick}
         className="sm:hidden fixed bottom-6 right-4 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-transform z-40 border-4 border-white dark:border-zinc-950"
       >
         <Plus className="w-7 h-7" />
@@ -353,6 +365,12 @@ export default function Dashboard() {
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         onSuccess={handleCompanyCreated} 
+      />
+
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        trigger={upgradeTrigger}
       />
 
       {editingCompany && (

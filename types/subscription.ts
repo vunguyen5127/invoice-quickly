@@ -32,6 +32,7 @@ export interface Entitlements {
   canUseAutoReminders: boolean;
   canUseAdvancedBranding: boolean;
   canUseAdvancedExport: boolean;
+  canConvertQuote: boolean;
 }
 
 export const FREE_ENTITLEMENTS: Entitlements = {
@@ -46,6 +47,7 @@ export const FREE_ENTITLEMENTS: Entitlements = {
   canUseAutoReminders: false,
   canUseAdvancedBranding: true,
   canUseAdvancedExport: false,
+  canConvertQuote: false,
 };
 
 export const PRO_ENTITLEMENTS: Entitlements = {
@@ -60,4 +62,5 @@ export const PRO_ENTITLEMENTS: Entitlements = {
   canUseAutoReminders: true,
   canUseAdvancedBranding: true,
   canUseAdvancedExport: true,
+  canConvertQuote: true,
 };

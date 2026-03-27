@@ -62,6 +62,16 @@ export async function createItem(token: string, name: string, rate: number): Pro
     throw new Error("Unauthorized");
   }
 
+  // ── Entitlement guard: check item limit ──
+  const { getUserEntitlements, getUserItemCount } = await import("@/utils/entitlements");
+  const entitlements = await getUserEntitlements(token);
+  if (entitlements.maxSavedItems !== null) {
+    const count = await getUserItemCount(token);
+    if (count >= entitlements.maxSavedItems) {
+      throw new Error("ITEM_LIMIT_REACHED");
+    }
+  }
+
   const { data, error } = await supabase
     .from("items")
     .insert([{
@@ -176,6 +186,16 @@ export async function createSavedClient(
 
   if (!user) {
     throw new Error("Unauthorized");
+  }
+
+  // ── Entitlement guard: check client limit ──
+  const { getUserEntitlements, getUserClientCount } = await import("@/utils/entitlements");
+  const entitlements = await getUserEntitlements(token);
+  if (entitlements.maxSavedClients !== null) {
+    const count = await getUserClientCount(token);
+    if (count >= entitlements.maxSavedClients) {
+      throw new Error("CLIENT_LIMIT_REACHED");
+    }
   }
 
   const { data, error } = await supabase

@@ -62,19 +62,27 @@ export async function getMonthlyInvoiceCount(token: string, userId: string): Pro
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-  const { count, error } = await supabase
+  const { count: invoiceCount, error: invError } = await supabase
     .from("invoices")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId)
-    .gte("created_at", startOfMonth)
-    .is("deleted_at", null);
+    .gte("created_at", startOfMonth);
 
-  if (error) {
-    console.error("Error counting monthly invoices:", error);
-    return 0;
+  if (invError) {
+    console.error("Error counting monthly invoices:", invError);
   }
 
-  return count || 0;
+  const { count: quoteCount, error: quoteError } = await supabase
+    .from("quotes")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .gte("created_at", startOfMonth);
+
+  if (quoteError) {
+    console.error("Error counting monthly quotes:", quoteError);
+  }
+
+  return (invoiceCount || 0) + (quoteCount || 0);
 }
 
 /**
@@ -93,6 +101,50 @@ export async function getUserCompanyCount(token: string): Promise<number> {
 
   if (error) {
     console.error("Error counting companies:", error);
+    return 0;
+  }
+
+  return count || 0;
+}
+
+/**
+ * Server action: count how many clients the user has saved.
+ */
+export async function getUserClientCount(token: string): Promise<number> {
+  const supabase = getServerSupabase(token);
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return 0;
+
+  const { count, error } = await supabase
+    .from("clients")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Error counting clients:", error);
+    return 0;
+  }
+
+  return count || 0;
+}
+
+/**
+ * Server action: count how many items the user has saved.
+ */
+export async function getUserItemCount(token: string): Promise<number> {
+  const supabase = getServerSupabase(token);
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return 0;
+
+  const { count, error } = await supabase
+    .from("items")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Error counting items:", error);
     return 0;
   }
 

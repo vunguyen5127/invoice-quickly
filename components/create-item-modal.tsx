@@ -35,9 +35,14 @@ export function CreateItemModal({ isOpen, onClose, onSuccess }: CreateItemModalP
       setName("");
       setRate("");
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to create item.");
+      if (error.message?.includes("ITEM_LIMIT_REACHED")) {
+        alert("You have reached the maximum number of saved items for the Free plan (10). Please upgrade to Pro to save unlimited items.");
+        onClose();
+      } else {
+        alert("Failed to create item.");
+      }
     } finally {
       setIsSubmitting(false);
     }

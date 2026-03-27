@@ -13,6 +13,7 @@ import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
+import { UpgradeModal } from "@/components/upgrade-modal";
 
 export default function QuoteEditor({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -24,6 +25,8 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
   const [saving, setSaving] = useState(false);
   const [converting, setConverting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general">("general");
 
   useEffect(() => {
     const initQuote = async () => {
@@ -146,6 +149,11 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
 
     setSaving(false);
     if (!res.success) {
+      if (res.error === "INVOICE_LIMIT_REACHED") {
+        setUpgradeTrigger("invoice_limit");
+        setIsUpgradeModalOpen(true);
+        return;
+      }
       alert("Error saving quote: " + (res.error || "Unknown error"));
       console.error(res);
       return;
@@ -165,8 +173,12 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
       const res = await convertQuoteToInvoice(session.access_token, quote.id);
       if (res.success && res.invoiceId) {
         router.push(`/invoice/${res.invoiceId}/edit`);
+      } else if (res.error === "CONVERT_QUOTE_LIMIT_REACHED") {
+        alert("The '1-Click Convert to Invoice' feature is only available on the Pro plan. Please upgrade to use this feature.");
       } else if (res.invoiceId) {
         router.push(`/invoice/${res.invoiceId}/edit`); // was already invoiced
+      } else {
+        alert(res.error || "Failed to convert quote");
       }
     }
     setConverting(false);
@@ -337,6 +349,11 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
           </button>
         </div>
       </div>
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        trigger={upgradeTrigger}
+      />
     </div>
   );
 }

@@ -75,7 +75,13 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     });
     setIsSubmitting(false);
 
-    if (newCompany) {
+    if (newCompany && newCompany.error === "COMPANY_LIMIT_REACHED") {
+      alert("You have reached the maximum number of companies allowed for your plan. Please upgrade to Pro to create unlimited companies.");
+      onClose();
+      return;
+    }
+
+    if (newCompany && !newCompany.error) {
       onSuccess(newCompany);
       // Reset form
       setName(""); setEmail(""); setPhone(""); setAddress("");

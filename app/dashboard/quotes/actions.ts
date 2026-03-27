@@ -77,6 +77,16 @@ export async function createQuote(token: string, quoteData: any) {
     quoteNumber = await getNextQuoteNumber(token, quoteData.companyId);
   }
 
+  // ── Entitlement guard: check monthly document limit ──
+  const { getUserEntitlements, getMonthlyInvoiceCount } = await import("@/utils/entitlements");
+  const entitlements = await getUserEntitlements(token);
+  if (entitlements.maxInvoicesPerMonth !== null) {
+    const monthlyCount = await getMonthlyInvoiceCount(token, user.id);
+    if (monthlyCount >= entitlements.maxInvoicesPerMonth) {
+      return { success: false, error: "INVOICE_LIMIT_REACHED" };
+    }
+  }
+
   const payload = {
     user_id: user.id,
     company_id: quoteData.companyId,
@@ -243,6 +253,13 @@ export async function convertQuoteToInvoice(token: string, quoteId: string) {
   const supabase = getServerSupabase(token);
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { success: false, error: 'Unauthenticated' };
+
+  // ── Entitlement guard: check feature access ──
+  const { getUserEntitlements } = await import("@/utils/entitlements");
+  const entitlements = await getUserEntitlements(token);
+  if (!entitlements.canConvertQuote) {
+    return { success: false, error: "CONVERT_QUOTE_LIMIT_REACHED" };
+  }
 
   // 1. Fetch the quote
   const { data: quote, error: quoteError } = await supabase
