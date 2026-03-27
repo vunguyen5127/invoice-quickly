@@ -25,6 +25,8 @@ export interface Entitlements {
   status: SubscriptionStatus;
   maxCompanies: number | null;       // null = unlimited
   maxInvoicesPerMonth: number | null; // null = unlimited
+  maxSavedClients: number | null;
+  maxSavedItems: number | null;
   adsEnabled: boolean;
   canUseRecurring: boolean;
   canUseAutoReminders: boolean;
@@ -37,6 +39,8 @@ export const FREE_ENTITLEMENTS: Entitlements = {
   status: 'free',
   maxCompanies: 1,
   maxInvoicesPerMonth: 50,
+  maxSavedClients: 5,
+  maxSavedItems: 10,
   adsEnabled: true,
   canUseRecurring: false,
   canUseAutoReminders: false,
@@ -49,6 +53,8 @@ export const PRO_ENTITLEMENTS: Entitlements = {
   status: 'active',
   maxCompanies: 10,
   maxInvoicesPerMonth: 500,
+  maxSavedClients: null,
+  maxSavedItems: null,
   adsEnabled: false,
   canUseRecurring: true,
   canUseAutoReminders: true,

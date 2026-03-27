@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Check, X, ArrowRight, Loader2, Shield, CreditCard, Infinity, Crown, Sparkles } from "lucide-react";
-import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
+import { ArrowRight, Check, CreditCard, Crown, Infinity, Loader2, Shield, Sparkles, X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { createCheckout, getBillingProviderName } from "./actions";
 
 declare global {
@@ -77,12 +77,15 @@ export default function PricingPage() {
   const yearlyPrice = 99;
 
   const comparisons = [
-    { feature: "Invoice creation & download", free: true, pro: true },
-    { feature: "Public invoice sharing", free: true, pro: true },
-    { feature: "Companies", free: "1", pro: "Unlimited" },
-    { feature: "Invoices per month", free: "15", pro: "500" },
+    { feature: "Invoice & Quote creation", free: true, pro: true },
+    { feature: "Advanced branding (logo, colors)", free: true, pro: true },
+    { feature: "Invoices & Quotes per month", free: "15", pro: "500" },
+    { feature: "Library (Saved clients)", free: "5", pro: "Unlimited" },
+    { feature: "Library (Saved items)", free: "10", pro: "Unlimited" },
+    { feature: "Companies", free: "1", pro: "10" },
     { feature: "Ads", free: "Yes", pro: "None" },
-    { feature: "Advanced branding (logo, colors)", free: false, pro: true },
+    { feature: "1-Click convert Quote to Invoice", free: false, pro: true },
+    { feature: "Send Emails & Reminders", free: false, pro: true },
     { feature: "CSV / Excel export", free: false, pro: true },
     { feature: "Priority support", free: false, pro: true },
   ];
@@ -159,10 +162,11 @@ export default function PricingPage() {
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Includes</p>
             {[
               "1 Company",
-              "15 Invoices / month",
-              "Invoice creation & download",
-              "Public invoice sharing",
-              "Standard templates",
+              "15 Invoices & Quotes / month",
+              "Save up to 5 Clients",
+              "Save up to 10 Items",
+              "Create Invoices & Quotes",
+              "Advanced Branding (Logo, Colors)",
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
@@ -232,9 +236,11 @@ export default function PricingPage() {
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Everything in Free, plus</p>
             {[
               "10 Companies (Fair Use)",
-              "500 Invoices / month",
+              "500 Invoices & Quotes / month",
+              "Unlimited Library Storage",
+              "1-Click convert Quote to Invoice",
+              "Send Emails & Reminders",
               "No Advertising",
-              "Advanced Branding (Logo, Colors)",
               "CSV / Excel Exporting",
               "Priority Support",
             ].map((item, i) => (
