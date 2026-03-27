@@ -70,6 +70,8 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
     if (!supabase) return;
     setIsLoading(true);
 
+    let success = false;
+    let provider = "";
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -78,7 +80,7 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
       }
 
       const result = await createCheckout(session.access_token, isYearly);
-      const provider = await getBillingProviderName();
+      provider = await getBillingProviderName();
 
       if (provider === "paddle" && result.transactionId && window.Paddle) {
         window.Paddle.Checkout.open({
@@ -88,13 +90,17 @@ export function UpgradeModal({ isOpen, onClose, trigger = "general" }: UpgradeMo
             displayMode: "overlay",
           },
         });
+        success = true;
       } else if (provider === "lemon" && result.checkoutUrl) {
         window.location.href = result.checkoutUrl;
+        success = true;
       }
     } catch (err) {
       console.error("Failed to open checkout:", err);
     } finally {
-      setIsLoading(false);
+      if (!success || provider === "paddle") {
+        setIsLoading(false);
+      }
     }
   };
 

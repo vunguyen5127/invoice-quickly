@@ -40,6 +40,7 @@ export default function PricingPage() {
   const handleUpgrade = async () => {
     if (!supabase) return;
     setIsLoading(true);
+    let success = false;
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { 
@@ -58,9 +59,11 @@ export default function PricingPage() {
             displayMode: "overlay" 
           },
         });
+        success = true;
       } else if (billingProvider === "lemon" && result.checkoutUrl) {
         // Lemon Squeezy: redirect to hosted checkout
         window.location.href = result.checkoutUrl;
+        success = true;
       } else {
         throw new Error("No checkout result returned");
       }
@@ -68,7 +71,9 @@ export default function PricingPage() {
       console.error("Failed to open checkout:", err); 
       alert(err.message || "Failed to initialize checkout. Please try again.");
     } finally { 
-      setIsLoading(false); 
+      if (!success || billingProvider === "paddle") {
+        setIsLoading(false); 
+      }
     }
   };
 
