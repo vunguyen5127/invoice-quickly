@@ -210,6 +210,7 @@ export const fr: Translations = {
   noQuotesFound: "Aucun devis trouvé",
   createFirstQuote: "Créez votre premier devis pour commencer à estimer des projets.",
   quote: "Devis",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Client",
   amount: "Montant",
   actions: "Actions",

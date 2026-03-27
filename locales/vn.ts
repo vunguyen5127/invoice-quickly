@@ -215,6 +215,7 @@ export const vn: Translations = {
   noQuotesFound: "Không tìm thấy báo giá nào",
   createFirstQuote: "Tạo báo giá đầu tiên để bắt đầu ước tính dự án.",
   quote: "Báo giá",
+  quoteNote: "Tài liệu này là bảng báo giá chính thức, không có giá trị thay thế hóa đơn tài chính.",
   client: "Khách hàng",
   amount: "Số tiền",
   actions: "Hành động",

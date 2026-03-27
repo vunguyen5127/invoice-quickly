@@ -210,6 +210,7 @@ export const ko: Translations = {
   noQuotesFound: "견적을 찾을 수 없습니다",
   createFirstQuote: "프로젝트 견적을 시작하려면 첫 번째 견적서를 만드세요.",
   quote: "견적",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "고객",
   amount: "금액",
   actions: "작업",

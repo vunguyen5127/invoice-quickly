@@ -210,6 +210,7 @@ export const it: Translations = {
   noQuotesFound: "Nessun preventivo trovato",
   createFirstQuote: "Crea il tuo primo preventivo per iniziare a stimare i progetti.",
   quote: "Preventivo",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Cliente",
   amount: "Importo",
   actions: "Azioni",

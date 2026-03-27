@@ -210,6 +210,7 @@ export const th: Translations = {
   noQuotesFound: "ไม่พบใบเสนอราคา",
   createFirstQuote: "สร้างใบเสนอราคาแรกของคุณเพื่อเริ่มการประเมินราคาโครงการ",
   quote: "ใบเสนอราคา",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "ลูกค้า",
   amount: "จำนวนเงิน",
   actions: "การดำเนินการ",

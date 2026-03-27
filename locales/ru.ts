@@ -210,6 +210,7 @@ export const ru: Translations = {
   noQuotesFound: "Предложения не найдены",
   createFirstQuote: "Создайте свое первое предложение, чтобы начать расчеты по проектам.",
   quote: "Предложение",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Клиент",
   amount: "Сумма",
   actions: "Действия",

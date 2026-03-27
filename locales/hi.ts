@@ -210,6 +210,7 @@ export const hi: Translations = {
   noQuotesFound: "कोई कोटेशन नहीं मिला",
   createFirstQuote: "प्रोजेक्ट अनुमान शुरू करने के लिए अपना पहला कोटेशन बनाएं।",
   quote: "कोटेशन",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "ग्राहक",
   amount: "राशि",
   actions: "कार्रवाई",

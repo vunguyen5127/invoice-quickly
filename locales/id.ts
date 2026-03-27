@@ -210,6 +210,7 @@ export const id: Translations = {
   noQuotesFound: "Penawaran tidak ditemukan",
   createFirstQuote: "Buat penawaran pertama Anda untuk mulai mengestimasi proyek.",
   quote: "Penawaran",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Klien",
   amount: "Jumlah",
   actions: "Tindakan",

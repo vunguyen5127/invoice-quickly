@@ -210,6 +210,7 @@ export const ja: Translations = {
   noQuotesFound: "見積書が見つかりません",
   createFirstQuote: "最初の見積書を作成して、プロジェクトの見積もりを開始しましょう。",
   quote: "見積書",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "顧客",
   amount: "金額",
   actions: "操作",

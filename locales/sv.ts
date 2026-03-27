@@ -210,6 +210,7 @@ export const sv: Translations = {
   noQuotesFound: "Inga offerter hittades",
   createFirstQuote: "Skapa din första offert för att börja estimera projekt.",
   quote: "Offert",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Kund",
   amount: "Belopp",
   actions: "Åtgärder",

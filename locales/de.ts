@@ -210,6 +210,7 @@ export const de: Translations = {
   noQuotesFound: "Keine Angebote gefunden",
   createFirstQuote: "Erstellen Sie Ihr erstes Angebot, um Project-Kalkulationen zu starten.",
   quote: "Angebot",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Kunde",
   amount: "Betrag",
   actions: "Aktionen",

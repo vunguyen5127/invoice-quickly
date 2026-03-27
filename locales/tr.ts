@@ -210,6 +210,7 @@ export const tr: Translations = {
   noQuotesFound: "Teklif bulunamadı",
   createFirstQuote: "Proje tahminlerine başlamak için ilk teklifinizi oluşturun.",
   quote: "Teklif",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Müşteri",
   amount: "Tutar",
   actions: "İşlemler",

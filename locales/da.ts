@@ -210,6 +210,7 @@ export const da: Translations = {
   noQuotesFound: "Ingen tilbud fundet",
   createFirstQuote: "Opret dit første tilbud for at begynde at estimere projekter.",
   quote: "Tilbud",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Kunde",
   amount: "Beløb",
   actions: "Handlinger",

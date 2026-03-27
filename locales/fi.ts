@@ -210,6 +210,7 @@ export const fi: Translations = {
   noQuotesFound: "Tarjouksia ei löytynyt",
   createFirstQuote: "Luo ensimmäinen tarjouksesi aloittaaksesi projektien arvioinnin.",
   quote: "Tarjous",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Asiakas",
   amount: "Summa",
   actions: "Toiminnot",

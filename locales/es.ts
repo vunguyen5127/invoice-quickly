@@ -210,6 +210,7 @@ export const es: Translations = {
   noQuotesFound: "No se encontraron cotizaciones",
   createFirstQuote: "Cree su primera cotización para comenzar a estimar proyectos.",
   quote: "Cotización",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Cliente",
   amount: "Monto",
   actions: "Acciones",

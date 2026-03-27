@@ -210,6 +210,7 @@ export const ar: Translations = {
   noQuotesFound: "لم يتم العثور على عروض أسعار",
   createFirstQuote: "أنشئ عرض سعرك الأول لبدء تقدير المشاريع.",
   quote: "عرض سعر",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "العميل",
   amount: "المبلغ",
   actions: "الإجراءات",

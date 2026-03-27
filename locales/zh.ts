@@ -210,6 +210,7 @@ export const zh: Translations = {
   noQuotesFound: "未找到报价",
   createFirstQuote: "创建您的第一份报价以开始估算项目。",
   quote: "报价",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "客户",
   amount: "金额",
   actions: "操作",

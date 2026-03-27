@@ -1,4 +1,4 @@
-import { CompanyDetails, ClientDetails, InvoiceItem } from './invoice';
+import { ClientDetails, CompanyDetails, InvoiceItem } from './invoice';
 
 export type QuoteStatus = 'draft' | 'sent' | 'accepted' | 'rejected' | 'invoiced';
 
@@ -42,13 +42,13 @@ export interface QuoteState {
 
 export const initialQuoteState: QuoteState = {
   company: {
-    name: "",
+    name: "Invoice-Quickly LLC, 742 Evergreen Ave Suite 200, San Francisco CA 94107, vu@invoice-quickly.com, +1 (123) 456-7890",
     email: "",
     address: "",
     phone: ""
   },
   client: {
-    name: "",
+    name: "Greenfield Properties LLC, 1200 Market Street, Floor 8 New York, NY 10001, ap@greenfieldproperties.com, +1(321) 555-7799",
     email: "",
     address: "",
     phone: ""
@@ -59,14 +59,8 @@ export const initialQuoteState: QuoteState = {
     dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // Valid for 30 days
   },
   items: [
-    {
-      id: "1",
-      description: "",
-      quantity: 1,
-      rate: 0,
-    }
   ],
-  taxRate: 0,
+  taxRate: 10,
   taxLabel: "",
   discount: 0,
   discountLabel: "",
@@ -74,8 +68,8 @@ export const initialQuoteState: QuoteState = {
   taxType: 'percentage',
   shipping: 0,
   shippingLabel: "",
-  notes: "",
-  terms: "",
+  notes: "Thank you for the opportunity to quote. We look forward to working with you.",
+  terms: "This quote is valid for 30 days. Prices are subject to change after expiration.",
   currency: "USD",
   signature: "",
   signatureName: "",

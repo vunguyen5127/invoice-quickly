@@ -212,6 +212,7 @@ export const en = {
   noQuotesFound: "No quotes found",
   createFirstQuote: "Create your first quote to get started estimating projects.",
   quote: "Quote",
+  quoteNote: "This document is a formal quotation and does not serve as a tax invoice.",
   client: "Client",
   amount: "Amount",
   actions: "Actions",

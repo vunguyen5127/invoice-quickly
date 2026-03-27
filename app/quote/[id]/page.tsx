@@ -20,62 +20,97 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
   const isNew = resolvedParams.id === "new";
   const [quote, setQuote] = useState<any>(initialQuoteState);
   const [companyId, setCompanyId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(!isNew);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [converting, setConverting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setIsMounted(true));
-    });
-    if (!isNew) {
-      fetchQuote();
-    } else {
-      // Auto-fill company if passed via query params (using searchParams hook normally, 
-      // but keeping it simple for now)
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlCompId = urlParams.get('company');
-      if (urlCompId) {
-         setCompanyId(urlCompId);
-      }
-    }
-  }, [resolvedParams.id]);
-
-  // Auto-increment Quote Number when company is selected for new quotes
-  useEffect(() => {
-    const fetchNextQuoteNum = async () => {
+    const initQuote = async () => {
       if (!supabase) return;
-      if (isNew && companyId && (quote.details.quoteNumber === "EST-2026-001" || quote.details.quoteNumber === `EST-${new Date().getFullYear()}-001`)) {
-        const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!isNew) {
         if (session) {
-          try {
-            const nextNum = await getNextQuoteNumber(session.access_token, companyId);
-            setQuote((prev: any) => ({
-              ...prev,
-              details: { ...prev.details, quoteNumber: nextNum }
-            }));
-          } catch (error) {
-            console.error("Failed to fetch next quote number", error);
+          const data = await getQuote(session.access_token, resolvedParams.id);
+          if (data && data.data) {
+            setQuote({ ...data.data, id: data.id, status: data.status, invoice_id: data.invoice_id });
+            if (data.company_id) setCompanyId(data.company_id);
           }
         }
-      }
-    };
-    fetchNextQuoteNum();
-  }, [companyId, isNew]);
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        let targetCompId = urlParams.get('company');
 
-  const fetchQuote = async () => {
-    if (!supabase) return;
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-      const data = await getQuote(session.access_token, resolvedParams.id);
-      if (data && data.data) {
-        setQuote({ ...data.data, id: data.id, status: data.status, invoice_id: data.invoice_id });
-        if (data.company_id) setCompanyId(data.company_id);
+        let draftQuote = initialQuoteState;
+        
+        if (session) {
+          try {
+            const { getUserCompanies } = await import("@/app/dashboard/actions");
+            const res = await getUserCompanies(session.access_token);
+            const comps = res.data || [];
+            
+            if (!targetCompId && comps.length === 1) {
+               targetCompId = comps[0].id;
+            }
+
+            if (targetCompId && comps.length > 0) {
+               const autoCompany = comps.find((c: any) => c.id === targetCompId);
+               if (autoCompany) {
+                 setCompanyId(autoCompany.id);
+
+                 let companyData = { name: "", email: "", address: "", phone: "", logo: "" };
+                 const tmpDetails = [];
+                 if (autoCompany.name) tmpDetails.push(autoCompany.name);
+                 if (autoCompany.address) tmpDetails.push(autoCompany.address);
+                 if (autoCompany.email) tmpDetails.push(autoCompany.email);
+                 if (autoCompany.phone) tmpDetails.push(autoCompany.phone);
+                 
+                 companyData = {
+                   ...companyData,
+                   name: tmpDetails.join(", "),
+                   logo: autoCompany.logo_url || "",
+                 };
+
+                 const taxRate = autoCompany.default_tax !== null && autoCompany.default_tax !== undefined ? autoCompany.default_tax : 0;
+                 const discount = autoCompany.default_discount !== null && autoCompany.default_discount !== undefined ? autoCompany.default_discount : 0;
+
+                 draftQuote = {
+                   ...draftQuote,
+                   company: companyData,
+                   signatureName: autoCompany.signer_name || "",
+                   signature: autoCompany.signature_url || "",
+                   currency: autoCompany.default_currency || initialQuoteState.currency,
+                   notes: autoCompany.default_notes || initialQuoteState.notes,
+                   terms: autoCompany.default_terms || initialQuoteState.terms,
+                   taxRate,
+                   discount
+                 };
+
+                 // Async fetch next number non-blockingly
+                 getNextQuoteNumber(session.access_token, autoCompany.id).then((num: string) => {
+                    setQuote((prev: any) => ({
+                      ...prev,
+                      details: { ...prev.details, quoteNumber: num }
+                    }));
+                 }).catch(console.error);
+               }
+            }
+          } catch(e) {
+            console.error("Failed to prepopulate quote company", e);
+          }
+        }
+        setQuote(draftQuote);
       }
-    }
-    setLoading(false);
-  };
+      
+      setLoading(false);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setIsMounted(true));
+      });
+    };
+
+    initQuote();
+  }, [resolvedParams.id, isNew]);
 
   const handleSave = async () => {
     if (!companyId) {
@@ -195,7 +230,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
               <button 
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 px-4 h-10 rounded-xl font-semibold text-sm shadow-sm bg-green-600 text-white hover:opacity-90 transition-all disabled:opacity-75"
+                className="flex items-center gap-2 px-4 h-10 rounded-xl font-semibold text-sm shadow-sm bg-blue-600 text-white hover:opacity-90 transition-all disabled:opacity-75 shadow-blue-600/20"
               >
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} 
                 <span className="hidden lg:inline">{saving ? 'Saving...' : 'Save Quote'}</span>
@@ -244,14 +279,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
         <div className="flex flex-col xl:flex-row xl:items-start gap-8 pb-32 xl:pb-20">
           
           {/* Left Column: Form */}
-          <div
-            className="w-full flex-1 flex flex-col gap-6 overflow-hidden"
-            style={{
-              width: isMounted ? '100%' : '0%',
-              opacity: isMounted ? 1 : 0,
-              transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease',
-            }}
-          >
+          <div className="w-full flex-1 flex flex-col gap-6 overflow-hidden animate-in fade-in duration-700">
             <div className="flex items-center justify-between h-10">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Editor</h2>
             </div>
@@ -260,20 +288,14 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
                 invoice={quote} 
                 setInvoice={setQuote}
                 docType="quote"
+                defaultCompanyId={companyId || undefined}
                 onCompanySelect={(id) => setCompanyId(id)}
               />
             </div>
           </div>
           
           {/* Right Column: Preview */}
-          <div
-            className="w-full flex-1 xl:sticky xl:top-24 overflow-hidden"
-            style={{
-              width: isMounted ? '100%' : '0%',
-              opacity: isMounted ? 1 : 0,
-              transition: 'width 600ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, opacity 400ms ease 150ms',
-            }}
-          >
+          <div className="w-full flex-1 xl:sticky xl:top-24 overflow-hidden animate-in fade-in duration-700 delay-150 fill-mode-both">
             <div className="h-10 flex items-center mb-6">
               <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 leading-none">Live Preview</h2>
             </div>
@@ -308,7 +330,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex-1 flex items-center justify-center gap-1.5 px-2 py-3 rounded-xl font-bold text-xs bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-75 shadow-lg shadow-green-600/20"
+            className="flex-1 flex items-center justify-center gap-1.5 px-2 py-3 rounded-xl font-bold text-xs bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-75 shadow-lg shadow-blue-600/20"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             {saving ? 'Saving...' : 'Save'}

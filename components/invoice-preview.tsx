@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import { InvoiceState, getCurrencySymbol } from "@/types/invoice";
-import { format } from "date-fns";
 import { useLanguage } from "@/contexts/language-context";
+import { getCurrencySymbol } from "@/types/invoice";
+import { format } from "date-fns";
+import React from "react";
 
 interface InvoicePreviewProps {
   invoice: any;
@@ -85,6 +85,22 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, d
           padding: "12mm 12mm",  // Reduced margins to fit more content
         }}
       >
+        {/* Watermark Background */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+          <span className="text-[90px] md:text-[90px] font-black tracking-[0.1em] text-zinc-900/[0.03] -rotate-45 whitespace-nowrap">
+            Invoice-Quickly
+          </span>
+        </div>
+
+        {/* Quote Header Note */}
+        {docType === 'quote' && (
+          <div className="absolute top-4 left-0 right-0 text-center z-10">
+            <span className="text-zinc-400 italic text-[10px] font-medium tracking-wide">
+              * {(t as any).quoteNote || "This document is a formal quotation and does not serve as a tax invoice."}
+            </span>
+          </div>
+        )}
+
         {/* Top Company Logo/Name Row */}
         <div className="flex justify-between items-start mb-8">
            <div className="space-y-1 flex-1 min-w-0">
