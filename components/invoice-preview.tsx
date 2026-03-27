@@ -88,7 +88,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, d
         {/* Top Company Logo/Name Row */}
         <div className="flex justify-between items-start mb-8">
            <div className="space-y-1 flex-1 min-w-0">
-             <h2 className="text-2xl font-black tracking-tighter uppercase">{invoice.company.name.split(/,|\n/)[0]}</h2>
+             <h2 className="text-2xl font-bold tracking-tight text-zinc-900">{invoice.company.name.split(/,|\n/)[0]}</h2>
              <div className="text-[12px] text-zinc-500 max-w-xs">
                 {invoice.company.name.split(/,|\n/).slice(1).map((line: string, idx: number) => (
                   <p key={idx}>{line.trim()}</p>
@@ -124,7 +124,13 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, d
                <>
                  <p className="font-bold mb-2 uppercase tracking-wide text-zinc-400 text-[11px]">{t.shipTo}</p>
                  <div className="text-zinc-600 space-y-0.5 leading-tight break-words">
-                   <p className="whitespace-pre-wrap">{invoice.client.shipTo}</p>
+                   <p className="font-bold text-zinc-900 text-[15px]">{invoice.client.shipTo.split(/,|\n/)[0] || "-"}</p>
+                   <div className="text-[13px] text-zinc-600">
+                      {invoice.client.shipTo.split(/,|\n/).slice(1).map((line: string, idx: number) => {
+                        const trimmedLine = line.trim();
+                        return trimmedLine ? <p key={idx}>{trimmedLine}</p> : null;
+                      })}
+                   </div>
                  </div>
                </>
              )}
@@ -132,15 +138,18 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, d
 
            {/* Column 3: Invoice Details Block */}
             <div className="flex-1 min-w-0 flex justify-end">
-              <div className="grid grid-cols-[auto_auto] gap-x-5 gap-y-2 text-left">
-                <span className="font-bold whitespace-nowrap">{docType === 'quote' ? 'Quote Number' : t.invoiceNumber}:{"\u00A0"}</span>
-                <span className="text-zinc-600 whitespace-nowrap">#{docType === 'quote' ? invoice.details.quoteNumber : invoice.details.invoiceNumber}</span>
-                
-                <span className="font-bold whitespace-nowrap">{t.issueDate}:{"\u00A0"}</span>
-                <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.issueDate)}</span>
-                
-                <span className="font-bold whitespace-nowrap">{docType === 'quote' ? 'Valid Until' : t.dueDate}:{"\u00A0"}</span>
-                <span className="text-zinc-600 whitespace-nowrap">{formatDate(invoice.details.dueDate)}</span>
+              <div>
+                <p className="font-bold mb-2 uppercase tracking-wide text-transparent text-[11px] select-none pointer-events-none">{"\u00A0"}</p>
+                <div className="grid grid-cols-[auto_auto] gap-x-5 gap-y-2 text-left">
+                  <span className="font-medium text-zinc-500 whitespace-nowrap">{docType === 'quote' ? 'Quote Number' : t.invoiceNumber}:{"\u00A0"}</span>
+                  <span className="font-semibold text-zinc-900 whitespace-nowrap">#{docType === 'quote' ? invoice.details.quoteNumber : invoice.details.invoiceNumber}</span>
+                  
+                  <span className="font-medium text-zinc-500 whitespace-nowrap">{t.issueDate}:{"\u00A0"}</span>
+                  <span className="font-semibold text-zinc-900 whitespace-nowrap">{formatDate(invoice.details.issueDate)}</span>
+                  
+                  <span className="font-medium text-zinc-500 whitespace-nowrap">{docType === 'quote' ? 'Valid Until' : t.dueDate}:{"\u00A0"}</span>
+                  <span className="font-semibold text-zinc-900 whitespace-nowrap">{formatDate(invoice.details.dueDate)}</span>
+                </div>
               </div>
             </div>
         </div>
