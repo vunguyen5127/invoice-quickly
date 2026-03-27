@@ -144,7 +144,7 @@ export default function LandingPage() {
       {/* ══════════════════════════════════════════════
           1. HERO SECTION
       ══════════════════════════════════════════════ */}
-      <section className="relative px-4 pt-16 pb-24 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative px-4 pt-8 md:pt-12 lg:pt-14 pb-24 sm:px-6 lg:px-8 overflow-hidden">
         {/* Glow blobs */}
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
           <div className="h-[520px] w-[960px] rounded-full bg-gradient-to-br from-blue-400/25 via-indigo-300/15 to-violet-300/10 blur-3xl dark:from-blue-600/20 dark:via-indigo-500/10 dark:to-violet-600/10" />
