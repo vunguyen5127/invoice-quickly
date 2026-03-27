@@ -1,10 +1,11 @@
 "use client";
 
 import { getNextInvoiceNumber, getUserCompanies } from "@/app/dashboard/actions";
-import { getItems } from "@/app/dashboard/items/actions";
+import { getItems, getSavedClients } from "@/app/dashboard/items/actions";
 import { useLanguage } from "@/contexts/language-context";
 import { CURRENCIES, InvoiceItem, InvoiceState, RecurringInterval } from "@/types/invoice";
 import { SavedItem } from "@/types/item";
+import { SavedClient } from "@/types/client";
 import { convertToWebP } from "@/utils/image-utils";
 import { supabase } from "@/utils/supabase/client";
 import { format, parseISO } from "date-fns";
@@ -28,6 +29,9 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   const { t } = useLanguage();
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [myItems, setMyItems] = useState<SavedItem[]>([]);
+  const [myClients, setMyClients] = useState<SavedClient[]>([]);
+  const [showClientDropdown, setShowClientDropdown] = useState(false);
+  const clientDropdownRef = useRef<HTMLFieldSetElement>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
   const [focusedItemIndex, setFocusedItemIndex] = useState<number | null>(null);
 
@@ -36,6 +40,18 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       setSelectedCompanyId(defaultCompanyId);
     }
   }, [defaultCompanyId]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (clientDropdownRef.current && !clientDropdownRef.current.contains(event.target as Node)) {
+        setShowClientDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const applyCompanyData = async (selectedId: string, availableCompanies: any[]) => {
     if (!selectedId) return;
@@ -97,13 +113,15 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       if (!session) return;
       
       try {
-        const [companiesResult, itemsResult] = await Promise.all([
+        const [companiesResult, itemsResult, clientsResult] = await Promise.all([
           getUserCompanies(session.access_token),
-          getItems(session.access_token, { pageSize: 50 })
+          getItems(session.access_token, { pageSize: 50 }),
+          getSavedClients(session.access_token, { pageSize: 50 })
         ]);
         const fetchedCompanies = companiesResult.data || [];
         setMyCompanies(fetchedCompanies);
         setMyItems(itemsResult.data || []);
+        setMyClients(clientsResult.data || []);
       } catch (e) {
         console.error("Failed to fetch data for auto-fill", e);
       }
@@ -115,6 +133,31 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   const handleCompanyAutoFill = (e: React.ChangeEvent<HTMLSelectElement>) => {
     applyCompanyData(e.target.value, myCompanies);
   };
+
+  const handleClientSelect = (client: SavedClient) => {
+    const details = [];
+    if (client.name) details.push(client.name);
+    if (client.address) details.push(client.address);
+    if (client.email) details.push(client.email);
+    if (client.phone) details.push(client.phone);
+    
+    const combinedDetails = details.filter(Boolean).join(", ");
+    handleSectionChange('client', 'name', combinedDetails);
+    setShowClientDropdown(false);
+  };
+  
+  const filteredClients = myClients.filter(c => {
+    const query = (invoice.client.name || '').toLowerCase();
+    if (!query) return true; // Show all by default
+    
+    // Check if the current value precisely matches this client's details so we don't show suggestion
+    const exactDetails = [c.name, c.address, c.email, c.phone].filter(Boolean).join(", ").toLowerCase();
+    if (query === exactDetails) return false; // Hide if user has already selected this client
+    
+    return c.name.toLowerCase().includes(query) || 
+           c.email?.toLowerCase().includes(query) || 
+           c.phone?.toLowerCase().includes(query);
+  }).slice(0, 5); // Limit to top 5
   
   const handleSectionChange = (section: keyof InvoiceState, field: string, value: any) => {
     setInvoice((prev: any) => ({
@@ -430,12 +473,14 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
           {/* To Section */}
           <div className="space-y-6">
-            <h4 className="text-[14px] font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
-              <User className="w-4 h-4 text-emerald-500" />
-              {t.toClientDetails}
-            </h4>
+            <div className="flex items-center mb-3 h-[32px]">
+              <h4 className="text-[14px] font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-2">
+                <User className="w-4 h-4 text-emerald-500" />
+                {t.toClientDetails}
+              </h4>
+            </div>
             <div className="space-y-4">
-              <fieldset className={`${fieldsetBaseClass} ${!invoice.client.name ? fieldsetBorderRequired : fieldsetBorderDefault}`}>
+              <fieldset className={`${fieldsetBaseClass} ${!invoice.client.name ? fieldsetBorderRequired : fieldsetBorderDefault}`} style={{ zIndex: showClientDropdown ? 50 : 1 }} ref={clientDropdownRef}>
                 <legend className={legendClass}>{`${t.clientName}, ${t.clientAddress}, ${t.clientEmail}, ${t.clientPhone}`}</legend>
                 <div className="w-full h-full flex flex-col">
                   <ClearBtn value={invoice.client.name} onClear={() => handleSectionChange('client', 'name', '')} />
@@ -443,9 +488,36 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     placeholder={`${t.clientName}, ${t.clientAddress}, ${t.clientEmail}, ${t.clientPhone}`}
                     className={`${inputInnerClass} resize-y min-h-[80px] mt-1 pr-6 leading-relaxed overflow-y-auto`} 
                     value={invoice.client.name} 
-                    onChange={(e) => handleSectionChange('client', 'name', e.target.value)}
+                    onChange={(e) => {
+                      handleSectionChange('client', 'name', e.target.value);
+                      setShowClientDropdown(true);
+                    }}
+                    onFocus={() => {
+                      if (filteredClients.length > 0) setShowClientDropdown(true);
+                    }}
                     rows={3}
                   />
+                  {/* Autocomplete Dropdown */}
+                  {showClientDropdown && filteredClients.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 max-h-[250px] overflow-y-auto overflow-x-hidden flex flex-col">
+                      <div className="px-3 py-2 text-[11px] font-mon flex items-center gap-2 text-zinc-500 dark:text-zinc-400 bg-zinc-50/50 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800 sticky top-0 z-10 backdrop-blur-md">
+                        <User className="w-3.5 h-3.5" />
+                        <span>{t.autoFillFrom} {t.clients}</span>
+                      </div>
+                      {filteredClients.map((client) => (
+                        <button
+                          key={client.id}
+                          className="w-full text-left px-4 py-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0 transition-colors group relative flex flex-col gap-1"
+                          onClick={() => handleClientSelect(client)}
+                          type="button"
+                        >
+                          <div className="font-semibold text-[13px] text-zinc-900 dark:text-zinc-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate w-full">
+                            {[client.name, client.address, client.email, client.phone].filter(Boolean).join(', ')}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </fieldset>
               
