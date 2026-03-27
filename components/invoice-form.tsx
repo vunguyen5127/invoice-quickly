@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
-import { InvoiceState, InvoiceItem, CURRENCIES, RecurringInterval } from "@/types/invoice";
-import { Plus, Upload, X, Package, PenTool, ChevronDown, ChevronUp, Building2, User, Calendar, Settings, RefreshCw, Repeat2 } from "lucide-react";
+import { getNextInvoiceNumber, getUserCompanies } from "@/app/dashboard/actions";
+import { getItems } from "@/app/dashboard/items/actions";
+import { useLanguage } from "@/contexts/language-context";
+import { CURRENCIES, InvoiceItem, InvoiceState, RecurringInterval } from "@/types/invoice";
+import { SavedItem } from "@/types/item";
+import { convertToWebP } from "@/utils/image-utils";
+import { supabase } from "@/utils/supabase/client";
 import { format, parseISO } from "date-fns";
+import { Building2, Calendar, ChevronDown, ChevronUp, Package, PenTool, Plus, RefreshCw, Repeat2, Settings, Upload, User, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { SignaturePadModal } from "./signature-pad-modal";
-import { useLanguage } from "@/contexts/language-context";
-import { getUserCompanies, getNextInvoiceNumber } from "@/app/dashboard/actions";
-import { getItems } from "@/app/dashboard/items/actions";
-import { supabase } from "@/utils/supabase/client";
 import { Tooltip } from "./tooltip";
-import { convertToWebP } from "@/utils/image-utils";
-import { SavedItem } from "@/types/item";
 
 interface InvoiceFormProps {
   invoice: any;
@@ -387,7 +387,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                 )}
               </div>
               
-              <div className="w-[100px] h-[100px] ml-auto md:mx-0">
+              {/* Logo block */}
+              <div className="w-[100px] h-[100px] ml-auto md:mx-0 mt-2">
                 {invoice.company.logo ? (
                   <div className="relative w-[100px] h-[100px] group transition-all">
                     <div className="w-full h-full rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md">
