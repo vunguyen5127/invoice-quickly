@@ -158,10 +158,11 @@ export class LemonBillingProvider implements BillingProvider {
       const userId = event.meta?.custom_data?.user_id;
 
       // For subscription events, data.id IS the subscription ID.
-      // For payment events, data.id is the invoice ID — real sub ID is in relationships.
+      // For payment events (invoice), data.id is the invoice ID.
+      // The parent subscription ID is directly in attrs.subscription_id.
       const isPaymentEvent = eventName === "subscription_payment_success" || eventName === "subscription_payment_failed";
       const providerSubscriptionId = isPaymentEvent
-        ? String(data.relationships?.subscription?.data?.id || data.id)
+        ? String(attrs?.subscription_id || data.relationships?.subscription?.data?.id || data.id)
         : String(data.id);
 
       let cancelAt: string | null = null;

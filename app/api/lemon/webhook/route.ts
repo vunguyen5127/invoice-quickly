@@ -3,7 +3,6 @@ import { getBillingProvider } from "@/utils/billing";
 import { paymentLogger } from "@/utils/payment-logger";
 import { getServiceSupabase } from "@/utils/supabase/client";
 
-
 export async function POST(request: NextRequest) {
   const requestId = Math.random().toString(36).slice(2, 8).toUpperCase();
 
@@ -13,12 +12,6 @@ export async function POST(request: NextRequest) {
     const eventName = (() => {
       try { return JSON.parse(rawBody)?.meta?.event_name ?? "unknown"; } catch { return "unknown"; }
     })();
-
-    paymentLogger.info({
-      requestId, tag: "Webhook/IN", eventName,
-      message: `Received event="${eventName}"`,
-      data: { hasSignature: !!signatureHeader, bodyLength: rawBody.length },
-    });
 
     const billing = getBillingProvider();
 
@@ -30,31 +23,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    paymentLogger.info({ requestId, tag: "Webhook/AUTH", eventName, message: "Signature verified ✓" });
-
     const event = billing.parseWebhookEvent(rawBody);
 
     if (!event) {
-      paymentLogger.info({
-        requestId, tag: "Webhook/PARSE", eventName,
-        message: `Event ignored (unhandled type="${eventName}")`,
-      });
+      // Silently ignore unhandled events — no log needed
       return NextResponse.json({ received: true });
     }
-
-    paymentLogger.info({
-      requestId, tag: "Webhook/PARSE", eventName,
-      userId: event.userId,
-      subscriptionId: event.providerSubscriptionId,
-      message: "Event parsed",
-      data: {
-        action: event.action,
-        plan: event.plan,
-        status: event.status,
-        subscriptionId: event.providerSubscriptionId,
-        userId: event.userId ?? "none",
-      },
-    });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const supabase = getServiceSupabase() as any;
@@ -67,13 +41,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingSub) {
-      paymentLogger.info({
-        requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
-        subscriptionId: event.providerSubscriptionId,
-        message: "Updating existing subscription",
-        data: { plan: event.plan, mappedStatus },
-      });
-
       const updateData: Record<string, unknown> = {
         status: event.action === "cancel" ? "canceled" : mappedStatus,
         plan: event.plan,
@@ -104,17 +71,10 @@ export async function POST(request: NextRequest) {
         paymentLogger.info({
           requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
           subscriptionId: event.providerSubscriptionId,
-          message: `✅ Subscription updated → ${event.plan}/${mappedStatus}`,
+          message: `✅ Updated → ${event.plan}/${mappedStatus}`,
         });
       }
     } else if (event.userId) {
-      paymentLogger.info({
-        requestId, tag: "Webhook/DB", eventName, userId: event.userId,
-        subscriptionId: event.providerSubscriptionId,
-        message: "New subscription — upserting",
-        data: { plan: event.plan, mappedStatus },
-      });
-
       const { error } = await supabase
         .from("subscriptions")
         .upsert({
@@ -145,7 +105,7 @@ export async function POST(request: NextRequest) {
         paymentLogger.info({
           requestId, tag: "Webhook/DB", eventName, userId: event.userId,
           subscriptionId: event.providerSubscriptionId,
-          message: `✅ Subscription created → ${event.plan}/${mappedStatus}`,
+          message: `✅ Created → ${event.plan}/${mappedStatus}`,
         });
       }
     } else {
@@ -156,7 +116,6 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    paymentLogger.info({ requestId, tag: "Webhook/OUT", eventName, subscriptionId: event.providerSubscriptionId, message: "Done — responding 200" });
     return NextResponse.json({ received: true });
   } catch (err) {
     paymentLogger.error({
@@ -167,4 +126,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
   }
 }
-
