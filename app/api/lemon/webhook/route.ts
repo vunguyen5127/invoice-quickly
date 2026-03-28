@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
         paymentLogger.info({
           requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
           subscriptionId: event.providerSubscriptionId,
-          message: `✅ Updated → ${event.plan}/${mappedStatus}`,
+          message: `✅ Updated → ${isPaymentEvent ? "payment" : event.plan}/${mappedStatus}`,
         });
       }
     } else if (event.userId) {
