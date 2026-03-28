@@ -1,17 +1,10 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
+import { getServiceSupabase } from "@/utils/supabase/client";
 
 export async function getPublicInvoiceById(id: string) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
-  if (!url || !serviceRoleKey) {
-    console.error("Missing SUPABASE_SERVICE_ROLE_KEY for public invoice action");
-    return null;
-  }
-
-  const supabase = createClient(url, serviceRoleKey);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const supabase = getServiceSupabase() as any;
 
   const { data, error } = await supabase
     .from("invoices")

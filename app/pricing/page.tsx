@@ -37,7 +37,7 @@ export default function PricingPage() {
   const TEST_EMAILS = ["vunguyen5127@gmail.com", "vunguyencapital@gmail.com"];
   const isTestUser = userEmail && TEST_EMAILS.includes(userEmail);
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (isTest = false) => {
     if (!supabase) return;
     setIsLoading(true);
     let success = false;
@@ -48,7 +48,7 @@ export default function PricingPage() {
         return; 
       }
       
-      const result = await createCheckout(session.access_token, isYearly);
+      const result = await createCheckout(session.access_token, isYearly, isTest);
       
       if (billingProvider === "paddle" && result.transactionId && window.Paddle) {
         // Paddle: overlay checkout
@@ -117,6 +117,23 @@ export default function PricingPage() {
             Create beautiful invoices for free. Unlock powerful features with Pro when your business grows.
           </p>
         </div>
+
+        {/* Test-only button — visible only to internal users */}
+        {isTestUser && (
+          <div className="flex justify-center mt-5">
+            <button
+              onClick={() => handleUpgrade(true)}
+              disabled={isLoading}
+              className="flex items-center gap-2 px-5 py-2 rounded-full border border-dashed border-zinc-300 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500 text-xs font-bold hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all disabled:opacity-50"
+            >
+              {isLoading ? (
+                <Loader2 className="w-3 h-3 animate-spin" />
+              ) : (
+                <>🧪 [Internal] Live Mode $0 Checkout</>
+              )}
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Toggle */}
@@ -212,9 +229,8 @@ export default function PricingPage() {
             </p>
           )}
           {!isYearly && <div className="mb-6" />}
-          {isTestUser ? (
-            <button
-              onClick={handleUpgrade}
+          <button
+              onClick={() => handleUpgrade()}
               disabled={isLoading}
               className="w-full py-3 px-6 bg-blue-600 text-white rounded-xl font-bold text-sm text-center hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/25 active:scale-[0.98] mb-8 flex items-center justify-center gap-2 disabled:opacity-50 group"
             >
@@ -227,15 +243,6 @@ export default function PricingPage() {
                 </>
               )}
             </button>
-          ) : (
-            <button
-              disabled
-              className="w-full py-3 px-6 bg-zinc-200 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 rounded-xl font-bold text-sm text-center mb-8 flex items-center justify-center gap-2 cursor-not-allowed"
-            >
-              🚀 Coming Soon
-            </button>
-          )}
-
 
           <div className="space-y-4 flex-1">
             <p className="text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Everything in Free, plus</p>

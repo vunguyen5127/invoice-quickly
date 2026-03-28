@@ -21,10 +21,16 @@ function getServerSupabase(token?: string) {
   return createClient(url, key, options);
 }
 
-export async function createCheckout(token: string, isYearly: boolean) {
-  console.log(`[Billing] createCheckout: provider=${config.billingProvider}, token length=${token?.length}`);
+/**
+ * Create a checkout session.
+ * Pass isTest=true to use the $0 test variant (LEMON_VARIANT_TEST) for QA.
+ */
+export async function createCheckout(token: string, isYearly: boolean, isTest = false) {
+  const effectiveYearly = isTest ? false : isYearly;
+  console.log(`[${new Date().toISOString()}] [Checkout/START] provider=${config.billingProvider} isYearly=${effectiveYearly} isTest=${isTest}`);
   
   if (!token || token === "undefined") {
+    console.error(`[${new Date().toISOString()}] [Checkout/AUTH] ❌ No valid token`);
     throw new Error("Authentication failed: No valid session token provided.");
   }
 
@@ -32,15 +38,22 @@ export async function createCheckout(token: string, isYearly: boolean) {
   const { data: { user }, error: authError } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    console.error(`[${new Date().toISOString()}] [Checkout/AUTH] ❌ Auth failed: ${authError?.message}`);
     throw new Error(`Authentication failed: ${authError?.message || "Auth session missing!"}`);
   }
 
+  console.log(`[${new Date().toISOString()}] [Checkout/AUTH] ✓ userId=${user.id}`);
+
   const billing = getBillingProvider();
-  return billing.createCheckout({
+  const result = await billing.createCheckout({
     userId: user.id,
     userEmail: user.email || "",
-    isYearly,
+    isYearly: effectiveYearly,
+    isTest,
   });
+
+  console.log(`[${new Date().toISOString()}] [Checkout/DONE] checkoutUrl=${result.checkoutUrl ?? "(paddle)"}`);
+  return result;
 }
 
 /** Expose which billing provider is active so the client can decide the checkout flow */

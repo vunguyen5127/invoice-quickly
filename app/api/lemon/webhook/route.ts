@@ -1,43 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { getBillingProvider } from "@/utils/billing";
-import config from "@/utils/config";
+import { paymentLogger } from "@/utils/payment-logger";
+import { getServiceSupabase } from "@/utils/supabase/client";
 
-function getServiceSupabase() {
-  const { url, serviceRole: serviceKey } = config.supabase;
-  if (!url || !serviceKey) {
-    throw new Error("Missing Supabase service role environment variables");
-  }
-  return createClient(url, serviceKey);
-}
 
 export async function POST(request: NextRequest) {
+  const requestId = Math.random().toString(36).slice(2, 8).toUpperCase();
+
   try {
     const rawBody = await request.text();
     const signatureHeader = request.headers.get("x-signature") || "";
+    const eventName = (() => {
+      try { return JSON.parse(rawBody)?.meta?.event_name ?? "unknown"; } catch { return "unknown"; }
+    })();
 
-    console.log(`[Lemon Webhook] Incoming request: ${signatureHeader ? "Has signature" : "No signature"}`);
+    paymentLogger.info({
+      requestId, tag: "Webhook/IN", eventName,
+      message: `Received event="${eventName}"`,
+      data: { hasSignature: !!signatureHeader, bodyLength: rawBody.length },
+    });
 
     const billing = getBillingProvider();
 
     if (!billing.verifyWebhook(rawBody, signatureHeader)) {
-      console.error("[Lemon Webhook] Signature verification failed");
+      paymentLogger.error({
+        requestId, tag: "Webhook/AUTH", eventName,
+        message: "Signature verification FAILED",
+      });
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
+
+    paymentLogger.info({ requestId, tag: "Webhook/AUTH", eventName, message: "Signature verified ✓" });
 
     const event = billing.parseWebhookEvent(rawBody);
 
     if (!event) {
-      console.log("[Lemon Webhook] Unhandled event type");
+      paymentLogger.info({
+        requestId, tag: "Webhook/PARSE", eventName,
+        message: `Event ignored (unhandled type="${eventName}")`,
+      });
       return NextResponse.json({ received: true });
     }
 
-    console.log(`[Lemon Webhook] Event action: ${event.action}, subscription: ${event.providerSubscriptionId}`);
+    paymentLogger.info({
+      requestId, tag: "Webhook/PARSE", eventName,
+      userId: event.userId,
+      message: "Event parsed",
+      data: {
+        action: event.action,
+        plan: event.plan,
+        status: event.status,
+        subscriptionId: event.providerSubscriptionId,
+        userId: event.userId ?? "none",
+      },
+    });
 
-    const supabase = getServiceSupabase();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const supabase = getServiceSupabase() as any;
     const mappedStatus = billing.mapStatus(event.status);
 
-    // Try to find existing subscription by lemon_subscription_id
     const { data: existingSub } = await supabase
       .from("subscriptions")
       .select("user_id")
@@ -45,8 +66,13 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existingSub) {
-      // Update existing
-      const updateData: Record<string, any> = {
+      paymentLogger.info({
+        requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
+        message: "Updating existing subscription",
+        data: { plan: event.plan, mappedStatus },
+      });
+
+      const updateData: Record<string, unknown> = {
         status: event.action === "cancel" ? "canceled" : mappedStatus,
         plan: event.plan,
         price_id: event.priceId,
@@ -65,10 +91,25 @@ export async function POST(request: NextRequest) {
         .update(updateData)
         .eq("subscription_id", event.providerSubscriptionId);
 
-      if (error) console.error("Error updating subscription:", error);
-      else console.log(`Subscription updated: ${event.providerSubscriptionId} → ${event.plan}/${mappedStatus}`);
+      if (error) {
+        paymentLogger.error({
+          requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
+          message: "Update failed",
+          data: { message: error.message, code: error.code },
+        });
+      } else {
+        paymentLogger.info({
+          requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
+          message: `✅ Subscription updated → ${event.plan}/${mappedStatus}`,
+        });
+      }
     } else if (event.userId) {
-      // New subscription
+      paymentLogger.info({
+        requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+        message: "New subscription — upserting",
+        data: { plan: event.plan, mappedStatus },
+      });
+
       const { error } = await supabase
         .from("subscriptions")
         .upsert({
@@ -88,15 +129,35 @@ export async function POST(request: NextRequest) {
           updated_at: new Date().toISOString(),
         }, { onConflict: "user_id" });
 
-      if (error) console.error("Error upserting subscription:", error);
-      else console.log(`Subscription created: ${event.providerSubscriptionId} → ${event.plan}/${mappedStatus}`);
+      if (error) {
+        paymentLogger.error({
+          requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+          message: "Upsert failed",
+          data: { message: error.message, code: error.code },
+        });
+      } else {
+        paymentLogger.info({
+          requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+          message: `✅ Subscription created → ${event.plan}/${mappedStatus}`,
+        });
+      }
     } else {
-      console.error("No user_id in custom_data for new subscription:", event.providerSubscriptionId);
+      paymentLogger.error({
+        requestId, tag: "Webhook/DB", eventName,
+        message: "No user_id in custom_data",
+        data: { subscriptionId: event.providerSubscriptionId },
+      });
     }
 
+    paymentLogger.info({ requestId, tag: "Webhook/OUT", eventName, message: "Done — responding 200" });
     return NextResponse.json({ received: true });
   } catch (err) {
-    console.error("Lemon webhook error:", err);
+    paymentLogger.error({
+      requestId, tag: "Webhook/FATAL",
+      message: "Unhandled exception",
+      data: err instanceof Error ? { message: err.message } : { raw: String(err) },
+    });
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
   }
 }
+

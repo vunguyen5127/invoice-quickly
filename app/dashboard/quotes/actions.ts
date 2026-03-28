@@ -2,6 +2,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 import config from "@/utils/config";
+import { getServiceSupabase } from "@/utils/supabase/client";
 
 function getServerSupabase(token: string) {
   const { url, anonKey } = config.supabase;
@@ -409,11 +410,8 @@ export async function acceptQuote(quoteId: string) {
   // Actually, wait, RLS blocks this if we don't use server role. Let's use service_role for public status updates
   // Or since RLS for quotes updates requires auth.uid() = user_id, public users cannot update!
   // We must bypass RLS using a service role key.
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceRoleKey) {
-    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY for public quote action");
-  }
-  const adminSupabase = createClient(url, serviceRoleKey);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const adminSupabase = getServiceSupabase() as any;
 
   const { data, error } = await adminSupabase
     .from("quotes")
@@ -428,10 +426,8 @@ export async function acceptQuote(quoteId: string) {
 
 export async function rejectQuote(quoteId: string) {
   const { url, anonKey } = config.supabase;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!serviceRoleKey) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
-  
-  const adminSupabase = createClient(url, serviceRoleKey);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const adminSupabase = getServiceSupabase() as any;
 
   const { data, error } = await adminSupabase
     .from("quotes")

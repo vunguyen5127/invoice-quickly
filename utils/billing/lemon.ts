@@ -21,9 +21,9 @@ export class LemonBillingProvider implements BillingProvider {
   }
 
   async createCheckout(params: CheckoutParams): Promise<CheckoutResult> {
-    const variantId = params.isYearly
-      ? LEMON_CONFIG.variants.proYearly
-      : LEMON_CONFIG.variants.proMonthly;
+    const variantId = params.isTest
+      ? LEMON_CONFIG.variants.test
+      : (params.isYearly ? LEMON_CONFIG.variants.proYearly : LEMON_CONFIG.variants.proMonthly);
 
     if (!variantId) throw new Error("Lemon Squeezy variant ID not configured");
 

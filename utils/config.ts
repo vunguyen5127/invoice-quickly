@@ -39,6 +39,7 @@ interface Config {
     readonly variants: {
       readonly proMonthly: string;
       readonly proYearly: string;
+      readonly test: string;
     };
   };
 
@@ -103,6 +104,7 @@ export const config: Config = {
     variants: {
       proMonthly: process.env.LEMON_VARIANT_MONTHLY || "",
       proYearly: process.env.LEMON_VARIANT_YEARLY || "",
+      test: process.env.LEMON_VARIANT_TEST || "",
     },
   },
 

@@ -11,6 +11,7 @@ export interface CheckoutParams {
   userId: string;
   userEmail: string;
   isYearly: boolean;
+  isTest?: boolean;
 }
 
 export interface CheckoutResult {
