@@ -40,10 +40,13 @@ export async function POST(request: NextRequest) {
       .eq("subscription_id", event.providerSubscriptionId)
       .single();
 
+    const isPaymentEvent = eventName === "subscription_payment_success" || eventName === "subscription_payment_failed";
+
     if (existingSub) {
       const updateData: Record<string, unknown> = {
         status: event.action === "cancel" ? "canceled" : mappedStatus,
-        plan: event.plan,
+        // Payment events (invoices) don't carry variant_id → plan resolves to "free". Skip it.
+        ...(!isPaymentEvent && { plan: event.plan }),
         price_id: event.priceId,
         customer_id: event.providerCustomerId,
         current_period_start: event.currentPeriodStart,
