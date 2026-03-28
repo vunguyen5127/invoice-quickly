@@ -6,12 +6,12 @@ import { getServiceSupabase } from "@/utils/supabase/client";
 export async function POST(request: NextRequest) {
   const requestId = Math.random().toString(36).slice(2, 8).toUpperCase();
 
+  let eventName = "unknown";
+
   try {
     const rawBody = await request.text();
     const signatureHeader = request.headers.get("x-signature") || "";
-    const eventName = (() => {
-      try { return JSON.parse(rawBody)?.meta?.event_name ?? "unknown"; } catch { return "unknown"; }
-    })();
+    try { eventName = JSON.parse(rawBody)?.meta?.event_name ?? "unknown"; } catch { eventName = "unknown"; }
 
     const billing = getBillingProvider();
 
@@ -121,9 +121,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true });
   } catch (err) {
     paymentLogger.error({
-      requestId, tag: "Webhook/FATAL",
+      requestId, tag: "Webhook/FATAL", eventName,
       message: "Unhandled exception",
-      data: err instanceof Error ? { message: err.message } : { raw: String(err) },
+      data: err instanceof Error
+        ? { message: err.message, stack: err.stack?.split("\n").slice(0, 5).join(" | ") }
+        : { raw: String(err) },
     });
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
   }
