@@ -34,8 +34,8 @@ export default function PricingPage() {
     init();
   }, []);
 
-  const TEST_EMAILS = ["vunguyen5127@gmail.com", "vunguyencapital@gmail.com"];
-  const isTestUser = userEmail && TEST_EMAILS.includes(userEmail);
+  // const TEST_EMAILS = ["vunguyen5127@gmail.com", "vunguyencapital@gmail.com"];
+  // const isTestUser = userEmail && TEST_EMAILS.includes(userEmail);
 
   const handleUpgrade = async (isTest = false) => {
     if (!supabase) return;
@@ -118,7 +118,7 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* Test-only button — visible only to internal users */}
+        {/* Test-only button — commented out after live mode testing
         {isTestUser && (
           <div className="flex justify-center mt-5">
             <button
@@ -134,6 +134,7 @@ export default function PricingPage() {
             </button>
           </div>
         )}
+        */}
       </section>
 
       {/* Toggle */}
