@@ -206,12 +206,12 @@ export class LemonBillingProvider implements BillingProvider {
   }
 
   private getPlanFromVariantId(variantId: string): "pro" | "free" {
-    if (
-      variantId === LEMON_CONFIG.variants.proMonthly ||
-      variantId === LEMON_CONFIG.variants.proYearly
-    ) {
-      return "pro";
-    }
-    return "free";
+    const proVariants = [
+      LEMON_CONFIG.variants.proMonthly,
+      LEMON_CONFIG.variants.proYearly,
+      LEMON_CONFIG.variants.test,  // $0 test variant → also maps to pro
+    ].filter(Boolean);
+
+    return proVariants.includes(variantId) ? "pro" : "free";
   }
 }
