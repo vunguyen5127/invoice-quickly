@@ -157,6 +157,13 @@ export class LemonBillingProvider implements BillingProvider {
       const variantId = String(attrs?.variant_id || "");
       const userId = event.meta?.custom_data?.user_id;
 
+      // For subscription events, data.id IS the subscription ID.
+      // For payment events, data.id is the invoice ID — real sub ID is in relationships.
+      const isPaymentEvent = eventName === "subscription_payment_success" || eventName === "subscription_payment_failed";
+      const providerSubscriptionId = isPaymentEvent
+        ? String(data.relationships?.subscription?.data?.id || data.id)
+        : String(data.id);
+
       let cancelAt: string | null = null;
       if (attrs?.cancelled) {
         cancelAt = attrs.ends_at || new Date().toISOString();
@@ -167,7 +174,7 @@ export class LemonBillingProvider implements BillingProvider {
       const cardLast4 = attrs?.card_last_four || null;
 
       return {
-        providerSubscriptionId: String(data.id),
+        providerSubscriptionId,
         providerCustomerId: String(attrs?.customer_id || ""),
         userId,
         status: attrs?.status || "active",
