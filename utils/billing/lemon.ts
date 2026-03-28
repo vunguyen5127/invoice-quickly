@@ -191,6 +191,7 @@ export class LemonBillingProvider implements BillingProvider {
     switch (lemonStatus) {
       case "active":
       case "on_trial":
+      case "paid":        // subscription_payment_success fires with status="paid"
         return "active";
       case "cancelled":
         return "canceled";
@@ -201,7 +202,7 @@ export class LemonBillingProvider implements BillingProvider {
       case "paused":
         return "canceled";
       default:
-        return "free";
+        return "active";  // safe fallback — unknown status from paid event → treat as active
     }
   }
 
