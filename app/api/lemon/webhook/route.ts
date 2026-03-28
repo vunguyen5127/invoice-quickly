@@ -45,9 +45,8 @@ export async function POST(request: NextRequest) {
     if (existingSub) {
       const updateData: Record<string, unknown> = {
         status: event.action === "cancel" ? "canceled" : mappedStatus,
-        // Payment events (invoices) don't carry variant_id → plan resolves to "free". Skip it.
-        ...(!isPaymentEvent && { plan: event.plan }),
-        price_id: event.priceId,
+        // Payment events (invoices) don't carry variant_id → plan/price_id would be empty. Skip both.
+        ...(!isPaymentEvent && { plan: event.plan, price_id: event.priceId }),
         customer_id: event.providerCustomerId,
         current_period_start: event.currentPeriodStart,
         current_period_end: event.currentPeriodEnd,
