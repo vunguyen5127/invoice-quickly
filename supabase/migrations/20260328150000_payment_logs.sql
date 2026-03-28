@@ -9,7 +9,6 @@ create table if not exists payment_logs (
   data            jsonb,                   -- any structured payload
   user_id         text,                    -- extracted user id if available
   event_name      text,                    -- e.g. subscription_created
-  subscription_id text                     -- provider subscription ID (e.g. Lemon Squeezy sub ID)
 );
 
 -- Index for quick filtering
