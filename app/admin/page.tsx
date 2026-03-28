@@ -190,7 +190,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-8 py-10 max-w-6xl">
+    <div className="container mx-auto px-4 sm:px-8 py-10 max-w-7xl">
       {/* Header */}
       <div className="mb-8 flex items-center gap-5">
         <Link
