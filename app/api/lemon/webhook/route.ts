@@ -77,38 +77,48 @@ export async function POST(request: NextRequest) {
         });
       }
     } else if (event.userId) {
-      const { error } = await supabase
-        .from("subscriptions")
-        .upsert({
-          user_id: event.userId,
-          provider: "lemon",
-          subscription_id: event.providerSubscriptionId,
-          customer_id: event.providerCustomerId,
-          status: mappedStatus,
-          plan: event.plan,
-          price_id: event.priceId,
-          current_period_start: event.currentPeriodStart,
-          current_period_end: event.currentPeriodEnd,
-          cancel_at: event.cancelAt,
-          card_brand: event.cardBrand,
-          card_last4: event.cardLast4,
-          next_billed_at: event.nextBilledAt,
-          updated_at: new Date().toISOString(),
-        }, { onConflict: "user_id" });
-
-      if (error) {
-        paymentLogger.error({
+      // Payment events should only UPDATE an existing subscription, never create.
+      // If sub not found here for a payment event, it's likely a race condition — skip safely.
+      if (isPaymentEvent) {
+        paymentLogger.warn({
           requestId, tag: "Webhook/DB", eventName, userId: event.userId,
           subscriptionId: event.providerSubscriptionId,
-          message: "Upsert failed",
-          data: { message: error.message, code: error.code },
+          message: "Payment event received but no existing subscription found — skipping (likely race condition)",
         });
       } else {
-        paymentLogger.info({
-          requestId, tag: "Webhook/DB", eventName, userId: event.userId,
-          subscriptionId: event.providerSubscriptionId,
-          message: `✅ Created → ${event.plan}/${mappedStatus}`,
-        });
+        const { error } = await supabase
+          .from("subscriptions")
+          .upsert({
+            user_id: event.userId,
+            provider: "lemon",
+            subscription_id: event.providerSubscriptionId,
+            customer_id: event.providerCustomerId,
+            status: mappedStatus,
+            plan: event.plan,
+            price_id: event.priceId,
+            current_period_start: event.currentPeriodStart,
+            current_period_end: event.currentPeriodEnd,
+            cancel_at: event.cancelAt,
+            card_brand: event.cardBrand,
+            card_last4: event.cardLast4,
+            next_billed_at: event.nextBilledAt,
+            updated_at: new Date().toISOString(),
+          }, { onConflict: "user_id" });
+
+        if (error) {
+          paymentLogger.error({
+            requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+            subscriptionId: event.providerSubscriptionId,
+            message: "Upsert failed",
+            data: { message: error.message, code: error.code },
+          });
+        } else {
+          paymentLogger.info({
+            requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+            subscriptionId: event.providerSubscriptionId,
+            message: `✅ Created → ${event.plan}/${mappedStatus}`,
+          });
+        }
       }
     } else {
       paymentLogger.error({
