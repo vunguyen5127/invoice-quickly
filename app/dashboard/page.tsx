@@ -86,29 +86,30 @@ function DashboardContent() {
     loadData(loading ? false : true);
   }, [router, currentPage, session, authLoading]);
 
-  // If redirected from checkout, check immediately then poll every 1.5s
+  // If redirected from checkout, poll every 1.5s until plan === "pro"
   useEffect(() => {
-    if (isUpgradedParam && entitlements.plan === "free" && !loading) {
-      let cancelled = false;
+    if (!isUpgradedParam || !session) return;
 
-      const check = async () => {
-        if (cancelled || !session) return;
-        const ent = await loadData(false);
-        if (ent?.plan === "pro") {
-          cancelled = true;
-          router.replace("/dashboard", { scroll: false });
-        }
-      };
+    let cancelled = false;
 
-      // Fire immediately, then poll
-      check();
-      const interval = setInterval(check, 1500);
-      return () => {
+    const check = async () => {
+      if (cancelled) return;
+      const ent = await loadData(false);
+      if (ent?.plan === "pro") {
         cancelled = true;
-        clearInterval(interval);
-      };
-    }
-  }, [isUpgradedParam, entitlements.plan, loading, session, router]);
+        router.replace("/dashboard", { scroll: false });
+      }
+    };
+
+    // Fire immediately, then poll
+    check();
+    const interval = setInterval(check, 1500);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpgradedParam, session]);
 
   const handleDeleteClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
