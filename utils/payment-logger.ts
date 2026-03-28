@@ -13,6 +13,7 @@ interface LogPayload {
   data?: Record<string, unknown>;
   userId?: string;
   eventName?: string;
+  subscriptionId?: string;
 }
 
 function writeLog(level: LogLevel, payload: LogPayload) {
@@ -31,13 +32,14 @@ function writeLog(level: LogLevel, payload: LogPayload) {
   if (supabase) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (supabase.from("payment_logs") as any).insert({
-      request_id:  payload.requestId ?? null,
+      request_id:      payload.requestId ?? null,
       level,
-      tag:         payload.tag,
-      message:     payload.message,
-      data:        payload.data ?? null,
-      user_id:     payload.userId ?? null,
-      event_name:  payload.eventName ?? null,
+      tag:             payload.tag,
+      message:         payload.message,
+      data:            payload.data ?? null,
+      user_id:         payload.userId ?? null,
+      event_name:      payload.eventName ?? null,
+      subscription_id: payload.subscriptionId ?? null,
     }).then(({ error }: { error: { message: string } | null }) => {
       if (error) {
         console.error("[PaymentLogger] DB write failed:", error.message);

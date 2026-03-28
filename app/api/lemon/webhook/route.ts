@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
     paymentLogger.info({
       requestId, tag: "Webhook/PARSE", eventName,
       userId: event.userId,
+      subscriptionId: event.providerSubscriptionId,
       message: "Event parsed",
       data: {
         action: event.action,
@@ -68,6 +69,7 @@ export async function POST(request: NextRequest) {
     if (existingSub) {
       paymentLogger.info({
         requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
+        subscriptionId: event.providerSubscriptionId,
         message: "Updating existing subscription",
         data: { plan: event.plan, mappedStatus },
       });
@@ -94,18 +96,21 @@ export async function POST(request: NextRequest) {
       if (error) {
         paymentLogger.error({
           requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
+          subscriptionId: event.providerSubscriptionId,
           message: "Update failed",
           data: { message: error.message, code: error.code },
         });
       } else {
         paymentLogger.info({
           requestId, tag: "Webhook/DB", eventName, userId: existingSub.user_id,
+          subscriptionId: event.providerSubscriptionId,
           message: `✅ Subscription updated → ${event.plan}/${mappedStatus}`,
         });
       }
     } else if (event.userId) {
       paymentLogger.info({
         requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+        subscriptionId: event.providerSubscriptionId,
         message: "New subscription — upserting",
         data: { plan: event.plan, mappedStatus },
       });
@@ -132,12 +137,14 @@ export async function POST(request: NextRequest) {
       if (error) {
         paymentLogger.error({
           requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+          subscriptionId: event.providerSubscriptionId,
           message: "Upsert failed",
           data: { message: error.message, code: error.code },
         });
       } else {
         paymentLogger.info({
           requestId, tag: "Webhook/DB", eventName, userId: event.userId,
+          subscriptionId: event.providerSubscriptionId,
           message: `✅ Subscription created → ${event.plan}/${mappedStatus}`,
         });
       }
@@ -149,7 +156,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    paymentLogger.info({ requestId, tag: "Webhook/OUT", eventName, message: "Done — responding 200" });
+    paymentLogger.info({ requestId, tag: "Webhook/OUT", eventName, subscriptionId: event.providerSubscriptionId, message: "Done — responding 200" });
     return NextResponse.json({ received: true });
   } catch (err) {
     paymentLogger.error({

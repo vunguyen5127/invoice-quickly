@@ -38,6 +38,7 @@ interface PaymentLog {
   data: Record<string, unknown> | null;
   user_id: string | null;
   event_name: string | null;
+  subscription_id: string | null;
 }
 
 function parseBrowser(ua: string | null): string {
@@ -413,6 +414,7 @@ export default function AdminPage() {
                       <th className="px-4 py-3 font-medium">Tag</th>
                       <th className="px-4 py-3 font-medium">Event</th>
                       <th className="px-4 py-3 font-medium">Message</th>
+                      <th className="px-4 py-3 font-medium">Sub ID</th>
                       <th className="px-4 py-3 font-medium">User ID</th>
                       <th className="px-4 py-3 font-medium">Req ID</th>
                     </tr>
@@ -434,13 +436,16 @@ export default function AdminPage() {
                           <td className="px-4 py-3 text-xs text-zinc-400 whitespace-nowrap">{log.event_name ?? "—"}</td>
                           <td className="px-4 py-3 text-sm max-w-xs truncate">{log.message}</td>
                           <td className="px-4 py-3 font-mono text-xs text-zinc-400 whitespace-nowrap">
+                            {log.subscription_id ? log.subscription_id.slice(0, 10) + "…" : "—"}
+                          </td>
+                          <td className="px-4 py-3 font-mono text-xs text-zinc-400 whitespace-nowrap">
                             {log.user_id ? log.user_id.slice(0, 8) + "…" : "—"}
                           </td>
                           <td className="px-4 py-3 font-mono text-xs text-zinc-400 whitespace-nowrap">{log.request_id ?? "—"}</td>
                         </tr>
                         {expandedRows.has(log.id) && log.data && (
                           <tr className="bg-zinc-50 dark:bg-zinc-800/30">
-                            <td colSpan={7} className="px-6 py-3">
+                            <td colSpan={8} className="px-6 py-3">
                               <pre className="text-xs text-zinc-600 dark:text-zinc-400 overflow-x-auto whitespace-pre-wrap break-all">
                                 {JSON.stringify(log.data, null, 2)}
                               </pre>
