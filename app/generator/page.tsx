@@ -9,6 +9,8 @@ import { Download, Plus, Share2, Save, X, Building2, LayoutDashboard, Loader2, A
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies, getNextInvoiceNumber } from "@/app/dashboard/actions";
+import { getUserEntitlements } from "@/utils/entitlements";
+
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
 import Image from "next/image";
@@ -34,6 +36,7 @@ function CreateInvoiceContent() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [canUseRecurring, setCanUseRecurring] = useState(false);
 
   const canSave = invoice.client.name.trim().length > 0 && invoice.items.some((item) => item.description.trim().length > 0);
 
@@ -147,6 +150,15 @@ function CreateInvoiceContent() {
 
       if (userIsLoggedIn) {
         setIsLoggedIn(true);
+        // Fetch entitlements to unlock Pro features (e.g. Recurring Invoice)
+        if (session) {
+          try {
+            const ents = await getUserEntitlements(session.access_token);
+            setCanUseRecurring(ents.canUseRecurring);
+          } catch (e) {
+            console.error("Failed to fetch entitlements", e);
+          }
+        }
         if (!draftInvoice.signatureName) {
           const name = session!.user.user_metadata?.name || session!.user.user_metadata?.full_name || session!.user.email?.split("@")[0];
           if (name) {
@@ -297,7 +309,7 @@ function CreateInvoiceContent() {
           {!isLoaded ? (
             <InvoiceEditSkeleton />
           ) : (
-            <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={initialCompanyId} />
+            <InvoiceForm invoice={invoice} setInvoice={setInvoice} defaultCompanyId={initialCompanyId} canUseRecurring={canUseRecurring} />
           )}
         </div>
       </div>

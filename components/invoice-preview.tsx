@@ -85,12 +85,14 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, d
           padding: "12mm 12mm",  // Reduced margins to fit more content
         }}
       >
-        {/* Watermark Background */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
-          <span className="text-[90px] md:text-[90px] font-black tracking-[0.1em] text-zinc-900/[0.03] -rotate-45 whitespace-nowrap">
-            Invoice-Quickly
-          </span>
-        </div>
+        {/* Watermark Background — quotes only */}
+        {docType === 'quote' && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+            <span className="text-[90px] md:text-[90px] font-black tracking-[0.1em] text-zinc-900/[0.03] -rotate-45 whitespace-nowrap">
+              Invoice-Quickly
+            </span>
+          </div>
+        )}
 
         {/* Quote Header Note */}
         {docType === 'quote' && (
