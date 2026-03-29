@@ -42,13 +42,13 @@ export interface QuoteState {
 
 export const initialQuoteState: QuoteState = {
   company: {
-    name: "Invoice-Quickly LLC, 742 Evergreen Ave Suite 200, San Francisco CA 94107, vu@invoice-quickly.com, +1 (123) 456-7890",
+    name: "Invoice-Quickly LLC, 742 Evergreen Ave Suite 200, San Francisco CA 94107, vu.nguyen@invoice-quickly.com, +1 (123) 456-7890",
     email: "",
     address: "",
     phone: ""
   },
   client: {
-    name: "Greenfield Properties LLC, 1200 Market Street, Floor 8 New York, NY 10001, ap@greenfieldproperties.com, +1(321) 555-7799",
+    name: "Greenfield Properties LLC, 1200 Market Street Floor 8 New York NY 10001, elon.musk@greenfield.com, +1(321) 555-7799",
     email: "",
     address: "",
     phone: ""
