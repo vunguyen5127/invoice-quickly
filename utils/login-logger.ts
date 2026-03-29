@@ -32,22 +32,26 @@ export async function logUserLogin(providedSession?: Session | null) {
     if (res.ok) {
       localStorage.setItem(cacheKey, now.toString());
 
-      // Notify admin if it's a new user (first login log)
-      try {
-        const { notifyAdminOnNewUser } = await import("@/app/actions/auth-actions");
-        await notifyAdminOnNewUser({
-          id:        user.id,
-          email:     user.email ?? "unknown",
-          name:      user.user_metadata?.full_name || user.user_metadata?.name || undefined,
-          provider:  user.app_metadata?.provider || "email",
-          createdAt: user.created_at,
-        });
-      } catch (notifyErr) {
-        console.error("Failed to trigger new user notification:", notifyErr);
+      const json = await res.json().catch(() => ({}));
+      // Don't notify admin for tester accounts
+      if (!json.skipped) {
+        try {
+          const { notifyAdminOnNewUser } = await import("@/app/actions/auth-actions");
+          await notifyAdminOnNewUser({
+            id:        user.id,
+            email:     user.email ?? "unknown",
+            name:      user.user_metadata?.full_name || user.user_metadata?.name || undefined,
+            provider:  user.app_metadata?.provider || "email",
+            createdAt: user.created_at,
+          });
+        } catch (notifyErr) {
+          console.error("Failed to trigger new user notification:", notifyErr);
+        }
       }
     } else {
       console.error("[login-logger] API error:", await res.text());
     }
+
   } catch (err) {
     console.error("Failed to log user login:", err);
   } finally {

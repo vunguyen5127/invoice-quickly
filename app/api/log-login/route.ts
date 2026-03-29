@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { isTester } from "@/utils/tester";
 
 const getServiceSupabase = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -16,6 +17,12 @@ export async function POST(request: NextRequest) {
     if (!userId || !email) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    // Skip logging entirely for tester accounts
+    if (isTester(email)) {
+      return NextResponse.json({ ok: true, skipped: true });
+    }
+
 
     // Extract IP — Vercel sets x-forwarded-for; fallback to x-real-ip
     const forwarded = request.headers.get("x-forwarded-for");
