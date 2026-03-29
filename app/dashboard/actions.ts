@@ -194,7 +194,7 @@ export async function getCompanyInvoices(
     search?: string; 
     sortField?: string; 
     sortDir?: "asc" | "desc";
-    status?: string;
+    statuses?: string[]; // supports multi-select; empty = all
   } = {}
 ) {
   const supabase = getServerSupabase(token);
@@ -204,7 +204,7 @@ export async function getCompanyInvoices(
     search = "", 
     sortField = "created_at", 
     sortDir = "desc",
-    status = "all"
+    statuses = []
   } = options;
   
   // Calculate range
@@ -218,13 +218,23 @@ export async function getCompanyInvoices(
     .eq("company_id", companyId)
     .is("deleted_at", null);
 
-  // Apply filters
-  if (status && status !== "all") {
-    if (status === "overdue") {
-      const today = new Date().toISOString().split('T')[0];
+  // Apply status filter (overdue is a virtual status based on due_date)
+  if (statuses.length > 0) {
+    const today = new Date().toISOString().split('T')[0];
+    const hasOverdue = statuses.includes('overdue');
+    const regularStatuses = statuses.filter(s => s !== 'overdue');
+
+    if (hasOverdue && regularStatuses.length === 0) {
+      // Only overdue selected
       query = query.neq("status", "paid").lt("due_date", today);
+    } else if (hasOverdue && regularStatuses.length > 0) {
+      // Overdue + other statuses — use OR
+      const orParts = regularStatuses.map(s => `status.eq.${s}`);
+      orParts.push(`and(due_date.lt.${today},status.neq.paid)`);
+      query = query.or(orParts.join(','));
     } else {
-      query = query.eq("status", status);
+      // Only regular statuses
+      query = query.in("status", regularStatuses);
     }
   }
 

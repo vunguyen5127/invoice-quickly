@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices, bulkDeleteInvoices, bulkUpdateInvoiceStatus } from "@/app/dashboard/actions";
 import { format } from "date-fns";
-import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, PenLine, Copy, Download, RefreshCw } from "lucide-react";
+import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, ChevronDown, PenLine, Copy, Download, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { Tooltip } from "@/components/tooltip";
 import dynamic from "next/dynamic";
@@ -62,7 +62,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   // Search, Sort, Pagination, Filter state
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilters, setStatusFilters] = useState<string[]>([]);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const statusDropdownRef = useRef<HTMLDivElement | null>(null);
   // Bulk selection state
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isBulkProcessing, setIsBulkProcessing] = useState(false);
@@ -93,7 +95,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       search: debouncedSearch,
       sortField,
       sortDir,
-      status: statusFilter
+      statuses: statusFilters
     });
 
     setInvoices(result.data);
@@ -136,14 +138,86 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     if (!loading) {
       loadInvoices(true);
     }
-  }, [currentPage, itemsPerPage, debouncedSearch, sortField, sortDir, statusFilter]);
+  }, [currentPage, itemsPerPage, debouncedSearch, sortField, sortDir, statusFilters]);
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / itemsPerPage));
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(e.target as Node)) {
+        setStatusDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-  const handleStatusFilterChange = (status: string) => {
-    setStatusFilter(status);
+  const STATUS_OPTIONS = [
+    { value: 'draft',   label: t.statusDraft   || 'Draft',   color: 'text-zinc-600 dark:text-zinc-300' },
+    { value: 'sent',    label: t.statusSent    || 'Sent',    color: 'text-blue-600 dark:text-blue-400' },
+    { value: 'paid',    label: t.statusPaid    || 'Paid',    color: 'text-emerald-600 dark:text-emerald-400' },
+    { value: 'overdue', label: t.statusOverdue || 'Overdue', color: 'text-red-600 dark:text-red-400' },
+  ];
+
+  const toggleStatusFilter = (status: string) => {
+    setStatusFilters(prev =>
+      prev.includes(status) ? prev.filter(s => s !== status) : [...prev, status]
+    );
     setCurrentPage(1);
   };
+
+  const statusFilterLabel =
+    statusFilters.length === 0
+      ? (t.allStatus || 'All Status')
+      : statusFilters.length === 1
+        ? (STATUS_OPTIONS.find(o => o.value === statusFilters[0])?.label || statusFilters[0])
+        : `${statusFilters.length} selected`;
+
+  const StatusDropdown = ({ className = '' }: { className?: string }) => (
+    <div className={`relative ${className}`} ref={statusDropdownRef}>
+      <button
+        type="button"
+        onClick={() => setStatusDropdownOpen(o => !o)}
+        className={`bg-white dark:bg-zinc-900 border rounded-lg px-2.5 py-1.5 font-bold shadow-sm cursor-pointer flex items-center gap-1.5 justify-between transition-all ${
+          statusFilters.length > 0
+            ? 'border-blue-400 dark:border-blue-600 text-blue-600 dark:text-blue-400'
+            : 'border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300'
+        } text-xs sm:text-sm min-w-[100px]`}
+      >
+        <span className="truncate">{statusFilterLabel}</span>
+        <ChevronDown className={`w-3.5 h-3.5 flex-shrink-0 transition-transform ${statusDropdownOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {statusDropdownOpen && (
+        <div className="absolute right-0 top-full mt-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-xl z-50 min-w-[150px] py-1 overflow-hidden">
+          {statusFilters.length > 0 && (
+            <button
+              onClick={() => { setStatusFilters([]); setCurrentPage(1); setStatusDropdownOpen(false); }}
+              className="w-full text-left px-3 py-2 text-[11px] font-semibold text-zinc-400 hover:text-zinc-600 hover:bg-zinc-50 dark:hover:bg-zinc-800 border-b border-zinc-100 dark:border-zinc-800"
+            >
+              Clear filters
+            </button>
+          )}
+          {STATUS_OPTIONS.map(opt => (
+            <label key={opt.value} className="flex items-center gap-2.5 px-3 py-2 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+              <input
+                type="checkbox"
+                checked={statusFilters.includes(opt.value)}
+                onChange={() => toggleStatusFilter(opt.value)}
+                className="w-3.5 h-3.5 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              />
+              <span className={`text-xs font-bold ${opt.color}`}>{opt.label}</span>
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const handleStatusFilterChange = (status: string) => {
+    setStatusFilters([]);
+    setCurrentPage(1);
+  };
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / itemsPerPage));
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -326,7 +400,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                 <span className="ml-2 text-sm font-normal text-zinc-400">({totalCount})</span>
               </h2>
 
-              {(totalCount > 0 || statusFilter !== 'all' || debouncedSearch !== '') && (
+              {(totalCount > 0 || statusFilters.length > 0 || debouncedSearch !== '') && (
                 <div className="flex sm:hidden items-center gap-2">
                   <select
                     value={itemsPerPage}
@@ -341,23 +415,12 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                       <option key={option} value={option}>{option}</option>
                     ))}
                   </select>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => handleStatusFilterChange(e.target.value)}
-                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-xs font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[90px]"
-                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.4rem center', backgroundSize: '0.8rem' }}
-                  >
-                    <option value="all">{t.allStatus || "All Status"}</option>
-                    <option value="draft">{t.statusDraft || "Draft"}</option>
-                    <option value="sent">{t.statusSent || "Sent"}</option>
-                    <option value="paid">{t.statusPaid || "Paid"}</option>
-                    <option value="overdue">{t.statusOverdue || "Overdue"}</option>
-                  </select>
+                  <StatusDropdown />
                 </div>
               )}
             </div>
 
-            {(totalCount > 0 || statusFilter !== 'all' || debouncedSearch !== '') && (
+            {(totalCount > 0 || statusFilters.length > 0 || debouncedSearch !== '') && (
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                 <div className="hidden sm:flex items-center gap-2 text-sm text-zinc-500 shrink-0">
                   <span className="hidden xs:inline whitespace-nowrap font-medium text-zinc-400 uppercase text-[10px] tracking-widest mr-1">Show:</span>
@@ -375,18 +438,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
                     ))}
                   </select>
                   <div className="h-4 w-[1px] bg-zinc-200 dark:bg-zinc-700 mx-1" />
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => handleStatusFilterChange(e.target.value)}
-                    className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer text-xs sm:text-sm font-bold text-zinc-700 dark:text-zinc-300 shadow-sm appearance-none min-w-[100px]"
-                    style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}
-                  >
-                    <option value="all">{t.allStatus || "All Status"}</option>
-                    <option value="draft">{t.statusDraft || "Draft"}</option>
-                    <option value="sent">{t.statusSent || "Sent"}</option>
-                    <option value="paid">{t.statusPaid || "Paid"}</option>
-                    <option value="overdue">{t.statusOverdue || "Overdue"}</option>
-                  </select>
+                  <StatusDropdown />
                 </div>
                 <div className="relative w-full sm:w-64">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
