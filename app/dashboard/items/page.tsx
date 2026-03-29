@@ -1,22 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getItems, deleteItem, getSavedClients, deleteSavedClient } from "./actions";
-import { Plus, PenLine, Trash2, PackageSearch, Package, Users, Mail, Phone, MapPin } from "lucide-react";
-import { CreateItemModal } from "@/components/create-item-modal";
-import { EditItemModal } from "@/components/edit-item-modal";
-import { CreateClientModal } from "@/components/create-client-modal";
-import { EditClientModal } from "@/components/edit-client-modal";
+import { BulkAddItemsModal } from "@/components/bulk-add-items-modal";
 import { ConfirmModal } from "@/components/confirm-modal";
-import { Tooltip } from "@/components/tooltip";
+import { CreateClientModal } from "@/components/create-client-modal";
+import { CreateItemModal } from "@/components/create-item-modal";
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
-import { SavedItem } from "@/types/item";
-import { SavedClient } from "@/types/client";
+import { EditClientModal } from "@/components/edit-client-modal";
+import { EditItemModal } from "@/components/edit-item-modal";
+import { Tooltip } from "@/components/tooltip";
+import { UpgradeModal } from "@/components/upgrade-modal";
 import { useAuth } from "@/contexts/auth-context";
 import { useLanguage } from "@/contexts/language-context";
-import { getUserEntitlements } from "@/utils/entitlements";
+import { SavedClient } from "@/types/client";
+import { SavedItem } from "@/types/item";
 import { FREE_ENTITLEMENTS } from "@/types/subscription";
-import { UpgradeModal } from "@/components/upgrade-modal";
+import { getUserEntitlements } from "@/utils/entitlements";
+import { Mail, MapPin, Package, PackageSearch, PenLine, Phone, Plus, Trash2, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { deleteItem, deleteSavedClient, getItems, getSavedClients } from "./actions";
 
 export default function ItemsPage() {
   const { session } = useAuth();
@@ -27,6 +28,7 @@ export default function ItemsPage() {
   const [items, setItems] = useState<SavedItem[]>([]);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
+  const [isBulkAddItemsModalOpen, setIsBulkAddItemsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<SavedItem | null>(null);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   
@@ -151,13 +153,25 @@ export default function ItemsPage() {
           <p className="text-zinc-500 text-xs sm:text-sm font-medium">{t.libraryDesc || "Manage your saved items and clients for quick invoicing."}</p>
         </div>
         
-        <button
-          onClick={handleCreateNewClick}
-          className="hidden sm:flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
-        >
-          <Plus className="w-4 h-4" />
-          <span>{activeTab === "items" ? (t.newItem || "New Item") : (t.newClient || "New Client")}</span>
-        </button>
+        <div className="hidden sm:flex items-center gap-2">
+          {activeTab === "items" ? (
+            <button
+              onClick={() => setIsBulkAddItemsModalOpen(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
+            >
+              <Plus className="w-4 h-4" />
+              Add
+            </button>
+          ) : (
+            <button
+              onClick={handleCreateNewClick}
+              className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
+            >
+              <Plus className="w-4 h-4" />
+              <span>{t.newClient || "New Client"}</span>
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Tabs */}
@@ -205,11 +219,11 @@ export default function ItemsPage() {
             <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">{t.emptyLibrary || "Your items library is empty"}</h3>
             <p className="text-zinc-500 max-w-xs mx-auto mb-8 font-medium">{t.saveItemsSpeed || "Save your frequently billed products or services to speed up invoice creation."}</p>
             <button
-              onClick={handleCreateNewClick}
+              onClick={() => setIsBulkAddItemsModalOpen(true)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25"
             >
               <Plus className="w-5 h-5" />
-              <span>{t.newItem || "Create Item"}</span>
+              <span>Add Items</span>
             </button>
           </div>
         ) : (
@@ -371,6 +385,13 @@ export default function ItemsPage() {
       {/* Item Modals */}
       <CreateItemModal isOpen={isCreateItemModalOpen} onClose={() => setIsCreateItemModalOpen(false)} onSuccess={(newItem) => { setItems([newItem, ...items]); setTotalItemsCount(c => c + 1); }} />
       {editingItem && <EditItemModal isOpen={!!editingItem} initialData={editingItem} onClose={() => setEditingItem(null)} onSuccess={(updatedItem) => setItems(items.map(i => i.id === updatedItem.id ? updatedItem : i))} />}
+      <BulkAddItemsModal
+        isOpen={isBulkAddItemsModalOpen}
+        onClose={() => setIsBulkAddItemsModalOpen(false)}
+        onSuccess={() => { loadData(); }}
+        currentCount={totalItemsCount}
+        maxItems={entitlements.maxSavedItems}
+      />
       
       {/* Client Modals */}
       <CreateClientModal isOpen={isCreateClientModalOpen} onClose={() => setIsCreateClientModalOpen(false)} onSuccess={(newClient) => { setClients([newClient, ...clients]); setTotalClientsCount(c => c + 1); }} />
@@ -397,7 +418,7 @@ export default function ItemsPage() {
 
       {/* Floating Action Button (Mobile Only) */}
       <button
-        onClick={handleCreateNewClick}
+        onClick={() => activeTab === "items" ? setIsBulkAddItemsModalOpen(true) : handleCreateNewClick()}
         className="sm:hidden fixed bottom-24 right-6 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-40 border-4 border-white dark:border-zinc-950"
       >
         <Plus className="w-7 h-7" />
