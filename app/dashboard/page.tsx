@@ -163,16 +163,28 @@ function DashboardContent() {
           <p className="text-zinc-500 text-xs sm:text-sm font-medium">{t.businessEntities || "Manage your business entities and invoices."}</p>
         </div>
         
-        {/* Desktop Create Button */}
-        <button
-          onClick={handleCreateCompanyClick}
-          className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          <span>{t.createCompany || "Create Company"}</span>
-        </button>
+        {/* Desktop Buttons */}
+        <div className="hidden sm:flex items-center gap-2">
+          {entitlements.plan === "free" && (
+            <Link
+              href="/pricing"
+              className="group relative flex items-center gap-1.5 px-5 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/25 font-bold transition-all text-[13px] overflow-hidden active:scale-[0.98]"
+            >
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
+              <Zap className="w-3.5 h-3.5 relative z-10" />
+              <span className="relative z-10">{t.upgrade || "Upgrade"}</span>
+            </Link>
+          )}
+          <button
+            onClick={handleCreateCompanyClick}
+            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98] cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>{t.createCompany || "Create Company"}</span>
+          </button>
+        </div>
 
-        {/* Mobile Create Button (Alternative header style or hidden for FAB) */}
+        {/* Mobile Upgrade Button */}
         <div className="sm:hidden">
            {entitlements.plan === "free" && (
             <Link
