@@ -18,6 +18,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    // Skip if userId is not a valid UUID (e.g. test/mock users in E2E tests)
+    const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!UUID_REGEX.test(userId)) {
+      return NextResponse.json({ ok: true, skipped: true });
+    }
+
     // Skip logging entirely for tester accounts
     if (isTester(email)) {
       return NextResponse.json({ ok: true, skipped: true });
