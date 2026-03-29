@@ -1,0 +1,54 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+
+const getServiceSupabase = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createClient(url, key);
+};
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { userId, email, displayName, avatarUrl, provider, userAgent } = body;
+
+    if (!userId || !email) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    // Extract IP — Vercel sets x-forwarded-for; fallback to x-real-ip
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ipAddress = forwarded ? forwarded.split(",")[0].trim() : (request.headers.get("x-real-ip") ?? null);
+
+    // Vercel injects geo headers automatically on Edge/Serverless
+    const country = request.headers.get("x-vercel-ip-country") ?? null;
+
+    const supabase = getServiceSupabase();
+    if (!supabase) {
+      return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase.from("user_login_logs") as any).insert({
+      user_id:      userId,
+      email,
+      display_name: displayName ?? null,
+      avatar_url:   avatarUrl ?? null,
+      provider:     provider ?? "email",
+      user_agent:   userAgent ?? null,
+      ip_address:   ipAddress,
+      country,
+    });
+
+    if (error) {
+      console.error("[log-login] DB insert error:", error.message);
+      return NextResponse.json({ error: "DB insert failed" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("[log-login] Unexpected error:", err);
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+  }
+}

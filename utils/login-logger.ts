@@ -1,56 +1,52 @@
-import { supabase } from "@/utils/supabase/client";
-
 import { Session } from "@supabase/supabase-js";
 
 let isLoggingInProgress = false;
 
 export async function logUserLogin(providedSession?: Session | null) {
-  if (!supabase || isLoggingInProgress) return;
+  if (isLoggingInProgress) return;
   isLoggingInProgress = true;
 
   try {
-    const session = providedSession || (await supabase.auth.getSession()).data.session;
-    if (!session?.user) return;
+    if (!providedSession?.user) return;
+    const user = providedSession.user;
 
-    const user = session.user;
-    
-    // Prevent spamming the db on every page load using localStorage
+    // Rate-limit: at most once every 12 hours per user per browser
     const cacheKey = `last_login_log_${user.id}`;
     const lastLog = localStorage.getItem(cacheKey);
     const now = Date.now();
-    
-    // Log at most once every 12 hours per user per browser
-    if (lastLog && now - parseInt(lastLog, 10) < 12 * 60 * 60 * 1000) {
-      return; 
-    }
+    if (lastLog && now - parseInt(lastLog, 10) < 12 * 60 * 60 * 1000) return;
 
-    const { error } = await supabase.from("user_login_logs").insert({
-      user_id: user.id,
-      email: user.email || "unknown",
-      display_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
-      avatar_url: user.user_metadata?.avatar_url || null,
-      provider: user.app_metadata?.provider || "email",
-      user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+    const res = await fetch("/api/log-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId:      user.id,
+        email:       user.email ?? "unknown",
+        displayName: user.user_metadata?.full_name || user.user_metadata?.name || null,
+        avatarUrl:   user.user_metadata?.avatar_url || null,
+        provider:    user.app_metadata?.provider || "email",
+        userAgent:   typeof navigator !== "undefined" ? navigator.userAgent : null,
+      }),
     });
 
-    if (error) {
-      console.error("Supabase insert log error:", error);
-    } else {
+    if (res.ok) {
       localStorage.setItem(cacheKey, now.toString());
 
       // Notify admin if it's a new user (first login log)
       try {
         const { notifyAdminOnNewUser } = await import("@/app/actions/auth-actions");
         await notifyAdminOnNewUser({
-          id: user.id,
-          email: user.email || "unknown",
-          name: user.user_metadata?.full_name || user.user_metadata?.name || undefined,
-          provider: user.app_metadata?.provider || "email",
+          id:        user.id,
+          email:     user.email ?? "unknown",
+          name:      user.user_metadata?.full_name || user.user_metadata?.name || undefined,
+          provider:  user.app_metadata?.provider || "email",
           createdAt: user.created_at,
         });
       } catch (notifyErr) {
         console.error("Failed to trigger new user notification:", notifyErr);
       }
+    } else {
+      console.error("[login-logger] API error:", await res.text());
     }
   } catch (err) {
     console.error("Failed to log user login:", err);
@@ -60,7 +56,9 @@ export async function logUserLogin(providedSession?: Session | null) {
 }
 
 
+
 export async function getLoginLogs(page = 1, pageSize = 50) {
+  const { supabase } = await import("@/utils/supabase/client");
   if (!supabase) return { logs: [], total: 0 };
 
   const from = (page - 1) * pageSize;

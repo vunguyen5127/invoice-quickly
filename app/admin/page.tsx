@@ -25,6 +25,8 @@ interface LoginLog {
   avatar_url: string | null;
   provider: string | null;
   user_agent: string | null;
+  ip_address: string | null;
+  country: string | null;
   logged_in_at: string;
 }
 
@@ -319,6 +321,7 @@ export default function AdminPage() {
                         <th className="px-6 py-4 font-medium">User</th>
                         <th className="px-6 py-4 font-medium">Email</th>
                         <th className="px-6 py-4 font-medium">Provider</th>
+                        <th className="px-6 py-4 font-medium">IP / Country</th>
                         <th className="px-6 py-4 font-medium">Browser / OS</th>
                         <th className="px-6 py-4 font-medium">Login Time</th>
                       </tr>
@@ -344,6 +347,14 @@ export default function AdminPage() {
                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 capitalize">
                               <Globe className="w-3 h-3" />{log.provider || "email"}
                             </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex flex-col gap-0.5 text-xs text-zinc-500">
+                              <span className="font-mono">{log.ip_address || "—"}</span>
+                              {log.country && (
+                                <span className="text-zinc-400">{log.country}</span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-1.5 text-zinc-500">
