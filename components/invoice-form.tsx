@@ -27,6 +27,16 @@ interface InvoiceFormProps {
 
 export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecurring = false, onShowUpgrade, docType = 'invoice', onCompanySelect }: InvoiceFormProps) {
   const { t } = useLanguage();
+
+  // When not logged in (generator page), onShowUpgrade may be undefined → go to /pricing
+  const handleUpgrade = () => {
+    if (onShowUpgrade) {
+      onShowUpgrade();
+    } else {
+      window.location.href = '/pricing';
+    }
+  };
+
   const [myCompanies, setMyCompanies] = useState<any[]>([]);
   const [myItems, setMyItems] = useState<SavedItem[]>([]);
   const [myClients, setMyClients] = useState<SavedClient[]>([]);
@@ -997,7 +1007,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               <label className={`flex items-center gap-2 shrink-0 h-full ${!canUseRecurring ? 'cursor-not-allowed' : 'cursor-pointer'}`} onClick={(e) => {
                 // If it's disabled, clicking the checkbox container should still show the upgrade modal
                 if (!canUseRecurring) {
-                  onShowUpgrade?.();
+                  handleUpgrade();
                   e.preventDefault();
                 }
                 e.stopPropagation();
@@ -1013,7 +1023,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               <button
                 type="button"
                 onClick={() => {
-                  if (!invoice.isRecurring && !canUseRecurring) { onShowUpgrade?.(); return; }
+                  if (!invoice.isRecurring && !canUseRecurring) { handleUpgrade(); return; }
                   setIsRecurringOpen(!isRecurringOpen);
                 }}
                 className="flex-1 h-full text-left text-[13px] font-bold text-zinc-900 dark:text-zinc-100 truncate hover:text-blue-600 transition-colors flex items-center gap-2"
@@ -1033,7 +1043,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
             <button
               type="button"
               onClick={() => {
-                if (!invoice.isRecurring && !canUseRecurring) { onShowUpgrade?.(); return; }
+                if (!invoice.isRecurring && !canUseRecurring) { handleUpgrade(); return; }
                 setIsRecurringOpen(!isRecurringOpen);
               }}
               className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
@@ -1054,7 +1064,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <p className="text-xs text-zinc-500 mb-3">Auto-generate invoices weekly, monthly, quarterly or yearly.</p>
                   <button
                     type="button"
-                    onClick={() => onShowUpgrade?.()}
+                    onClick={() => handleUpgrade()}
                     className="px-5 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
                   >
                     Upgrade to Pro
