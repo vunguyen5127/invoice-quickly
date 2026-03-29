@@ -178,7 +178,7 @@ function LoginContent() {
               <Link href="/" className="inline-flex items-center gap-2.5 mb-8 group transition-opacity hover:opacity-80" aria-label="Go to Homepage">
                 <ShieldCheck className="w-7 h-7 text-blue-600 dark:text-blue-500" />
                 <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
-                  Invoice<span className="text-blue-600 dark:text-blue-500">Quickly</span>
+                  Invoice-Quickly
                 </span>
               </Link>
 
