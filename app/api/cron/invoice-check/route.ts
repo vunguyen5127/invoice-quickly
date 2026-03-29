@@ -233,7 +233,21 @@ export async function GET(request: Request) {
           nextInvoiceDate: undefined,
         };
 
-        // Insert new invoice
+        // Recalculate totals from cloned data
+        const cloneItems = baseData.items || [];
+        const subTotalNew = cloneItems.reduce(
+          (acc: number, item: any) => acc + (item.quantity * item.rate), 0
+        );
+        const discountAmt = baseData.discountType === 'percentage'
+          ? subTotalNew * ((baseData.discount || 0) / 100)
+          : (baseData.discount || 0);
+        const afterDiscount = Math.max(0, subTotalNew - discountAmt);
+        const taxAmtNew = baseData.taxType === 'percentage'
+          ? afterDiscount * ((baseData.taxRate || 0) / 100)
+          : (baseData.taxRate || 0);
+        const totalNew = afterDiscount + taxAmtNew + (baseData.shipping || 0);
+
+        // Insert new invoice — copy all structured fields from parent
         const { error: insertError } = await supabase
           .from("invoices")
           .insert([{
@@ -241,8 +255,13 @@ export async function GET(request: Request) {
             company_id: rec.company_id,
             invoice_number: newInvoiceNumber,
             client_name: rec.client_name,
+            seller_info: baseData.company || null,
+            client_info: baseData.client || null,
+            items: cloneItems,
+            subtotal: subTotalNew,
+            tax: taxAmtNew,
             currency: rec.currency,
-            total_amount: rec.total_amount,
+            total_amount: totalNew,
             status: 'draft',
             due_date: dueDateNew,
             data: newInvoiceData,
