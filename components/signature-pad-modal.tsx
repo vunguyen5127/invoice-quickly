@@ -54,7 +54,8 @@ export function SignaturePadModal({ isOpen, onClose, onSave }: SignaturePadModal
               ref={sigCanvas} 
               penColor="black"
               canvasProps={{
-                className: "w-full h-48 cursor-crosshair",
+                className: "w-full h-48",
+                style: { cursor: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none' stroke='%231e293b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z'/%3E%3Cpath d='m15 5 4 4'/%3E%3C/svg%3E\") 2 30, crosshair" },
               }}
               onBegin={() => setIsEmpty(false)}
             />
