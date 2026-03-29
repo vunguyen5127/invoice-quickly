@@ -40,6 +40,7 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
       show_terms,
       default_tax,
       default_discount,
+      invoice_number_prefix,
       created_at
     `, { count: "exact" })
     .order("created_at", { ascending: false })
@@ -342,9 +343,10 @@ export async function deleteInvoice(token: string, id: string) {
   return true;
 }
 
-export async function getNextInvoiceNumber(token: string, companyId: string): Promise<string> {
+export async function getNextInvoiceNumber(token: string, companyId: string, prefix?: string): Promise<string> {
   const supabase = getServerSupabase(token);
   const currentYear = new Date().getFullYear();
+  const effectivePrefix = (prefix && prefix.trim()) ? prefix.trim() : `INV-${currentYear}-`;
 
   const { data, error } = await supabase
     .from("invoices")
@@ -353,24 +355,24 @@ export async function getNextInvoiceNumber(token: string, companyId: string): Pr
     .is("deleted_at", null);
 
   if (error || !data || data.length === 0) {
-    return `INV-${currentYear}-001`;
+    return `${effectivePrefix}001`;
   }
 
-  // Find the highest index across all invoice numbers for the current year
+  // Find the highest sequential number for invoices starting with this prefix
   let maxIndex = 0;
   for (const row of data) {
-    const match = row.invoice_number?.match(/INV-(\d{4})-(\d+)/);
-    if (match) {
-      const year = parseInt(match[1]);
-      const index = parseInt(match[2]);
-      if (year === currentYear && index > maxIndex) {
+    const num = row.invoice_number;
+    if (num && num.startsWith(effectivePrefix)) {
+      const suffix = num.slice(effectivePrefix.length);
+      const index = parseInt(suffix, 10);
+      if (!isNaN(index) && index > maxIndex) {
         maxIndex = index;
       }
     }
   }
 
   const nextIndex = (maxIndex + 1).toString().padStart(3, "0");
-  return `INV-${currentYear}-${nextIndex}`;
+  return `${effectivePrefix}${nextIndex}`;
 }
 
 export async function bulkDeleteInvoices(token: string, ids: string[]) {

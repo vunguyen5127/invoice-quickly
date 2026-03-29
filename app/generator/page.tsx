@@ -37,6 +37,8 @@ function CreateInvoiceContent() {
   const [isMounted, setIsMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [canUseRecurring, setCanUseRecurring] = useState(false);
+  const [hasNoCompany, setHasNoCompany] = useState(false);
+  const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
 
   const canSave = invoice.client.name.trim().length > 0 && invoice.items.some((item) => item.description.trim().length > 0);
 
@@ -113,10 +115,12 @@ function CreateInvoiceContent() {
 
                 // Await invoice number so it's ready before draftInvoice is built
                 try {
-                  nextInvNum = await getNextInvoiceNumber(session.access_token, autoCompany.id);
+                  nextInvNum = await getNextInvoiceNumber(session.access_token, autoCompany.id, autoCompany.invoice_number_prefix || undefined);
                 } catch (e) {
                   console.error("Failed to fetch invoice number", e);
                 }
+              } else if (!res.data || res.data.length === 0) {
+                setHasNoCompany(true);
               }
             } catch (e) {
               console.error("Failed to fetch initial company data", e);
@@ -292,6 +296,35 @@ function CreateInvoiceContent() {
     }
   };
 
+  // Prefill invoice form with new company data (used by setup banner flow)
+  const handleCompanySetup = (newCompany: any) => {
+    setHasNoCompany(false);
+    setIsSetupModalOpen(false);
+    setInitialCompanyId(newCompany.id);
+    const details: string[] = [];
+    if (newCompany.name) details.push(newCompany.name);
+    if (newCompany.address) details.push(newCompany.address);
+    if (newCompany.email) details.push(newCompany.email);
+    if (newCompany.phone) details.push(newCompany.phone);
+    setInvoice(prev => ({
+      ...prev,
+      company: { ...prev.company, name: details.join(", "), logo: newCompany.logo_url || prev.company.logo },
+      signatureName: newCompany.signer_name || prev.signatureName,
+      signature: newCompany.signature_url || prev.signature,
+      currency: newCompany.default_currency || prev.currency,
+      notes: newCompany.default_notes || prev.notes,
+      terms: newCompany.default_terms || prev.terms,
+      taxRate: newCompany.default_tax ?? prev.taxRate,
+      discount: newCompany.default_discount ?? prev.discount,
+    }));
+    // Load invoice number for this company
+    if (session) {
+      getNextInvoiceNumber(session.access_token, newCompany.id, newCompany.invoice_number_prefix || undefined)
+        .then(num => setInvoice(prev => ({ ...prev, details: { ...prev.details, invoiceNumber: num } })))
+        .catch(console.error);
+    }
+  };
+
   // Don't render interactive parts until loaded to prevent hydration mismatch
   const mainContent = (
     <>
@@ -302,6 +335,30 @@ function CreateInvoiceContent() {
             {!isLoaded ? "Editor" : t.editor}
           </h2>
         </div>
+
+        {/* New-user company setup banner */}
+        {isLoaded && isLoggedIn && hasNoCompany && (
+          <div className="mb-4 flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 rounded-xl text-sm">
+            <Building2 className="w-4 h-4 text-blue-500 flex-shrink-0" />
+            <span className="text-blue-700 dark:text-blue-300 flex-1">
+              Set up your company profile to auto-fill invoices and save time.
+            </span>
+            <button
+              onClick={() => setIsSetupModalOpen(true)}
+              className="text-blue-600 dark:text-blue-400 font-semibold hover:underline whitespace-nowrap"
+            >
+              Set up now →
+            </button>
+            <button
+              onClick={() => setHasNoCompany(false)}
+              className="text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 ml-1"
+              aria-label="Dismiss"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         <div className="bg-white dark:bg-zinc-900/50 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
           {!isLoaded ? (
             <InvoiceEditSkeleton />
@@ -449,6 +506,13 @@ function CreateInvoiceContent() {
             </div>
           </div>
         )}
+
+        {/* Create Company Modal — setup flow (prefill without saving) */}
+        <CreateCompanyModal
+          isOpen={isSetupModalOpen}
+          onClose={() => setIsSetupModalOpen(false)}
+          onSuccess={handleCompanySetup}
+        />
 
         {/* Create Company Modal (if they choose to create from here) */}
         <CreateCompanyModal
