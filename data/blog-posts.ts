@@ -6,9 +6,91 @@ export interface BlogPost {
   readTime: string;
   category: string;
   content: string;
+  videoId?: string; // Optional YouTube video ID
 }
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: "free-invoice-generator-online",
+    title: "Free Invoice Generator Online: Create Professional PDF Invoices in 60 Seconds",
+    description: "Learn how to create professional invoices for free online — no signup, no watermark. Watch the video demo and get started with Invoice-Quickly's free invoice generator today.",
+    date: "2026-03-30",
+    readTime: "6 min read",
+    category: "Guide",
+    videoId: "xOE5E9EIDCQ",
+    content: `
+## What Is a Free Invoice Generator?
+
+A free invoice generator is an online tool that lets you create professional, PDF-ready invoices without paying for expensive accounting software or dealing with clunky spreadsheet templates.
+
+Invoice-Quickly is one of the best free invoice generators available today — no signup required, no watermark, and no hidden limits. You can create and download a polished PDF invoice in under 60 seconds.
+
+## Why Use a Free Online Invoice Generator?
+
+Here's why thousands of freelancers and small businesses use Invoice-Quickly instead of Word docs or paid tools:
+
+- **No signup or account required** — just open the generator and start filling in details
+- **Live preview** — see your invoice update in real-time as you type
+- **Free PDF download** — clean, print-ready PDF with zero watermarks
+- **Shareable link** — send clients a secure public link to view their invoice online
+- **20+ languages** — including Arabic (RTL), Vietnamese, Japanese, Spanish, French, and more
+- **Multi-currency** — bill in USD, EUR, GBP, AUD, VND, and 15+ other currencies
+
+## How to Create a Free Invoice in 4 Steps
+
+Creating your first free invoice takes less than 2 minutes:
+
+## Step 1: Add Your Business Details
+
+Enter your company name, logo, email, and address. Invoice-Quickly saves this automatically so you don't have to type it again next time.
+
+## Step 2: Fill In Client Information
+
+Add your client's name, company, and billing address. The more specific, the more professional your invoice looks.
+
+## Step 3: Add Line Items
+
+List each service or product with a description, quantity, and rate. The free invoice generator automatically calculates subtotals, taxes, and discounts.
+
+## Step 4: Download or Share
+
+Click **Download PDF** to get a pixel-perfect PDF instantly. Or click **Share** to generate a public link your client can open on any device.
+
+## What Should a Professional Invoice Include?
+
+Every invoice — whether created with a free invoice generator or paid software — should include:
+
+| Field | Why It Matters |
+|-------|----------------|
+| Invoice Number | Unique reference for tracking and tax records |
+| Issue Date | When the invoice was created |
+| Due Date | When payment is expected (Net 15 / Net 30) |
+| Seller Details | Your name, address, and contact info |
+| Client Details | Who you're billing |
+| Line Items | Itemized description of work done |
+| Tax & Discount | Applied correctly and shown clearly |
+| Payment Instructions | How the client should pay you |
+
+## Free vs Paid Invoice Tools: Do You Need to Pay?
+
+For most freelancers and small businesses, a **free invoice generator covers everything you need**:
+
+- Create and download unlimited invoices as a guest
+- No watermarks on exported PDFs
+- Share invoices via a public link
+- Auto-calculate taxes, discounts, and totals
+
+**When to consider upgrading to Pro:**
+
+If you need to manage multiple companies, save invoice history, or create recurring invoices automatically, the Pro plan at $10/month unlocks all advanced features.
+
+## Start Creating Free Invoices Today
+
+Ready to create your first professional invoice for free? No account needed — just open the generator and you're ready to go.
+
+[Create your free invoice now](/generator) — it takes less than 60 seconds.
+    `,
+  },
   {
     slug: "how-to-invoice-clients-as-freelancer",
     title: "How to Invoice Clients as a Freelancer (Complete 2026 Guide)",

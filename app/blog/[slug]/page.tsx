@@ -21,6 +21,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!post) return {};
 
+  const ogImage = post.videoId
+    ? `https://img.youtube.com/vi/${post.videoId}/maxresdefault.jpg`
+    : undefined;
+
   return {
     title: post.title,
     description: post.description,
@@ -32,6 +36,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: post.title,
       description: post.description,
       publishedTime: post.date,
+      url: `https://invoice-quickly.com/blog/${slug}`,
+      siteName: "Invoice-Quickly",
+      ...(ogImage && { images: [{ url: ogImage, width: 1280, height: 720, alt: post.title }] }),
+    },
+    twitter: {
+      card: post.videoId ? "player" : "summary_large_image",
+      title: post.title,
+      description: post.description,
+      ...(ogImage && { images: [ogImage] }),
     },
   };
 }
@@ -72,7 +85,35 @@ export default async function BlogPostPage({ params }: Props) {
       "@type": "WebPage",
       "@id": `https://invoice-quickly.com/blog/${slug}`,
     },
+    ...(post.videoId && {
+      video: {
+        "@type": "VideoObject",
+        name: post.title,
+        description: post.description,
+        thumbnailUrl: `https://img.youtube.com/vi/${post.videoId}/maxresdefault.jpg`,
+        uploadDate: post.date,
+        embedUrl: `https://www.youtube.com/embed/${post.videoId}`,
+        url: `https://www.youtube.com/watch?v=${post.videoId}`,
+      },
+    }),
   };
+
+  // Separate VideoObject schema for better Google indexing
+  const videoSchema = post.videoId ? {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: post.title,
+    description: post.description,
+    thumbnailUrl: `https://img.youtube.com/vi/${post.videoId}/maxresdefault.jpg`,
+    uploadDate: post.date,
+    embedUrl: `https://www.youtube.com/embed/${post.videoId}`,
+    url: `https://www.youtube.com/watch?v=${post.videoId}`,
+    publisher: {
+      "@type": "Organization",
+      name: "Invoice-Quickly",
+      url: "https://invoice-quickly.com",
+    },
+  } : null;
 
   // Simple markdown-like rendering for content sections
   const renderContent = (content: string) => {
@@ -184,6 +225,12 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
+      {videoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
+        />
+      )}
       <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
         <article className="container max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           {/* Back Link */}
@@ -220,6 +267,25 @@ export default async function BlogPostPage({ params }: Props) {
           </header>
 
           <hr className="border-zinc-200 dark:border-zinc-800 mb-10" />
+
+          {/* YouTube Video Embed (if videoId present) */}
+          {post.videoId && (
+            <div className="mb-10">
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-700 bg-black">
+                <div className="aspect-video">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${post.videoId}?rel=0&modestbranding=1&autoplay=1`}
+                    title={post.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+              <p className="text-center text-xs text-zinc-400 dark:text-zinc-500 mt-3">Watch: {post.title}</p>
+            </div>
+          )}
 
           {/* Content */}
           <div className="prose-custom">
