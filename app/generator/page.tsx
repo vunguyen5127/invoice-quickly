@@ -81,7 +81,13 @@ function CreateInvoiceContent() {
           
           if (session) {
             try {
-              const res = await getUserCompanies(session.access_token);
+              // Fetch companies and entitlements in parallel
+              const [res, ents] = await Promise.all([
+                getUserCompanies(session.access_token),
+                getUserEntitlements(session.access_token),
+              ]);
+              setCanUseRecurring(ents.canUseRecurring);
+
               if (res.data && res.data.length === 1) {
                 const autoCompany = res.data[0];
                 setInitialCompanyId(autoCompany.id);
@@ -105,13 +111,12 @@ function CreateInvoiceContent() {
                 taxRate = autoCompany.default_tax !== null && autoCompany.default_tax !== undefined ? autoCompany.default_tax : 0;
                 discount = autoCompany.default_discount !== null && autoCompany.default_discount !== undefined ? autoCompany.default_discount : 0;
 
-                // Load invoice number non-blockingly
-                getNextInvoiceNumber(session.access_token, autoCompany.id).then(num => {
-                  setInvoice(prev => ({
-                    ...prev,
-                    details: { ...prev.details, invoiceNumber: num }
-                  }));
-                }).catch(console.error);
+                // Await invoice number so it's ready before draftInvoice is built
+                try {
+                  nextInvNum = await getNextInvoiceNumber(session.access_token, autoCompany.id);
+                } catch (e) {
+                  console.error("Failed to fetch invoice number", e);
+                }
               }
             } catch (e) {
               console.error("Failed to fetch initial company data", e);
@@ -150,15 +155,7 @@ function CreateInvoiceContent() {
 
       if (userIsLoggedIn) {
         setIsLoggedIn(true);
-        // Fetch entitlements to unlock Pro features (e.g. Recurring Invoice)
-        if (session) {
-          try {
-            const ents = await getUserEntitlements(session.access_token);
-            setCanUseRecurring(ents.canUseRecurring);
-          } catch (e) {
-            console.error("Failed to fetch entitlements", e);
-          }
-        }
+        // canUseRecurring already set above when fetching entitlements in parallel
         if (!draftInvoice.signatureName) {
           const name = session!.user.user_metadata?.name || session!.user.user_metadata?.full_name || session!.user.email?.split("@")[0];
           if (name) {
