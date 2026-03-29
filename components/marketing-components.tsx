@@ -9,7 +9,7 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon, iconColor, title, description }: FeatureCardProps) {
   return (
-    <div className="bg-white dark:bg-zinc-900 p-7 rounded-2xl border border-slate-100 dark:border-zinc-800/80 hover:shadow-xl hover:shadow-slate-900/5 hover:-translate-y-1 transition-all duration-300 group">
+    <div className="bg-white dark:bg-zinc-900 p-7 rounded-2xl border border-slate-200 dark:border-zinc-800/80 shadow-sm hover:shadow-xl hover:shadow-slate-900/5 hover:-translate-y-1 transition-all duration-300 group">
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 ${iconColor}`}>
         {icon}
       </div>

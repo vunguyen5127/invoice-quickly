@@ -253,31 +253,29 @@ export default function LandingPage() {
                     invoice-quickly.com/generator
                   </div>
                 </div>
-                {/* Demo content */}
-                <div className="aspect-[16/10] relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/videos/demo.webp"
-                    alt="Free invoice generator online - Invoice-Quickly live preview showing PDF invoice creation with line items, tax, and instant download"
-                    className="w-full h-full object-cover"
-                    width={960}
-                    height={600}
-                    loading="eager"
+                {/* YouTube video inside browser mockup */}
+                <div className="aspect-video relative">
+                  <iframe
+                    src="https://www.youtube.com/embed/xOE5E9EIDCQ?rel=0&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=xOE5E9EIDCQ"
+                    title="Invoice-Quickly — Free Invoice Generator Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full"
+                    loading="lazy"
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 to-transparent" />
                 </div>
               </div>
             </div>
 
             {/* Copy */}
             <div className="w-full lg:w-[42%] order-1 lg:order-2">
-              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">Product walkthrough</p>
-              <h2 className="mb-5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">See the free invoice generator in action</h2>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">Official Demo Video</p>
+              <h2 className="mb-5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">See Invoice-Quickly in action</h2>
               <ul className="space-y-5 mb-8">
                 {[
-                  { title: "Live preview as you type", desc: "Watch your invoice build instantly — no lag, no refresh." },
-                  { title: "One-click PDF download", desc: "Perfectly formatted and print-ready. Every single time." },
-                  { title: "Share a public link", desc: "Send clients a secure, unguessable link to view their invoice." },
+                  { title: "Create in under 60 seconds", desc: "From blank form to polished invoice — it's that fast. No learning curve." },
+                  { title: "Live preview & instant PDF", desc: "Watch every change reflect in real-time. Download a pixel-perfect PDF instantly." },
+                  { title: "Share with a single link", desc: "Send clients a secure, unguessable link to view their invoice online." },
                 ].map(({ title, desc }) => (
                   <li key={title} className="flex gap-3.5">
                     <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40">
@@ -374,7 +372,7 @@ export default function LandingPage() {
       {/* ══════════════════════════════════════════════
           5. FEATURES
       ══════════════════════════════════════════════ */}
-      <section id="features" className="py-24 bg-white dark:bg-zinc-950 relative z-20">
+      <section id="features" className="py-24 bg-slate-50 dark:bg-zinc-900 relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="mb-2 text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Features</p>
