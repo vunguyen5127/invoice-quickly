@@ -8,24 +8,24 @@ test.describe('Module: Item Library Management UI', () => {
     await seedAuthenticatedSession(page);
   });
 
-  test('Items Page Displays Correctly and Opens Create Item Modal', async ({ page }) => {
+  test('Items Page Displays Correctly and Opens Bulk Add Modal', async ({ page }) => {
     await page.goto('/dashboard/items');
     
     // Heading
     await expect(page.getByRole('heading', { name: /^Library$/i })).toBeVisible();
     
-    // New Item Button
-    const createBtn = page.getByRole('button', { name: /New Item/i }).first();
+    // Add Button (replaces old New Item button)
+    const createBtn = page.getByRole('button', { name: /^Add$/i }).first();
     await expect(createBtn).toBeVisible();
     await createBtn.click();
     
-    // Create Item Modal should open
-    const modalHeading = page.getByRole('heading', { name: /New Item/i }).last();
+    // Bulk Add Items Modal should open
+    const modalHeading = page.getByRole('heading', { name: /Bulk Add Items/i }).last();
     await expect(modalHeading).toBeVisible();
     
     // Form fields should be visible
-    await expect(page.getByPlaceholder('Homepage design, 3 revisions')).toBeVisible();
-    await expect(page.getByPlaceholder('0.00')).toBeVisible();
+    await expect(page.getByPlaceholder('Item name or description').first()).toBeVisible();
+    await expect(page.getByPlaceholder('0.00').first()).toBeVisible();
     
     // Cancel button should close modal
     await page.getByRole('button', { name: /Cancel/i }).click();
@@ -39,12 +39,12 @@ test.describe('Module: Item Library Management UI', () => {
     await expect(page.getByText('Your library is empty')).toBeVisible();
     await expect(page.getByText('Save your frequently billed products or services to speed up invoice creation.')).toBeVisible();
     
-    // Empty state has its own Create Item button
-    const emptyStateBtn = page.getByRole('button', { name: /New Item/i }).last();
+    // Empty state has Add Items button (bulk add)
+    const emptyStateBtn = page.getByRole('button', { name: /Add Items/i }).last();
     await expect(emptyStateBtn).toBeVisible();
     await emptyStateBtn.click();
     
-    // Should open the modal
-    await expect(page.getByRole('heading', { name: /New Item/i }).last()).toBeVisible();
+    // Should open the bulk add modal
+    await expect(page.getByRole('heading', { name: /Bulk Add Items/i }).last()).toBeVisible();
   });
 });
