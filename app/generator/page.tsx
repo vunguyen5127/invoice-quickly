@@ -5,11 +5,12 @@ import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Plus, Share2, Save, X, Building2, LayoutDashboard, Loader2, ArrowRight } from "lucide-react";
+import { Download, Plus, Share2, Save, X, Building2, Package, Users, LayoutDashboard, Loader2, ArrowRight } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getUserCompanies, getNextInvoiceNumber } from "@/app/dashboard/actions";
 import { getUserEntitlements } from "@/utils/entitlements";
+import { getItems, getSavedClients } from "@/app/dashboard/items/actions";
 
 import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
 import Link from "next/link";
@@ -39,6 +40,8 @@ function CreateInvoiceContent() {
   const [canUseRecurring, setCanUseRecurring] = useState(false);
   const [hasNoCompany, setHasNoCompany] = useState(false);
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
+  const [hasNoItems, setHasNoItems] = useState(false);
+  const [hasNoClients, setHasNoClients] = useState(false);
 
   const canSave = invoice.client.name.trim().length > 0 && invoice.items.some((item) => item.description.trim().length > 0);
 
@@ -83,12 +86,16 @@ function CreateInvoiceContent() {
           
           if (session) {
             try {
-              // Fetch companies and entitlements in parallel
-              const [res, ents] = await Promise.all([
+              // Fetch companies, entitlements, item count, client count in parallel
+              const [res, ents, itemsRes, clientsRes] = await Promise.all([
                 getUserCompanies(session.access_token),
                 getUserEntitlements(session.access_token),
+                getItems(session.access_token, { pageSize: 1 }).catch(() => ({ data: [], totalCount: 0 })),
+                getSavedClients(session.access_token, { pageSize: 1 }).catch(() => ({ data: [], totalCount: 0 })),
               ]);
               setCanUseRecurring(ents.canUseRecurring);
+              if (itemsRes.totalCount === 0) setHasNoItems(true);
+              if (clientsRes.totalCount === 0) setHasNoClients(true);
 
               if (res.data && res.data.length === 1) {
                 const autoCompany = res.data[0];
@@ -352,6 +359,52 @@ function CreateInvoiceContent() {
             <button
               onClick={() => setHasNoCompany(false)}
               className="text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 ml-1"
+              aria-label="Dismiss"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Items library banner — shown after company is set up */}
+        {isLoaded && isLoggedIn && !hasNoCompany && hasNoItems && (
+          <div className="mb-4 flex items-center gap-3 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl text-sm">
+            <Package className="w-4 h-4 text-amber-500 flex-shrink-0" />
+            <span className="text-amber-700 dark:text-amber-300 flex-1">
+              Add items to your library to speed up invoice creation.
+            </span>
+            <button
+              onClick={() => router.push('/dashboard/items')}
+              className="text-amber-600 dark:text-amber-400 font-semibold hover:underline whitespace-nowrap"
+            >
+              Go to Item Library →
+            </button>
+            <button
+              onClick={() => setHasNoItems(false)}
+              className="text-amber-400 hover:text-amber-600 dark:hover:text-amber-300 ml-1"
+              aria-label="Dismiss"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Clients banner — shown after company + items are set up */}
+        {isLoaded && isLoggedIn && !hasNoCompany && !hasNoItems && hasNoClients && (
+          <div className="mb-4 flex items-center gap-3 px-4 py-3 bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-800/50 rounded-xl text-sm">
+            <Users className="w-4 h-4 text-violet-500 flex-shrink-0" />
+            <span className="text-violet-700 dark:text-violet-300 flex-1">
+              Save clients to your list for quick reuse in future invoices.
+            </span>
+            <button
+              onClick={() => router.push('/dashboard/items')}
+              className="text-violet-600 dark:text-violet-400 font-semibold hover:underline whitespace-nowrap"
+            >
+              Add Clients →
+            </button>
+            <button
+              onClick={() => setHasNoClients(false)}
+              className="text-violet-400 hover:text-violet-600 dark:hover:text-violet-300 ml-1"
               aria-label="Dismiss"
             >
               <X className="w-4 h-4" />
