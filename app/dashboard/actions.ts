@@ -90,7 +90,7 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
   return { data, totalCount: count || 0 };
 }
 
-export async function createCompany(token: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
+export async function createCompany(token: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number; invoiceNumberPrefix?: string }) {
   const supabase = getServerSupabase(token);
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
@@ -116,6 +116,7 @@ export async function createCompany(token: string, companyData: { name: string; 
       logo_url: companyData.logo,
       signature_url: companyData.signatureUrl,
       signer_name: companyData.signerName,
+      invoice_number_prefix: companyData.invoiceNumberPrefix || '',
       default_currency: companyData.defaultCurrency || 'USD',
       default_notes: companyData.defaultNotes || '',
       default_terms: companyData.defaultTerms || '',
@@ -134,7 +135,7 @@ export async function createCompany(token: string, companyData: { name: string; 
   return data;
 }
 
-export async function updateCompany(token: string, companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number }) {
+export async function updateCompany(token: string, companyId: string, companyData: { name: string; email: string; address: string; phone?: string; logo?: string; signatureUrl?: string; signerName?: string; defaultCurrency?: string; defaultNotes?: string; defaultTerms?: string; showNotes?: boolean; showTerms?: boolean; defaultTax?: number; defaultDiscount?: number; invoiceNumberPrefix?: string }) {
   const supabase = getServerSupabase(token);
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
@@ -156,6 +157,7 @@ export async function updateCompany(token: string, companyId: string, companyDat
       show_terms: companyData.showTerms,
       default_tax: companyData.defaultTax,
       default_discount: companyData.defaultDiscount,
+      invoice_number_prefix: companyData.invoiceNumberPrefix || '',
     })
     .eq("id", companyId)
     .eq("user_id", user.id)

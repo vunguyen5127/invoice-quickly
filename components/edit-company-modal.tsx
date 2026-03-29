@@ -28,6 +28,7 @@ interface EditCompanyModalProps {
     show_terms?: boolean;
     default_tax?: number;
     default_discount?: number;
+    invoice_number_prefix?: string;
   } | null;
 }
 
@@ -48,6 +49,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
   const [showTerms, setShowTerms] = useState(true);
   const [defaultTax, setDefaultTax] = useState(0);
   const [defaultDiscount, setDefaultDiscount] = useState(0);
+  const [invoiceNumberPrefix, setInvoiceNumberPrefix] = useState(`INV-${new Date().getFullYear()}-`);
   const [isValidPhone, setIsValidPhone] = useState(true);
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,6 +74,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
       setShowTerms(initialData.show_terms ?? true);
       setDefaultTax(initialData.default_tax || 0);
       setDefaultDiscount(initialData.default_discount || 0);
+      setInvoiceNumberPrefix(initialData.invoice_number_prefix || `INV-${new Date().getFullYear()}-`);
       setLogo((initialData as any).logo_url || undefined);
     }
     setTab("company");
@@ -107,7 +110,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
     const updated = await updateCompany(sessionToken, initialData.id, {
       name, email, address, phone, logo, signatureUrl, signerName,
       defaultCurrency, defaultNotes, defaultTerms, showNotes, showTerms,
-      defaultTax, defaultDiscount,
+      defaultTax, defaultDiscount, invoiceNumberPrefix,
     });
     setIsSubmitting(false);
     if (updated) { onSuccess(updated); onClose(); }
@@ -303,6 +306,18 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                 <fieldset className={fs}>
                   <legend className={lg}>{t.defaultTermsField}</legend>
                   <textarea rows={3} value={defaultTerms} onChange={e => setDefaultTerms(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="Payment due within 30 days." />
+                </fieldset>
+
+                <fieldset className={fs}>
+                  <legend className={lg}>Invoice Number Prefix</legend>
+                  <input
+                    value={invoiceNumberPrefix}
+                    onChange={e => setInvoiceNumberPrefix(e.target.value)}
+                    className={ic}
+                    placeholder={`INV-${new Date().getFullYear()}-`}
+                    maxLength={10}
+                  />
+                  <p className="text-[10px] text-zinc-400 mt-0.5">Max 10 chars · System appends 001, 002, ... automatically</p>
                 </fieldset>
 
                 <div className="flex flex-col gap-2 pt-1 border-t border-zinc-100 dark:border-zinc-800">
