@@ -191,6 +191,13 @@ export default async function BlogPostPage({ params }: Props) {
             {trimmed.replace("## ", "")}
           </h2>
         );
+      } else if (trimmed.startsWith("### ")) {
+        flushList();
+        elements.push(
+          <h3 key={`h3-${elements.length}`} className="text-lg sm:text-xl font-semibold text-zinc-800 dark:text-zinc-200 mt-7 mb-3">
+            {trimmed.replace("### ", "")}
+          </h3>
+        );
       } else if (trimmed.startsWith("> ")) {
         flushList();
         elements.push(

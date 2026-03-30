@@ -3,9 +3,16 @@ import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
+  title: "Privacy Policy | Invoice-Quickly",
   description: "Read Invoice-Quickly's Privacy Policy to learn how we protect your data, handle public invoice links, and use cookies to provide our free invoice generator.",
-  alternates: { canonical: "/privacy-policy" },
+  alternates: { canonical: "https://invoice-quickly.com/privacy-policy" },
+  openGraph: {
+    type: "website",
+    title: "Privacy Policy | Invoice-Quickly",
+    description: "Read Invoice-Quickly's Privacy Policy to learn how we protect your data and handle your information.",
+    url: "https://invoice-quickly.com/privacy-policy",
+    siteName: "Invoice-Quickly",
+  },
 };
 
 export default function PrivacyPolicyPage() {

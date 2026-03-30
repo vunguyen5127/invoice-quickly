@@ -9,7 +9,20 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://invoice-quickly.com/blog",
   },
+  openGraph: {
+    type: "website",
+    title: "Blog — Invoicing Tips, Guides & Best Practices",
+    description: "Learn invoicing best practices, tips for freelancers, and guides to help your business get paid faster.",
+    url: "https://invoice-quickly.com/blog",
+    siteName: "Invoice-Quickly",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog — Invoicing Tips, Guides & Best Practices",
+    description: "Learn invoicing best practices, tips for freelancers, and guides to help your business get paid faster.",
+  },
 };
+
 
 export default function BlogIndexPage() {
   const blogListSchema = {

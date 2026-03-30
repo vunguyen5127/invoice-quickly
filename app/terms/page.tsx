@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service",
-  description: "Terms of Service for Invoice-Quickly, the free online invoice generator. Read our terms for using the service.",
-  alternates: { canonical: "/terms" },
+  title: "Terms of Service | Invoice-Quickly",
+  description: "Terms of Service for Invoice-Quickly, the free online invoice generator. Read our terms for using the service, subscriptions, and user responsibilities.",
+  alternates: { canonical: "https://invoice-quickly.com/terms" },
+  openGraph: {
+    type: "website",
+    title: "Terms of Service | Invoice-Quickly",
+    description: "Terms of Service for Invoice-Quickly — the free online invoice generator.",
+    url: "https://invoice-quickly.com/terms",
+    siteName: "Invoice-Quickly",
+  },
 };
 
 export default function TermsPage() {

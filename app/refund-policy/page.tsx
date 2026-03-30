@@ -4,8 +4,15 @@ import { CopyEmailButton } from "@/components/copy-email-button";
 
 export const metadata: Metadata = {
   title: "Refund Policy | Invoice-Quickly",
-  description: "Our 7-day money-back guarantee and transparent refund policy. Your satisfaction is our priority.",
-  alternates: { canonical: "/refund-policy" },
+  description: "Our 7-day money-back guarantee and transparent refund policy for Invoice-Quickly Pro subscriptions. Your satisfaction is our priority.",
+  alternates: { canonical: "https://invoice-quickly.com/refund-policy" },
+  openGraph: {
+    type: "website",
+    title: "Refund Policy | Invoice-Quickly",
+    description: "7-day money-back guarantee for Invoice-Quickly Pro. Transparent, no-questions-asked refund policy.",
+    url: "https://invoice-quickly.com/refund-policy",
+    siteName: "Invoice-Quickly",
+  },
 };
 
 export default function RefundPolicyPage() {

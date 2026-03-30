@@ -5,11 +5,13 @@ import Image from "next/image";
 import { useLanguage } from "@/contexts/language-context";
 import { ShieldCheck, Zap, Heart } from "lucide-react";
 import { marketingPages } from "@/data/marketing-pages";
+import { blogPosts } from "@/data/blog-posts";
 
 export function SiteFooter() {
   const { t } = useLanguage();
 
-  const footerTemplates = marketingPages.filter(p => !p.slug.includes('guide')).slice(0, 4);
+  const footerTemplates = marketingPages.filter(p => !p.slug.includes('guide')).slice(0, 6);
+  const footerBlogPosts = blogPosts.slice(0, 6);
 
   const getTranslatedBadge = (slug: string, badge: string) => {
     switch(slug) {
@@ -24,7 +26,7 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-8 gap-y-12 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-12 mb-16">
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 font-bold text-lg text-slate-900 dark:text-white mb-4">
               <Image src="/logo.svg" alt="Logo" width={24} height={24} className="w-6 h-6" />
@@ -45,11 +47,12 @@ export function SiteFooter() {
             </div>
           </div>
 
+          {/* Templates column */}
           <div>
             <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-5 uppercase tracking-wider">
               {t.templates}
             </h4>
-            <ul className="space-y-4 text-sm text-slate-500 dark:text-zinc-400 font-medium">
+            <ul className="space-y-3 text-sm text-slate-500 dark:text-zinc-400 font-medium">
               {footerTemplates.map((page) => (
                 <li key={page.slug}>
                   <Link href={`/${page.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -65,11 +68,33 @@ export function SiteFooter() {
             </ul>
           </div>
 
+          {/* Blog column */}
+          <div>
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-5 uppercase tracking-wider">
+              Blog
+            </h4>
+            <ul className="space-y-3 text-sm text-slate-500 dark:text-zinc-400 font-medium">
+              {footerBlogPosts.map((post) => (
+                <li key={post.slug}>
+                  <Link href={`/blog/${post.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-1">
+                    {post.title.length > 36 ? post.title.slice(0, 36) + "…" : post.title}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href="/blog" className="text-blue-600 dark:text-blue-400 hover:underline">
+                  All Articles →
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Product column */}
           <div>
             <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-5 uppercase tracking-wider">
               {t.footerLinkProduct}
             </h4>
-            <ul className="space-y-4 text-sm text-slate-500 dark:text-zinc-400 font-medium">
+            <ul className="space-y-3 text-sm text-slate-500 dark:text-zinc-400 font-medium">
               <li>
                 <Link href="/generator?new=1" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   {t.createInvoice}
@@ -93,11 +118,12 @@ export function SiteFooter() {
             </ul>
           </div>
 
+          {/* Resources column */}
           <div>
             <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-5 uppercase tracking-wider">
               {t.footerLinkResources}
             </h4>
-            <ul className="space-y-4 text-sm text-slate-500 dark:text-zinc-400 font-medium">
+            <ul className="space-y-3 text-sm text-slate-500 dark:text-zinc-400 font-medium">
               <li>
                 <Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   {t.footerLinkAbout}
@@ -106,11 +132,6 @@ export function SiteFooter() {
               <li>
                 <Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   {t.footerLinkContact}
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  Blog
                 </Link>
               </li>
               <li>
