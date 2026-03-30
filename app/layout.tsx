@@ -76,12 +76,13 @@ const notoThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: {
-    default: "Free Invoice Generator Online — Create & Download PDF Invoices | Invoice-Quickly",
+    default: "Free Invoice Generator No Sign Up — PDF Invoices | Invoice-Quickly",
     template: "%s | Invoice-Quickly",
   },
   description:
     "Generate invoices for free with Invoice-Quickly — the free online invoice generator. Create professional PDF invoices in seconds, no signup required. Free forever, no watermark.",
   keywords: [
+    "free invoice generator no signup",
     "invoice generator free",
     "free invoice generator",
     "invoice generator online free",
@@ -100,7 +101,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Invoice-Quickly",
-    title: "Free Invoice Generator Online — Create & Download PDF Invoices | Invoice-Quickly",
+    title: "Free Invoice Generator No Sign Up — PDF Invoices | Invoice-Quickly",
     description: "Generate invoices for free with Invoice-Quickly. Create professional PDF invoices in seconds — no signup, no watermark, free forever.",
     url: "https://invoice-quickly.com",
     images: [
@@ -114,7 +115,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Invoice Generator Online | Invoice-Quickly",
+    title: "Free Invoice Generator No Sign Up | Invoice-Quickly",
     description: "Create and download professional PDF invoices for free. No signup, no watermark — the best free online invoice generator.",
     images: ["https://invoice-quickly.com/android-chrome-512x512.png"],
   },

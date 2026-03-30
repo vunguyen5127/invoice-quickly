@@ -1,10 +1,10 @@
-import Link from "next/link";
+import { FAQItem, FeatureCard, StepCard, TestimonialCard } from "@/components/marketing-components";
+import { ArrowRight, CheckCircle2, CreditCard, FileText, Globe, Send, Shield, Sparkles, Users, Zap } from "lucide-react";
 import type { Metadata } from "next";
-import { ArrowRight, CheckCircle2, FileText, Zap, Shield, Globe, Users, Sparkles, Send, CreditCard } from "lucide-react";
-import { FeatureCard, FAQItem, TestimonialCard, StepCard } from "@/components/marketing-components";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator Online - Create PDF Invoices | Invoice-Quickly",
+  title: "Free Invoice Generator No Sign Up | Free Invoice Generator | Create PDF Invoices",
   description:
     "Use our free invoice generator to create professional PDF invoices online in seconds. No signup, no watermark. The best free online invoice generator for freelancers and small businesses.",
   alternates: { canonical: "/" },
@@ -160,9 +160,9 @@ export default function LandingPage() {
           {/* H1 */}
           <h1 className="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl text-center max-w-4xl mx-auto">
             Free Invoice Generator <br className="hidden md:block" />
-            <span className="text-blue-600 dark:text-blue-400">Create & Download PDF Invoices</span>
+            <span className="text-blue-600 dark:text-blue-400">No Sign Up Required</span>
             <br />
-            Online in Seconds
+            Create PDF in Seconds
           </h1>
 
           <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">

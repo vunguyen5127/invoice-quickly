@@ -71,17 +71,9 @@ Free plan: 1 company, 15 invoices/month. Pro from $10/month.
 
 ---
 
-### 2. 🟢 startupstash.com — 3 phút
-**Link:** https://startupstash.com/add-resource/
-**Không cần account**
-
-| Field | Điền gì |
-|-------|---------|
-| Name | `Invoice-Quickly` |
-| URL | `https://invoice-quickly.com` |
-| Description | `Free online invoice generator for freelancers and small businesses. No signup, no watermark. Create PDF invoices in 60 seconds with live preview, 20+ languages, and shareable links.` |
-| Category | Business Tools / Finance |
-| Tags | `free, invoice, pdf, freelance, billing` |
+### 2. ❌ startupstash.com — Form đã đóng (BỎ QUA)
+**Link:** https://startupstash.com/add-resource/ (Form Typeform của web này hiện tại đã bị đóng)
+=> Bỏ qua web này để tiết kiệm thời gian.
 
 ---
 
@@ -172,14 +164,81 @@ Would love your feedback! What features would make this more useful for you?
 
 ---
 
-## 🚀 Checklist hoàn thành
+## 📋 Trạng Thái Tổng Quan — Backlink Roadmap
 
-- [ ] uneed.best submitted
-- [ ] startupstash.com submitted
-- [ ] betalist.com submitted
-- [ ] Product Hunt — profile setup done
-- [ ] Product Hunt — karma built (upvote 10 products)
-- [ ] Product Hunt — launched
+> Cập nhật: 2026-03-30
+
+---
+
+### ✅ PHASE 1A — Đã hoàn thành
+
+| # | Trang | URL | Backlink | Ghi chú |
+|---|-------|-----|---------|--------|
+| 1 | ✅ **uneed.best** | https://www.uneed.best/submit-a-tool | 1 | Submitted |
+| 2 | ~~startupstash.com~~ | ~~https://startupstash.com/add-resource/~~ | — | Form đã đóng, bỏ qua |
+| 3 | ~~betalist.com~~ | ~~https://betalist.com/sign_in~~ | — | Thu phí, bỏ qua |
+| 4 | ✅ **Product Hunt** | https://www.producthunt.com/ | 1 | Launched 🚀🔥 — profile + karma + launch xong |
+
+**Tổng backlinks có:** ~2 referring domains
+
+---
+
+### 🔜 PHASE 1B — Làm ngay tuần này (~70 phút)
+
+> **Ưu tiên cao nhất** — 4 backlinks DA 80–91 trong 1 buổi sáng
+
+| # | Trang | URL | DA | Thời gian | Impact | Trạng thái |
+|---|-------|-----|----|-----------|--------|------------|
+| 5 | 🕒 **AlternativeTo.net** | https://alternativeto.net/ | 80 | 30 phút | 🔥🔥🔥 Cần tài khoản lập được 7 ngày | ⏳ Chờ 31/03/2026 |
+| 6 | 🔴 **Capterra** | https://www.capterra.com/vendors/ | 90+ | 15 phút | 🔥🔥🔥 Auto-sync GetApp + Software Advice (3 backlinks!) | ⬜ Chưa làm |
+| 7 | 🔴 **G2** | https://sell.g2.com/ | 91 | 15 phút | 🔥🔥🔥 Dominate "billing software" search | ⬜ Chưa làm |
+| 8 | ✅ **SaaSHub** | https://www.saashub.com/add-product | 65 | 10 phút | 🔥🔥 Đã submit thành công | ✅ Xong |
+
+**Mục tiêu sau Phase 1B:** ~6–7 referring domains
+
+---
+
+### 📅 PHASE 2 — Tuần 3–6 (Community & Directories)
+
+| # | Kênh | URL | Loại | Impact | Trạng thái |
+|---|------|-----|------|--------|------------|
+| 9 | ⬜ **Indie Hackers** — profile | https://www.indiehackers.com/ | Directory | 🔥🔥 | Chưa làm |
+| 10 | ⬜ **Indie Hackers** — post story | https://www.indiehackers.com/ | Content | 🔥🔥🔥 | Chờ có traction |
+| 11 | ⬜ **SaaSWorthy** | https://www.saasworthy.com/ | Directory | 🔥 | Chưa làm |
+| 12 | ⬜ **ToolFinder** | https://toolfinder.co/ | Directory | 🔥 | Chưa làm |
+| 13 | ⬜ **Slant.co** | https://www.slant.co/ | Directory | 🔥 | Chưa làm |
+| 14 | ⬜ **Freemium.io** | https://freemium.io/submit | Directory | 🔥 | Chưa làm |
+| 15 | ⬜ **Futurepedia** | https://www.futurepedia.io/ | Directory | 🔥 | Chưa làm |
+| 16 | ✅ **Reddit** — r/SideProject, r/freelance | https://www.reddit.com/ | Community | 🔥🔥 Organic, liên tục | Đang làm (Đã post r/SideProject) |
+
+**Mục tiêu sau Phase 2:** ~12–15 referring domains
+
+---
+
+### 📅 PHASE 3 — Tháng 2–3 (Authority & Long-term)
+
+| # | Kênh | URL | Loại | Impact | Trạng thái |
+|---|------|-----|------|--------|------------|
+| 17 | ⬜ Guest post — **millo.co** | https://millo.co/write-for-us | Backlink | 🔥🔥🔥 High DA | Chưa pitch |
+| 18 | ⬜ Guest post — **hiveage.com/blog** | https://www.hiveage.com/blog/ | Backlink | 🔥🔥🔥 | Chưa pitch |
+| 19 | ⬜ Guest post — **freelancermap.com** | https://www.freelancermap.com/blog/ | Backlink | 🔥🔥 | Chưa pitch |
+| 20 | ⬜ Guest post — **blog.bonsai.io** | https://www.hellobonsai.com/blog | Backlink | 🔥🔥 | Chưa pitch |
+| 21 | ⬜ Blog SEO — "free invoice generator no signup" | https://invoice-quickly.com/blog | Content | 🔥🔥🔥 Long-tail | Chưa viết |
+| 22 | ⬜ Blog SEO — "wave alternative free" | https://invoice-quickly.com/blog | Content | 🔥🔥🔥 | Chưa viết |
+| 23 | ⬜ Twitter/X — build in public thread | https://twitter.com/ | Brand | 🔥🔥 | Chưa đăng |
+
+**Mục tiêu sau Phase 3:** 20+ referring domains, Domain Rating 15–25
+
+---
+
+### 📊 KPI Dashboard
+
+| Metric | Hiện tại | Mục tiêu 1 tháng | Mục tiêu 3 tháng |
+|--------|----------|------------------|------------------|
+| Referring Domains | ~2 | 10+ | 20+ |
+| Domain Rating | ~0 | 5–10 | 15–25 |
+| Keywords top 30 | ~5 | 15 | 30–50 |
+| Organic traffic | baseline | 2–3x | 5–10x |
 
 ---
 
@@ -208,9 +267,9 @@ Would love your feedback! What features would make this more useful for you?
 
 ---
 
-## 🗓️ Timeline & Checklist
+## 🗓️ Hướng Dẫn Chi Tiết Từng Bước
 
-### ✅ Ngay hôm nay (2-3 giờ tổng)
+### 🔴 Ngay tuần này — Phase 1B (70 phút tổng)
 
 #### 1. AlternativeTo.net — 30 phút
 **Link:** https://alternativeto.net/
