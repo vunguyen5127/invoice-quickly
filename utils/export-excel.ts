@@ -28,23 +28,73 @@ export async function exportInvoicesToExcel(
 
   // Add sheet
   const sheet = workbook.addWorksheet("Invoices", {
-    views: [{ state: "frozen", xSplit: 0, ySplit: 1 }],
+    views: [{ state: "frozen", xSplit: 0, ySplit: 4 }],
   });
 
-  // Define columns
+  // Define columns without headers to avoid auto-filling row 1
   sheet.columns = [
-    { header: "INVOICE #",       key: "invoice_number",   width: 18 },
-    { header: "CLIENT",           key: "client_name",      width: 32 },
-    { header: "STATUS",           key: "status",           width: 14 },
-    { header: "DATE ISSUED",      key: "created_at",       width: 16 },
-    { header: "DUE DATE",         key: "due_date",         width: 16 },
-    { header: "SUBTOTAL",         key: "subtotal",         width: 16 },
-    { header: "TAX",              key: "tax_amount",       width: 14 },
-    { header: "DISCOUNT",         key: "discount_amount",  width: 14 },
-    { header: "SHIPPING",         key: "shipping",         width: 14 },
-    { header: "TOTAL",            key: "total_amount",     width: 16 },
-    { header: "CURRENCY",         key: "currency",         width: 10 },
+    { key: "invoice_number",   width: 20 },
+    { key: "client_name",      width: 35 },
+    { key: "status",           width: 16 },
+    { key: "created_at",       width: 18 },
+    { key: "due_date",         width: 18 },
+    { key: "subtotal",         width: 18 },
+    { key: "tax",              width: 14 },
+    { key: "discount_amount",  width: 16 },
+    { key: "shipping",         width: 14 },
+    { key: "total_amount",     width: 18 },
+    { key: "currency",         width: 12 },
   ];
+
+  // Add Professional Title Row
+  sheet.mergeCells("A1:K1");
+  const titleCell = sheet.getCell("A1");
+  titleCell.value = `${defaultCompanyName.toUpperCase()} - INVOICES REPORT`;
+  titleCell.font = { name: "Arial", size: 14, bold: true, color: { argb: "FF1E293B" } }; // Slate 800
+  titleCell.alignment = { vertical: "middle", horizontal: "center" };
+  sheet.getRow(1).height = 35;
+
+  // Add Export Date Row
+  sheet.mergeCells("A2:K2");
+  const dateCell = sheet.getCell("A2");
+  dateCell.value = `Exported on: ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} at ${new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}`;
+  dateCell.font = { name: "Arial", size: 9, italic: true, color: { argb: "FF64748B" } }; // Slate 500
+  dateCell.alignment = { vertical: "middle", horizontal: "center" };
+  sheet.getRow(2).height = 18;
+
+  // Add Spacing Row
+  sheet.getRow(3).height = 10;
+
+  // Add Header Data Row
+  const headers = [
+    "INVOICE #", "CLIENT", "STATUS", "DATE ISSUED", "DUE DATE", 
+    "SUBTOTAL", "TAX", "DISCOUNT", "SHIPPING", "TOTAL", "CURRENCY"
+  ];
+  const headerRow = sheet.getRow(4);
+  headerRow.values = headers;
+  headerRow.height = 24;
+
+  // Style Header Row
+  headerRow.eachCell((cell) => {
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF4F46E5" }, // Modern Blue/Indigo
+    };
+    cell.font = {
+      bold: true,
+      color: { argb: "FFFFFFFF" },
+      size: 10,
+      name: "Arial",
+    };
+    cell.alignment = { vertical: "middle", horizontal: "center" };
+    cell.border = {
+      top:    { style: "thin", color: { argb: "FF4338CA" } },
+      bottom: { style: "thin", color: { argb: "FF4338CA" } },
+      left:   { style: "thin", color: { argb: "FF4338CA" } },
+      right:  { style: "thin", color: { argb: "FF4338CA" } },
+    };
+  });
 
   // Status colors
   const STATUS_COLORS: Record<string, { bg: string; font: string }> = {
@@ -53,30 +103,6 @@ export async function exportInvoicesToExcel(
     sent:    { bg: "FFDBEAFE", font: "FF1E40AF" }, // blue
     draft:   { bg: "FFF3F4F6", font: "FF4B5563" }, // gray
   };
-
-  // Style Header Row
-  const headerRow = sheet.getRow(1);
-  headerRow.height = 30;
-  headerRow.eachCell((cell) => {
-    cell.fill = {
-      type: "pattern",
-      pattern: "solid",
-      fgColor: { argb: "FF2563EB" },
-    };
-    cell.font = {
-      bold: true,
-      color: { argb: "FFFFFFFF" },
-      size: 11,
-      name: "Arial",
-    };
-    cell.alignment = { vertical: "middle", horizontal: "center" };
-    cell.border = {
-      top:    { style: "thin", color: { argb: "FF2563EB" } },
-      left:   { style: "thin", color: { argb: "FF2563EB" } },
-      bottom: { style: "thin", color: { argb: "FF2563EB" } },
-      right:  { style: "thin", color: { argb: "FF2563EB" } },
-    };
-  });
 
   // Add Data Rows in chunks to prevent UI freeze on huge datasets
   const chunkSize = 500;
@@ -98,40 +124,50 @@ export async function exportInvoicesToExcel(
         created_at:      inv.created_at      ? new Date(inv.created_at) : null,
         due_date:        inv.due_date        ? new Date(inv.due_date)   : null,
         subtotal:        inv.subtotal        ?? null,
-        tax_amount:      inv.tax_amount      ?? null,
-        discount_amount: inv.discount_amount != null ? -(inv.discount_amount) : null, // show as negative
-        shipping:        inv.shipping        ?? null,
+        tax:             (inv as any).tax    ?? null,
+        discount_amount: (inv as any).discount_amount != null ? -((inv as any).discount_amount) : null,
+        shipping:        (inv as any).shipping ?? null,
         total_amount:    inv.total_amount    || 0,
         currency:        (inv.currency      || "USD").toUpperCase(),
       });
 
       row.height = 24;
 
-      // Alignment
-      row.getCell("invoice_number").alignment  = { vertical: "middle", horizontal: "center" };
-      row.getCell("client_name").alignment     = { vertical: "middle", horizontal: "left"   };
-      row.getCell("status").alignment          = { vertical: "middle", horizontal: "center" };
-      row.getCell("currency").alignment        = { vertical: "middle", horizontal: "center" };
+      // Add zebra striping - apply to all columns even if empty
+      const isOddRow = (row.number % 2 === 1);
+      const rowBgColor = isOddRow ? 'FFF8FAFC' : 'FFFFFFFF'; // Light Slate for odd, White for even
 
-      // Date columns
+      // Align and Style All Columns Uniformly
+      const columnsToStyle = ["invoice_number", "client_name", "status", "created_at", "due_date", "subtotal", "tax", "discount_amount", "shipping", "total_amount", "currency"] as const;
+      
+      columnsToStyle.forEach((key) => {
+        const cell = row.getCell(key);
+        
+        // Background color (Zebra striping)
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rowBgColor } };
+        
+        // Font
+        cell.font = { name: "Arial", size: 10, color: { argb: "FF334155" } }; // Uniform Slate 700
+        
+        // Default center alignment, override for client_name
+        cell.alignment = { 
+          vertical: "middle", 
+          horizontal: key === "client_name" ? "left" : "center" 
+        };
+      });
+
+      // Special formats
       for (const key of ["created_at", "due_date"] as const) {
-        const cell = row.getCell(key);
-        cell.numFmt = "mmm dd, yyyy";
-        cell.alignment = { vertical: "middle", horizontal: "center" };
+        row.getCell(key).numFmt = "mmm dd, yyyy";
+      }
+      for (const key of ["subtotal", "tax", "discount_amount", "shipping", "total_amount"] as const) {
+        row.getCell(key).numFmt = "#,##0.00";
       }
 
-      // Number columns
-      for (const key of ["subtotal", "tax_amount", "discount_amount", "shipping", "total_amount"] as const) {
-        const cell = row.getCell(key);
-        cell.numFmt = "#,##0.00";
-        cell.alignment = { vertical: "middle", horizontal: "right" };
-      }
-
-      // Status cell color
+      // Status cell unique color (keep only font color)
       const statusCell = row.getCell("status");
       const colors = STATUS_COLORS[displayStatus] || STATUS_COLORS.draft;
-      statusCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: colors.bg } };
-      statusCell.font = { bold: true, color: { argb: colors.font }, size: 10, name: "Arial" };
+      statusCell.font = { ...statusCell.font, color: { argb: colors.font } };
     });
 
     // Yield to main thread so UI remains smooth
