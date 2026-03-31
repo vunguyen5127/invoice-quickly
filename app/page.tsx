@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator No Sign Up | Free Invoice Generator | Create PDF Invoices",
+  title: "Free Invoice Generator Online | No Signup, No Watermark | Invoice-Quickly",
   description:
-    "Use our free invoice generator to create professional PDF invoices online in seconds. No signup, no watermark. The best free online invoice generator for freelancers and small businesses.",
+    "Create professional invoices online for free. No signup, no watermark, instant PDF export, secure share links, and support for 20+ languages.",
   alternates: { canonical: "/" },
 };
 
@@ -158,16 +158,17 @@ export default function LandingPage() {
           </div>
 
           {/* H1 */}
-          <h1 className="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl text-center max-w-4xl mx-auto">
-            Free Invoice Generator <br className="hidden md:block" />
-            <span className="text-blue-600 dark:text-blue-400">No Sign Up Required</span>
-            <br />
-            Create PDF in Seconds
+          <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl text-center max-w-4xl mx-auto">
+            Free Invoice Generator
           </h1>
 
-          <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
-            The fastest free online invoice generator. Create beautiful, PDF-ready invoices and share with clients. No signup, no watermark.
+          {/* Supporting line — carries the ad-alignment keyword naturally */}
+          <p className="mb-5 text-xl font-semibold text-blue-600 dark:text-blue-400 text-center">
+            Free Invoice Generator No Sign Up Required
           </p>
+
+          <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">
+            Create professional invoices in seconds. No account, no watermark — instant PDF export and secure share links for clients.</p>
 
           {/* CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
@@ -386,38 +387,38 @@ export default function LandingPage() {
             <FeatureCard
               icon={<Zap className="w-6 h-6" />}
               iconColor="text-amber-500 bg-amber-50 dark:bg-amber-900/20"
-              title="Lightning Fast"
-              description="Live preview updates instantly as you type. See exactly what your client will see before you download."
+              title="Ready in Under 60 Seconds"
+              description="Type into the live form and watch your invoice update in real-time. No learning curve — go from blank to finished in one sitting."
             />
             <FeatureCard
               icon={<Shield className="w-6 h-6" />}
               iconColor="text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20"
-              title="Secure & Private"
-              description="Private share links are unguessable. You control what you share. We never sell your data."
+              title="No Account, No Watermark"
+              description="Download a perfectly clean PDF with zero watermarks and zero signups required. What you see in the preview is exactly what your client receives."
             />
             <FeatureCard
               icon={<FileText className="w-6 h-6" />}
               iconColor="text-blue-600 bg-blue-50 dark:bg-blue-900/20"
-              title="Free PDF Invoice Generator"
-              description="Download perfectly formatted, high-resolution PDF invoices for free that look professional and print beautifully."
+              title="Instant PDF Export"
+              description="Generate a high-resolution, print-ready PDF invoice with one click. Works perfectly on desktop and mobile."
             />
             <FeatureCard
               icon={<Globe className="w-6 h-6" />}
               iconColor="text-violet-600 bg-violet-50 dark:bg-violet-900/20"
-              title="20+ Languages"
-              description="Create invoices in any language: from English and Vietnamese to Arabic, Japanese, Chinese, and more."
+              title="20+ Languages & RTL Support"
+              description="Bill clients worldwide in their language. Full support for Arabic RTL, Japanese, Chinese, Vietnamese, Hindi, and more."
             />
             <FeatureCard
               icon={<Users className="w-6 h-6" />}
               iconColor="text-pink-600 bg-pink-50 dark:bg-pink-900/20"
-              title="Multi-Company"
-              description="Manage multiple businesses from a single dashboard. Each with its own branding, defaults, and invoice history."
+              title="Secure Client Share Links"
+              description="Share a private, unguessable link so clients can view their invoice online — no app download or account needed on their end."
             />
             <FeatureCard
               icon={<CreditCard className="w-6 h-6" />}
               iconColor="text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20"
-              title="Auto Numbering"
-              description="Smart invoice numbering (INV-2026-001) that automatically increments. Never duplicate a number again."
+              title="Smart Invoice Numbering"
+              description="Auto-incrementing invoice numbers (INV-2026-001) keep your records organized. Never duplicate or lose track of an invoice again."
             />
           </div>
         </div>
@@ -434,47 +435,102 @@ export default function LandingPage() {
           </div>
           <div className="space-y-3">
             <FAQItem
-              question="Is this invoice generator really free forever?"
-              answer="Yes — completely free, no credit card required. You can create, download, and share professional PDF documents indefinitely at no cost. We offer optional paid plans for advanced cloud features, but the core billing tool will always be free."
+              question="Do I need an account to create an invoice?"
+              answer="No — you can create and download a professional PDF invoice without signing up at all. An account is only needed if you want to save invoice history, manage multiple companies, or access your dashboard across devices."
             />
             <FAQItem
-              question="Does this free invoice generator add a watermark?"
-              answer="Never. Every PDF you export is completely clean — no logos, no watermarks, no branding from us. What you design is exactly what your client receives, whether you have an account or not."
+              question="Will my invoice PDF include a watermark?"
+              answer="Never. Every PDF you export is completely clean — no logos, no branding, no watermarks from us. What you see in the preview is exactly what your client receives, regardless of whether you have a paid plan."
             />
             <FAQItem
-              question="Do I need to sign up to use this free online invoice generator?"
-              answer="No account needed. Just open the site, fill in your details, and download a print-ready PDF instantly. Sign up only if you want to save invoice history or manage multiple businesses from a dashboard."
+              question="Can I share invoices by link?"
+              answer="Yes. After saving an invoice, you get a secure, unguessable public link to send directly to your client. They can view it in any browser with no app or account required on their end."
             />
             <FAQItem
-              question="Can I add tax, discounts, and multiple line items?"
-              answer="Absolutely. The billing tool supports unlimited line items, percentage or fixed-amount discounts, configurable tax rates, shipping fees, payment terms, and custom notes — everything a professional receipt needs."
+              question="Which languages do you support?"
+              answer="Invoice-Quickly supports 20+ languages including English, Vietnamese, Arabic (full RTL layout), French, Spanish, German, Japanese, Chinese, Korean, Thai, Hindi, and more — ideal for freelancers billing international clients."
             />
             <FAQItem
-              question="How does sharing work?"
-              answer="After saving an invoice, you get a secure, unguessable public link you can send to your client directly. Only people with the link can view it. No extra apps, no email required — just a simple URL."
+              question="Can freelancers use this for client billing?"
+              answer="Absolutely. Invoice-Quickly was built with freelancers, contractors, and consultants in mind. Create and send branded invoices in seconds, reuse company profiles, manage multiple clients, and track payment terms — all without a monthly fee."
             />
             <FAQItem
-              question="Which languages are supported?"
-              answer="Our online billing tool supports 20+ languages including English, Vietnamese, Arabic (full RTL layout), French, Spanish, German, Japanese, Chinese, Korean, Thai, Hindi, and more — making it ideal for international freelancers and global small businesses."
+              question="What details can I customize on an invoice?"
+              answer="You can customize your company name, logo, client details, line items, quantities, rates, tax rates, discounts, shipping, payment terms, invoice notes, currency, and language. The live preview updates instantly as you type."
             />
             <FAQItem
-              question="Is Invoice-Quickly the best free invoice generator?"
-              answer="We let the features speak: real-time live preview, zero watermarks, no signup required, 20+ languages with RTL support, instant PDF export, and shareable client links — all at no cost. Thousands of freelancers and small businesses rely on it daily."
+              question="Is this tool really free?"
+              answer="Yes — the core invoice maker is completely free with no credit card required. You can create, download, and share professional invoices indefinitely. Optional paid plans unlock advanced cloud features like invoice history and multi-company management."
             />
             <FAQItem
-              question="Can I use this for my freelance business?"
-              answer="Definitely. Invoice-Quickly was built specifically with freelancers, contractors, and consultants in mind. Create branded invoices in seconds, reuse saved company profiles, and manage clients — without paying monthly SaaS fees."
-            />
-            <FAQItem
-              question="How is this different from other invoice tools?"
-              answer="Most online billing tools either add a watermark, lock the PDF behind a signup wall, or charge for basic features. Invoice-Quickly removes all those barriers: open the tool, fill out the form, and get a clean PDF — no hoops, no hidden costs, no account required."
+              question="Why do freelancers choose Invoice-Quickly?"
+              answer="Because it removes every common frustration: no forced signups, no watermarks, no bait-and-switch pricing. You get real-time live preview, 20+ language support, instant PDF export, and a secure client share link — all for free, from any device."
             />
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════
-          7. BOTTOM CTA — high contrast dark gradient
+          7. WHO IT'S FOR
+      ══════════════════════════════════════════════ */}
+      <section className="py-20 bg-white dark:bg-zinc-950">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">Built For</p>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Who uses Invoice-Quickly?</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { emoji: "💻", title: "Freelancers", desc: "Send clean, professional invoices to clients without wrestling with complex billing software." },
+              { emoji: "🏢", title: "Consultants", desc: "Bill for projects and retainers with custom line items, tax rates, and payment terms." },
+              { emoji: "🔧", title: "Contractors", desc: "Generate per-job invoices on the go — from any device, without creating an account." },
+              { emoji: "🏪", title: "Small Businesses", desc: "Manage multiple clients and company profiles from a single lightweight dashboard." },
+              { emoji: "🎨", title: "Agencies", desc: "Issue branded invoices across multiple projects — with logo upload and shareable client links." },
+              { emoji: "🌍", title: "International Sellers", desc: "Invoice in 20+ languages including Arabic RTL, Japanese, and Chinese for global clients." },
+            ].map(({ emoji, title, desc }) => (
+              <div key={title} className="flex gap-4 p-5 rounded-2xl border border-slate-100 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900 hover:border-blue-200 dark:hover:border-blue-800 transition-colors">
+                <span className="text-2xl shrink-0 mt-0.5">{emoji}</span>
+                <div>
+                  <p className="font-semibold text-slate-900 dark:text-white mb-1">{title}</p>
+                  <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">{desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          8. INTERNAL LINKING
+      ══════════════════════════════════════════════ */}
+      <section className="py-16 bg-slate-50 dark:bg-zinc-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600 dark:text-blue-400">Resources</p>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Guides to help you get paid faster</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { href: "/blog/how-to-invoice-clients-as-freelancer", label: "How to invoice clients as a freelancer", desc: "A step-by-step guide for billing clients professionally." },
+              { href: "/blog/invoice-payment-terms-net-30-explained", label: "Invoice payment terms explained (Net 30 & more)", desc: "Understand payment terms and how to set them correctly." },
+              { href: "/blog/invoice-for-services-rendered", label: "How to write an invoice for services rendered", desc: "Templates and tips for service-based invoicing." },
+              { href: "/blog/overdue-invoice-follow-up-email-templates", label: "Overdue invoice follow-up email templates", desc: "What to say when a client misses a payment deadline." },
+            ].map(({ href, label, desc }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group flex flex-col gap-1 p-5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-sm transition-all"
+              >
+                <span className="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-sm">{label}</span>
+                <span className="text-xs text-slate-500 dark:text-zinc-400">{desc}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          9. BOTTOM CTA — high contrast dark gradient
       ══════════════════════════════════════════════ */}
       <section className="py-12 px-4 relative z-20">
         <div className="relative mx-auto max-w-6xl rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 px-6 py-24 md:py-32 overflow-hidden text-center shadow-2xl">
@@ -501,9 +557,9 @@ export default function LandingPage() {
 
           <div className="relative z-10 max-w-2xl mx-auto">
             <h2 className="text-3xl sm:text-5xl font-bold text-white mb-5 leading-tight">
-              Generate your invoice for free in under <span className="text-blue-400">60 seconds</span>
+              Create your first invoice in under <span className="text-blue-400">60 seconds</span>
             </h2>
-            <p className="text-lg text-slate-400 mb-10">Free invoice generator online • No signup • No watermark • Free PDF download</p>
+            <p className="text-lg text-slate-400 mb-10">No signup · No watermark · Instant PDF · Secure share link</p>
             <Link
               href="/generator?new=1"
               className="group inline-flex items-center gap-2 rounded-xl bg-white text-slate-900 px-8 py-4 text-base font-bold shadow-lg transition-all hover:bg-slate-50 hover:-translate-y-1 hover:shadow-xl active:scale-[0.98]"
