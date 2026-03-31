@@ -218,11 +218,21 @@ function CreateInvoiceContent() {
       return;
     }
 
+    if (initialCompanyId) {
+      await saveToCompany(initialCompanyId);
+      return;
+    }
+
     try {
-      const token = session.access_token;
       const result = await getUserCompanies(session.access_token);
       setCompanies(result.data || []);
-      setIsSelectModalOpen(true);
+      
+      if (result.data?.length === 1) {
+        setInitialCompanyId(result.data[0].id);
+        await saveToCompany(result.data[0].id, result.data[0]);
+      } else {
+        setIsSelectModalOpen(true);
+      }
     } catch (e) {
       console.error(e);
       alert("Failed to fetch companies.");

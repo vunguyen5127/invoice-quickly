@@ -190,8 +190,8 @@ Would love your feedback! What features would make this more useful for you?
 | # | Trang | URL | DA | Thời gian | Impact | Trạng thái |
 |---|-------|-----|----|-----------|--------|------------|
 | 5 | 🕒 **AlternativeTo.net** | https://alternativeto.net/ | 80 | 30 phút | 🔥🔥🔥 Cần tài khoản lập được 7 ngày | ⏳ Chờ 31/03/2026 |
-| 6 | 🔴 **Capterra** | https://www.capterra.com/vendors/ | 90+ | 15 phút | 🔥🔥🔥 Auto-sync GetApp + Software Advice (3 backlinks!) | ⬜ Chưa làm |
-| 7 | 🔴 **G2** | https://sell.g2.com/ | 91 | 15 phút | 🔥🔥🔥 Dominate "billing software" search | ⬜ Chưa làm |
+| 6 | ✅ **Capterra** | https://www.capterra.com/vendors/ | 90+ | 15 phút | 🔥🔥🔥 Auto-sync GetApp + Software Advice (3 backlinks!) | ✅ Submitted |
+| 7 | 🔴 **G2** | https://sell.g2.com/ | 91 | 15 phút | 🔥🔥🔥 Dominate "billing software" search | ❌ Lỗi Access Denied |
 | 8 | ✅ **SaaSHub** | https://www.saashub.com/add-product | 65 | 10 phút | 🔥🔥 Đã submit thành công | ✅ Xong |
 
 **Mục tiêu sau Phase 1B:** ~6–7 referring domains
@@ -391,8 +391,8 @@ Would love your feedback! What features would make this more useful for you?
 | Site | Link | Thời gian |
 |------|------|-----------|
 | Freemium.io | freemium.io/submit | 10 phút |
-| ToolFinder | toolfinder.co | 10 phút |
-| Slant | slant.co | 10 phút |
+| ~~ToolFinder~~ | ~~toolfinder.co~~ | ❌ Bỏ qua (Đã đóng portal) |
+| ~~Slant~~ | ~~slant.co~~ | ❌ Bỏ qua (Lỗi search) |
 | There's An AI For That | theresanaiforthat.com | 10 phút |
 | Futurepedia | futurepedia.io | 10 phút |
 
