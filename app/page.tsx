@@ -435,39 +435,39 @@ export default function LandingPage() {
           <div className="space-y-3">
             <FAQItem
               question="Is this invoice generator really free forever?"
-              answer="Yes, our free invoice generator is completely free with no credit card required. You can generate invoices for free, download free PDF invoices, and share them online forever. We offer paid plans for advanced dashboard features, but the core free online invoice generator will always be free."
+              answer="Yes — completely free, no credit card required. You can create, download, and share professional PDF documents indefinitely at no cost. We offer optional paid plans for advanced cloud features, but the core billing tool will always be free."
             />
             <FAQItem
               question="Does this free invoice generator add a watermark?"
-              answer="No. Our free PDF invoice generator never adds watermarks to any exported PDF — regardless of whether you have an account. You get clean, professional invoices every time."
+              answer="Never. Every PDF you export is completely clean — no logos, no watermarks, no branding from us. What you design is exactly what your client receives, whether you have an account or not."
             />
             <FAQItem
               question="Do I need to sign up to use this free online invoice generator?"
-              answer="No. You can use our invoice generator free online without creating an account. Generate invoices for free and download PDF invoices instantly. Sign up only if you want to save history and manage multiple companies."
+              answer="No account needed. Just open the site, fill in your details, and download a print-ready PDF instantly. Sign up only if you want to save invoice history or manage multiple businesses from a dashboard."
             />
             <FAQItem
               question="Can I add tax, discounts, and multiple line items?"
-              answer="Yes, our free invoice generator supports multiple line items, percentage or fixed discounts, and configurable tax rates. Notes, shipping, and payment terms are also supported. Generate invoice for free with all the features you need."
+              answer="Absolutely. The billing tool supports unlimited line items, percentage or fixed-amount discounts, configurable tax rates, shipping fees, payment terms, and custom notes — everything a professional receipt needs."
             />
             <FAQItem
               question="How does sharing work?"
-              answer="Our free invoice generator lets you create a secure public link and share it directly with your client. Only people with the link can view the invoice. It's fast, private, and included free."
+              answer="After saving an invoice, you get a secure, unguessable public link you can send to your client directly. Only people with the link can view it. No extra apps, no email required — just a simple URL."
             />
             <FAQItem
               question="Which languages are supported?"
-              answer="Our free online invoice generator supports over 20 languages including English, Vietnamese, Arabic (RTL), French, Spanish, German, Japanese, Chinese, Korean, Thai, Hindi, and more. Generate invoices for free in any language."
+              answer="Our online billing tool supports 20+ languages including English, Vietnamese, Arabic (full RTL layout), French, Spanish, German, Japanese, Chinese, Korean, Thai, Hindi, and more — making it ideal for international freelancers and global small businesses."
             />
             <FAQItem
               question="Is Invoice-Quickly the best free invoice generator?"
-              answer="Invoice-Quickly is trusted by thousands of freelancers and small businesses worldwide. Unlike other free invoice generators, we never add watermarks, never require signup, support 20+ languages, and provide instant PDF downloads — all completely free."
+              answer="We let the features speak: real-time live preview, zero watermarks, no signup required, 20+ languages with RTL support, instant PDF export, and shareable client links — all at no cost. Thousands of freelancers and small businesses rely on it daily."
             />
             <FAQItem
-              question="Can I use this free invoice generator for my freelance business?"
-              answer="Absolutely! Our free invoice generator is perfect for freelancers, contractors, consultants, and small business owners. Create professional invoices online for free, save your company details, and manage multiple clients — all from one dashboard."
+              question="Can I use this for my freelance business?"
+              answer="Definitely. Invoice-Quickly was built specifically with freelancers, contractors, and consultants in mind. Create branded invoices in seconds, reuse saved company profiles, and manage clients — without paying monthly SaaS fees."
             />
             <FAQItem
-              question="How is this different from other free invoice generators?"
-              answer="Invoice-Quickly stands out with real-time live preview, 20+ language support (including RTL), zero watermarks, no signup required, shareable invoice links, multi-company management, and beautiful PDF exports, all 100% free. Most other free invoice generators add watermarks or limit features."
+              question="How is this different from other invoice tools?"
+              answer="Most online billing tools either add a watermark, lock the PDF behind a signup wall, or charge for basic features. Invoice-Quickly removes all those barriers: open the tool, fill out the form, and get a clean PDF — no hoops, no hidden costs, no account required."
             />
           </div>
         </div>

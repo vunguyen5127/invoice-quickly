@@ -130,9 +130,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://invoice-quickly.com",
-  },
+  // NOTE: Do NOT set a global canonical here.
+  // Each page declares its own `alternates.canonical` to avoid
+  // all sub-pages (blog, pricing, etc.) being treated as duplicates of the homepage.
   icons: {
     icon: [
       { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
