@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator Online | No Signup, No Watermark | Invoice-Quickly",
+  title: "Free Invoice Generator No Sign Up | No Watermark | Invoice-Quickly",
   description:
     "Create professional invoices online for free. No signup, no watermark, instant PDF export, secure share links, and support for 20+ languages.",
   alternates: { canonical: "/" },
@@ -377,9 +377,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <p className="mb-2 text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-widest">Features</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Everything you need in a free invoice generator.</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Everything you need to create invoices online.</h2>
             <p className="mt-4 text-lg text-slate-600 dark:text-zinc-400">
-              A streamlined free online invoice generator designed to help you get paid faster, without the headache of complex accounting software.
+              A lightweight billing tool designed to help freelancers and small businesses get paid faster — no complex accounting software required.
             </p>
           </div>
 

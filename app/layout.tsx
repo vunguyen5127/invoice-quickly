@@ -76,7 +76,7 @@ const notoThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: {
-    default: "Free Invoice Generator Online | No Signup, No Watermark | Invoice-Quickly",
+    default: "Free Invoice Generator No Sign Up | No Watermark | Invoice-Quickly",
     template: "%s | Invoice-Quickly",
   },
   description:
