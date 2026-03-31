@@ -137,7 +137,7 @@ export const en = {
   footerLinkPrivacy: "Privacy Policy",
   footerLinkTerms: "Terms of Service",
   footerLinkContact: "Contact Us",
-  footerTagline: "The best free online invoice generator trusted by freelancers, agencies, and small businesses worldwide.",
+  footerTagline: "Simple, professional invoicing for freelancers, agencies, and small businesses worldwide.",
   footerRightsReserved: "All rights reserved.",
 
   // Footer additional
