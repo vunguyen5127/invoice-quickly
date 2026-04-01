@@ -50,7 +50,7 @@ export default async function AuthorPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
-      <div className="container max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+      <div className="container max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-12 sm:pt-12 sm:pb-20">
         <Link
           href="/blog"
           className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-12"

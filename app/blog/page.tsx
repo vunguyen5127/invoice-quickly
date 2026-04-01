@@ -52,7 +52,7 @@ export default function BlogIndexPage() {
       />
       <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
         {/* Hero */}
-        <section className="relative overflow-hidden py-20 sm:py-28">
+        <section className="relative overflow-hidden pt-10 pb-20 sm:pt-16 sm:pb-28">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/40 via-transparent to-transparent dark:from-blue-900/20" />
           <div className="container relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 px-3.5 py-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 mb-6">

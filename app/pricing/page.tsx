@@ -99,7 +99,7 @@ export default function PricingPage() {
     <div className="min-h-screen bg-white dark:bg-zinc-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-900/40">
       
       {/* Hero Section */}
-      <section className="relative pt-16 pb-4 px-4 overflow-hidden">
+      <section className="relative pt-10 sm:pt-14 pb-4 px-4 overflow-hidden">
         {/* Glow */}
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
           <div className="h-[400px] w-[800px] rounded-full bg-gradient-to-br from-blue-400/20 via-indigo-300/10 to-violet-300/5 blur-3xl dark:from-blue-600/15 dark:via-indigo-500/8 dark:to-violet-600/5" />

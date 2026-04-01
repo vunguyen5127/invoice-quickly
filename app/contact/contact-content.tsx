@@ -16,7 +16,7 @@ export default function ContactContent() {
 
   return (
     <div className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-sans">
-      <main className="container mx-auto px-4 sm:px-8 py-20 max-w-5xl">
+      <main className="container mx-auto px-4 sm:px-8 pt-10 pb-20 sm:pt-16 sm:pb-20 max-w-5xl">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold tracking-tight mb-6">Get in Touch</h1>

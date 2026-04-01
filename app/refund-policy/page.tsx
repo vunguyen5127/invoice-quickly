@@ -20,7 +20,7 @@ export default function RefundPolicyPage() {
 
   return (
     <div className="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
-      <main className="container mx-auto px-4 sm:px-8 py-20 max-w-4xl">
+      <main className="container mx-auto px-4 sm:px-8 pt-10 pb-20 sm:pt-16 sm:pb-20 max-w-4xl">
         
         {/* Header Section */}
         <div className="text-center mb-16">

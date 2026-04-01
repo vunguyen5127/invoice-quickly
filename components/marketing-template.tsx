@@ -44,7 +44,7 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
   return (
     <div className="flex flex-col bg-white dark:bg-zinc-950">
       {/* Breadcrumbs Area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-8 -mb-12 relative z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-6 -mb-8 relative z-20">
         <Breadcrumbs 
           items={[
             { label: "Templates", href: "/how-to-write-an-invoice" },
@@ -54,7 +54,7 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
       </div>
 
       {/* Hero Section */}
-      <section className="relative px-4 pt-20 pb-24 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative px-4 pt-14 pb-24 sm:px-6 lg:px-8 overflow-hidden">
         {/* ... existing hero ... */}
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
           <div className="h-[520px] w-[960px] rounded-full bg-gradient-to-br from-blue-400/20 via-indigo-300/10 to-violet-300/5 blur-3xl dark:from-blue-600/15 dark:via-indigo-500/5 dark:to-violet-600/5" />
