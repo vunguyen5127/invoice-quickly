@@ -61,27 +61,33 @@ export default function ContactContent() {
             </div>
           </div>
 
-          {/* Response Time Card */}
+          {/* Business Hours Card */}
           <div className="bg-zinc-50 dark:bg-zinc-900/50 p-8 rounded-3xl border border-zinc-100 dark:border-zinc-800 flex flex-col items-center text-center group hover:border-emerald-500/30 transition-all">
             <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Clock className="w-8 h-8 text-emerald-600" />
             </div>
-            <h3 className="text-xl font-bold mb-2">Response Time</h3>
-            <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-4">We're fast! Expect a reply within:</p>
-            <span className="text-emerald-700 dark:text-emerald-400 font-bold text-2xl">24 Hours</span>
-            <p className="text-xs text-zinc-400 mt-2">Monday — Friday</p>
+            <h3 className="text-xl font-bold mb-2">Business Hours</h3>
+            <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-4">Our support team is available:</p>
+            <div className="text-emerald-700 dark:text-emerald-400 font-bold text-lg leading-tight">
+               Monday — Friday<br/>
+               9:00 AM – 5:00 PM EST
+            </div>
+            <p className="text-xs text-zinc-400 mt-4">Average response time: &lt; 24h</p>
           </div>
 
-          {/* Custom Support Card */}
+          {/* Corporate Address Card */}
           <div className="bg-zinc-50 dark:bg-zinc-900/50 p-8 rounded-3xl border border-zinc-100 dark:border-zinc-800 flex flex-col items-center text-center group hover:border-purple-500/30 transition-all">
             <div className="w-16 h-16 rounded-2xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <MessageSquare className="w-8 h-8 text-purple-600" />
             </div>
-            <h3 className="text-xl font-bold mb-2">Feedback</h3>
-            <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-6">We love hearing from our users about new features.</p>
-            <button className="w-full py-3 bg-zinc-900 dark:bg-white dark:text-zinc-900 text-white rounded-xl font-bold hover:opacity-90 transition-opacity">
-              Send Feedback
-            </button>
+            <h3 className="text-xl font-bold mb-2">Corporate Office</h3>
+            <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-4">Mailing address for legal & partnerships.</p>
+            <div className="text-purple-700 dark:text-purple-400 text-sm font-semibold leading-relaxed">
+               Invoice-Quickly Solutions<br/>
+               8 The Green, Suite A<br/>
+               Dover, DE 19901<br/>
+               United States
+            </div>
           </div>
         </div>
 

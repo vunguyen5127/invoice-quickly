@@ -189,7 +189,7 @@ export default function LandingPage() {
 
           {/* Feature pills with green checks */}
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-medium text-slate-600 dark:text-zinc-400 mb-10">
-            {["No signup needed", "Unlimited invoices", "No watermark", "Instant PDF"].map((item) => (
+            {["No signup needed", "50 Free Invoices/mo", "No watermark", "Instant PDF"].map((item) => (
               <span key={item} className="flex items-center gap-1.5">
                 <svg className="w-5 h-5 text-green-500 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                   <path

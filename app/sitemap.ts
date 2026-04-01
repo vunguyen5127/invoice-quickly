@@ -66,7 +66,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
-    ...marketingPages.map((page) => ({
+    ...marketingPages.filter(p => !p.noindex).map((page) => ({
       url: `${baseUrl}/${page.slug}`,
       lastModified: new Date("2026-03-20"),
       changeFrequency: "monthly" as const,

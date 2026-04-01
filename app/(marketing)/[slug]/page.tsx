@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: page.metadata.title,
     description: page.metadata.description,
+    ...(page.noindex ? { robots: "noindex, nofollow" } : {}),
     alternates: {
       canonical: canonicalUrl,
     },

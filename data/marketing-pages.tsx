@@ -39,6 +39,8 @@ export interface SEOPageContent {
   };
   /** Long-form unique guide content rendered as an in-depth article section */
   content?: string;
+  /** Set to true to add a noindex meta tag for duplicate/thin content pages */
+  noindex?: boolean;
 }
 
 export const marketingPages: SEOPageContent[] = [
@@ -336,6 +338,7 @@ Transitioning is simpler than expected. Enter your company profile once, and eve
   },
   {
     slug: "free-invoice-template",
+    noindex: true,
     metadata: {
       title: "Free Invoice Templates for Small Businesses | No Signup",
       description: "Access 100% free invoice templates. No hidden fees, no watermarks, and no sign-up required. Perfect for small businesses and freelancers.",
@@ -420,6 +423,7 @@ Invoices sent within 24 hours of project completion are paid significantly faste
   },
   {
     slug: "blank-invoice-template",
+    noindex: true,
     metadata: {
       title: "Blank Invoice Templates — Clean, Flexible & Ready to Fill",
       description: "Download blank invoice templates to fill in manually or use our online editor for automated calculations. Clean, professional layouts for any industry.",
@@ -1219,6 +1223,7 @@ Configure your template with your most common service descriptions as starting-p
   },
   {
     slug: "simple-invoice-template",
+    noindex: true,
     metadata: {
       title: "Free Simple Invoice Template — Clean & Easy to Use",
       description: "Download a free simple invoice template that's clean, easy to fill out, and perfect for any business. No clutter, no confusion — just a simple invoice.",

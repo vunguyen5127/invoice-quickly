@@ -114,6 +114,39 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Trust Signals & Editorial Policy */}
+        <div className="mb-24 grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Editorial Policy */}
+          <div className="bg-slate-50 dark:bg-zinc-900/40 p-10 rounded-3xl border border-slate-100 dark:border-zinc-800">
+             <h2 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white">Our Editorial Policy</h2>
+             <p className="text-zinc-600 dark:text-zinc-400 mb-4 leading-relaxed">
+               At Invoice-Quickly, we believe in radical transparency. Our guides, reviews, and invoice templates are created by financial professionals and edited for absolute neutrality.
+             </p>
+             <ul className="space-y-3 mb-6 font-medium text-slate-700 dark:text-zinc-300">
+               <li className="flex gap-3 items-start"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"/> We do not accept paid reviews.</li>
+               <li className="flex gap-3 items-start"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"/> We independently test every tool we compare.</li>
+               <li className="flex gap-3 items-start"><CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5"/> Our content is regularly vetted for legal and financial accuracy.</li>
+             </ul>
+             <Link href="/blog" className="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-2">
+                Read our Educational Hub <ArrowRight className="w-4 h-4"/>
+             </Link>
+          </div>
+
+          {/* How We Make Money */}
+          <div className="bg-blue-50 dark:bg-blue-900/10 p-10 rounded-3xl border border-blue-100 dark:border-blue-900/20">
+             <h2 className="text-2xl font-bold mb-6 text-blue-900 dark:text-blue-100">How We Keep It Free</h2>
+             <p className="text-zinc-700 dark:text-zinc-300 mb-4 leading-relaxed">
+               We hate hidden fees as much as you do. Invoice-Quickly offers a genuinely free tier that covers 90% of a freelancer's needs without watermarks or time limits.
+             </p>
+             <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed mb-4">
+               <strong>So, how do we make money?</strong> We are supported by our Pro subscribers—larger teams and agencies who pay a transparent monthly fee (currently $10/mo) for advanced features like multi-company management, unlimited history, and priority support. 
+             </p>
+             <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+               This freemium model ensures that the core generator remains accessible to everyone forever, subsidized by power users who need enterprise-grade scale.
+             </p>
+          </div>
+        </div>
+
         {/* CTA Section */}
         <div className="text-center bg-slate-900 dark:bg-zinc-900 py-16 px-6 rounded-[2rem] text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to generate invoices for free?</h2>

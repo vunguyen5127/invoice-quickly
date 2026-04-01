@@ -266,21 +266,20 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 px-4">
-         <div className="relative mx-auto max-w-5xl rounded-3xl bg-gradient-to-br from-blue-700 to-indigo-800 px-6 py-20 text-center shadow-2xl overflow-hidden">
-            <div className="absolute inset-0 opacity-10 [background-image:radial-gradient(circle,white_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
-            <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">Ready to create your professional invoice?</h2>
-              <p className="text-blue-100 mb-10 text-lg opacity-90 max-w-xl mx-auto">Join thousands of businesses who trust Invoice-Quickly for their professional billing needs.</p>
-              <Link
-                href="/generator?new=1"
-                className="inline-flex items-center gap-2 rounded-full bg-white text-blue-700 px-10 py-4 text-lg font-bold shadow-lg transition-all hover:bg-slate-50 hover:scale-105 active:scale-95"
-              >
-                Get Started for Free
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+      {/* Final Summary & Tool Link */}
+      <section className="py-16 bg-white dark:bg-zinc-950 border-t border-slate-100 dark:border-zinc-800">
+         <div className="max-w-3xl mx-auto px-4 text-center">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Start using our free templates</h2>
+            <p className="text-slate-600 dark:text-zinc-400 mb-8 max-w-xl mx-auto">
+              Skip the spreadsheets. Use our browser-based generator to customize this template and export a professional PDF instantly.
+            </p>
+            <Link
+              href="/generator?new=1"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 px-8 py-3 text-base font-bold transition-all hover:bg-blue-100 dark:hover:bg-blue-900/40"
+            >
+              Open Invoice Generator
+              <ArrowRight className="h-4 w-4" />
+            </Link>
          </div>
       </section>
     </div>
