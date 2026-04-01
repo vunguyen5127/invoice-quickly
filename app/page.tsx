@@ -39,13 +39,13 @@ export default function LandingPage() {
             description:
               "Free online invoice generator. Create and download professional PDF invoices for free. No signup, no watermark. Generate invoices for free in 20+ languages.",
             featureList: [
-              "Free PDF invoice generator",
+              "Generate and download professional PDF invoices",
               "No signup required",
-              "No watermark",
+              "No watermark on exported documents",
               "20+ languages supported",
-              "Live invoice preview",
+              "Live invoice preview as you type",
               "Instant PDF download",
-              "Shareable invoice links",
+              "Shareable invoice links for clients",
             ],
           }),
         }}
@@ -59,18 +59,18 @@ export default function LandingPage() {
             mainEntity: [
               {
                 "@type": "Question",
-                name: "Is Invoice-Quickly really a free invoice generator?",
+                name: "Is Invoice-Quickly completely free to use?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes, Invoice-Quickly is a completely free invoice generator with no credit card required. You can generate invoices for free forever with no watermark.",
+                  text: "Yes, Invoice-Quickly is completely free to use. You can create and download professional invoices with no credit card required, no watermarks, and no account needed.",
                 },
               },
               {
                 "@type": "Question",
-                name: "Do I need to sign up to use this free online invoice generator?",
+                name: "Do I need to create an account to make an invoice?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "No. You can use our free invoice generator online without creating an account. Sign up only if you want to save invoice history and manage multiple companies.",
+                  text: "No. You can create and download a professional invoice without signing up or creating an account. An account is only needed if you want to save your invoice history or manage multiple companies.",
                 },
               },
               {
@@ -91,10 +91,10 @@ export default function LandingPage() {
               },
               {
                 "@type": "Question",
-                name: "Is Invoice-Quickly the best free invoice generator?",
+                name: "How does Invoice-Quickly compare to other invoicing tools?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Invoice-Quickly is trusted by thousands of freelancers and small businesses. Unlike other free invoice generators, we never add watermarks, never require signup, support 20+ languages, and provide instant PDF downloads — all completely free.",
+                  text: "Invoice-Quickly is trusted by thousands of freelancers and small businesses. Unlike many other tools, we never add watermarks, never require signup, support 20+ languages including RTL, and provide instant PDF downloads — all completely free.",
                 },
               },
               {
@@ -159,12 +159,12 @@ export default function LandingPage() {
 
           {/* H1 */}
           <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-5xl text-center max-w-4xl mx-auto">
-            Free Invoice Generator
+            Free Invoice Generator <span className="text-blue-600 dark:text-blue-400">No Sign Up</span>
           </h1>
 
-          {/* Supporting line — carries the ad-alignment keyword naturally */}
-          <p className="mb-5 text-xl font-semibold text-blue-600 dark:text-blue-400 text-center">
-            Free Invoice Generator No Sign Up Required
+          {/* Supporting line — value-oriented, not a keyword repeat */}
+          <p className="mb-5 text-xl font-semibold text-slate-600 dark:text-slate-400 text-center">
+            Create professional invoices in seconds, perfectly formatted and ready to send.
           </p>
 
           <p className="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-slate-600 dark:text-zinc-400">

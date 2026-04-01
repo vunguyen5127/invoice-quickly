@@ -3,7 +3,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { blogPosts } from "@/data/blog-posts";
 import { marketingPages } from "@/data/marketing-pages";
-import { ArrowLeft, ArrowRight, Calendar, Clock, Tag, FileText } from "lucide-react";
+import { authors } from "@/data/authors";
+import Image from "next/image";
+import { ArrowLeft, ArrowRight, Calendar, Clock, Tag, FileText, User } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -62,6 +64,8 @@ export default async function BlogPostPage({ params }: Props) {
   const others = blogPosts.filter((p) => p.slug !== slug && p.category !== post.category);
   const relatedPosts = [...sameCat, ...others].slice(0, 3);
 
+  const postAuthor = post.authorId ? authors[post.authorId] : undefined;
+
   // Related templates: pick 3 marketing pages
   const relatedTemplates = marketingPages.slice(0, 3);
 
@@ -71,7 +75,11 @@ export default async function BlogPostPage({ params }: Props) {
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    author: {
+    author: postAuthor ? {
+      "@type": "Person",
+      name: postAuthor.name,
+      url: `https://invoice-quickly.com/author/${postAuthor.id}`,
+    } : {
       "@type": "Organization",
       name: "Invoice-Quickly",
       url: "https://invoice-quickly.com",
@@ -186,9 +194,11 @@ export default async function BlogPostPage({ params }: Props) {
 
       if (trimmed.startsWith("## ")) {
         flushList();
+        const headingText = trimmed.replace("## ", "");
+        const id = headingText.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
         elements.push(
-          <h2 key={`h2-${elements.length}`} className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-10 mb-4">
-            {trimmed.replace("## ", "")}
+          <h2 id={id} key={`h2-${elements.length}`} className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 mt-10 mb-4 scroll-mt-24">
+            {headingText}
           </h2>
         );
       } else if (trimmed.startsWith("### ")) {
@@ -261,16 +271,46 @@ export default async function BlogPostPage({ params }: Props) {
             <p className="text-lg text-zinc-500 dark:text-zinc-400 mb-5">
               {post.description}
             </p>
-            <div className="flex items-center gap-4 text-sm text-zinc-400 dark:text-zinc-500">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400 dark:text-zinc-500 mb-8">
               <span className="inline-flex items-center gap-1.5">
                 <Calendar className="w-4 h-4" />
-                {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                Published {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
                 {post.readTime}
               </span>
+              <span className="inline-flex items-center gap-1.5 text-zinc-300 dark:text-zinc-600">|</span>
+              <span className="inline-flex items-center gap-1.5 italic">
+                Last updated {new Date("2026-04-01").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+              </span>
             </div>
+
+            {/* Author Profile Card */}
+            {postAuthor && (
+              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+                <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800 shrink-0 border-2 border-white dark:border-zinc-900 shadow-sm relative">
+                  {postAuthor.avatarUrl ? (
+                    <Image src={postAuthor.avatarUrl} alt={postAuthor.name} fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                      <User className="w-6 h-6" />
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-zinc-900 dark:text-锌-100 flex items-center gap-1.5">
+                    Written by {postAuthor.name}
+                    <Link href={`/author/${postAuthor.id}`} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
+                      (View Profile)
+                    </Link>
+                  </h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                    {postAuthor.role}
+                  </p>
+                </div>
+              </div>
+            )}
           </header>
 
           <hr className="border-zinc-200 dark:border-zinc-800 mb-10" />
@@ -293,6 +333,24 @@ export default async function BlogPostPage({ params }: Props) {
               <p className="text-center text-xs text-zinc-400 dark:text-zinc-500 mt-3">Watch: {post.title}</p>
             </div>
           )}
+
+          {/* Table of Contents */}
+          <div className="mb-10 p-6 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800">
+            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">Table of Contents</h2>
+            <ul className="space-y-2 text-sm">
+              {post.content.split("\n").filter(line => line.trim().startsWith("## ")).map((line, i) => {
+                const text = line.replace("## ", "").trim();
+                const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+                return (
+                  <li key={i}>
+                    <a href={`#${id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
+                      {text}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
 
           {/* Content */}
           <div className="prose-custom">

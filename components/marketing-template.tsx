@@ -183,6 +183,47 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
         </div>
       </section>
 
+      {/* In-Depth Guide Section — addresses AdSense thin content */}
+      {page.content && (
+        <section className="py-24 bg-white dark:bg-zinc-950 border-t border-slate-100 dark:border-zinc-800">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="prose prose-slate dark:prose-invert prose-lg max-w-none">
+              {page.content.trim().split(/\n\n+/).map((block, i) => {
+                if (block.startsWith("## ")) {
+                  return (
+                    <h2 key={i} className="text-2xl font-bold text-slate-900 dark:text-white mt-12 mb-4 first:mt-0">
+                      {block.replace("## ", "")}
+                    </h2>
+                  );
+                }
+                if (block.startsWith("### ")) {
+                  return (
+                    <h3 key={i} className="text-xl font-semibold text-slate-800 dark:text-zinc-200 mt-8 mb-3">
+                      {block.replace("### ", "")}
+                    </h3>
+                  );
+                }
+                if (block.startsWith("- ")) {
+                  const items = block.split("\n").filter(l => l.startsWith("- "));
+                  return (
+                    <ul key={i} className="list-disc list-inside space-y-2 text-slate-600 dark:text-zinc-400 my-4">
+                      {items.map((item, j) => (
+                        <li key={j}>{item.replace("- ", "")}</li>
+                      ))}
+                    </ul>
+                  );
+                }
+                return (
+                  <p key={i} className="text-slate-600 dark:text-zinc-400 leading-relaxed my-4">
+                    {block}
+                  </p>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Related Templates - Internal Linking Hub */}
       <section className="py-24 bg-slate-50 dark:bg-zinc-900/20 border-t border-slate-100 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
