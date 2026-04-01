@@ -248,7 +248,7 @@ export default async function BlogPostPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
         />
       )}
-      <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
+      <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900 selection:bg-blue-100 dark:selection:bg-blue-900/40">
         <article className="container max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-12 sm:pt-12 sm:pb-20">
           {/* Back Link */}
           <Link
@@ -260,52 +260,64 @@ export default async function BlogPostPage({ params }: Props) {
           </Link>
 
           {/* Header */}
-          <header className="mb-10">
-            <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 dark:bg-blue-900/30 px-3 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300 mb-4">
-              <Tag className="w-3 h-3" />
-              {post.category}
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4">
-              {post.title}
-            </h1>
-            <p className="text-lg text-zinc-500 dark:text-zinc-400 mb-5">
-              {post.description}
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-400 dark:text-zinc-500 mb-8">
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar className="w-4 h-4" />
-                Published {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+          <header className="mb-12">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 px-3 py-1 text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest border border-blue-100/50 dark:border-blue-800/30">
+                {post.category}
               </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
+              <span className="text-zinc-300 dark:text-zinc-800">•</span>
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
+                <Clock className="w-3.5 h-3.5" />
                 {post.readTime}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-zinc-300 dark:text-zinc-600">|</span>
-              <span className="inline-flex items-center gap-1.5 italic">
-                Last updated {new Date("2026-04-01").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            </div>
+ 
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 leading-[1.1]">
+              {post.title}
+            </h1>
+ 
+            <p className="text-xl text-zinc-500 dark:text-zinc-400 mb-8 leading-relaxed font-medium">
+              {post.description}
+            </p>
+ 
+            <div className="flex flex-wrap items-center gap-6 text-[13px] font-medium text-zinc-400 dark:text-zinc-500">
+              <span className="inline-flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-zinc-300 dark:text-zinc-700" />
+                {new Date(post.date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
               </span>
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
+                <span className="italic text-zinc-400 dark:text-zinc-600 uppercase text-[10px] font-black tracking-tighter">Verified Content</span>
+              </div>
             </div>
 
             {/* Author Profile Card */}
             {postAuthor && (
-              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-800">
-                <div className="w-12 h-12 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800 shrink-0 border-2 border-white dark:border-zinc-900 shadow-sm relative">
-                  {postAuthor.avatarUrl ? (
-                    <Image src={postAuthor.avatarUrl} alt={postAuthor.name} fill className="object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-zinc-400">
-                      <User className="w-6 h-6" />
+              <div className="mt-10 p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200/60 dark:border-zinc-800/60 flex items-center gap-5">
+                <div className="relative group">
+                   <div className="absolute -inset-1.5 bg-gradient-to-tr from-blue-500/20 to-violet-500/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-14 h-14 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800 shrink-0 border-2 border-white dark:border-zinc-900 shadow-md relative z-10">
+                      {postAuthor.avatarUrl ? (
+                        <Image src={postAuthor.avatarUrl} alt={postAuthor.name} fill className="object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                          <User className="w-6 h-6" />
+                        </div>
+                      )}
                     </div>
-                  )}
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-zinc-900 dark:text-锌-100 flex items-center gap-1.5">
-                    Written by {postAuthor.name}
-                    <Link href={`/author/${postAuthor.id}`} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">
-                      (View Profile)
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest italic">Author</span>
+                    <span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+                    <Link href={`/author/${postAuthor.id}`} className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                      Review Profile
                     </Link>
+                  </div>
+                  <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
+                    {postAuthor.name}
                   </h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-tighter">
                     {postAuthor.role}
                   </p>
                 </div>
@@ -335,15 +347,21 @@ export default async function BlogPostPage({ params }: Props) {
           )}
 
           {/* Table of Contents */}
-          <div className="mb-10 p-6 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800">
-            <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4">Table of Contents</h2>
-            <ul className="space-y-2 text-sm">
+          <div className="mb-12 p-8 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-xl shadow-zinc-200/20 dark:shadow-none">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+                <FileText className="w-4 h-4" />
+              </div>
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Table of Contents</h2>
+            </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
               {post.content.split("\n").filter(line => line.trim().startsWith("## ")).map((line, i) => {
                 const text = line.replace("## ", "").trim();
                 const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
                 return (
-                  <li key={i}>
-                    <a href={`#${id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
+                  <li key={i} className="group flex items-start gap-2">
+                    <span className="text-blue-600 dark:text-blue-500 font-bold text-xs mt-1">0{i+1}.</span>
+                    <a href={`#${id}`} className="text-[15px] font-medium text-zinc-600 dark:text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {text}
                     </a>
                   </li>

@@ -55,9 +55,11 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
 
       {/* Hero Section */}
       <section className="relative px-4 pt-14 pb-24 sm:px-6 lg:px-8 overflow-hidden">
-        {/* ... existing hero ... */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
-          <div className="h-[520px] w-[960px] rounded-full bg-gradient-to-br from-blue-400/20 via-indigo-300/10 to-violet-300/5 blur-3xl dark:from-blue-600/15 dark:via-indigo-500/5 dark:to-violet-600/5" />
+        {/* Modern Mesh Gradient Background */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_var(--tw-gradient-stops))] from-blue-100/40 via-indigo-50/20 to-transparent dark:from-blue-900/10 dark:via-indigo-950/5" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl">
+           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-[100px] animate-pulse" />
+           <div className="absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-indigo-400/10 dark:bg-indigo-600/5 rounded-full blur-[80px]" />
         </div>
 
         <div className="max-w-4xl mx-auto text-center">
@@ -66,12 +68,12 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
             {page.hero.badge}
           </div>
 
-          <h1 className="mb-6 text-4xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white md:text-6xl">
+          <h1 className="mb-8 text-5xl font-black tracking-tight leading-[1.05] text-slate-900 dark:text-white md:text-7xl">
             {page.hero.title}
-            <span className="text-blue-600 dark:text-blue-400">{page.hero.highlight}</span>
+            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">{page.hero.highlight}</span>
           </h1>
 
-          <p className="mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-slate-600 dark:text-zinc-400 font-medium">
+          <p className="mx-auto mb-12 max-w-2xl text-xl leading-relaxed text-slate-600 dark:text-zinc-400 font-medium">
             {page.hero.description}
           </p>
 
@@ -160,9 +162,12 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
                     <ArrowRight className="h-5 w-5" />
                   </Link>
               </div>
-              <div className="w-full lg:w-[60%] shrink-0 shadow-2xl shadow-slate-900/10 rounded-xl overflow-hidden ring-1 ring-zinc-200 dark:ring-zinc-800">
-                 <div className="[zoom:0.5] sm:[zoom:0.7] lg:[zoom:0.8] xl:[zoom:1] origin-top-left transition-all">
-                    <InvoicePreview invoice={previewInvoice} compact />
+              <div className="w-full lg:w-[60%] shrink-0 relative group">
+                 <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/10 to-indigo-500/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                 <div className="relative bg-white dark:bg-zinc-950 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden ring-1 ring-black/5 dark:ring-white/10 transition-transform duration-500 group-hover:scale-[1.01]">
+                    <div className="[zoom:0.5] sm:[zoom:0.7] lg:[zoom:0.8] xl:[zoom:1] origin-top-left transition-all">
+                       <InvoicePreview invoice={previewInvoice} compact />
+                    </div>
                  </div>
               </div>
            </div>

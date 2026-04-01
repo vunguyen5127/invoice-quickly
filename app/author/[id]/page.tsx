@@ -49,8 +49,12 @@ export default async function AuthorPage({ params }: Props) {
   const authorPosts = blogPosts.filter((post) => post.authorId === id);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900">
-      <div className="container max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-12 sm:pt-12 sm:pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-950 dark:to-zinc-900 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-blue-100/30 dark:bg-blue-900/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-indigo-100/30 dark:bg-indigo-900/10 rounded-full blur-[100px] -z-10" />
+ 
+      <div className="container max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-12 sm:pt-12 sm:pb-20 relative z-10">
         <Link
           href="/blog"
           className="inline-flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-12"
@@ -60,36 +64,46 @@ export default async function AuthorPage({ params }: Props) {
         </Link>
 
         {/* Author Header */}
-        <header className="flex flex-col md:flex-row gap-8 items-start mb-16 pb-12 border-b border-zinc-200 dark:border-zinc-800">
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800 border-4 border-white dark:border-zinc-900 shadow-xl relative shrink-0">
-            {author.avatarUrl ? (
-              <Image src={author.avatarUrl} alt={author.name} fill className="object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-4xl text-zinc-400 font-bold">
-                {author.name.charAt(0)}
-              </div>
-            )}
+        <header className="flex flex-col md:flex-row gap-10 items-start mb-16 pb-12 border-b border-zinc-200 dark:border-zinc-800">
+          <div className="relative group shrink-0">
+             <div className="absolute -inset-2 bg-gradient-to-tr from-blue-600 to-violet-600 rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden bg-zinc-200 dark:bg-zinc-800 border-4 border-white dark:border-zinc-900 shadow-2xl relative z-10">
+               {author.avatarUrl ? (
+                 <Image src={author.avatarUrl} alt={author.name} fill className="object-cover" />
+               ) : (
+                 <div className="w-full h-full flex items-center justify-center text-4xl text-zinc-400 font-bold">
+                   {author.name.charAt(0)}
+                 </div>
+               )}
+             </div>
           </div>
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-锌-100 mb-2">
+          <div className="flex-1">
+            <div className="flex flex-wrap items-center gap-3 mb-3">
+              <span className="px-2.5 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest rounded-md border border-blue-100 dark:border-blue-800/50">
+                Verified Expert
+              </span>
+              <span className="text-zinc-300 dark:text-zinc-800">•</span>
+              <span className="text-xs font-bold text-zinc-400 uppercase tracking-tighter">Contributor</span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 mb-3 leading-tight">
               {author.name}
             </h1>
-            <p className="text-xl font-medium text-blue-600 dark:text-blue-400 mb-4">
+            <p className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-5 leading-none">
               {author.role}
             </p>
-            <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 max-w-2xl">
+            <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8 max-w-2xl font-medium">
               {author.bio}
             </p>
             {author.socials && (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 {author.socials.linkedin && (
-                  <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold text-zinc-600 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-colors">
-                    LinkedIn <ExternalLink className="w-3.5 h-3.5" />
+                  <a href={author.socials.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-colors group">
+                    LinkedIn <ExternalLink className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </a>
                 )}
                 {author.socials.twitter && (
-                  <a href={author.socials.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold text-zinc-600 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-colors">
-                    Twitter <ExternalLink className="w-3.5 h-3.5" />
+                  <a href={author.socials.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-bold text-zinc-500 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400 transition-colors group">
+                    Twitter <ExternalLink className="w-4 h-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </a>
                 )}
               </div>
