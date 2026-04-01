@@ -556,8 +556,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
         
         <div className="w-full">
           <div className="w-full">
-            {/* Header - Hidden on Mobile */}
-            <div className="hidden md:grid grid-cols-24 gap-[1px] py-2 text-[12px] font-semibold text-zinc-900 bg-zinc-100 dark:bg-zinc-800/80 rounded-xl items-center mb-[2px] pr-8 uppercase tracking-widest">
+            <div className="hidden md:grid grid-cols-24 gap-[1px] py-2 text-[12px] font-semibold text-zinc-900 bg-zinc-100 dark:bg-zinc-800/80 rounded-[5px] items-center mb-[2px] pr-8 uppercase tracking-widest">
               <div className="col-span-16 pl-6">{t.description}</div>
               <div className="col-span-3 text-center">{t.qty}</div>
               <div className="col-span-5 text-center">{t.rate}</div>
@@ -577,7 +576,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     <input 
                       type="text" 
                       placeholder={t.itemDescription}
-                      className={`w-full h-12 pl-4 md:pl-6 pr-14 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-xl text-[14px] font-normal text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
+                      className={`w-full h-12 pl-4 md:pl-6 pr-14 bg-background border ${!item.description ? 'border-2 border-destructive/30' : 'border-border'} rounded-[5px] text-[14px] font-normal text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm`}
                       value={item.description}
                       maxLength={120}
                       onChange={(e) => handleItemChange(index, "description", e.target.value)}
@@ -630,7 +629,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       <div className="md:hidden text-[10px] font-semibold text-zinc-400 uppercase tracking-widest ml-1 mb-1">{t.qty}</div>
                       <input 
                         type="number" 
-                        className="w-full h-12 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl md:rounded-lg text-center text-[14px] font-normal text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm transition-all"
+                        className="w-full h-12 px-1 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-[5px] text-center text-[14px] font-normal text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm transition-all"
                         value={item.quantity}
                         min="0"
                         onChange={(e) => handleItemChange(index, "quantity", Number(e.target.value))}
@@ -644,7 +643,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       <input 
                         type="number" 
                         placeholder="0.00"
-                        className={`w-full h-12 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-xl md:rounded-lg text-left text-[14px] font-normal text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm`}
+                        className={`w-full h-12 px-4 bg-white dark:bg-zinc-950 border ${(!item.rate || item.rate === 0) ? 'border-2 border-red-300/80 dark:border-red-500/30' : 'border-zinc-200 dark:border-zinc-800'} rounded-[5px] text-left text-[14px] font-normal text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none shadow-sm`}
                         value={item.rate || ''}
                         onChange={(e) => {
                           const val = e.target.value;
@@ -661,7 +660,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   </div>
 
                   {/* Delete Icon - absolute on desktop, positioned in card for mobile */}
-                  <div className="absolute right-2 top-2 md:-right-2 md:top-1/2 md:-translate-y-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10 font-bold">
+                  <div className="absolute right-2 top-2 md:-right-2 md:top-1/2 md:-translate-y-1/2 opacity-100 transition-all z-10 font-bold">
                     <Tooltip content="Remove item" position="left">
                       <button 
                         onClick={() => removeItem(item.id)}
