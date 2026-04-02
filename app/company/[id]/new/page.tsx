@@ -18,12 +18,13 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 
-import { getUserEntitlements } from "@/utils/entitlements";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { CreateInvoiceSkeleton } from "@/components/create-invoice-skeleton";
+import { useData } from "@/contexts/data-context";
 
 export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
+  const { entitlements, loadingData } = useData();
   const resolvedParams = use(params);
   const [invoice, setInvoice] = useState<InvoiceState>(initialInvoiceState);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -56,8 +57,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       const companyData = await getCompanyById(session.access_token, resolvedParams.id);
 
       // Load entitlements for free user guards
-      const entitlements = await getUserEntitlements(session.access_token);
-      setCanUseRecurring(entitlements.canUseRecurring);
+      setCanUseRecurring(entitlements?.canUseRecurring || false);
       if (!companyData) {
         alert(t.companyNotFound || "Company not found");
         router.push("/dashboard");
@@ -136,8 +136,10 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       });
     };
 
-    loadCompanyAndSetInvoice();
-  }, [router, resolvedParams.id]);
+    if (!loadingData) {
+      loadCompanyAndSetInvoice();
+    }
+  }, [router, resolvedParams.id, loadingData, entitlements]);
 
   const handleDownload = async () => {
     setIsGenerating(true);

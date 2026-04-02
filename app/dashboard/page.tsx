@@ -3,8 +3,8 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getUserCompanies, deleteCompany } from "@/utils/supabase/dashboard-actions";
-import { getUserEntitlements } from "@/utils/entitlements";
+import { deleteCompany } from "@/utils/supabase/dashboard-actions";
+import { useData } from "@/contexts/data-context";
 import { Trash2, Plus, Building2, PenLine, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
@@ -21,9 +21,9 @@ import { useAuth } from "@/contexts/auth-context";
 function DashboardContent() {
   const { t } = useLanguage();
   const { session, loading: authLoading } = useAuth();
+  const { companies: globCompanies, companiesTotalCount: globTotal, entitlements: globEnts, loadingData, refreshData } = useData();
+
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [companies, setCompanies] = useState<any[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -31,7 +31,6 @@ function DashboardContent() {
   const [editingCompany, setEditingCompany] = useState<any | null>(null);
   const [companyToDelete, setCompanyToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "general">("company_limit");
 
@@ -42,7 +41,7 @@ function DashboardContent() {
   const PAGE_SIZE = 12;
 
   const handleCreateCompanyClick = () => {
-    if (entitlements.maxCompanies !== null && companies.length >= entitlements.maxCompanies) {
+    if (globEnts?.maxCompanies !== null && globCompanies.length >= (globEnts?.maxCompanies || 1)) {
       setUpgradeTrigger("company_limit");
       setIsUpgradeModalOpen(true);
     } else {
@@ -50,41 +49,28 @@ function DashboardContent() {
     }
   };
 
-  const loadData = async (showRefreshLoader = false) => {
+  useEffect(() => {
+    if (authLoading || loadingData) return;
     if (!session) return;
-    if (showRefreshLoader) setIsRefreshing(true);
     
-    setUserEmail(session.user.email || null);
-    const data = await getUserCompanies(session.access_token, currentPage, PAGE_SIZE);
-    
-    // Sort companies by invoice count (highest first)
-    const sortedCompanies = [...(data.data || [])].sort((a, b) => {
+    setUserEmail(session?.user?.email || null);
+    setLoading(false);
+    setIsRefreshing(false);
+  }, [authLoading, loadingData, session]);
+
+  // Client-side pagination and sorting
+  const companies = [...(globCompanies || [])]
+    .sort((a, b) => {
       const countA = a.invoices?.length || 0;
       const countB = b.invoices?.length || 0;
       return countB - countA;
-    });
+    })
+    .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-    setCompanies(sortedCompanies);
-    setTotalCount(data.totalCount);
-
-    const ent = await getUserEntitlements(session.access_token);
-    setEntitlements(ent);
+  const totalCount = globTotal || 0;
+  const entitlements = globEnts || FREE_ENTITLEMENTS;
 
 
-
-    setLoading(false);
-    setIsRefreshing(false);
-    return ent;
-  };
-
-  useEffect(() => {
-    if (authLoading) return;
-    if (!session) {
-      router.push("/login?redirect=/dashboard");
-      return;
-    }
-    loadData(loading ? false : true);
-  }, [router, currentPage, session, authLoading]);
 
   // If redirected from checkout, poll every 1.5s until plan === "pro"
   useEffect(() => {
@@ -94,8 +80,8 @@ function DashboardContent() {
 
     const check = async () => {
       if (cancelled) return;
-      const ent = await loadData(false);
-      if (ent?.plan === "pro") {
+      await refreshData();
+      if (globEnts?.plan === "pro") {
         cancelled = true;
         router.replace("/dashboard", { scroll: false });
       }
@@ -124,7 +110,7 @@ function DashboardContent() {
     if (session) {
       const success = await deleteCompany(session.access_token, companyToDelete);
       if (success) {
-        setCompanies(companies.filter((c) => c.id !== companyToDelete));
+        await refreshData();
       } else {
         alert("Failed to delete company");
       }
@@ -133,13 +119,13 @@ function DashboardContent() {
     setCompanyToDelete(null);
   };
 
-  const handleCompanyCreated = (newCompany: any) => {
-    // Re-fetch or simply insert at top. For simplicity, just add to top of array with empty invoices list.
-    setCompanies([{ ...newCompany, invoices: [] }, ...companies]);
+  const handleCompanyCreated = async (newCompany: any) => {
+    // Re-fetch to get updated state across the app
+    await refreshData();
   };
 
-  const handleCompanyUpdated = (updatedCompany: any) => {
-    setCompanies(companies.map(c => c.id === updatedCompany.id ? { ...c, ...updatedCompany } : c));
+  const handleCompanyUpdated = async (updatedCompany: any) => {
+    await refreshData();
   };
 
   const handleEdit = (e: React.MouseEvent, company: any) => {

@@ -1,7 +1,7 @@
 "use client";
 
-import { getNextInvoiceNumber, getUserCompanies } from "@/utils/supabase/dashboard-actions";
-import { getItems, getSavedClients } from "@/utils/supabase/items-actions";
+import { getNextInvoiceNumber } from "@/utils/supabase/dashboard-actions";
+import { useData } from "@/contexts/data-context";
 import { useLanguage } from "@/contexts/language-context";
 import { CURRENCIES, InvoiceItem, InvoiceState, RecurringInterval } from "@/types/invoice";
 import { SavedItem } from "@/types/item";
@@ -37,9 +37,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     }
   };
 
-  const [myCompanies, setMyCompanies] = useState<any[]>([]);
-  const [myItems, setMyItems] = useState<SavedItem[]>([]);
-  const [myClients, setMyClients] = useState<SavedClient[]>([]);
+  const { companies: myCompanies, items: myItems, clients: myClients } = useData();
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   const clientDropdownRef = useRef<HTMLFieldSetElement>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
@@ -116,29 +114,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     if (onCompanySelect) onCompanySelect(selectedId);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!supabase) return;
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-      
-      try {
-        const [companiesResult, itemsResult, clientsResult] = await Promise.all([
-          getUserCompanies(session.access_token),
-          getItems(session.access_token, { pageSize: 50 }),
-          getSavedClients(session.access_token, { pageSize: 50 })
-        ]);
-        const fetchedCompanies = companiesResult.data || [];
-        setMyCompanies(fetchedCompanies);
-        setMyItems(itemsResult.data || []);
-        setMyClients(clientsResult.data || []);
-      } catch (e) {
-        console.error("Failed to fetch data for auto-fill", e);
-      }
-    };
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
 
   const handleCompanyAutoFill = (e: React.ChangeEvent<HTMLSelectElement>) => {
     applyCompanyData(e.target.value, myCompanies);

@@ -26,6 +26,7 @@ const SuccessModal = dynamic(() => import("@/components/success-modal").then((mo
 import { useLanguage } from "@/contexts/language-context";
 
 import { useAuth } from "@/contexts/auth-context";
+import { useData } from "@/contexts/data-context";
 
 function CreateInvoiceContent() {
   const { t } = useLanguage();
@@ -42,10 +43,10 @@ function CreateInvoiceContent() {
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
   const [hasNoItems, setHasNoItems] = useState(false);
   const [hasNoClients, setHasNoClients] = useState(false);
+  const { companies, items, clients, entitlements, loadingData, refreshData } = useData();
 
   const canSave = invoice.client.name.trim().length > 0 && invoice.items.some((item) => item.description.trim().length > 0);
 
-  const [companies, setCompanies] = useState<any[]>([]);
   const [isSelectModalOpen, setIsSelectModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isGuestSaveModalOpen, setIsGuestSaveModalOpen] = useState(false);
@@ -72,7 +73,7 @@ function CreateInvoiceContent() {
         // Clean URL without reloading
         window.history.replaceState({}, "", "/generator");
 
-        if (userIsLoggedIn) {
+        if (userIsLoggedIn && !loadingData) {
           // Logged-in users get a blank invoice (no demo data), prefilled if only 1 company
           let companyData = { name: "", email: "", address: "", phone: "", logo: "" };
           let nextInvNum = "";
@@ -83,22 +84,11 @@ function CreateInvoiceContent() {
           let terms = initialInvoiceState.terms;
           let taxRate = 0;
           let discount = 0;
-          
+
           if (session) {
             try {
-              // Fetch companies, entitlements, item count, client count in parallel
-              const [res, ents, itemsRes, clientsRes] = await Promise.all([
-                getUserCompanies(session.access_token),
-                getUserEntitlements(session.access_token),
-                getItems(session.access_token, { pageSize: 1 }).catch(() => ({ data: [], totalCount: 0 })),
-                getSavedClients(session.access_token, { pageSize: 1 }).catch(() => ({ data: [], totalCount: 0 })),
-              ]);
-              setCanUseRecurring(ents.canUseRecurring);
-              if (itemsRes.totalCount === 0) setHasNoItems(true);
-              if (clientsRes.totalCount === 0) setHasNoClients(true);
-
-              if (res.data && res.data.length === 1) {
-                const autoCompany = res.data[0];
+              if (companies.length >= 1) {
+                const autoCompany = companies[0];
                 setInitialCompanyId(autoCompany.id);
                 
                 const tmpDetails = [];
@@ -126,7 +116,7 @@ function CreateInvoiceContent() {
                 } catch (e) {
                   console.error("Failed to fetch invoice number", e);
                 }
-              } else if (!res.data || res.data.length === 0) {
+              } else if (companies.length === 0) {
                 setHasNoCompany(true);
               }
             } catch (e) {
@@ -166,7 +156,7 @@ function CreateInvoiceContent() {
 
       if (userIsLoggedIn) {
         setIsLoggedIn(true);
-        // canUseRecurring already set above when fetching entitlements in parallel
+        setCanUseRecurring(entitlements?.canUseRecurring || false);
         if (!draftInvoice.signatureName) {
           const name = session!.user.user_metadata?.name || session!.user.user_metadata?.full_name || session!.user.email?.split("@")[0];
           if (name) {
@@ -185,7 +175,7 @@ function CreateInvoiceContent() {
 
     initData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authLoading, session]);
+  }, [authLoading, session, loadingData, companies, entitlements]);
 
   // Save to localStorage on change
   useEffect(() => {
@@ -225,7 +215,7 @@ function CreateInvoiceContent() {
 
     try {
       const result = await getUserCompanies(session.access_token);
-      setCompanies(result.data || []);
+      await refreshData();
       
       if (result.data?.length === 1) {
         setInitialCompanyId(result.data[0].id);

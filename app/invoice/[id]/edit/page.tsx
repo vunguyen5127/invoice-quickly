@@ -10,8 +10,8 @@ import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getInvoiceById } from "@/utils/supabase/invoice-actions";
 import { updateInvoiceInSupabase } from "@/utils/supabase/invoice-actions";
-import { getUserEntitlements } from "@/utils/entitlements";
 import { UpgradeModal } from "@/components/upgrade-modal";
+import { useData } from "@/contexts/data-context";
 import Link from "next/link";
 import Image from "next/image";
 import { use } from "react";
@@ -22,6 +22,7 @@ import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 
 export default function EditInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
+  const { entitlements, loadingData } = useData();
   const resolvedParams = use(params);
   const [invoice, setInvoice] = useState<InvoiceState>(initialInvoiceState);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -54,9 +55,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       setCompanyId(_companyId || null);
       setInvoice(invoiceData as InvoiceState);
 
-      // Load entitlements to check recurring
-      const ents = await getUserEntitlements(session.access_token);
-      setCanUseRecurring(ents.canUseRecurring);
+      setCanUseRecurring(entitlements?.canUseRecurring || false);
 
       setLoading(false);
       // Trigger mount animation after a frame so transition plays
@@ -65,8 +64,10 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
       });
     };
 
-    loadInvoice();
-  }, [router, resolvedParams.id]);
+    if (!loadingData) {
+      loadInvoice();
+    }
+  }, [router, resolvedParams.id, loadingData, entitlements]);
 
   const handleDownload = async () => {
     setIsGenerating(true);

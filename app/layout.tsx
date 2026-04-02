@@ -148,6 +148,7 @@ export const viewport: Viewport = {
 import BillingScript from "@/components/billing-script";
 import ClientMetadata from "@/components/client-metadata";
 import { AuthProvider } from "@/contexts/auth-context";
+import { DataProvider } from "@/contexts/data-context";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -183,16 +184,18 @@ export default function RootLayout({
       <body className="antialiased min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
-            <LanguageProvider>
-              <RtlProvider />
-              <BillingScript />
-              <LogUserSession />
-              <div className="flex flex-col min-h-screen">
-                <SiteHeader />
-                <main className="flex-1">{children}</main>
-                <SiteFooter />
-              </div>
-            </LanguageProvider>
+            <DataProvider>
+              <LanguageProvider>
+                <RtlProvider />
+                <BillingScript />
+                <LogUserSession />
+                <div className="flex flex-col min-h-screen">
+                  <SiteHeader />
+                  <main className="flex-1">{children}</main>
+                  <SiteFooter />
+                </div>
+              </LanguageProvider>
+            </DataProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
