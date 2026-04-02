@@ -4,7 +4,7 @@ import { supabase } from "@/utils/supabase/client";
 import { ArrowRight, Check, CreditCard, Crown, Infinity, Loader2, Shield, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { createCheckout, getBillingProviderName } from "./actions";
+import { createCheckout, getBillingProviderName } from "@/utils/supabase/pricing-actions";
 
 declare global {
   interface Window {

@@ -1,20 +1,9 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
 import { Subscription } from "@/types/subscription";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
-import config from "@/utils/config";
 import { getBillingProvider } from "@/utils/billing";
-
-function getServerSupabase(token: string) {
-  const { url, anonKey } = config.supabase;
-  if (!url || !anonKey) {
-    throw new Error("Missing Supabase environment variables");
-  }
-  return createClient(url, anonKey, {
-    global: { headers: { Authorization: `Bearer ${token}` } }
-  });
-}
+import { getServerSupabase } from "@/utils/supabase/client";
 
 export async function getUserSubscription(token: string): Promise<Subscription | null> {
   noStore();

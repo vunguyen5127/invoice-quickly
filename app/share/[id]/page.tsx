@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getPublicInvoiceById } from "./actions";
+import { getPublicInvoiceById } from "@/utils/supabase/share-actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";

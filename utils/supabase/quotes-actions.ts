@@ -1,18 +1,8 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
 import config from "@/utils/config";
-import { getServiceSupabase } from "@/utils/supabase/client";
-
-function getServerSupabase(token: string) {
-  const { url, anonKey } = config.supabase;
-  if (!url || !anonKey) {
-    throw new Error("Missing Supabase environment variables");
-  }
-  return createClient(url, anonKey, {
-    global: { headers: { Authorization: `Bearer ${token}` } }
-  });
-}
+import { getServerSupabase, getServiceSupabase } from "@/utils/supabase/client";
+import { createClient } from "@supabase/supabase-js";
 
 export async function getCompanyQuotes(
   token: string, 
@@ -61,8 +51,6 @@ export async function getCompanyQuotes(
     console.error("Error fetching company quotes:", error);
     return { data: [], totalCount: 0 };
   }
-
-  console.log(`[DEBUG] getCompanyQuotes for company ${companyId}`, `Found ${count} quotes`, data);
 
   return { data: data || [], totalCount: count || 0 };
 }
@@ -206,7 +194,7 @@ export async function bulkUpdateQuoteStatus(token: string, ids: string[], newSta
     
   if (fetchError) return { success: false, error: fetchError.message };
   
-  const updatableIds = quotes?.filter(q => !(q.status === 'invoiced' && newStatus !== 'invoiced')).map(q => q.id) || [];
+  const updatableIds = quotes?.filter((q: any) => !(q.status === 'invoiced' && newStatus !== 'invoiced')).map((q: any) => q.id) || [];
 
   if (updatableIds.length === 0) return { success: true, skipped: true };
 

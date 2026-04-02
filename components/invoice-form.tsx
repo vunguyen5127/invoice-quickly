@@ -1,7 +1,7 @@
 "use client";
 
-import { getNextInvoiceNumber, getUserCompanies } from "@/app/dashboard/actions";
-import { getItems, getSavedClients } from "@/app/dashboard/items/actions";
+import { getNextInvoiceNumber, getUserCompanies } from "@/utils/supabase/dashboard-actions";
+import { getItems, getSavedClients } from "@/utils/supabase/items-actions";
 import { useLanguage } from "@/contexts/language-context";
 import { CURRENCIES, InvoiceItem, InvoiceState, RecurringInterval } from "@/types/invoice";
 import { SavedItem } from "@/types/item";

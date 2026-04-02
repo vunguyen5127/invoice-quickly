@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { ThemeSelector } from "@/components/theme-toggle";
 import { languages } from "@/components/language-toggle";
 import Link from "next/link";
-import { getUserSubscription, cancelSubscription, resumeSubscription } from "./actions";
+import { getUserSubscription, cancelSubscription, resumeSubscription } from "@/utils/supabase/settings-actions";
 import { Subscription } from "@/types/subscription";
 import { format } from "date-fns";
 import { ConfirmModal } from "@/components/confirm-modal";

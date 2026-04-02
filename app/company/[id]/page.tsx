@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices, bulkDeleteInvoices, bulkUpdateInvoiceStatus } from "@/app/dashboard/actions";
+import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices, bulkDeleteInvoices, bulkUpdateInvoiceStatus } from "@/utils/supabase/dashboard-actions";
 import { format } from "date-fns";
 import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, ChevronDown, PenLine, Copy, Download, RefreshCw } from "lucide-react";
 import Link from "next/link";

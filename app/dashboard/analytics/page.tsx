@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { getDashboardStats, getUserCompanies } from "../actions";
+import { getDashboardStats, getUserCompanies } from "@/utils/supabase/dashboard-actions";
 import { DollarSign, AlertTriangle, CheckCircle2, FileText, ChevronLeft, Loader2, Building2, TrendingUp, LayoutGrid, Download } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/language-context";

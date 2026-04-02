@@ -1,25 +1,8 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
 import { getBillingProvider } from "@/utils/billing";
 import config from "@/utils/config";
-
-function getServerSupabase(token?: string) {
-  const { url, anonKey: key } = config.supabase;
-  if (!url || !key) {
-    throw new Error("Missing Supabase environment variables");
-  }
-  
-  const options = token ? {
-    global: {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  } : {};
-
-  return createClient(url, key, options);
-}
+import { getServerSupabase } from "@/utils/supabase/client";
 
 /**
  * Create a checkout session.

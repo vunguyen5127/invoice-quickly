@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { getServiceSupabase } from "@/utils/supabase/client";
 import { NextResponse } from "next/server";
 import config from "@/utils/config";
 
@@ -16,13 +16,11 @@ export async function GET(request: Request) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { url: supabaseUrl, serviceRole: supabaseServiceRoleKey } = config.supabase;
+  const supabase = getServiceSupabase();
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
+  if (!supabase) {
     return new NextResponse("Supabase configuration missing", { status: 500 });
   }
-
-  const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
   try {
     // Perform a minimal query to keep the database active

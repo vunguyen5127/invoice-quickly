@@ -20,9 +20,9 @@ if (!supabase) {
  * Service-role Supabase client — singleton, server-side only.
  * Bypasses RLS. Never expose to the browser.
  */
-let _serviceClient: ReturnType<typeof createClient> | null = null;
+let _serviceClient: any = null;
 
-export function getServiceSupabase() {
+export function getServiceSupabase(): any {
   if (_serviceClient) return _serviceClient;
   const { url, serviceRole } = config.supabase;
   if (!url || !serviceRole) {
@@ -30,4 +30,17 @@ export function getServiceSupabase() {
   }
   _serviceClient = createClient(url, serviceRole);
   return _serviceClient;
+}
+
+export function getServerSupabase(token: string): any {
+  const { url, anonKey } = config.supabase;
+
+  if (!url || !anonKey) {
+    console.error("Server-side Supabase initialization failed: Missing env vars");
+    throw new Error("Missing Supabase environment variables");
+  }
+
+  return createClient(url, anonKey, {
+    global: { headers: { Authorization: `Bearer ${token}` } }
+  });
 }

@@ -36,7 +36,7 @@ export async function logUserLogin(providedSession?: Session | null) {
       // Don't notify admin for tester accounts
       if (!json.skipped) {
         try {
-          const { notifyAdminOnNewUser } = await import("@/app/actions/auth-actions");
+          const { notifyAdminOnNewUser } = await import("@/utils/supabase/auth-actions");
           await notifyAdminOnNewUser({
             id:        user.id,
             email:     user.email ?? "unknown",

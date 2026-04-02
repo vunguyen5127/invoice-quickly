@@ -1,17 +1,6 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
-import config from "@/utils/config";
-
-function getServerSupabase(token: string) {
-  const { url, anonKey } = config.supabase;
-  if (!url || !anonKey) {
-    throw new Error("Missing Supabase environment variables");
-  }
-  return createClient(url, anonKey, {
-    global: { headers: { Authorization: `Bearer ${token}` } }
-  });
-}
+import { getServerSupabase } from "@/utils/supabase/client";
 
 export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
   const supabase = getServerSupabase(token);
@@ -58,7 +47,7 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
   }
 
   // 2. Fetch invoice counts only for the companies on the current page
-  const companyIds = companiesList.map(c => c.id);
+  const companyIds = companiesList.map((c: any) => c.id);
   const { data: countsData, error: countsError } = await supabase
     .from("companies")
     .select(`
@@ -76,13 +65,13 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
   // Create a map for quick lookup
   const countsMap = new Map();
   if (countsData) {
-    countsData.forEach(c => {
+    countsData.forEach((c: any) => {
       countsMap.set(c.id, (c.invoices as any)?.[0]?.count || 0);
     });
   }
 
   // Transform the response to match the expected format (invoices as a mocked array)
-  const data = companiesList.map(c => ({
+  const data = companiesList.map((c: any) => ({
     ...c,
     invoices: new Array(countsMap.get(c.id) || 0).fill(null)
   }));
@@ -393,7 +382,7 @@ export async function bulkUpdateInvoiceStatus(token: string, ids: string[], newS
     console.error('[bulkUpdateInvoiceStatus] fetch error:', fetchError);
     return { success: false, error: fetchError.message };
   }
-  const updatableIds = invoices?.filter(inv => !(inv.status === 'paid' && newStatus !== 'paid')).map(inv => inv.id) || [];
+  const updatableIds = invoices?.filter((inv: any) => !(inv.status === 'paid' && newStatus !== 'paid')).map((inv: any) => inv.id) || [];
 
   if (updatableIds.length === 0) {
     return { success: true, skipped: true };

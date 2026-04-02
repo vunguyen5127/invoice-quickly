@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { updateSavedClient } from "@/app/dashboard/items/actions";
+import { updateSavedClient } from "@/utils/supabase/items-actions";
 import { X, Loader2, PenLine } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useLanguage } from "@/contexts/language-context";

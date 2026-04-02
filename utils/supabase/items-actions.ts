@@ -1,19 +1,8 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
-import config from "@/utils/config";
 import { revalidatePath } from "next/cache";
 import { SavedItem } from "@/types/item";
-
-function getServerSupabase(token: string) {
-  const { url, anonKey } = config.supabase;
-  if (!url || !anonKey) {
-    throw new Error("Missing Supabase environment variables");
-  }
-  return createClient(url, anonKey, {
-    global: { headers: { Authorization: `Bearer ${token}` } }
-  });
-}
+import { getServerSupabase } from "@/utils/supabase/client";
 
 export async function getItems(
   token: string,

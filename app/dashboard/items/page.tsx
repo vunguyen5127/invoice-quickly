@@ -17,7 +17,7 @@ import { FREE_ENTITLEMENTS } from "@/types/subscription";
 import { getUserEntitlements } from "@/utils/entitlements";
 import { Mail, MapPin, Package, PackageSearch, PenLine, Phone, Plus, Trash2, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { deleteItem, deleteSavedClient, getItems, getSavedClients } from "./actions";
+import { deleteItem, deleteSavedClient, getItems, getSavedClients } from "@/utils/supabase/items-actions";
 
 export default function ItemsPage() {
   const { session } = useAuth();

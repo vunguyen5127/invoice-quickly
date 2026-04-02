@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getInvoiceById } from "./actions";
-import { deleteInvoice } from "@/app/dashboard/actions";
+import { getInvoiceById } from "@/utils/supabase/invoice-actions";
+import { deleteInvoice } from "@/utils/supabase/dashboard-actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { InvoiceState } from "@/types/invoice";
@@ -12,7 +12,7 @@ import { ArrowLeft, Download, Trash2, Loader2, Share2, ChevronRight, Send, Check
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
-import { bulkUpdateInvoiceStatus } from "@/app/dashboard/actions";
+import { bulkUpdateInvoiceStatus } from "@/utils/supabase/dashboard-actions";
 import { STATUS_CONFIG, InvoiceStatus } from "@/types/invoice";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));

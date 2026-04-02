@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { sendInvoiceReminderEmail } from '@/utils/email-service';
-import { createClient } from '@supabase/supabase-js';
+import { getServiceSupabase } from '@/utils/supabase/client';
 import config from '@/utils/config';
 import { getCurrencySymbol } from '@/types/invoice';
 
@@ -8,12 +8,10 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const email = url.searchParams.get('email') || "vunguyencapital@gmail.com";
   
-  const { url: supabaseUrl, serviceRole: supabaseServiceRoleKey } = config.supabase;
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
+  const supabase = getServiceSupabase();
+  if (!supabase) {
     return NextResponse.json({ success: false, error: 'Database configuration missing' }, { status: 500 });
   }
-
-  const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
   // 1. Get user by email
   const { data: users, error: userError } = await supabase
@@ -49,7 +47,7 @@ export async function GET(req: Request) {
   const overdueInvoices: any[] = [];
   const upcomingInvoices: any[] = [];
 
-  invoices.forEach((inv, index) => {
+  invoices.forEach((inv: any, index: number) => {
     const formatted = {
       invoiceId: inv.id,
       invoiceNumber: inv.invoice_number,

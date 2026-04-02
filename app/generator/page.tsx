@@ -8,11 +8,11 @@ import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Plus, Share2, Save, X, Building2, Package, Users, LayoutDashboard, Loader2, ArrowRight } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getUserCompanies, getNextInvoiceNumber } from "@/app/dashboard/actions";
+import { getUserCompanies, getNextInvoiceNumber } from "@/utils/supabase/dashboard-actions";
 import { getUserEntitlements } from "@/utils/entitlements";
-import { getItems, getSavedClients } from "@/app/dashboard/items/actions";
+import { getItems, getSavedClients } from "@/utils/supabase/items-actions";
 
-import { saveInvoiceToSupabase } from "@/utils/supabase/actions";
+import { saveInvoiceToSupabase } from "@/utils/supabase/invoice-actions";
 import Link from "next/link";
 import Image from "next/image";
 import { getBaseUrl } from "@/utils/url";

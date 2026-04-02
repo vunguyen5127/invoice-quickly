@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation"
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import { Plus, Search, Filter, MoreVertical, Edit, FileText, Share, CheckCircle, XCircle, PenLine, Share2, Eye } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
-import { getCompanyQuotes, bulkUpdateQuoteStatus, bulkDeleteQuotes } from "./actions"
-import { getUserCompanies } from "../actions"
+import { getCompanyQuotes, bulkUpdateQuoteStatus, bulkDeleteQuotes } from "@/utils/supabase/quotes-actions"
+import { getUserCompanies } from "@/utils/supabase/dashboard-actions"
 import { supabase } from "@/utils/supabase/client"
 import { Tooltip } from "@/components/tooltip"
 
@@ -39,8 +39,8 @@ export default function QuotesDashboard() {
       const res = await getCompanyQuotes(session.access_token, firstCompId, { pageSize: 100 })
       if (res.data) {
          setQuotes(res.data)
-         const acc = res.data.filter(q => q.status === 'accepted').length
-         const rej = res.data.filter(q => q.status === 'rejected').length
+         const acc = res.data.filter((q: any) => q.status === 'accepted').length
+         const rej = res.data.filter((q: any) => q.status === 'rejected').length
          setStats({ total: res.data.length, accepted: acc, rejected: rej })
       }
     }
@@ -57,8 +57,8 @@ export default function QuotesDashboard() {
        const res = await getCompanyQuotes(session.access_token, compId, { pageSize: 100 })
        if (res.data) {
          setQuotes(res.data)
-         const acc = res.data.filter(q => q.status === 'accepted').length
-         const rej = res.data.filter(q => q.status === 'rejected').length
+         const acc = res.data.filter((q: any) => q.status === 'accepted').length
+         const rej = res.data.filter((q: any) => q.status === 'rejected').length
          setStats({ total: res.data.length, accepted: acc, rejected: rej })
        }
     }

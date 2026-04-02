@@ -3,7 +3,7 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getUserCompanies, deleteCompany } from "./actions";
+import { getUserCompanies, deleteCompany } from "@/utils/supabase/dashboard-actions";
 import { getUserEntitlements } from "@/utils/entitlements";
 import { Trash2, Plus, Building2, PenLine, ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import Link from "next/link";

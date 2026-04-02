@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { getServiceSupabase } from "@/utils/supabase/client";
 import { NextResponse } from "next/server";
 import { sendInvoiceReminderEmail } from "@/utils/email-service";
 import { getCurrencySymbol } from "@/types/invoice";
@@ -31,13 +31,11 @@ export async function GET(request: Request) {
     return new NextResponse("Unauthorized: Secret mismatch", { status: 401 });
   }
 
-  const { url: supabaseUrl, serviceRole: supabaseServiceRoleKey } = config.supabase;
+  const supabase = getServiceSupabase();
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
+  if (!supabase) {
     return new NextResponse("Supabase configuration missing", { status: 500 });
   }
-
-  const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
   try {
     // 1. Keep-alive: ping login logs (preserves original functionality)
@@ -105,7 +103,7 @@ export async function GET(request: Request) {
       .eq("plan", "pro")
       .in("status", ["active", "canceled"]); // canceled still has Pro until period end
 
-    const proUserIds = new Set((proSubs || []).map((s) => s.user_id));
+    const proUserIds = new Set((proSubs || []).map((s: any) => s.user_id));
 
     // 5. Send reminder emails (Pro only)
     let emailsSent = 0;
@@ -118,8 +116,8 @@ export async function GET(request: Request) {
       const userInvs = userInvoices.get(user.id) || [];
 
       const overdueInvoices = userInvs
-        .filter((inv) => inv.due_date < today)
-        .map((inv) => ({
+        .filter((inv: any) => inv.due_date < today)
+        .map((inv: any) => ({
           invoiceId: inv.id,
           invoiceNumber: inv.invoice_number,
           clientName: inv.client_name || "Unknown",
@@ -129,8 +127,8 @@ export async function GET(request: Request) {
         }));
 
       const upcomingInvoices = userInvs
-        .filter((inv) => inv.due_date >= today && inv.due_date <= threeDaysFromNow)
-        .map((inv) => ({
+        .filter((inv: any) => inv.due_date >= today && inv.due_date <= threeDaysFromNow)
+        .map((inv: any) => ({
           invoiceId: inv.id,
           invoiceNumber: inv.invoice_number,
           clientName: inv.client_name || "Unknown",
@@ -171,14 +169,14 @@ export async function GET(request: Request) {
 
     if (recurringInvoices && recurringInvoices.length > 0) {
       // Query Pro users specifically for recurring
-      const recurringUserIds = [...new Set(recurringInvoices.map(r => r.user_id))];
+      const recurringUserIds = [...new Set(recurringInvoices.map((r: any) => r.user_id))];
       const { data: recurringProSubs } = await supabase
         .from("subscriptions")
         .select("user_id")
         .in("user_id", recurringUserIds)
         .eq("plan", "pro")
         .in("status", ["active", "canceled"]);
-      const recurringProUserIds = new Set((recurringProSubs || []).map(s => s.user_id));
+      const recurringProUserIds = new Set((recurringProSubs || []).map((s: any) => s.user_id));
 
       // Helper: advance a date string by a recurring interval
       const advanceDate = (current: string, interval: RecurringInterval): string => {

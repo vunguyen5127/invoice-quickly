@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, use } from "react";
-import { getPublicQuote, acceptQuote, rejectQuote } from "@/app/dashboard/quotes/actions";
+import { getPublicQuote, acceptQuote, rejectQuote } from "@/utils/supabase/quotes-actions";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Loader2, CheckCircle, XCircle } from "lucide-react";

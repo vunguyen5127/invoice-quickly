@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { createItem } from "@/app/dashboard/items/actions";
+import { createItem } from "@/utils/supabase/items-actions";
 import { X, Loader2, Package, Plus } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 

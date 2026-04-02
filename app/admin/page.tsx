@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { getLoginLogs } from "@/utils/login-logger";
-import { getPaymentLogs } from "./actions";
+import { getPaymentLogs } from "@/utils/supabase/admin-actions";
 import { format } from "date-fns";
 import {
   Loader2, ShieldCheck, ChevronLeft, ChevronRight,
@@ -12,7 +12,7 @@ import {
   CreditCard, Users,
 } from "lucide-react";
 import Link from "next/link";
-import { triggerInvoiceCheckCron, triggerTestEmail } from "./actions";
+import { triggerInvoiceCheckCron, triggerTestEmail } from "@/utils/supabase/admin-actions";
 
 const ADMIN_EMAIL = "vunguyencapital@gmail.com";
 const PAGE_SIZE = 20;

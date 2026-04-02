@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { getBillingProvider } from "@/utils/billing";
-import config from "@/utils/config";
-
-function getServiceSupabase() {
-  const { url, serviceRole: serviceKey } = config.supabase;
-  if (!url || !serviceKey) {
-    throw new Error("Missing Supabase service role environment variables");
-  }
-  return createClient(url, serviceKey);
-}
+import { getServiceSupabase } from "@/utils/supabase/client";
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,7 +27,8 @@ export async function POST(request: NextRequest) {
 
     console.log(`[Paddle Webhook] Event action: ${event.action}, subscription: ${event.providerSubscriptionId}`);
 
-    const supabase = getServiceSupabase();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const supabase = getServiceSupabase() as any;
     const mappedStatus = billing.mapStatus(event.status);
 
     // Try to find existing subscription by subscription_id

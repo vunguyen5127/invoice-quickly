@@ -4,7 +4,7 @@ import React, { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { InvoiceForm } from "@/components/invoice-form";
 import { initialQuoteState, QuoteState } from "@/types/quote";
-import { createQuote, updateQuote, getQuote, convertQuoteToInvoice, getNextQuoteNumber } from "@/app/dashboard/quotes/actions";
+import { createQuote, updateQuote, getQuote, convertQuoteToInvoice, getNextQuoteNumber } from "@/utils/supabase/quotes-actions";
 import { supabase } from "@/utils/supabase/client";
 import { Save, Share, ArrowRight, Loader2, ChevronRight } from "lucide-react";
 import { InvoicePreview } from "@/components/invoice-preview";
@@ -49,7 +49,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
         
         if (session) {
           try {
-            const { getUserCompanies } = await import("@/app/dashboard/actions");
+            const { getUserCompanies } = await import("@/utils/supabase/dashboard-actions");
             const res = await getUserCompanies(session.access_token);
             const comps = res.data || [];
             

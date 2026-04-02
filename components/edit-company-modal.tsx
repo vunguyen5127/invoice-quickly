@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { updateCompany } from "@/app/dashboard/actions";
+import { updateCompany } from "@/utils/supabase/dashboard-actions";
 import { X, Loader2, PenTool, Upload, Building2 } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 import { SignaturePadModal } from "./signature-pad-modal";

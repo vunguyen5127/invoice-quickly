@@ -1,6 +1,5 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
 import {
   Entitlements,
   FREE_ENTITLEMENTS,
@@ -8,17 +7,7 @@ import {
   Subscription,
   SubscriptionStatus,
 } from "@/types/subscription";
-import config from "@/utils/config";
-
-function getServerSupabase(token: string) {
-  const { url, anonKey } = config.supabase;
-  if (!url || !anonKey) {
-    throw new Error("Missing Supabase environment variables");
-  }
-  return createClient(url, anonKey, {
-    global: { headers: { Authorization: `Bearer ${token}` } }
-  });
-}
+import { getServerSupabase } from "@/utils/supabase/client";
 
 /**
  * Convert a subscription record into entitlements.

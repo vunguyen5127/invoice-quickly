@@ -1,6 +1,6 @@
 "use client";
 
-import { createCheckout, getBillingProviderName } from "@/app/pricing/actions";
+import { createCheckout, getBillingProviderName } from "@/utils/supabase/pricing-actions";
 import { supabase } from "@/utils/supabase/client";
 import { Check, Crown, Loader2, Shield, X } from "lucide-react";
 import { useState } from "react";
