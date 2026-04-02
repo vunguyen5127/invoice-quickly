@@ -12,7 +12,7 @@ import { convertToWebP } from "@/utils/image-utils";
 interface EditCompanyModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (updatedCompany: any) => void;
+  onSuccess: (updatedCompany: any) => void | Promise<void>;
   initialData: {
     id: string;
     name: string;
@@ -113,7 +113,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
       defaultTax, defaultDiscount, invoiceNumberPrefix,
     });
     setIsSubmitting(false);
-    if (updated) { onSuccess(updated); onClose(); }
+    if (updated) { await onSuccess(updated); onClose(); }
     else alert("Failed to update company. Please try again.");
   };
 

@@ -12,7 +12,7 @@ import { convertToWebP } from "@/utils/image-utils";
 interface CreateCompanyModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: (newCompany: any) => void;
+  onSuccess: (newCompany: any) => void | Promise<void>;
 }
 
 export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompanyModalProps) {
@@ -84,7 +84,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     }
 
     if (newCompany && !newCompany.error) {
-      onSuccess(newCompany);
+      await onSuccess(newCompany);
       // Reset form
       setName(""); setEmail(""); setPhone(""); setAddress("");
       setLogo(undefined); setSignerName(""); setSignatureUrl(undefined);
