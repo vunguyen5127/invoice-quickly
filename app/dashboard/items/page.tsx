@@ -10,31 +10,27 @@ import { EditItemModal } from "@/components/edit-item-modal";
 import { Tooltip } from "@/components/tooltip";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { useAuth } from "@/contexts/auth-context";
+import { useData } from "@/contexts/data-context";
 import { useLanguage } from "@/contexts/language-context";
 import { SavedClient } from "@/types/client";
 import { SavedItem } from "@/types/item";
 import { FREE_ENTITLEMENTS } from "@/types/subscription";
-import { getUserEntitlements } from "@/utils/entitlements";
+import { deleteItem, deleteSavedClient } from "@/utils/supabase/items-actions";
 import { Mail, MapPin, Package, PackageSearch, PenLine, Phone, Plus, Trash2, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { deleteItem, deleteSavedClient, getItems, getSavedClients } from "@/utils/supabase/items-actions";
 
 export default function ItemsPage() {
   const { session } = useAuth();
   
+  const { items: globItems, clients: globClients, entitlements: globEnts, loadingData, refreshData } = useData();
   const [activeTab, setActiveTab] = useState<"items" | "clients">("items");
   
-  // Items state
-  const [items, setItems] = useState<SavedItem[]>([]);
-  const [totalItemsCount, setTotalItemsCount] = useState(0);
-  const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
   const [isBulkAddItemsModalOpen, setIsBulkAddItemsModalOpen] = useState(false);
+  const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<SavedItem | null>(null);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   
   // Clients state
-  const [clients, setClients] = useState<SavedClient[]>([]);
-  const [totalClientsCount, setTotalClientsCount] = useState(0);
   const [isCreateClientModalOpen, setIsCreateClientModalOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<SavedClient | null>(null);
   const [clientToDelete, setClientToDelete] = useState<string | null>(null);
@@ -47,20 +43,19 @@ export default function ItemsPage() {
   const [page, setPage] = useState(1);
   const pageSize = 10;
   
-  const [entitlements, setEntitlements] = useState(FREE_ENTITLEMENTS);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [upgradeTrigger, setUpgradeTrigger] = useState<"general" | "company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export">("general");
-
+  
   const handleCreateNewClick = () => {
     if (activeTab === "items") {
-      if (entitlements.maxSavedItems !== null && totalItemsCount >= entitlements.maxSavedItems) {
+      if (entitlements?.maxSavedItems !== null && totalItemsCount >= (entitlements?.maxSavedItems || 1)) {
         setUpgradeTrigger("general"); // or a specific library trigger if you have one
         setIsUpgradeModalOpen(true);
       } else {
         setIsCreateItemModalOpen(true);
       }
     } else {
-      if (entitlements.maxSavedClients !== null && totalClientsCount >= entitlements.maxSavedClients) {
+      if (entitlements?.maxSavedClients !== null && totalClientsCount >= (entitlements?.maxSavedClients || 1)) {
         setUpgradeTrigger("general");
         setIsUpgradeModalOpen(true);
       } else {
@@ -78,31 +73,22 @@ export default function ItemsPage() {
     setPage(1);
   }, [debouncedSearch, activeTab]);
 
-  const loadData = async () => {
-    if (!session) return;
-    try {
-      setLoading(true);
-      const ent = await getUserEntitlements(session.access_token);
-      setEntitlements(ent);
-      if (activeTab === "items") {
-        const { data, totalCount } = await getItems(session.access_token, { page, pageSize, search: debouncedSearch });
-        setItems(data);
-        setTotalItemsCount(totalCount);
-      } else {
-        const { data, totalCount } = await getSavedClients(session.access_token, { page, pageSize, search: debouncedSearch });
-        setClients(data);
-        setTotalClientsCount(totalCount);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const entitlements = globEnts || FREE_ENTITLEMENTS;
+
+  // Client-side filtering and pagination
+  const filteredItems = (globItems || []).filter((item) => item.description?.toLowerCase().includes(debouncedSearch.toLowerCase()) || item.name?.toLowerCase().includes(debouncedSearch.toLowerCase()));
+  const totalItemsCount = filteredItems.length;
+  const items = filteredItems.slice((page - 1) * pageSize, page * pageSize);
+
+  const filteredClients = (globClients || []).filter((client) => client.name?.toLowerCase().includes(debouncedSearch.toLowerCase()) || client.email?.toLowerCase().includes(debouncedSearch.toLowerCase()));
+  const totalClientsCount = filteredClients.length;
+  const clients = filteredClients.slice((page - 1) * pageSize, page * pageSize);
 
   useEffect(() => {
-    loadData();
-  }, [session, page, debouncedSearch, activeTab]);
+    if (!loadingData && session) {
+      setLoading(false);
+    }
+  }, [loadingData, session]);
 
   const { t } = useLanguage();
 
@@ -111,7 +97,8 @@ export default function ItemsPage() {
     setIsDeleting(true);
     try {
       await deleteItem(session.access_token, itemToDelete);
-      loadData();
+      // Refresh context instead of fetching locally
+      await refreshData();
     } catch (error) {
       alert("Failed to delete item.");
     } finally {
@@ -125,7 +112,7 @@ export default function ItemsPage() {
     setIsDeleting(true);
     try {
       await deleteSavedClient(session.access_token, clientToDelete);
-      loadData();
+      await refreshData();
     } catch (error) {
       alert("Failed to delete client.");
     } finally {
@@ -134,7 +121,7 @@ export default function ItemsPage() {
     }
   };
 
-  if (loading && page === 1 && !debouncedSearch && items.length === 0 && clients.length === 0) {
+  if (loading && page === 1 && !debouncedSearch && (globItems || []).length === 0 && (globClients || []).length === 0) {
     return <DashboardSkeleton />;
   }
 
@@ -383,19 +370,22 @@ export default function ItemsPage() {
       )}
 
       {/* Item Modals */}
-      <CreateItemModal isOpen={isCreateItemModalOpen} onClose={() => setIsCreateItemModalOpen(false)} onSuccess={(newItem) => { setItems([newItem, ...items]); setTotalItemsCount(c => c + 1); }} />
-      {editingItem && <EditItemModal isOpen={!!editingItem} initialData={editingItem} onClose={() => setEditingItem(null)} onSuccess={(updatedItem) => setItems(items.map(i => i.id === updatedItem.id ? updatedItem : i))} />}
+      <CreateItemModal isOpen={isCreateItemModalOpen} onClose={() => setIsCreateItemModalOpen(false)} onSuccess={() => refreshData()} />
+      {editingItem && <EditItemModal isOpen={!!editingItem} initialData={editingItem} onClose={() => setEditingItem(null)} onSuccess={() => refreshData()} />}
       <BulkAddItemsModal
         isOpen={isBulkAddItemsModalOpen}
         onClose={() => setIsBulkAddItemsModalOpen(false)}
-        onSuccess={() => { loadData(); }}
+        onSuccess={async () => {
+          await refreshData();
+          setIsBulkAddItemsModalOpen(false);
+        }}
         currentCount={totalItemsCount}
         maxItems={entitlements.maxSavedItems}
       />
       
       {/* Client Modals */}
-      <CreateClientModal isOpen={isCreateClientModalOpen} onClose={() => setIsCreateClientModalOpen(false)} onSuccess={(newClient) => { setClients([newClient, ...clients]); setTotalClientsCount(c => c + 1); }} />
-      {editingClient && <EditClientModal isOpen={!!editingClient} initialData={editingClient} onClose={() => setEditingClient(null)} onSuccess={(updatedClient) => setClients(clients.map(c => c.id === updatedClient.id ? updatedClient : c))} />}
+      <CreateClientModal isOpen={isCreateClientModalOpen} onClose={() => setIsCreateClientModalOpen(false)} onSuccess={() => refreshData()} />
+      {editingClient && <EditClientModal isOpen={!!editingClient} initialData={editingClient} onClose={() => setEditingClient(null)} onSuccess={() => refreshData()} />}
 
       {/* Delete Modals */}
       <ConfirmModal

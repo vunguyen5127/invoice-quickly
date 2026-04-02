@@ -3,7 +3,7 @@
 import { supabase } from "@/utils/supabase/client";
 import { ArrowRight, Check, CreditCard, Crown, Infinity, Loader2, Shield, Sparkles, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createCheckout, getBillingProviderName } from "@/utils/supabase/pricing-actions";
 
 declare global {
@@ -19,8 +19,12 @@ export default function PricingPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [billingProvider, setBillingProvider] = useState<string>("paddle");
+  const initRef = useRef(false);
 
   useEffect(() => {
+    if (initRef.current) return;
+    initRef.current = true;
+
     const init = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();

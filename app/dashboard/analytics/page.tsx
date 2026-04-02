@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
-import { getDashboardStats, getUserCompanies } from "@/utils/supabase/dashboard-actions";
+import React, { useEffect, useState, useMemo, useRef } from "react";
+import { getDashboardStats } from "@/utils/supabase/dashboard-actions";
+import { useData } from "@/contexts/data-context";
 import { DollarSign, AlertTriangle, CheckCircle2, FileText, ChevronLeft, Loader2, Building2, TrendingUp, LayoutGrid, Download } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/contexts/language-context";
@@ -27,40 +28,20 @@ export default function AnalyticsPage() {
   const { session, loading: authLoading } = useAuth();
   const router = useRouter();
   
+  const isMounted = useRef(false);
+  const { companies, loadingData } = useData();
   const [stats, setStats] = useState({ totalOutstanding: 0, overdueCount: 0, paidThisMonth: 0, totalInvoices: 0, chartData: [] as any[] });
-  const [companies, setCompanies] = useState<any[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>("");
   const [period, setPeriod] = useState<Period>('year');
-  const [loading, setLoading] = useState(true);
-  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsLoading, setStatsLoading] = useState(true);
 
-  // Initial Load
+  // Load Stats
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading || loadingData) return;
     if (!session) {
       router.push("/login?redirect=/dashboard/analytics");
       return;
     }
-
-    const loadInitialData = async () => {
-      try {
-        const companiesRes = await getUserCompanies(session.access_token, 1, 100);
-        setCompanies(companiesRes.data || []);
-        const dashStats = await getDashboardStats(session.access_token, { period: 'year' });
-        setStats(dashStats);
-      } catch (error) {
-        console.error("Failed to load initial data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, [session, authLoading, router]);
-
-  // Load Stats
-  useEffect(() => {
-    if (!session || loading) return;
 
     const loadStats = async () => {
       setStatsLoading(true);
@@ -77,9 +58,15 @@ export default function AnalyticsPage() {
       }
     };
 
+    if (!isMounted.current) {
+      isMounted.current = true;
+      loadStats();
+      return;
+    }
+
     const debounce = setTimeout(loadStats, 100);
     return () => clearTimeout(debounce);
-  }, [selectedCompanyId, period, session, loading]);
+  }, [selectedCompanyId, period, session, authLoading, loadingData, router]);
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -179,15 +166,10 @@ export default function AnalyticsPage() {
 
       <div className="container mx-auto px-4 sm:px-8 py-10 max-w-7xl relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         
+
         {/* Header Section */}
         <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="flex items-center gap-6">
-            <Link 
-              href="/dashboard"
-              className="group p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all shadow-sm hover:shadow-md hover:-translate-x-0.5"
-            >
-              <ChevronLeft className="w-5 h-5 transition-transform group-hover:scale-110" />
-            </Link>
             <div>
               <div className="flex items-center gap-3 mb-1.5">
                  <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white">
