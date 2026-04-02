@@ -1,23 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { supabase } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
-import { getCompanyById, getCompanyInvoices, deleteInvoice, getAllCompanyInvoices, bulkDeleteInvoices, bulkUpdateInvoiceStatus } from "@/utils/supabase/dashboard-actions";
-import { format } from "date-fns";
-import { Loader2, Trash2, Eye, Plus, Search, ArrowUpDown, ChevronLeft, ChevronRight, ChevronDown, PenLine, Copy, Download, RefreshCw } from "lucide-react";
-import Link from "next/link";
-import { Tooltip } from "@/components/tooltip";
-import dynamic from "next/dynamic";
 import { InvoicesSkeleton } from "@/components/invoices-skeleton";
-import { exportInvoicesToExcel } from "@/utils/export-excel";
+import { Tooltip } from "@/components/tooltip";
 import { UpgradeModal } from "@/components/upgrade-modal";
-import { getUserEntitlements } from "@/utils/entitlements";
+import { useData } from "@/contexts/data-context";
+import { useLanguage } from "@/contexts/language-context";
+import { getCurrencySymbol, InvoiceStatus, STATUS_CONFIG } from "@/types/invoice";
+import { exportInvoicesToExcel } from "@/utils/export-excel";
+import { supabase } from "@/utils/supabase/client";
+import { bulkDeleteInvoices, bulkUpdateInvoiceStatus, deleteInvoice, getAllCompanyInvoices, getCompanyById, getCompanyInvoices } from "@/utils/supabase/dashboard-actions";
+import { format } from "date-fns";
+import { ArrowUpDown, ChevronDown, ChevronLeft, ChevronRight, Copy, Download, Eye, Loader2, PenLine, Plus, RefreshCw, Search, Trash2 } from "lucide-react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useRef, useState } from "react";
 const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
-import { use } from "react";
-import { getCurrencySymbol, STATUS_CONFIG, InvoiceStatus } from "@/types/invoice";
-import { useLanguage } from "@/contexts/language-context";
 
 type SortField = "invoice_number" | "client_name" | "created_at" | "total_amount";
 type SortDir = "asc" | "desc";
@@ -57,6 +56,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general">("general");
   const [canUseAdvancedExport, setCanUseAdvancedExport] = useState(false);
   const { t } = useLanguage();
+  const { companies: globCompanies, entitlements: globEnts, loadingData } = useData();
   const router = useRouter();
 
   // Search, Sort, Pagination, Filter state
@@ -72,6 +72,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  
+  const initRef = useRef(false);
+  const isMountedRef = useRef(false);
 
   // Debounce search query
   useEffect(() => {
@@ -104,6 +107,10 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   };
 
   useEffect(() => {
+    if (loadingData) return;
+    if (initRef.current) return;
+    initRef.current = true;
+
     const initLoad = async () => {
       if (!supabase) return;
       
@@ -113,28 +120,35 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         return;
       }
 
-      const companyData = await getCompanyById(session.access_token, resolvedParams.id);
-
-      if (!companyData) {
-        alert("Company not found");
-        router.push("/dashboard");
-        return;
+      const comp = globCompanies.find((c: any) => c.id === resolvedParams.id);
+      if (!comp) {
+        // Fallback or handle missing
+        const fallback = await getCompanyById(session.access_token, resolvedParams.id);
+        if (!fallback) {
+          alert("Company not found");
+          router.push("/dashboard");
+          return;
+        }
+        setCompany(fallback);
+      } else {
+        setCompany(comp);
       }
       
-      setCompany(companyData);
-      
-      const entitlements = await getUserEntitlements(session.access_token);
-      setCanUseAdvancedExport(entitlements.canUseAdvancedExport);
+      setCanUseAdvancedExport(globEnts?.canUseAdvancedExport || false);
       
       await loadInvoices();
       setLoading(false);
     };
 
     initLoad();
-  }, [router, resolvedParams.id]);
+  }, [router, resolvedParams.id, loadingData, globCompanies, globEnts]);
 
   // Handle updates to paging/sorting/searching/filtering
   useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
     if (!loading) {
       loadInvoices(true);
     }
