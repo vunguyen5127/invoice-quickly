@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { Loader2, User, Globe, Moon, Sun, Monitor, Bell, Shield, LogOut, Crown, CreditCard, Calendar, ChevronLeft, ShieldCheck, Zap, Settings } from "lucide-react";
@@ -24,7 +24,12 @@ export default function SettingsPage() {
   const [isResuming, setIsResuming] = useState(false);
   const router = useRouter();
 
+  const initRef = useRef(false);
+
   useEffect(() => {
+    if (initRef.current) return;
+    initRef.current = true;
+    
     const checkUser = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
