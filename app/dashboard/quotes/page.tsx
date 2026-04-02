@@ -1,28 +1,32 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { DashboardSkeleton } from "@/components/dashboard-skeleton";
 import { Plus, Search, Filter, MoreVertical, Edit, FileText, Share, CheckCircle, XCircle, PenLine, Share2, Eye } from "lucide-react"
 import { useLanguage } from "@/contexts/language-context"
 import { getCompanyQuotes, bulkUpdateQuoteStatus, bulkDeleteQuotes } from "@/utils/supabase/quotes-actions"
-import { getUserCompanies } from "@/utils/supabase/dashboard-actions"
 import { supabase } from "@/utils/supabase/client"
+import { useData } from "@/contexts/data-context"
 import { Tooltip } from "@/components/tooltip"
 
 export default function QuotesDashboard() {
   const { t } = useLanguage()
   const router = useRouter()
+  const { companies, loadingData } = useData()
   const [loading, setLoading] = useState(true)
   const [quotes, setQuotes] = useState<any[]>([])
-  const [companies, setCompanies] = useState<any[]>([])
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>("")
   const [stats, setStats] = useState({ total: 0, accepted: 0, rejected: 0 })
+  const initRef = useRef(false)
 
-  // Same logic as invoices dashboard simplified
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (loadingData) return;
+    if (initRef.current) return;
+    initRef.current = true;
+    if (companies.length > 0) fetchData()
+    else setLoading(false)
+  }, [loadingData, companies])
 
   const fetchData = async () => {
     setLoading(true)
@@ -30,19 +34,16 @@ export default function QuotesDashboard() {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) return
 
-    const comps = await getUserCompanies(session.access_token)
-    if (comps.data && comps.data.length > 0) {
-      setCompanies(comps.data)
-      const firstCompId = comps.data[0].id
-      setSelectedCompanyId(firstCompId)
-      
-      const res = await getCompanyQuotes(session.access_token, firstCompId, { pageSize: 100 })
-      if (res.data) {
-         setQuotes(res.data)
-         const acc = res.data.filter((q: any) => q.status === 'accepted').length
-         const rej = res.data.filter((q: any) => q.status === 'rejected').length
-         setStats({ total: res.data.length, accepted: acc, rejected: rej })
-      }
+    const firstCompId = selectedCompanyId || companies[0]?.id
+    if (!firstCompId) { setLoading(false); return; }
+    if (!selectedCompanyId) setSelectedCompanyId(firstCompId)
+
+    const res = await getCompanyQuotes(session.access_token, firstCompId, { pageSize: 100 })
+    if (res.data) {
+       setQuotes(res.data)
+       const acc = res.data.filter((q: any) => q.status === 'accepted').length
+       const rej = res.data.filter((q: any) => q.status === 'rejected').length
+       setStats({ total: res.data.length, accepted: acc, rejected: rej })
     }
     setLoading(false)
   }
