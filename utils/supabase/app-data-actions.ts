@@ -1,15 +1,15 @@
 "use server";
 
+import { getUserEntitlements } from "@/utils/entitlements";
 import { getUserCompanies } from "./dashboard-actions";
 import { getItems, getSavedClients } from "./items-actions";
-import { getUserEntitlements } from "@/utils/entitlements";
 
 export async function getGlobalAppData(token: string) {
   try {
     const [compsRes, itemsRes, clientsRes, ents] = await Promise.all([
-      getUserCompanies(token, 1, 50),
-      getItems(token, { pageSize: 50 }).catch(() => ({ data: [], totalCount: 0 })),
-      getSavedClients(token, { pageSize: 50 }).catch(() => ({ data: [], totalCount: 0 })),
+      getUserCompanies(token, 1, 100), // usually users don't have > 100 companies, but just in case
+      getItems(token, { pageSize: 10000 }).catch(() => ({ data: [], totalCount: 0 })),
+      getSavedClients(token, { pageSize: 10000 }).catch(() => ({ data: [], totalCount: 0 })),
       getUserEntitlements(token).catch(() => null),
     ]);
 
