@@ -416,9 +416,10 @@ export async function getDashboardStats(token: string, options: { companyId?: st
   // Optimization: Fetch aggregate stats directly from DB
   let statsQuery = supabase
     .from("invoices")
-    .select("total_amount, status, due_date, created_at", { count: "exact" })
+    .select("total_amount, status, due_date, created_at, companies!inner(id)", { count: "exact" })
     .eq("user_id", user.id)
-    .is("deleted_at", null);
+    .is("deleted_at", null)
+    .is("companies.deleted_at", null);
 
   if (companyId) {
     statsQuery = statsQuery.eq("company_id", companyId);

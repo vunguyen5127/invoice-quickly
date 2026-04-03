@@ -52,8 +52,9 @@ export async function GET(request: Request) {
     // Fetch unpaid invoices with due dates that are overdue or upcoming
     const { data: invoices, error: invError } = await supabase
       .from("invoices")
-      .select("id, invoice_number, client_name, total_amount, currency, due_date, status, user_id")
+      .select("id, invoice_number, client_name, total_amount, currency, due_date, status, user_id, companies!inner(id)")
       .is("deleted_at", null)
+      .is("companies.deleted_at", null)
       .not("status", "eq", "paid")
       .not("due_date", "is", null)
       .lte("due_date", threeDaysFromNow);
@@ -160,10 +161,11 @@ export async function GET(request: Request) {
     // ─────────────────────────────────────────────────────────────
     const { data: recurringInvoices } = await supabase
       .from("invoices")
-      .select("id, invoice_number, data, company_id, user_id, currency, client_name, recurring_interval, next_invoice_date")
+      .select("id, invoice_number, data, company_id, user_id, currency, client_name, recurring_interval, next_invoice_date, companies!inner(id)")
       .eq("is_recurring", true)
       .lte("next_invoice_date", today)
-      .is("deleted_at", null);
+      .is("deleted_at", null)
+      .is("companies.deleted_at", null);
 
     let invoicesCreated = 0;
 
