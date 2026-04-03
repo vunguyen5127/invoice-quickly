@@ -14,6 +14,7 @@ interface DataContextType {
   entitlements: any | null;
   loadingData: boolean;
   refreshData: () => Promise<void>;
+  setCompanies: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -60,7 +61,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
   }, [authLoading, loadData]);
 
   return (
-    <DataContext.Provider value={{ companies, companiesTotalCount, items, clients, entitlements, loadingData, refreshData: loadData }}>
+    <DataContext.Provider value={{ companies, companiesTotalCount, items, clients, entitlements, loadingData, refreshData: loadData, setCompanies }}>
       {children}
     </DataContext.Provider>
   );

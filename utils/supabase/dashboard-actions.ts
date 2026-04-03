@@ -30,8 +30,10 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
       default_tax,
       default_discount,
       invoice_number_prefix,
+      is_pinned,
       created_at
     `, { count: "exact" })
+    .order("is_pinned", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .range(from, to);
 
@@ -511,3 +513,20 @@ export async function getDashboardStats(token: string, options: { companyId?: st
   };
 }
 
+export async function toggleCompanyPinned(token: string, companyId: string, isPinned: boolean) {
+  const supabase = getServerSupabase(token);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+
+  const { error } = await supabase
+    .from("companies")
+    .update({ is_pinned: isPinned })
+    .eq("id", companyId)
+    .eq("user_id", user.id);
+
+  if (error) {
+    console.error("Error toggling company pinned state:", error);
+    return false;
+  }
+  return true;
+}

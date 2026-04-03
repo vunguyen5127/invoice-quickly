@@ -3,9 +3,9 @@
 import React, { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { deleteCompany } from "@/utils/supabase/dashboard-actions";
+import { deleteCompany, toggleCompanyPinned } from "@/utils/supabase/dashboard-actions";
 import { useData } from "@/contexts/data-context";
-import { Trash2, Plus, Building2, PenLine, ChevronLeft, ChevronRight, Zap } from "lucide-react";
+import { Trash2, Plus, Building2, PenLine, ChevronLeft, ChevronRight, Zap, Pin, PinOff } from "lucide-react";
 import Link from "next/link";
 import { CreateCompanyModal } from "@/components/create-company-modal";
 import { EditCompanyModal } from "@/components/edit-company-modal";
@@ -21,7 +21,7 @@ import { useAuth } from "@/contexts/auth-context";
 function DashboardContent() {
   const { t } = useLanguage();
   const { session, loading: authLoading } = useAuth();
-  const { companies: globCompanies, companiesTotalCount: globTotal, entitlements: globEnts, loadingData, refreshData } = useData();
+  const { companies: globCompanies, companiesTotalCount: globTotal, entitlements: globEnts, loadingData, refreshData, setCompanies } = useData();
 
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +61,11 @@ function DashboardContent() {
   // Client-side pagination and sorting
   const companies = [...(globCompanies || [])]
     .sort((a, b) => {
+      // Pinned companies first
+      if (a.is_pinned && !b.is_pinned) return -1;
+      if (!a.is_pinned && b.is_pinned) return 1;
+
+      // Then by invoice count
       const countA = a.invoices?.length || 0;
       const countB = b.invoices?.length || 0;
       return countB - countA;
@@ -132,6 +137,19 @@ function DashboardContent() {
     e.preventDefault();
     e.stopPropagation(); // Prevent navigating to company link
     setEditingCompany(company);
+  };
+
+  const handleTogglePin = async (e: React.MouseEvent, id: string, currentlyPinned: boolean) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!session) return;
+    
+    // Optimistic toggle using setCompanies to avoid a second API call
+    const success = await toggleCompanyPinned(session.access_token, id, !currentlyPinned);
+    if (success) {
+      setCompanies(prev => prev.map(c => c.id === id ? { ...c, is_pinned: !currentlyPinned } : c));
+    }
   };
 
   if (loading) {
@@ -252,6 +270,18 @@ function DashboardContent() {
                       </td>
                       <td className="px-6 py-5">
                         <div className="flex items-center justify-end gap-1 transition-opacity" onClick={(e) => e.stopPropagation()}>
+                          <Tooltip content={company.is_pinned ? "Unpin" : "Pin"}>
+                            <button
+                              onClick={(e) => handleTogglePin(e, company.id, company.is_pinned)}
+                              className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                                company.is_pinned
+                                  ? "text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-900/40"
+                                  : "text-zinc-400 hover:text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/40"
+                              }`}
+                            >
+                              {company.is_pinned ? <PinOff className="w-4 h-4" /> : <Pin className="w-4 h-4" />}
+                            </button>
+                          </Tooltip>
                           <Tooltip content={t.edit || "Edit"}>
                             <button
                               onClick={(e) => handleEdit(e, company)}
@@ -305,6 +335,16 @@ function DashboardContent() {
                        </div>
                     </div>
                     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                       <Tooltip content={company.is_pinned ? "Unpin" : "Pin"}>
+                         <button 
+                           onClick={(e) => handleTogglePin(e, company.id, company.is_pinned)} 
+                           className={`p-2.5 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-100 dark:active:bg-zinc-700 transition-colors cursor-pointer ${
+                             company.is_pinned ? "text-yellow-500 border-yellow-200 dark:border-yellow-900/30 bg-yellow-50 dark:bg-yellow-900/20" : "text-zinc-500"
+                           }`}
+                         >
+                            {company.is_pinned ? <PinOff className="w-4 h-4" /> : <Pin className="w-4 h-4" />}
+                         </button>
+                       </Tooltip>
                        <Tooltip content={t.edit || "Edit"}>
                          <button 
                            onClick={(e) => handleEdit(e, company)} 
