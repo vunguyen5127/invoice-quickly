@@ -1,13 +1,12 @@
 "use client";
 
-import { getNextInvoiceNumber } from "@/utils/supabase/dashboard-actions";
 import { useData } from "@/contexts/data-context";
 import { useLanguage } from "@/contexts/language-context";
-import { CURRENCIES, InvoiceItem, InvoiceState, RecurringInterval } from "@/types/invoice";
-import { SavedItem } from "@/types/item";
 import { SavedClient } from "@/types/client";
+import { CURRENCIES, InvoiceItem, InvoiceState, RecurringInterval } from "@/types/invoice";
 import { convertToWebP } from "@/utils/image-utils";
 import { supabase } from "@/utils/supabase/client";
+import { getNextInvoiceNumber } from "@/utils/supabase/dashboard-actions";
 import { format, parseISO } from "date-fns";
 import { Building2, Calendar, ChevronDown, ChevronUp, Package, PenTool, Plus, RefreshCw, Repeat2, Settings, Upload, User, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
@@ -293,10 +292,10 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
     setIsTermsOpen(invoice.showTerms);
   }, [invoice.showTerms]);
 
-  const inputBaseClass = "w-full rounded-xl border border-border bg-background px-3 py-2 text-[14px] font-normal transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
+  const inputBaseClass = "w-full rounded-[5px] border border-border bg-background px-3 py-2 text-[14px] font-normal transition-all duration-300 focus:outline-none focus:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 text-foreground placeholder:text-zinc-400 shadow-sm";
   const labelClass = "block text-[13px] font-medium text-zinc-600 dark:text-zinc-400 mb-1.5 hidden";
   
-  const fieldsetBaseClass = "relative w-full rounded-xl border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
+  const fieldsetBaseClass = "relative w-full rounded-[5px] border bg-white/70 dark:bg-zinc-900/40 backdrop-blur-md px-3 pb-2 pt-0 transition-all duration-300 focus-within:border-primary/50 hover:border-zinc-300 dark:hover:border-zinc-700 group min-w-0 shadow-sm hover:shadow-md";
   const fieldsetBorderDefault = "border-border";
   const fieldsetBorderRequired = "border-destructive/40 bg-destructive/5 dark:bg-destructive/10";
   const legendClass = "text-[12px] font-medium text-zinc-500 dark:text-zinc-500 px-1 ml-[-4px] group-focus-within:text-primary transition-colors empty:hidden max-w-full block truncate text-slate-400";
@@ -403,7 +402,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <select 
                     value={selectedCompanyId}
                     onChange={handleCompanyAutoFill}
-                    className="w-full h-full text-[11px] font-semibold uppercase tracking-tight truncate bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2.5 text-zinc-700 dark:text-zinc-300 outline-none transition-colors cursor-pointer shadow-sm appearance-none"
+                    className="w-full h-full text-[11px] font-semibold uppercase tracking-tight truncate bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-[5px] px-2.5 text-zinc-700 dark:text-zinc-300 outline-none transition-colors cursor-pointer shadow-sm appearance-none"
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2371717a'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`, backgroundPosition: `right 0.5rem center`, backgroundRepeat: `no-repeat`, backgroundSize: `1em 1em`, paddingRight: `1.5rem` }}
                   >
                     <option value="" disabled>{t.autoFillFrom}</option>
@@ -412,7 +411,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     ))}
                   </select>
                 ) : (
-                  <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800/50 animate-pulse rounded-lg border border-zinc-200/50 dark:border-zinc-700/50" />
+                  <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800/50 animate-pulse rounded-[5px] border border-zinc-200/50 dark:border-zinc-700/50" />
                 )}
               </div>
               
@@ -420,7 +419,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               <div className="w-[100px] h-[100px] ml-auto md:mx-0 mt-2">
                 {invoice.company.logo ? (
                   <div className="relative w-[100px] h-[100px] group transition-all">
-                    <div className="w-full h-full rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md">
+                    <div className="w-full h-full rounded-[5px] border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center p-0 shadow-sm overflow-hidden transition-all duration-300 group-hover:shadow-md">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={invoice.company.logo} alt="Logo" className="w-full h-full object-cover" />
                     </div>
@@ -434,7 +433,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                 ) : (
                   <div 
                     onClick={() => logoInputRef.current?.click()}
-                    className="w-[100px] h-[100px] rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 bg-white/50 hover:bg-blue-50/50 dark:bg-zinc-900/40 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 backdrop-blur-md overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 group"
+                    className="w-[100px] h-[100px] rounded-[5px] border-2 border-dashed border-zinc-200 dark:border-zinc-800 hover:border-blue-500/50 dark:hover:border-blue-400/50 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-300 bg-white/50 hover:bg-blue-50/50 dark:bg-zinc-900/40 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 dark:text-zinc-400 backdrop-blur-md overflow-hidden hover:shadow-lg hover:shadow-blue-500/10 group"
                   >
                     <div className="p-2.5 bg-white dark:bg-zinc-800 rounded-full shadow-sm border border-zinc-100 dark:border-zinc-700 group-hover:scale-110 transition-transform">
                       <Upload className="w-4 h-4" />
@@ -485,7 +484,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   />
                   {/* Autocomplete Dropdown */}
                   {showClientDropdown && filteredClients.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl z-50 max-h-[250px] overflow-y-auto overflow-x-hidden flex flex-col">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] shadow-xl z-50 max-h-[250px] overflow-y-auto overflow-x-hidden flex flex-col">
                       <div className="px-3 py-2 text-[11px] font-mon flex items-center gap-2 text-zinc-500 dark:text-zinc-400 bg-zinc-50/50 dark:bg-zinc-900/50 border-b border-zinc-100 dark:border-zinc-800 sticky top-0 z-10 backdrop-blur-md">
                         <User className="w-3.5 h-3.5" />
                         <span>{t.autoFillFrom} {t.clients}</span>
@@ -542,7 +541,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               {invoice.items.map((item: any, index: number) => (
                 <div 
                   key={item.id} 
-                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-5 md:p-0 md:pr-8 bg-zinc-50/50 dark:bg-zinc-900/20 md:bg-transparent rounded-2xl md:rounded-none border md:border-none border-zinc-200 dark:border-zinc-800 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
+                  className="relative flex flex-col md:grid md:grid-cols-24 gap-3 md:gap-[1px] items-start md:items-center group p-5 md:p-0 md:pr-8 bg-zinc-50/50 dark:bg-zinc-900/20 md:bg-transparent rounded-[5px] md:rounded-none border md:border-none border-zinc-200 dark:border-zinc-800 md:mb-0 transition-all hover:bg-zinc-50 dark:hover:bg-zinc-900/40"
                 >
                   {/* Item Label for Mobile */}
                   <div className="md:hidden text-[10px] font-semibold text-zinc-400 uppercase tracking-widest ml-1">{t.description}</div>
@@ -566,7 +565,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                       </span>
                     )}
                     {focusedItemIndex === index && myItems.length > 0 && (
-                      <div className="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 md:w-[150%]">
+                      <div className="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[5px] shadow-xl overflow-hidden animate-in fade-in slide-in-from-top-2 md:w-[150%]">
                         <div className="max-h-[200px] overflow-y-auto p-1">
                           {myItems.filter(i => i.name.toLowerCase().includes(item.description.toLowerCase())).length === 0 ? (
                             <div className="p-3 text-center text-xs text-zinc-500 font-medium">No saved items found</div>
@@ -577,7 +576,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                                 <button
                                   key={savedItem.id}
                                   type="button"
-                                  className="w-full text-left px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors flex flex-col gap-0.5"
+                                  className="w-full text-left px-3 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-[5px] transition-colors flex flex-col gap-0.5"
                                   onClick={() => {
                                     handleItemChange(index, "description", savedItem.name);
                                     if (savedItem.rate) {
@@ -657,7 +656,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               type="button"
               onClick={addItem}
               disabled={invoice.items.length >= MAX_ITEMS}
-              className="w-fit flex items-center justify-center gap-2 px-5 py-3 bg-success text-success-foreground rounded-2xl text-[14px] font-semibold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
+              className="w-fit flex items-center justify-center gap-2 px-5 py-3 bg-success text-success-foreground rounded-[5px] text-[14px] font-semibold shadow-lg shadow-success/10 transition-all hover:opacity-90 active:scale-[0.98] group disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100"
             >
               <Plus className="w-4 h-4 text-white" /> {t.addItem}
             </button>
@@ -701,7 +700,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
             <div className="flex flex-col gap-4">
               {/* Discount */}
               <div className="grid grid-cols-2 gap-[2px] items-center">
-                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
+                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
                     className="w-full bg-transparent border-none outline-none text-[13px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
                     value={(invoice.discountLabel === 'Discount' ? '' : invoice.discountLabel) || t.discount}
@@ -709,7 +708,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     placeholder={t.discount}
                   />
                 </div>
-                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                   <input 
                     type="number" 
                     placeholder="0"
@@ -736,7 +735,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
               {/* Tax */}
               <div className="grid grid-cols-2 gap-[2px] items-center">
-                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
+                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
                     className="w-full bg-transparent border-none outline-none text-[13px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
                     value={(invoice.taxLabel === 'Tax' ? '' : invoice.taxLabel) || t.tax}
@@ -744,7 +743,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     placeholder={t.tax}
                   />
                 </div>
-                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                   <input 
                     type="number" 
                     placeholder="0"
@@ -771,7 +770,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
               {/* Shipping */}
               <div className="grid grid-cols-2 gap-[2px] items-center">
-                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
+                <div className="h-12 border border-transparent hover:border-zinc-200/50 focus-within:border-blue-500 dark:border-zinc-800 rounded-[5px] bg-zinc-50 dark:bg-zinc-900/50 flex items-center px-4 transition-all">
                   <input 
                     className="w-full bg-transparent border-none outline-none text-[13px] font-medium text-zinc-500 text-right focus:ring-0 p-0"
                     value={(invoice.shippingLabel === 'Shipping' ? '' : invoice.shippingLabel) || t.shipping}
@@ -779,7 +778,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                     placeholder={t.shipping}
                   />
                 </div>
-                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-lg bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
+                <div className="h-12 border border-zinc-200 dark:border-zinc-800 rounded-[5px] bg-white dark:bg-zinc-950 flex items-center focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
                   <input 
                     type="number" 
                     placeholder="0"
@@ -799,7 +798,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
           <div className="space-y-4 pt-2">
             {/* Notes Accordion */}
-              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
                 <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
                   <div className="flex items-center gap-3 flex-1 min-w-0 h-full">
                     <label className="flex items-center gap-2 cursor-pointer shrink-0 h-full" onClick={(e) => e.stopPropagation()}>
@@ -821,7 +820,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <button 
                     type="button"
                     onClick={() => setIsNotesOpen(!isNotesOpen)}
-                    className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                    className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
                   >
                     {isNotesOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
                   </button>
@@ -842,7 +841,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               </div>
 
             {/* Terms Accordion */}
-              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+              <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
                 <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
                   <div className="flex items-center gap-3 flex-1 min-w-0 h-full">
                     <label className="flex items-center gap-2 cursor-pointer shrink-0 h-full" onClick={(e) => e.stopPropagation()}>
@@ -864,7 +863,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <button 
                     type="button"
                     onClick={() => setIsTermsOpen(!isTermsOpen)}
-                    className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                    className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
                   >
                     {isTermsOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
                   </button>
@@ -885,7 +884,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               </div>
 
             {/* Signature Accordion */}
-            <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+            <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
               <button 
                 className="w-full h-12 flex items-center justify-between px-4 text-[13px] font-bold text-zinc-900 dark:text-zinc-100 bg-zinc-50/50 dark:bg-zinc-800/20 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/40 transition-colors"
                 onClick={() => setIsSignatureOpen(!isSignatureOpen)}
@@ -898,7 +897,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <div>
                     <div className="flex items-start gap-4">
                       {invoice.signature ? (
-                        <div className="relative h-24 px-5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center group shadow-sm transition-all min-w-[180px]">
+                        <div className="relative h-24 px-5 rounded-[5px] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 flex items-center justify-center group shadow-sm transition-all min-w-[180px]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={invoice.signature} alt="Signature" className="max-w-full max-h-full object-contain dark:invert" />
                           <button 
@@ -909,7 +908,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                                 signatureName: ""
                               }));
                             }}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-lg p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-[5px] p-1.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -918,7 +917,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                         <div className="flex items-center gap-4 w-full">
                           <div 
                             onClick={() => signatureInputRef.current?.click()}
-                            className="flex-1 h-24 rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 shadow-sm"
+                            className="flex-1 h-24 rounded-[5px] border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 shadow-sm"
                           >
                             <Upload className="w-5 h-5 flex-shrink-0" />
                             <span className="text-[10px] uppercase font-bold tracking-widest truncate px-1 text-center w-full">{t.upload}</span>
@@ -928,7 +927,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
                           <div 
                             onClick={() => setIsSignatureModalOpen(true)}
-                            className="flex-1 h-24 rounded-xl border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 shadow-sm"
+                            className="flex-1 h-24 rounded-[5px] border-2 border-dashed border-zinc-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-blue-500 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all bg-white hover:bg-blue-50/50 dark:bg-zinc-900/50 dark:hover:bg-blue-900/20 text-zinc-500 hover:text-blue-600 shadow-sm"
                           >
                             <PenTool className="w-5 h-5 flex-shrink-0" />
                             <span className="text-[10px] uppercase font-bold tracking-widest truncate px-1 text-center w-full">{t.draw}</span>
@@ -976,7 +975,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       {/* Recurring Invoice Accordion */}
       {docType === 'invoice' && (
       <div className={sectionClass}>
-        <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-xl overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
+        <div className="border border-zinc-200/60 dark:border-zinc-800/60 rounded-[5px] overflow-hidden bg-white/50 dark:bg-zinc-950 shadow-sm">
           <div className="w-full h-12 flex items-center justify-between px-4 bg-zinc-50/50 dark:bg-zinc-800/20">
             <div className="flex items-center gap-3 flex-1 min-w-0 h-full">
               <label className={`flex items-center gap-2 shrink-0 h-full ${!canUseRecurring ? 'cursor-not-allowed' : 'cursor-pointer'}`} onClick={(e) => {
@@ -1021,7 +1020,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                 if (!invoice.isRecurring && !canUseRecurring) { handleUpgrade(); return; }
                 setIsRecurringOpen(!isRecurringOpen);
               }}
-              className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+              className="p-1 px-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-[5px] transition-colors"
             >
               {isRecurringOpen ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
             </button>
@@ -1032,7 +1031,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
               {!canUseRecurring ? (
                 // Locked state for Free users
                 <div className="text-center py-4">
-                  <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-3">
+                  <div className="w-10 h-10 rounded-[5px] bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mx-auto mb-3">
                     <Repeat2 className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                   </div>
                   <p className="text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-1">Recurring Invoices — Pro Feature</p>
@@ -1040,7 +1039,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                   <button
                     type="button"
                     onClick={() => handleUpgrade()}
-                    className="px-5 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
+                    className="px-5 py-2 rounded-[5px] bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/25"
                   >
                     Upgrade to Pro
                   </button>
@@ -1056,7 +1055,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
                           key={opt.value}
                           type="button"
                           onClick={() => handleIntervalChange(opt.value)}
-                          className={`py-2.5 rounded-xl text-[13px] font-bold transition-all border ${
+                          className={`py-2.5 rounded-[5px] text-[13px] font-bold transition-all border ${
                             invoice.recurringInterval === opt.value
                               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
                               : 'bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-blue-400'
@@ -1070,7 +1069,7 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
 
                   {/* Next invoice date preview */}
                   {invoice.isRecurring && invoice.nextInvoiceDate && (
-                    <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
+                    <div className="flex items-center gap-3 px-4 py-3 rounded-[5px] bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50">
                       <RefreshCw className="w-4 h-4 text-blue-500 flex-shrink-0" />
                       <div>
                         <p className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Next Invoice</p>

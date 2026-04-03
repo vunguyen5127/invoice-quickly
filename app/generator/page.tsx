@@ -1,29 +1,27 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import { InvoiceForm } from "@/components/invoice-form";
 import { InvoicePreview } from "@/components/invoice-preview";
 import { initialInvoiceState, InvoiceState } from "@/types/invoice";
 import { generatePDF } from "@/utils/generate-pdf";
-import { Download, Plus, Share2, Save, X, Building2, Package, Users, LayoutDashboard, Loader2, ArrowRight } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
+import { getNextInvoiceNumber, getUserCompanies } from "@/utils/supabase/dashboard-actions";
+import { ArrowRight, Building2, Download, LayoutDashboard, Loader2, Package, Plus, Save, Share2, Users, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getUserCompanies, getNextInvoiceNumber } from "@/utils/supabase/dashboard-actions";
-import { getUserEntitlements } from "@/utils/entitlements";
-import { getItems, getSavedClients } from "@/utils/supabase/items-actions";
+import React, { useEffect, useRef, useState } from "react";
 
+import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 import { saveInvoiceToSupabase } from "@/utils/supabase/invoice-actions";
-import Link from "next/link";
-import Image from "next/image";
 import { getBaseUrl } from "@/utils/url";
 import dynamic from "next/dynamic";
-import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
+import Image from "next/image";
+import Link from "next/link";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useLanguage } from "@/contexts/language-context";
 const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then((mod) => mod.CreateCompanyModal));
 const SuccessModal = dynamic(() => import("@/components/success-modal").then((mod) => mod.SuccessModal));
-import { useLanguage } from "@/contexts/language-context";
 
 import { useAuth } from "@/contexts/auth-context";
 import { useData } from "@/contexts/data-context";
@@ -403,7 +401,7 @@ function CreateInvoiceContent() {
           </div>
         )}
 
-        <div className="bg-white dark:bg-zinc-900/50 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
+        <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8">
           {!isLoaded ? (
             <InvoiceEditSkeleton />
           ) : (

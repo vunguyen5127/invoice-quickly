@@ -25,7 +25,7 @@ export function InvoiceEditSkeleton() {
           {/* Left Column: Form Skeleton */}
           <div className="w-full xl:w-1/2 space-y-6">
             <div className="h-10 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-xl"></div>
-            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl h-[700px] p-8 space-y-8 shadow-sm">
+            <div className="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-[5px] h-[700px] p-8 space-y-8 shadow-sm">
                <div className="h-32 w-full bg-zinc-100 dark:bg-zinc-800/60 rounded-xl"></div>
                <div className="h-32 w-full bg-zinc-100 dark:bg-zinc-800/60 rounded-xl"></div>
                <div className="h-64 w-full bg-zinc-50 dark:bg-zinc-800/30 rounded-xl"></div>
@@ -35,7 +35,7 @@ export function InvoiceEditSkeleton() {
           {/* Right Column: Preview Skeleton */}
           <div className="w-full xl:w-1/2 space-y-6">
             <div className="h-10 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-xl"></div>
-            <div className="bg-zinc-50 dark:bg-zinc-900/40 rounded-2xl h-[800px] border border-zinc-200 dark:border-zinc-800 flex items-center justify-center p-8">
+            <div className="bg-zinc-50 dark:bg-zinc-900/40 rounded-[5px] h-[800px] border border-zinc-200 dark:border-zinc-800 flex items-center justify-center p-8">
                <div className="w-full h-full bg-white dark:bg-zinc-900 rounded-[5px] shadow-sm"></div>
             </div>
           </div>

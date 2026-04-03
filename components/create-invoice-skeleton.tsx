@@ -34,7 +34,7 @@ export function CreateInvoiceSkeleton() {
           {/* Left Column: Form Skeleton */}
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
             <div className="h-10 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-xl"></div>
-            <div className="bg-white dark:bg-zinc-900/50 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 space-y-8">
+            <div className="bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-sm border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 lg:p-8 space-y-8">
               {/* Form sections */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -66,7 +66,7 @@ export function CreateInvoiceSkeleton() {
           {/* Right Column: Preview Skeleton */}
           <div className="w-full xl:w-1/2">
             <div className="h-10 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-xl mb-6"></div>
-            <div className="aspect-[1/1.41] w-full bg-white dark:bg-zinc-900/50 rounded-2xl shadow-lg border border-zinc-200 dark:border-zinc-800 p-8 space-y-6">
+            <div className="aspect-[1/1.41] w-full bg-white dark:bg-zinc-900/50 rounded-[5px] shadow-lg border border-zinc-200 dark:border-zinc-800 p-8 space-y-6">
                <div className="flex justify-between">
                   <div className="h-12 w-32 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
                   <div className="h-14 w-48 bg-zinc-200 dark:bg-zinc-800 rounded-lg"></div>
