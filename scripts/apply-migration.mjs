@@ -81,6 +81,8 @@ async function run() {
     if (ran === 0) {
       console.log('✨ Database is already up to date.');
     } else {
+      console.log('🔄 Reloading PostgREST schema cache...');
+      await client.query("NOTIFY pgrst, 'reload schema'");
       console.log(`🎉 Successfully applied ${ran} migration(s).`);
     }
 

@@ -115,7 +115,7 @@ function DashboardContent() {
     if (session) {
       const success = await deleteCompany(session.access_token, companyToDelete);
       if (success) {
-        await refreshData();
+        setCompanies(prev => prev.filter(c => c.id !== companyToDelete));
       } else {
         alert("Failed to delete company");
       }

@@ -33,6 +33,7 @@ export async function getUserCompanies(token: string, page = 1, pageSize = 12) {
       is_pinned,
       created_at
     `, { count: "exact" })
+    .is("deleted_at", null)
     .order("is_pinned", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .range(from, to);
@@ -165,11 +166,10 @@ export async function updateCompany(token: string, companyId: string, companyDat
 export async function deleteCompany(token: string, id: string) {
   const supabase = getServerSupabase(token);
   
-  // RLS will ensure user owns the company. Invoices should cascade delete if set up in DB, 
-  // or we might need to delete them first depending on DB constraints.
+  // Soft delete the company
   const { error } = await supabase
     .from("companies")
-    .delete()
+    .update({ deleted_at: new Date().toISOString() })
     .eq("id", id);
 
   if (error) {
