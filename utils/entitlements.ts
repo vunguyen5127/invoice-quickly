@@ -16,8 +16,26 @@ import { getServerSupabase } from "@/utils/supabase/client";
 function getEntitlementsFromSubscription(sub: Subscription | null): Entitlements {
   if (!sub) return FREE_ENTITLEMENTS;
 
-  const isPro = sub.plan === 'pro' && (sub.status === 'active' || sub.status === 'canceled');
-  // canceled users keep pro until period ends
+  let isPro = sub.plan === 'pro';
+
+  if (isPro) {
+    const now = new Date();
+    // Safety check: is the current period still valid? (Give a 24h grace buffer for timezones)
+    const endsAt = sub.current_period_end ? new Date(sub.current_period_end) : new Date(0);
+    const validPeriod = endsAt.getTime() + 24 * 60 * 60 * 1000 > now.getTime();
+
+    if (sub.status === 'active') {
+      isPro = true; // Active is always pro
+    } else if (sub.status === 'past_due') {
+      isPro = true; // Grace period for payment failure
+    } else if (sub.status === 'canceled') {
+      // If canceled, they only keep access until the period actually ends
+      isPro = validPeriod;
+    } else {
+      isPro = false;
+    }
+  }
+
   if (isPro) {
     return { ...PRO_ENTITLEMENTS, status: sub.status as SubscriptionStatus };
   }
