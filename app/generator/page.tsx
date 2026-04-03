@@ -58,7 +58,7 @@ function CreateInvoiceContent() {
 
   // Load from localStorage on mount and prefill user name
   useEffect(() => {
-    if (authLoading) return;
+    if (authLoading || loadingData) return;
     if (initRef.current) return;
     initRef.current = true;
     
@@ -72,77 +72,6 @@ function CreateInvoiceContent() {
         localStorage.removeItem("Invoice-QuicklyDraft");
         // Clean URL without reloading
         window.history.replaceState({}, "", "/generator");
-
-        if (userIsLoggedIn && !loadingData) {
-          // Logged-in users get a blank invoice (no demo data), prefilled if only 1 company
-          let companyData = { name: "", email: "", address: "", phone: "", logo: "" };
-          let nextInvNum = "";
-          let sigName = "";
-          let sigUrl = "";
-          let currency = initialInvoiceState.currency;
-          let notes = initialInvoiceState.notes;
-          let terms = initialInvoiceState.terms;
-          let taxRate = 0;
-          let discount = 0;
-
-          if (session) {
-            try {
-              if (companies.length >= 1) {
-                const autoCompany = companies[0];
-                setInitialCompanyId(autoCompany.id);
-                
-                const tmpDetails = [];
-                if (autoCompany.name) tmpDetails.push(autoCompany.name);
-                if (autoCompany.address) tmpDetails.push(autoCompany.address);
-                if (autoCompany.email) tmpDetails.push(autoCompany.email);
-                if (autoCompany.phone) tmpDetails.push(autoCompany.phone);
-                
-                companyData = {
-                  ...companyData,
-                  name: tmpDetails.join(", "),
-                  logo: autoCompany.logo_url || "",
-                };
-                sigName = autoCompany.signer_name || "";
-                sigUrl = autoCompany.signature_url || "";
-                currency = autoCompany.default_currency || initialInvoiceState.currency;
-                notes = autoCompany.default_notes || initialInvoiceState.notes;
-                terms = autoCompany.default_terms || initialInvoiceState.terms;
-                taxRate = autoCompany.default_tax !== null && autoCompany.default_tax !== undefined ? autoCompany.default_tax : 0;
-                discount = autoCompany.default_discount !== null && autoCompany.default_discount !== undefined ? autoCompany.default_discount : 0;
-
-                // Await invoice number so it's ready before draftInvoice is built
-                try {
-                  nextInvNum = await getNextInvoiceNumber(session.access_token, autoCompany.id, autoCompany.invoice_number_prefix || undefined);
-                } catch (e) {
-                  console.error("Failed to fetch invoice number", e);
-                }
-              } else if (companies.length === 0) {
-                setHasNoCompany(true);
-              }
-            } catch (e) {
-              console.error("Failed to fetch initial company data", e);
-            }
-          }
-
-          draftInvoice = {
-            ...initialInvoiceState,
-            company: companyData,
-            client: { name: "", email: "", address: "", phone: "" },
-            details: {
-              invoiceNumber: nextInvNum,
-              issueDate: new Date().toISOString().split("T")[0],
-              dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-            },
-            items: [{ id: "1", description: "", quantity: 1, rate: 0 }],
-            taxRate: taxRate,
-            discount: discount,
-            notes: notes,
-            terms: terms,
-            signatureName: sigName,
-            signature: sigUrl,
-            currency: currency,
-          };
-        }
       } else {
         const savedDraft = localStorage.getItem("Invoice-QuicklyDraft");
         if (savedDraft) {
@@ -154,14 +83,76 @@ function CreateInvoiceContent() {
         }
       }
 
+      // If user is logged in and the draft doesn't already have a company selected, auto-fill the first company.
       if (userIsLoggedIn) {
         setIsLoggedIn(true);
         setCanUseRecurring(entitlements?.canUseRecurring || false);
+
         if (!draftInvoice.signatureName) {
           const name = session!.user.user_metadata?.name || session!.user.user_metadata?.full_name || session!.user.email?.split("@")[0];
           if (name) {
             draftInvoice = { ...draftInvoice, signatureName: name };
           }
+        }
+
+        const isDemoCompany = draftInvoice.company.name === initialInvoiceState.company.name;
+        
+        let matchedCompanyId = "";
+        if (!isDemoCompany && draftInvoice.company.name) {
+          const matchedCompany = companies.find(c => {
+            const details = [];
+            if (c.name) details.push(c.name);
+            if (c.address) details.push(c.address);
+            if (c.email) details.push(c.email);
+            if (c.phone) details.push(c.phone);
+            return details.join(", ") === draftInvoice.company.name;
+          });
+          if (matchedCompany) matchedCompanyId = matchedCompany.id;
+        }
+
+        // Auto-select first company if the invoice company name is completely empty OR is the demo placeholder
+        if ((!draftInvoice.company.name || isDemoCompany) && companies.length >= 1) {
+          const autoCompany = companies[0];
+          setInitialCompanyId(autoCompany.id);
+          
+          const tmpDetails = [];
+          if (autoCompany.name) tmpDetails.push(autoCompany.name);
+          if (autoCompany.address) tmpDetails.push(autoCompany.address);
+          if (autoCompany.email) tmpDetails.push(autoCompany.email);
+          if (autoCompany.phone) tmpDetails.push(autoCompany.phone);
+          
+          let nextInvNum = draftInvoice.details?.invoiceNumber || "";
+          try {
+            nextInvNum = await getNextInvoiceNumber(session!.access_token, autoCompany.id, autoCompany.invoice_number_prefix || undefined);
+          } catch (e) {
+            console.error("Failed to fetch invoice number", e);
+          }
+
+          draftInvoice = {
+            ...draftInvoice,
+            company: {
+              ...draftInvoice.company,
+              name: tmpDetails.join(", "),
+              logo: autoCompany.logo_url || "",
+            },
+            details: {
+              ...draftInvoice.details,
+              invoiceNumber: nextInvNum,
+              issueDate: draftInvoice.details?.issueDate || new Date().toISOString().split("T")[0],
+              dueDate: draftInvoice.details?.dueDate || new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            },
+            taxRate: draftInvoice.taxRate || (autoCompany.default_tax !== null && autoCompany.default_tax !== undefined ? autoCompany.default_tax : 0),
+            discount: draftInvoice.discount || (autoCompany.default_discount !== null && autoCompany.default_discount !== undefined ? autoCompany.default_discount : 0),
+            notes: draftInvoice.notes || autoCompany.default_notes || initialInvoiceState.notes,
+            terms: draftInvoice.terms || autoCompany.default_terms || initialInvoiceState.terms,
+            signatureName: draftInvoice.signatureName || autoCompany.signer_name || "",
+            signature: draftInvoice.signature || autoCompany.signature_url || "",
+            currency: draftInvoice.currency || autoCompany.default_currency || initialInvoiceState.currency,
+          };
+        } else if (matchedCompanyId) {
+          setInitialCompanyId(matchedCompanyId);
+        } else if (companies.length === 0) {
+          setHasNoCompany(true);
         }
       }
 
