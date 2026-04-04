@@ -2,9 +2,31 @@
 
 import config from "@/utils/config";
 import { sendTestEmail } from "@/utils/email-service";
-import { getServiceSupabase } from "@/utils/supabase/client";
+import { getServerSupabase, getServiceSupabase } from "@/utils/supabase/client";
 
-export async function triggerInvoiceCheckCron() {
+/**
+ * Server-side admin guard — verifies the JWT token belongs to an admin email.
+ * Returns true only if the authenticated user is in config.adminEmails.
+ * This is the server-side enforcement layer; AdminGuard (client) is just UX.
+ */
+async function isAdminToken(token: string): Promise<boolean> {
+  if (!token) return false;
+  try {
+    const supabase = getServerSupabase(token);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.email) return false;
+    return (config.adminEmails as readonly string[]).includes(user.email);
+  } catch {
+    return false;
+  }
+}
+
+export async function triggerInvoiceCheckCron(token: string) {
+  if (!(await isAdminToken(token))) {
+    console.warn("[admin/actions] triggerInvoiceCheckCron: unauthorized attempt");
+    return { success: false, error: "Unauthorized" };
+  }
+
   const siteUrl = config.siteUrl;
   const cronSecret = config.cron.secret;
 
@@ -29,7 +51,12 @@ export async function triggerInvoiceCheckCron() {
   }
 }
 
-export async function triggerTestEmail(email: string) {
+export async function triggerTestEmail(token: string, email: string) {
+  if (!(await isAdminToken(token))) {
+    console.warn("[admin/actions] triggerTestEmail: unauthorized attempt");
+    return { success: false, error: "Unauthorized" };
+  }
+
   if (!email || !email.includes("@")) {
     return { success: false, error: "Invalid email address" };
   }
@@ -41,7 +68,14 @@ export async function triggerTestEmail(email: string) {
   }
 }
 
-export async function getPaymentLogs(page = 1, pageSize = 50) {
+export async function getPaymentLogs(token: string, page = 1, pageSize = 50) {
+  // Server-side admin guard — prevents non-admins from fetching logs
+  // even if the client-side AdminGuard is bypassed (e.g. JS disabled).
+  if (!(await isAdminToken(token))) {
+    console.warn("[admin/actions] getPaymentLogs: unauthorized attempt");
+    return { logs: [], total: 0 };
+  }
+
   try {
     const supabase = getServiceSupabase();
     const from = (page - 1) * pageSize;

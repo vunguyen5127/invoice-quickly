@@ -97,6 +97,7 @@ export default function AdminPage() {
   const [testEmailLoading, setTestEmailLoading] = useState(false);
   const [testEmail, setTestEmail] = useState("");
   const [cronStatus, setCronStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [adminToken, setAdminToken] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -104,8 +105,8 @@ export default function AdminPage() {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push("/login?redirect=/admin"); return; }
-      // Use config.adminEmails for consistency with AdminGuard layout
       if (!config.adminEmails.includes(session.user.email || "")) { router.push("/dashboard"); return; }
+      setAdminToken(session.access_token);
       setAuthorized(true);
     };
     checkAccess();
@@ -123,27 +124,27 @@ export default function AdminPage() {
       setLoading(false);
     };
     fetch();
-  }, [authorized, activeTab, currentPage]);
+  }, [authorized, activeTab, currentPage, adminToken]);
 
   // Load payment logs
   useEffect(() => {
     if (!authorized || activeTab !== "payment-logs") return;
     const fetch = async () => {
       setPaymentLoading(true);
-      const { logs: data, total: count } = await getPaymentLogs(paymentPage, PAGE_SIZE);
+      const { logs: data, total: count } = await getPaymentLogs(adminToken, paymentPage, PAGE_SIZE);
       setPaymentLogs(data as PaymentLog[]);
       setPaymentTotal(count);
       setPaymentLoading(false);
     };
     fetch();
-  }, [authorized, activeTab, paymentPage]);
+  }, [authorized, activeTab, paymentPage, adminToken]);
 
   const handleRunCron = async () => {
     if (cronRunning) return;
     setCronRunning(true);
     setCronStatus(null);
     try {
-      const result = await triggerInvoiceCheckCron();
+      const result = await triggerInvoiceCheckCron(adminToken);
       if (result.success) {
         setCronStatus({ type: "success", message: `Cron success: Sent ${result.data?.usersNotified} emails, found ${result.data?.invoicesFound} invoices.` });
       } else {
@@ -162,7 +163,7 @@ export default function AdminPage() {
     setTestEmailLoading(true);
     setCronStatus(null);
     try {
-      const result = await triggerTestEmail(testEmail);
+      const result = await triggerTestEmail(adminToken, testEmail);
       if (result.success) {
         setCronStatus({ type: "success", message: `Test email sent to ${testEmail}!` });
       } else {
