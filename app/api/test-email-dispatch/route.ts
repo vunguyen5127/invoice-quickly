@@ -5,6 +5,12 @@ import config from '@/utils/config';
 import { getCurrencySymbol } from '@/types/invoice';
 
 export async function GET(req: Request) {
+  // Security: require the same CRON_SECRET used by other internal endpoints
+  const authHeader = req.headers.get("authorization");
+  if (!config.cron.secret || authHeader !== `Bearer ${config.cron.secret}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const url = new URL(req.url);
   const email = url.searchParams.get('email') || "vunguyencapital@gmail.com";
   

@@ -57,7 +57,7 @@ export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState
         user_id: user.id,
         company_id: companyId || null,
         invoice_number: invoice.details.invoiceNumber,
-        client_name: invoice.client.name, // Keeping this for the dashboard list
+        client_name: invoice.client.name,
         seller_info: invoice.company,
         client_info: invoice.client,
         items: invoice.items,
@@ -65,7 +65,7 @@ export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState
         tax: taxAmount,
         total_amount: total,
         currency: invoice.currency,
-        data: invoice, // Storing full state to easily re-hydrate the viewer
+        data: invoice,
         status: 'draft',
         due_date: invoice.details.dueDate || null,
         is_recurring: invoice.isRecurring ?? false,
@@ -125,6 +125,7 @@ export async function updateInvoiceInSupabase(token: string, invoiceId: string, 
       next_invoice_date: invoice.isRecurring ? (invoice.nextInvoiceDate ?? null) : null,
     })
     .eq('id', invoiceId)
+    .eq('user_id', user.id)  // ✅ ownership guard added
     .select();
 
   if (error) {

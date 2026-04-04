@@ -13,9 +13,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { triggerInvoiceCheckCron, triggerTestEmail } from "@/utils/supabase/admin-actions";
+import config from "@/utils/config";
 
-const ADMIN_EMAIL = "vunguyencapital@gmail.com";
 const PAGE_SIZE = 20;
+
 
 interface LoginLog {
   id: string;
@@ -103,11 +104,13 @@ export default function AdminPage() {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push("/login?redirect=/admin"); return; }
-      if (session.user.email !== ADMIN_EMAIL) { router.push("/dashboard"); return; }
+      // Use config.adminEmails for consistency with AdminGuard layout
+      if (!config.adminEmails.includes(session.user.email || "")) { router.push("/dashboard"); return; }
       setAuthorized(true);
     };
     checkAccess();
   }, [router]);
+
 
   // Load login logs
   useEffect(() => {

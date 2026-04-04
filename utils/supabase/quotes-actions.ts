@@ -354,18 +354,15 @@ export async function getQuote(token: string, quoteId: string) {
   const supabase = getServerSupabase(token);
   const { data: { user } } = await supabase.auth.getUser();
 
-  // If user is authenticated, we can optionally check ownership, but let's just use the query.
-  // We can fetch via public logic if needed, but this is dashboard action.
-  const query = supabase
+  // Always scope to the authenticated user — prevents reading other users' quotes by ID
+  if (!user) return null;
+
+  const { data, error } = await supabase
     .from("quotes")
     .select("*")
-    .eq("id", quoteId);
-    
-  if (user) {
-    query.eq("user_id", user.id);
-  }
-
-  const { data, error } = await query.single();
+    .eq("id", quoteId)
+    .eq("user_id", user.id)  // ✅ ownership check — was missing (JS bug: result was discarded)
+    .single();
 
   if (error || !data) {
     return null;
