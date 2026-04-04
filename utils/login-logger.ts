@@ -61,27 +61,6 @@ export async function logUserLogin(providedSession?: Session | null) {
 
 
 
-export async function getLoginLogs(page = 1, pageSize = 50) {
-  // Must use service role — RLS SELECT policy blocks anon and regular authenticated users.
-  // getLoginLogs is only called from admin-actions which already verified isAdminToken().
-  const { getServiceSupabase } = await import("@/utils/supabase/client");
-  const supabase = getServiceSupabase();
-  if (!supabase) return { logs: [], total: 0 };
-
-  const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
-
-  const { data, error, count } = await supabase
-    .from("user_login_logs")
-    .select("*", { count: "exact" })
-    .order("logged_in_at", { ascending: false })
-    .range(from, to);
-
-  if (error) {
-    console.error("Error fetching login logs:", error);
-    return { logs: [], total: 0 };
-  }
-
-  return { logs: data || [], total: count || 0 };
-}
+// NOTE: getLoginLogs has been moved to utils/supabase/admin-actions.ts
+// It requires "use server" to access the service role key server-side.
 

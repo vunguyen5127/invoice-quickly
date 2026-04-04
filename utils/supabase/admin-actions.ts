@@ -94,3 +94,31 @@ export async function getPaymentLogs(token: string, page = 1, pageSize = 50) {
     return { logs: [], total: 0 };
   }
 }
+
+export async function getLoginLogs(token: string, page = 1, pageSize = 50) {
+  // Must run server-side — service role key is not available in the browser.
+  // login-logger.ts has no "use server", so getLoginLogs lives here instead.
+  if (!(await isAdminToken(token))) {
+    console.warn("[admin/actions] getLoginLogs: unauthorized attempt");
+    return { logs: [], total: 0 };
+  }
+
+  try {
+    const supabase = getServiceSupabase();
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    const { data, count, error } = await supabase
+      .from("user_login_logs")
+      .select("*", { count: "exact" })
+      .order("logged_in_at", { ascending: false })
+      .range(from, to);
+
+    if (error) throw error;
+    return { logs: data ?? [], total: count ?? 0 };
+  } catch (err: any) {
+    console.error("[admin/actions] getLoginLogs failed:", err);
+    return { logs: [], total: 0 };
+  }
+}
+

@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { getLoginLogs } from "@/utils/login-logger";
-import { getPaymentLogs } from "@/utils/supabase/admin-actions";
+import { getLoginLogs, getPaymentLogs, triggerInvoiceCheckCron, triggerTestEmail } from "@/utils/supabase/admin-actions";
 import { format } from "date-fns";
 import {
   Loader2, ShieldCheck, ChevronLeft, ChevronRight,
@@ -12,7 +11,6 @@ import {
   CreditCard, Users,
 } from "lucide-react";
 import Link from "next/link";
-import { triggerInvoiceCheckCron, triggerTestEmail } from "@/utils/supabase/admin-actions";
 import config from "@/utils/config";
 
 const PAGE_SIZE = 20;
@@ -118,7 +116,7 @@ export default function AdminPage() {
     if (!authorized || activeTab !== "logins") return;
     const fetch = async () => {
       setLoading(true);
-      const { logs: data, total: count } = await getLoginLogs(currentPage, PAGE_SIZE);
+      const { logs: data, total: count } = await getLoginLogs(adminToken, currentPage, PAGE_SIZE);
       setLogs(data);
       setTotal(count);
       setLoading(false);
