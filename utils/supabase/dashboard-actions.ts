@@ -165,12 +165,17 @@ export async function updateCompany(token: string, companyId: string, companyDat
 
 export async function deleteCompany(token: string, id: string) {
   const supabase = getServerSupabase(token);
-  
-  // Soft delete the company
+
+  // Verify ownership before deleting
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+
+  // Soft delete the company — must match both id AND user_id (ownership guard)
   const { error } = await supabase
     .from("companies")
     .update({ deleted_at: new Date().toISOString() })
-    .eq("id", id);
+    .eq("id", id)
+    .eq("user_id", user.id);
 
   if (error) {
     console.error("Error deleting company:", error);
@@ -290,10 +295,16 @@ export async function getAllCompanyInvoices(token: string, companyId: string) {
 
 export async function getCompanyById(token: string, companyId: string) {
   const supabase = getServerSupabase(token);
+
+  // Verify ownership to prevent reading other users' companies
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
   const { data, error } = await supabase
     .from("companies")
     .select("*")
     .eq("id", companyId)
+    .eq("user_id", user.id)
     .single();
 
   if (error) {
@@ -306,11 +317,17 @@ export async function getCompanyById(token: string, companyId: string) {
 // Keeping the old one just in case 
 export async function deleteInvoice(token: string, id: string) {
   const supabase = getServerSupabase(token);
-  
+
+  // Verify ownership before deleting
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+
+  // Soft delete — must match both id AND user_id (ownership guard)
   const { error } = await supabase
     .from("invoices")
     .update({ deleted_at: new Date().toISOString() })
-    .eq("id", id);
+    .eq("id", id)
+    .eq("user_id", user.id);
 
   if (error) {
     console.error("Error deleting invoice:", error);

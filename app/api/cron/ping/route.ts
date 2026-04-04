@@ -11,8 +11,9 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization");
   
-  // Basic security check
-  if (config.cron.secret && authHeader !== `Bearer ${config.cron.secret}`) {
+  // SECURITY: Reject ALL requests if CRON_SECRET is not configured on the server.
+  // This prevents the endpoint from being open when env var is accidentally missing.
+  if (!config.cron.secret || authHeader !== `Bearer ${config.cron.secret}`) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 

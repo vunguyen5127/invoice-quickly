@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AuthCallbackPage() {
   const router = useRouter();

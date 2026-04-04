@@ -10,6 +10,7 @@ export async function getPublicInvoiceById(id: string) {
     .from("invoices")
     .select("data")
     .eq("id", id)
+    .is("deleted_at", null)   // do not expose soft-deleted invoices
     .single();
 
   if (error || !data) {

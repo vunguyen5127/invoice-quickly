@@ -13,6 +13,7 @@ export async function getInvoiceById(token: string, id: string): Promise<(Invoic
     .from("invoices")
     .select("data, company_id, status, due_date")
     .eq("id", id)
+    .eq("user_id", user.id)  // ownership guard — prevents reading other users' invoices
     .single();
 
   if (error || !data) {
@@ -28,6 +29,7 @@ export async function getInvoiceById(token: string, id: string): Promise<(Invoic
   
   return null;
 }
+
 
 export async function saveInvoiceToSupabase(token: string, invoice: InvoiceState, companyId?: string) {
   const supabase = getServerSupabase(token);
