@@ -22,6 +22,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ ok: true, skipped: true });
     }
 
+    const supabase = getServiceSupabase();
+    if (!supabase) {
+      return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
+    }
+
+    // Security: verify userId actually exists in auth users table.
+    // Prevents external actors from spamming fake login log entries
+    // with arbitrary UUIDs that don't correspond to real users.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: existingUser } = await (supabase.from("users") as any)
+      .select("id")
+      .eq("id", userId)
+      .single();
+
+    if (!existingUser) {
+      // Silently reject — don't reveal whether the user exists
+      return NextResponse.json({ ok: true, skipped: true });
+    }
 
     // Extract IP — Vercel sets x-forwarded-for; fallback to x-real-ip
     const forwarded = request.headers.get("x-forwarded-for");
@@ -29,11 +47,6 @@ export async function POST(request: NextRequest) {
 
     // Vercel injects geo headers automatically on Edge/Serverless
     const country = request.headers.get("x-vercel-ip-country") ?? null;
-
-    const supabase = getServiceSupabase();
-    if (!supabase) {
-      return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
-    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase.from("user_login_logs") as any).insert({
@@ -58,3 +71,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }
+

@@ -62,7 +62,10 @@ export async function logUserLogin(providedSession?: Session | null) {
 
 
 export async function getLoginLogs(page = 1, pageSize = 50) {
-  const { supabase } = await import("@/utils/supabase/client");
+  // Must use service role — RLS SELECT policy blocks anon and regular authenticated users.
+  // getLoginLogs is only called from admin-actions which already verified isAdminToken().
+  const { getServiceSupabase } = await import("@/utils/supabase/client");
+  const supabase = getServiceSupabase();
   if (!supabase) return { logs: [], total: 0 };
 
   const from = (page - 1) * pageSize;
@@ -81,3 +84,4 @@ export async function getLoginLogs(page = 1, pageSize = 50) {
 
   return { logs: data || [], total: count || 0 };
 }
+
