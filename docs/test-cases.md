@@ -31,7 +31,7 @@ Base URL: http://localhost:3000 (hoặc production URL)
 2. Truy cập `/dashboard`
 
 **Expected:** Redirect về `/login?redirect=/dashboard`  
-**Result:** [ ]
+**Result:** [ ✅]
 
 ---
 
@@ -264,22 +264,22 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ## MODULE 9: PRICING PAGE & CHECKOUT
 
-### TC-901: Click Checkout Button (Lemon Squeezy Test Mode)
+### TC-901: Click Checkout Button (Billing Provider Test Mode)
 **Steps:**
 1. Mở `/pricing`
-2. Bấm nút "Upgrade to Pro" (Gói Monthly hoặc Yearly)
+2. Bấm nút "Subscribe to Pro" (Gói Monthly hoặc Yearly)
 
-**Expected:** Redirect mở cổng thanh toán Lemon Squeezy (Test Mode)  
+**Expected:** Cổng thanh toán (Paddle hoặc Lemon Squeezy) được mở (dạng modal hoặc redirect).  
 **Result:** [ ]
 
 ---
 
 ### TC-902: Nâng cấp thành công (Test card)
 **Steps:**
-1. Trên cổng thanh toán Test, nhập thẻ giả (Ví dụ thẻ 4242... của Stripe/Lemon)
+1. Trên cổng thanh toán Test, nhập thông tin thẻ giả (Ví dụ thẻ test của Paddle/Lemon Squeezy)
 2. Hoàn tất thanh toán
 
-**Expected:** Quay về `/dashboard`, Webhook hoạt động, account chuyển sang trạng thái Pro (Vô hạn company).  
+**Expected:** Quay về `/dashboard`, Webhook/Event hoạt động, account chuyển sang trạng thái Pro (nâng giới hạn items, clients, companies, invoices). Trạng thái ghi nhận trong Payment Logs của Admin.  
 **Result:** [ ]
 
 ---
@@ -322,12 +322,13 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ## MODULE 12: COMPANY MANAGEMENT
 
-### TC-1201: Edit Company
+### TC-1201: Edit Company & Signature
 **Steps:**
 1. Dashboard → click icon Edit trên một company
-2. Đổi name, address → Save
+2. Đổi name, address.
+3. Ký tên vào "Company Signature" qua Signature Pad → Save
 
-**Expected:** Thông tin company cập nhật ngay trong danh sách  
+**Expected:** Thông tin company và chữ ký được cập nhật. Chữ ký xuất hiện trên invoice khi tạo mới.  
 **Result:** [ ]
 
 ---
@@ -354,13 +355,14 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
-### TC-1302: Edit invoice và lưu
+### TC-1302: Edit invoice, Thêm Signature và lưu
 **Steps:**
 1. Mở invoice → click Edit
 2. Đổi client name, thêm 1 line item
-3. Click Save
+3. Thay đổi/Thêm chữ ký vào Signature Pad
+4. Click Save
 
-**Expected:** Invoice cập nhật, redirect về trang xem invoice hoặc company  
+**Expected:** Invoice cập nhật chữ ký, redirect về trang xem invoice hoặc company  
 **Result:** [ ]
 
 ---
@@ -458,25 +460,35 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
-## MODULE 17: ITEM LIBRARY
+## MODULE 17: ITEMS & CLIENTS LIBRARY
 
-### TC-1701: Truy cập và hiển thị Empty State
+### TC-1701: Items & Clients - Empty State
 **Steps:**
-1. Dashboard → Items
-2. Kiểm tra nếu chưa có item nào, trang sẽ báo "Your library is empty"
-3. Click nút "Create Item" từ Empty State
+1. Dashboard → Library (Items)
+2. Kiểm tra nếu chưa có item nào, trang sẽ báo "Your items library is empty".
+3. Chuyển sang Tab "Clients", kiểm tra báo "Your clients library is empty".
 
-**Expected:** Form "New Item" modal hiện ra  
+**Expected:** Form Empty State hiển thị chuẩn ở cả 2 tab.  
 **Result:** [ ]
 
 ---
 
-### TC-1702: Tạo Item mới và hiển thị trong danh sách
+### TC-1702: Tạo Item / Client mới và hiển thị trong danh sách
 **Steps:**
-1. Trong modal "New Item", điền Name, Description, Rate
-2. Click Save
+1. Ở tab Items, click "Add Items", thử "Bulk Add Items" hoặc tạo mới nhanh 1 item.
+2. Ở tab Clients, click "New Client", điền Name, Email, Address -> Save.
 
-**Expected:** Modal đóng, Item xuất hiện trong danh sách Item Library  
+**Expected:** Item/Client hiển thị đầy đủ thông tin trong bảng tương ứng.  
+**Result:** [ ]
+
+---
+
+### TC-1703: Edit / Delete từ Library
+**Steps:**
+1. Bấm nút Edit trên 1 item / 1 client, thay đổi data -> Save.
+2. Bấm nút Delete trên 1 item / 1 client -> Confirm.
+
+**Expected:** Thông tin thay đổi lưu thành công, hoặc Item/Client bị xoá khỏi bảng.  
 **Result:** [ ]
 
 ---
@@ -547,8 +559,41 @@ Base URL: http://localhost:3000 (hoặc production URL)
 
 ---
 
+## MODULE 21: ADMIN PANEL
+
+### TC-2101: Phân quyền truy cập Admin
+**Steps:**
+1. Dùng tài khoản thường truy cập `/admin`.
+2. Dùng tài khoản Admin (vunguyencapital@gmail.com) truy cập `/admin`.
+
+**Expected:** Tài khoản thường bị redirect về Dashboard. Tài khoản Admin xem được toàn bộ Panel.  
+**Result:** [ ]
+
+---
+
+### TC-2102: Xem Login Logs và Payment Logs
+**Steps:**
+1. Vào `/admin` (với tư cách Admin).
+2. Kiểm tra tab "Login Logs" để xem thống kê login.
+3. Chuyển sang tab "Payment Logs" và bung mở (expand) 1 row để xem JSON.
+
+**Expected:** Dữ liệu logs load thành công, phân trang và toggle JSON row hoạt động.  
+**Result:** [ ]
+
+---
+
+### TC-2103: Run Invoice Cron và Test Email
+**Steps:**
+1. Tại `/admin`, bấm nút "Run Invoice Cron".
+2. Tại ô "Test email...", nhập email và bấm "Test Email".
+
+**Expected:** Hệ thống trả về thông báo "Success" (Màu xanh) cùng message kết quả.  
+**Result:** [ ]
+
+---
+
 ## TỔNG KẾT CHUNG
-- Tổng bài kiểm tra (Total Test Cases): 48
+- Tổng bài kiểm tra (Total Test Cases): 54
 - Số bài Pass: ___
 - Số bài Fail: ___
 - Ghi chú lỗi phát sinh:

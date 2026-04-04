@@ -6,11 +6,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+import { AuthGuard } from "@/components/auth-guard";
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-zinc-50/10 dark:bg-zinc-950">
       <main className="pb-8">
-        {children}
+        <AuthGuard>{children}</AuthGuard>
       </main>
     </div>
   );

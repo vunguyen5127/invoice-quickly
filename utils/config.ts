@@ -51,6 +51,8 @@ interface Config {
     readonly adminEmail: string;
   };
 
+  readonly adminEmails: readonly string[];
+
   readonly openai: { readonly apiKey?: string };
   readonly cron: { readonly secret?: string };
 }
@@ -115,6 +117,11 @@ export const config: Config = {
     password: getEnv("MAILER_PASSWORD", false),
     adminEmail: getEnv("ADMIN_ALERT_EMAIL", false),
   },
+
+  adminEmails: (process.env.TESTER_EMAILS || process.env.ADMIN_ALERT_EMAIL || "vunguyencapital@gmail.com,vunguyen5127@gmail.com")
+    .split(",")
+    .map(e => e.trim())
+    .filter(Boolean),
 
   openai: { apiKey: getEnv("OPENAI_API_KEY", false) },
   cron: { secret: getEnv("CRON_SECRET", false) },
