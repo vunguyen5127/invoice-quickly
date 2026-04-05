@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect, use, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { InvoiceForm } from "@/components/invoice-form";
 import { initialQuoteState, QuoteState } from "@/types/quote";
@@ -14,6 +14,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 import { UpgradeModal } from "@/components/upgrade-modal";
+import { useData } from "@/contexts/data-context";
 
 export default function QuoteEditor({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -27,8 +28,15 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
   const [isMounted, setIsMounted] = useState(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general">("general");
+  
+  const { companies: myCompanies, loadingData } = useData();
+  const initRef = useRef(false);
 
   useEffect(() => {
+    if (loadingData) return;
+    if (initRef.current) return;
+    initRef.current = true;
+
     const initQuote = async () => {
       if (!supabase) return;
       const { data: { session } } = await supabase.auth.getSession();
@@ -49,9 +57,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
         
         if (session) {
           try {
-            const { getUserCompanies } = await import("@/utils/supabase/dashboard-actions");
-            const res = await getUserCompanies(session.access_token);
-            const comps = res.data || [];
+            const comps = myCompanies || [];
             
             if (!targetCompId && comps.length === 1) {
                targetCompId = comps[0].id;
@@ -113,7 +119,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
     };
 
     initQuote();
-  }, [resolvedParams.id, isNew]);
+  }, [resolvedParams.id, isNew, loadingData, myCompanies]);
 
   const handleSave = async () => {
     if (!companyId) {
