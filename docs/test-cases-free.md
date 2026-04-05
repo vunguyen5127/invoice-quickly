@@ -69,8 +69,10 @@
 ---
 
 ### FREE-06: Dashboard pin company
-**Note:** FREE user chỉ có 1 company nên không thể test pin (cần ≥2). Xem TC-203 trong PRO file.  
-**Result:** `[ ⏭ ]` — Cần ≥2 companies, FREE user bị giới hạn 1 company
+**Note:** FREE user chỉ có 1 company → không thể verify reorder (cần ≥2). Xem PRO file để test đầy đủ.
+
+**Expected:** Company bị ghim xuất hiện lên đầu danh sách, icon ghim đổi màu active  
+**Result:** `[ ⏭ ]` — Icon đổi màu vàng ✅ và persist sau reload ✅. Reorder không thể verify vì FREE chỉ có 1 company — xem **PRO file**.
 
 ---
 

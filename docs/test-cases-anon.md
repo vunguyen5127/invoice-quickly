@@ -276,10 +276,10 @@
 | Thống kê | Số lượng |
 |----------|----------|
 | **Tổng test cases** | **25** |
-| Pass ✅ | **19** |
+| Pass ✅ | **21** |
 | Fail ❌ | **0** |
 | Chưa test 🔄 | **0** |
-| Skip ⏭ | **6** |
+| Skip ⏭ | **4** |
 
 ### ✅ Tất cả cases đã được test trong Run ngày 2026-04-05
 

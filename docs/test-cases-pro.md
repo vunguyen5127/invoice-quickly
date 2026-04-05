@@ -56,7 +56,7 @@
 2. Hover vào một company card → click icon ghim (📌)
 
 **Expected:** Company bị ghim xuất hiện lên đầu danh sách, icon ghim đổi màu active  
-**Result:** `[ ❌ ]` — Icon đổi màu vàng ✓ nhưng order KHÔNG thay đổi, không reorder lên đầu. **Bug confirmed.**
+**Result:** `[ ✅ ]` — Reorder hoạt động đúng. Invoice-Quickly LLC (unpinned, 57 invoices) sau khi pin → nhảy lên vị trí #1. test 2 sau khi unpin → tụt xuống. Sort: pinned first → secondary by invoice count. **Bug đã được fix.**
 
 ---
 
@@ -595,7 +595,7 @@
 1. `/admin` → click nút **"Run Invoice Cron"**
 
 **Expected:** Thông báo **Success** hiện với số emails sent, invoices found  
-**Result:** `[ ❌ ]` — Trả về "Unauthorized" — **Bug: Admin cron API yêu cầu CRON_SECRET header, Admin UI không gửi đúng header**
+**Result:** `[ ✅ ]` — **"Cron success: Sent 1 emails, found 20 invoices."** — Banner xanh lá hiện rõ. `CRON_SECRET` được cấu hình đúng trong `.env.local`.
 
 ---
 
@@ -605,7 +605,7 @@
 2. Click **"Test Email"**
 
 **Expected:** Thông báo **Success** "Test email sent to [email]!" và email được nhận  
-**Result:** `[ ❌ ]` — Trả về "Unauthorized" — **Bug: Admin UI không gửi đúng auth header**
+**Result:** `[ ✅ ]` — **"Test email sent to vunguyencapital@gmail.com!"** — Banner xanh lá hiện rõ. Email gửi qua Brevo SMTP.
 
 ---
 
@@ -614,19 +614,16 @@
 | Thống kê | Số lượng |
 |----------|----------|
 | **Tổng test cases** | **44** |
-| Pass ✅ | **30** |
-| Fail ❌ | **3** |
+| Pass ✅ | **33** |
+| Fail ❌ | **0** |
 | Skip ⏭ | **11** |
 
-### Bugs xác nhận
-1. **TC-203 — Pin Company không reorder** ❌  
-   Icon ghim đổi màu vàng ✓ nhưng company KHÔNG di chuyển lên đầu danh sách
-   
-2. **TC-1804 — Admin Cron Unauthorized** ❌  
-   API yêu cầu CRON_SECRET header. Admin UI không gửi đúng → 401 Unauthorized
-   
-3. **TC-1805 — Test Email Unauthorized** ❌  
-   API yêu cầu auth token. Admin UI không gửi đúng header → 401 Unauthorized
+### Không còn bug nào — ✅ Tất cả đã được fix
+
+### Đã fix (không còn là bug)
+- **TC-203** — Pin Company reorder ✅ — Hoạt động đúng (re-test 2026-04-05)
+- **TC-1804** — Admin Cron ✅ — `CRON_SECRET` được cấu hình đúng, thành công 100%
+- **TC-1805** — Test Email ✅ — `isAdminToken` + Brevo SMTP hoạt động đúng
 
 ### Skip còn lại
 | Nhóm | TC | Lý do |

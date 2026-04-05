@@ -107,7 +107,7 @@ export function InvoicePreview({ invoice, isLoggedIn = false, compact = false, d
         <div className="flex justify-between items-start mb-8">
            <div className="space-y-1 flex-1 min-w-0">
              <h2 className="text-2xl font-bold tracking-tight text-zinc-900">{invoice.company.name.split(/,|\n/)[0]}</h2>
-             <div className="text-[12px] text-zinc-500 max-w-sm">
+             <div className="text-[12px] text-zinc-500 whitespace-pre-wrap">
                 {invoice.company.name.split(/,|\n/).slice(1).map((line: string, idx: number) => (
                   <p key={idx}>{line.trim()}</p>
                 ))}
