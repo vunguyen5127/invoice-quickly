@@ -1,12 +1,41 @@
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
 
+// UUID regex pattern
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Sanitize a filename for PDF download.
+ * - If it contains a UUID segment as the primary identifier, replace it with "Invoice"
+ * - Strip characters not safe for filenames
+ */
+function sanitizeFilename(name: string): string {
+  if (!name || name.trim() === "") return "Invoice";
+  // e.g. "Invoice-c45e6809-9703-..." → detect UUID after the prefix
+  const parts = name.split("-");
+  // A UUID has 5 groups: 8-4-4-4-12
+  if (parts.length >= 5) {
+    const possibleUuid = parts.slice(-5).join("-");
+    if (UUID_PATTERN.test(possibleUuid)) {
+      // The meaningful prefix before the UUID (e.g. "Invoice")
+      const prefix = parts.slice(0, parts.length - 5).join("-");
+      return prefix.trim() || "Invoice";
+    }
+  }
+  // Also guard against a raw UUID being passed as the whole filename
+  if (UUID_PATTERN.test(name)) return "Invoice";
+  // Replace characters unsafe for filenames
+  return name.replace(/[\\/:*?"<>|]/g, "_").trim() || "Invoice";
+}
+
 export const generatePDF = async (elementId: string, filename: string) => {
   const element = document.getElementById(elementId);
   if (!element) {
     console.error(`Element with id ${elementId} not found`);
     return;
   }
+  // Sanitize to prevent UUID or invalid characters in the downloaded filename
+  filename = sanitizeFilename(filename);
 
   // Optional: Force light mode for printing
   const originalTheme = document.documentElement.className;

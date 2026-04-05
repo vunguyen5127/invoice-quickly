@@ -9,9 +9,11 @@ export async function getInvoiceById(token: string, id: string): Promise<(Invoic
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
   const { data, error } = await supabase
     .from("invoices")
-    .select("data, company_id, status, due_date")
+    .select("data, company_id, status, due_date, invoice_number")
     .eq("id", id)
     .eq("user_id", user.id)  // ownership guard — prevents reading other users' invoices
     .single();
@@ -24,6 +26,16 @@ export async function getInvoiceById(token: string, id: string): Promise<(Invoic
   if (data.data) {
     const invoiceState = data.data as unknown as InvoiceState;
     invoiceState.id = id;
+
+    // Fix legacy data: if JSON invoiceNumber is a UUID (old bug), use the DB invoice_number column instead
+    if (
+      invoiceState.details?.invoiceNumber &&
+      UUID_RE.test(invoiceState.details.invoiceNumber) &&
+      data.invoice_number
+    ) {
+      invoiceState.details.invoiceNumber = data.invoice_number;
+    }
+
     return { ...invoiceState, _companyId: data.company_id, _status: data.status || 'draft', _dueDate: data.due_date };
   }
   
