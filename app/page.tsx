@@ -4,9 +4,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Free Invoice Generator No Sign Up | No Watermark | Invoice-Quickly",
+  title: "Free Invoice Generator — No Sign Up, No Watermark | Invoice-Quickly",
   description:
-    "Create professional invoices online for free. No signup, no watermark, instant PDF export, secure share links, and support for 20+ languages.",
+    "Free invoice generator online. Create professional invoices in seconds — no signup required, no watermark, instant PDF download, and support for 20+ languages. The best free invoice maker for freelancers & small businesses.",
+  keywords: [
+    "free invoice generator",
+    "invoice generator",
+    "free invoice maker",
+    "online invoice generator",
+    "create invoice free",
+    "invoice maker",
+    "free invoice generator no sign up",
+    "invoice generator no watermark",
+    "pdf invoice generator",
+    "free invoice template",
+  ],
   alternates: { canonical: "/" },
 };
 
@@ -530,7 +542,41 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          9. BOTTOM CTA — high contrast dark gradient
+          9. SEO CONTENT — keyword-rich editorial block
+      ══════════════════════════════════════════════ */}
+      <section className="py-20 bg-white dark:bg-zinc-950" aria-label="About Invoice-Quickly free invoice generator">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">
+            The Best Free Invoice Generator Online
+          </h2>
+          <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-zinc-400 leading-relaxed space-y-4 text-base sm:text-[15px]">
+            <p>
+              Invoice-Quickly is a <strong className="text-slate-800 dark:text-zinc-200">free invoice generator</strong> built for freelancers, contractors, and small business owners who need to create professional invoices fast — without paying for expensive accounting software or dealing with clunky templates. Our online invoice maker is completely free: no account required, no watermark on your PDFs, and no hidden fees.
+            </p>
+            <p>
+              Unlike other free invoice tools that lock core features behind a paywall, Invoice-Quickly gives you the full experience upfront. Create and download a polished, print-ready PDF invoice in under 60 seconds. Use our <strong className="text-slate-800 dark:text-zinc-200">free invoice generator</strong> to bill clients in 20+ languages — including full Arabic RTL support — and in 18+ currencies including USD, EUR, GBP, AUD, INR, and VND.
+            </p>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mt-8 mb-3">Why use a free online invoice generator?</h3>
+            <p>
+              A dedicated <strong className="text-slate-800 dark:text-zinc-200">online invoice generator</strong> saves hours every month compared to Word documents or Excel templates. Calculations are automatic, formatting is always consistent, and your invoice is ready to send in minutes — not hours. Invoice-Quickly is trusted by freelance designers, photographers, developers, consultants, and contractors around the world to create professional invoices online for free.
+            </p>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mt-8 mb-3">What makes a great invoice maker?</h3>
+            <p>
+              The best <strong className="text-slate-800 dark:text-zinc-200">invoice maker</strong> is one that stays out of your way. Invoice-Quickly gives you a live preview that updates as you type, automatic tax and discount calculations, a clean PDF export with zero watermarks, and a shareable link so clients can view their invoice on any device with no app required. You can <strong className="text-slate-800 dark:text-zinc-200">create an invoice for free</strong> and download it instantly — or save it to your account for future reference.
+            </p>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-2">
+            {["Free PDF Download","No Watermark","No Signup Required","20+ Languages","18+ Currencies","Live Preview","Shareable Links"].map((tag) => (
+              <span key={tag} className="text-xs font-medium px-3 py-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 border border-slate-200 dark:border-zinc-700">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          10. BOTTOM CTA — high contrast dark gradient
       ══════════════════════════════════════════════ */}
       <section className="py-12 px-4 relative z-20">
         <div className="relative mx-auto max-w-6xl rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 px-6 py-24 md:py-32 overflow-hidden text-center shadow-2xl">

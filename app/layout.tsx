@@ -76,25 +76,31 @@ const notoThai = Noto_Sans_Thai({
 
 export const metadata: Metadata = {
   title: {
-    default: "Free Invoice Generator No Sign Up | No Watermark | Invoice-Quickly",
+    default: "Free Invoice Generator — No Sign Up, No Watermark | Invoice-Quickly",
     template: "%s | Invoice-Quickly",
   },
   description:
-    "Create professional invoices online for free. No signup, no watermark, instant PDF export, secure share links, and support for 20+ languages.",
+    "Free invoice generator online. Create professional invoices in seconds — no signup required, no watermark, instant PDF download. The best free invoice maker for freelancers & small businesses.",
   keywords: [
-    "free invoice generator no signup",
+    "free invoice generator",
     "invoice generator",
     "free invoice maker",
-    "pdf invoice template",
-    "billing software",
-    "freelance invoice maker"
+    "online invoice generator",
+    "create invoice free",
+    "invoice maker",
+    "free invoice generator no sign up",
+    "invoice generator no watermark",
+    "pdf invoice generator free",
+    "free invoice template",
+    "billing software free",
+    "freelance invoice maker",
   ],
   metadataBase: new URL("https://invoice-quickly.com"),
   openGraph: {
     type: "website",
     siteName: "Invoice-Quickly",
     title: "Free Invoice Generator Online | No Signup, No Watermark | Invoice-Quickly",
-    description: "Create professional invoices online for free. No signup, no watermark, instant PDF export, secure share links, and support for 20+ languages.",
+    description: "Free invoice generator online. Create professional PDF invoices in seconds — no signup, no watermark. The best free invoice maker for freelancers & small businesses.",
     url: "https://invoice-quickly.com",
     images: [
       {
@@ -108,7 +114,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Free Invoice Generator Online | No Signup, No Watermark | Invoice-Quickly",
-    description: "Create professional invoices online for free. No signup, no watermark, instant PDF export, secure share links, and support for 20+ languages.",
+    description: "Free invoice generator online. Create professional PDF invoices in seconds — no signup, no watermark. The best free invoice maker for freelancers & small businesses.",
     images: ["https://invoice-quickly.com/android-chrome-512x512.png"],
   },
   robots: {
