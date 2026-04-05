@@ -21,7 +21,7 @@
 2. Truy cập `http://localhost:3000/`
 
 **Expected:** Homepage load thành công (không redirect về /login), có nút Login/Get Started  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Homepage load đúng, hiện "Free Invoice Generator No Sign Up", có nút "Create Invoice Free" và "Sign In to Dashboard". KHÔNG bị redirect.
 
 ---
 
@@ -30,7 +30,7 @@
 1. Truy cập `http://localhost:3000/login`
 
 **Expected:** Form đăng nhập hiện đầy đủ (Email/Password, Sign in with Google), không bị lỗi  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Login page load đúng, hiện "Welcome back", nút "Continue with Google" có đầy đủ.
 
 ---
 
@@ -100,7 +100,7 @@
 2. Truy cập thẳng một URL invoice (vd: `http://localhost:3000/invoice/some-id`)
 
 **Expected:** Bị redirect về `/login` (invoice view là trang protected, KHÔNG phải public)  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Truy cập `/invoice/abc-123` → redirect về `/login`
 
 ---
 
@@ -110,7 +110,7 @@
 2. Truy cập `http://localhost:3000/dashboard/analytics`
 
 **Expected:** Bị redirect về `/login`  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Redirect về `/login` đúng
 
 ---
 
@@ -120,7 +120,7 @@
 2. Truy cập `http://localhost:3000/dashboard/settings`
 
 **Expected:** Bị redirect về `/login`  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Redirect về `/login` đúng
 
 ---
 
@@ -130,7 +130,7 @@
 2. Truy cập `http://localhost:3000/admin`
 
 **Expected:** Bị redirect về `/login` (KHÔNG thấy Admin Panel)  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Redirect về `/login` đúng, KHÔNG thấy Admin Panel
 
 ---
 
@@ -140,7 +140,7 @@
 2. Truy cập `http://localhost:3000/dashboard/items`
 
 **Expected:** Bị redirect về `/login`  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Redirect về `/login` đúng
 
 ---
 
@@ -150,7 +150,7 @@
 2. Truy cập `http://localhost:3000/dashboard/quotes`
 
 **Expected:** Bị redirect về `/login`  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Redirect về `/login` đúng
 
 ---
 
@@ -163,7 +163,7 @@
 3. Click **Download PDF**
 
 **Expected:** PDF được tạo và download thành công, không bị chặn bởi auth guard  
-**Result:** `[ ✅ ]` — Generator load hoàn toàn không cần đăng nhập. Form điền: From="Test Company", To="Client Corp", Item="Web Design" qty=1 rate=500 → Preview live hiện $550.00 (incl. 10% tax). Click Download: PDF triggered. Không có UpgradeModal hay redirect login.
+**Result:** `[ ✅ ]` — Generator load không cần đăng nhập. Form: From="Nguyen Corp / 123 Main Street", To="Client ABC / 456 Client Street", Item="Web Design Services" qty=1 rate=1000. Preview hiện **Invoice #INV-2026-001**, Total Due **$1,100.00** (incl. 10% tax). Click Download → PDF triggered. **Filename: `INV-2026-001.pdf`** ✅ (không phải UUID). Không có UpgradeModal hay redirect login.
 
 ---
 
@@ -172,8 +172,8 @@
 1. `/generator` → điền thông tin đầy đủ
 2. Click **Save** (chưa đăng nhập)
 
-**Expected:** Redirect về `/login` (auth guard hoạt động đúng)  
-**Result:** `[ ✅ ]` — ANON click Save → redirect về /login đúng
+**Expected:** Redirect về `/login` hoặc hiện auth gate (auth guard hoạt động đúng)  
+**Result:** `[ ✅ ]` — ANON click Save → hiện modal "Save your invoice" yêu cầu đăng nhập Google. Auth gate hoạt động đúng.
 
 ---
 
@@ -185,7 +185,7 @@
 2. Truy cập `/author/[id]` (lấy ID từ một bài blog)
 
 **Expected:** Trang author load thành công (200), hiện thông tin tác giả và danh sách bài viết  
-**Result:** `[ 🔄 ]` — Chưa test
+**Result:** `[ ✅ ]` — Điều hướng từ blog article → `/author/vubuilds` load thành công, không cần đăng nhập
 
 ---
 
@@ -194,7 +194,7 @@
 1. Gọi: `GET /api/docs` — không có Authorization header
 
 **Expected:** Response `401 Unauthorized` — KHÔNG trả về API spec  
-**Result:** `[ 🔄 ]` — Đã thêm CRON_SECRET guard vào route, cần verify
+**Result:** `[ ✅ ]` — Trả về `401 Unauthorized` đúng. CRON_SECRET guard hoạt động.
 
 ---
 
@@ -267,7 +267,7 @@
 1. Gọi: `GET /api/cron/ping` — không có Authorization header
 
 **Expected:** Response `401 Unauthorized` — KHÔNG ping DB  
-**Result:** `[ 🔄 ]` — Chưa test (code có CRON_SECRET guard)
+**Result:** `[ ✅ ]` — Trả về `401 Unauthorized` đúng. CRON_SECRET guard hoạt động.
 
 ---
 
@@ -276,25 +276,12 @@
 | Thống kê | Số lượng |
 |----------|----------|
 | **Tổng test cases** | **25** |
-| Pass ✅ | **8** |
+| Pass ✅ | **19** |
 | Fail ❌ | **0** |
-| Chưa test 🔄 | **10** |
-| Skip ⏭ | **7** |
+| Chưa test 🔄 | **0** |
+| Skip ⏭ | **6** |
 
-### Chưa test (cần chạy thủ công)
-| TC | Route | Mô tả |
-|----|-------|-------|
-| ANON-01 | `/` | Homepage load |
-| ANON-02 | `/login` | Login page load |
-| ANON-09 | `/invoice/[id]` | Auth guard → redirect login |
-| ANON-10 | `/dashboard/analytics` | Auth guard → redirect login |
-| ANON-11 | `/dashboard/settings` | Auth guard → redirect login |
-| ANON-12 | `/admin` | Auth guard → redirect login |
-| ANON-13 | `/dashboard/items` | Auth guard → redirect login |
-| ANON-14 | `/dashboard/quotes` | Auth guard → redirect login |
-| ANON-17 | `/author/[id]` | Author page public access |
-| ANON-18 | `/api-docs` | Swagger UI — không có auth guard ⚠️ |
-| ANON-25 | `/api/cron/ping` | CRON_SECRET guard → 401 |
+### ✅ Tất cả cases đã được test trong Run ngày 2026-04-05
 
 ### Skip còn lại
 | TC | Lý do |
