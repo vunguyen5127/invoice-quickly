@@ -189,14 +189,12 @@
 
 ---
 
-### ANON-18: `/api-docs` — Swagger UI public access
+### ANON-18: `/api/docs` — API spec bảo vệ bởi CRON_SECRET → 401
 **Steps:**
-1. Mở trình duyệt ẩn danh
-2. Truy cập `http://localhost:3000/api-docs`
+1. Gọi: `GET /api/docs` — không có Authorization header
 
-**Expected:** Swagger UI load thành công và hiển thị API docs — **không cần đăng nhập**  
-**Note:** ⚠️ Trang này hiện KHÔNG có auth guard, cần đánh giá xem có nên bảo vệ không  
-**Result:** `[ 🔄 ]` — Chưa test
+**Expected:** Response `401 Unauthorized` — KHÔNG trả về API spec  
+**Result:** `[ 🔄 ]` — Đã thêm CRON_SECRET guard vào route, cần verify
 
 ---
 
