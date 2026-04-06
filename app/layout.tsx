@@ -158,6 +158,7 @@ import { DataProvider } from "@/contexts/data-context";
 import Script from "next/script";
 
 const GA_MEASUREMENT_ID = "G-SHEBZLWDDC";
+const GOOGLE_ADS_ID = "AW-17800091853";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -203,6 +204,7 @@ export default function RootLayout({
           gtag('config', '${GA_MEASUREMENT_ID}', {
             page_path: window.location.pathname,
           });
+          gtag('config', '${GOOGLE_ADS_ID}');
         `}
       </Script>
       <body className="antialiased min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
