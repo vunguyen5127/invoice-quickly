@@ -2044,5 +2044,245 @@ Most virtual assistants work with multiple clients simultaneously. Maintain comp
 
 Invoice at the beginning of each billing period — monthly retainers should be invoiced on the first of the month — and set Net 7 or Net 15 terms, not Net 30. For hourly clients, require a deposit of one week's expected billing to begin work. This protects your income if a new client relationship does not work out.`,
   },
+  {
+    slug: "make-your-own-invoice",
+    metadata: {
+      title: "Make Your Own Invoice Online — Free, No Sign Up",
+      description: "Make your own invoice online in 60 seconds. Free PDF download, no watermark, no account required. The easiest way to create your own professional invoice for freelancers and small businesses in Australia & Canada.",
+    },
+    hero: {
+      badge: "Make Your Own Invoice — Free",
+      title: "Make Your Own ",
+      highlight: "Professional Invoice",
+      description: "Create exactly the invoice you need — your branding, your details, your terms. Download a clean PDF in under 60 seconds. No signup, no watermark.",
+    },
+    overview: {
+      title: "Why make your own invoice?",
+      content: "Pre-made templates force you into someone else's format. When you make your own invoice with Invoice-Quickly, you control every detail — your company name and logo, your client's details, your line items, your payment terms, and your currency. The result is a professional invoice that looks like it came from an established business, not a generic tool.",
+    },
+    features: {
+      title: "Everything you need to make your own invoice",
+      items: [
+        {
+          title: "Your Brand, Your Invoice",
+          description: "Upload your logo, enter your business name and address. Your invoice looks like it came from your company, not a template site.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "No Sign Up Required",
+          description: "Start building your invoice immediately — no account, no email confirmation, no credit card. Just open and make your invoice.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+        {
+          title: "Instant PDF Download",
+          description: "Download a watermark-free, print-ready PDF the moment you're done. Share directly or save for your records.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Your Invoice, Your Way",
+      description: "See how a fully customized invoice looks — with your logo, your line items, and your payment terms.",
+      data: {
+        company: { name: "Coastal Creative Co.\n12 Harbour View Rd, Sydney NSW 2000", logo: "", email: "hello@coastalcreative.com.au", address: "12 Harbour View Rd", phone: "+61 2 9000 1234" },
+        client: { name: "BluePeak Digital\n45 King St, Melbourne VIC 3000", email: "accounts@bluepeakdigital.com.au", address: "45 King St", phone: "+61 3 8000 5678" },
+        items: [
+          { id: "1", description: "Brand Identity Design — Logo, Colours & Typography Guide", quantity: 1, rate: 2800 },
+          { id: "2", description: "Social Media Asset Pack (Instagram, LinkedIn, Facebook)", quantity: 1, rate: 950 },
+          { id: "3", description: "Revision Rounds", quantity: 3, rate: 150 },
+        ],
+        details: { invoiceNumber: "INV-CC-2026-008", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Frequently Asked Questions",
+      items: [
+        {
+          question: "Can I really make my own invoice for free?",
+          answer: "Yes, completely free. Invoice-Quickly lets you make your own invoice with your logo, business details, and custom line items — then download a professional PDF with zero watermarks and zero cost. No account required.",
+        },
+        {
+          question: "Do I need to sign up to make my own invoice?",
+          answer: "No signup needed. Open the generator, fill in your details, and download your invoice. If you want to save your invoice history or company profile for future use, you can optionally create a free account.",
+        },
+        {
+          question: "Can I make my own invoice on my phone?",
+          answer: "Yes. Invoice-Quickly works on any device — phone, tablet, or desktop. The editor and PDF export are fully responsive, so you can make and send your own invoice from anywhere.",
+        },
+        {
+          question: "Is my invoice legally valid?",
+          answer: "An invoice created with Invoice-Quickly includes all the fields required for a legally compliant business invoice in Australia and Canada: your business details, client details, itemized services, GST/tax breakdowns, unique invoice number, issue date, and due date.",
+        },
+        {
+          question: "Can I make my own invoice in AUD or CAD?",
+          answer: "Yes. Invoice-Quickly supports 18+ currencies including AUD, CAD, USD, EUR, GBP, and more. Simply select your preferred currency when creating your invoice.",
+        },
+        {
+          question: "Can I add GST to my invoice?",
+          answer: "Yes. You can add a custom tax rate (e.g., 10% GST for Australia or 5% GST for Canada) directly in the invoice editor. The tool automatically calculates the tax amount and shows it as a separate line item.",
+        },
+      ],
+    },
+    content: `## How to Make Your Own Invoice Online — Step-by-Step
+
+Making your own invoice doesn't have to be complicated. Invoice-Quickly streamlines the entire process into a few simple steps, so you can make a professional invoice and get paid — without wrestling with Microsoft Word or paying for expensive accounting software.
+
+## Step 1: Enter Your Business Details
+
+Start by adding your company name, address, phone number, and email. If you have a logo, upload it — it appears at the top of your invoice and immediately gives your document a professional look. Australian businesses should include their ABN; Canadian businesses should include their GST/HST registration number.
+
+## Step 2: Add Your Client's Information
+
+Enter your client's name or company name, billing address, and contact email. For Australian business clients, it's good practice to include their ABN as well. Having the correct billing details ensures your invoice lands in the right accounts payable queue.
+
+## Step 3: List Your Services or Products
+
+Add each service or product as a separate line item. Be specific — "Brand logo design — 2 concepts, 3 revisions included" is far better than just "Design work." Clear descriptions reduce the chance of disputes and speed up payment approval.
+
+## Step 4: Set Your Tax Rate and Payment Terms
+
+For Australian freelancers registered for GST, add a 10% tax rate. For Canadian businesses, apply 5% GST federally (or the applicable HST for your province). Set a clear due date — Net 14 or Net 30 are standard for freelancers and small businesses.
+
+## Step 5: Download and Send
+
+Once you're satisfied with the preview, click Download PDF. Your invoice downloads instantly as a clean, watermark-free PDF. Attach it to an email or use Invoice-Quickly's secure share link to send clients a direct URL.
+
+## What Makes a Professional Invoice?
+
+When you make your own invoice, these elements separate professional documents from amateur ones:
+
+- A **unique invoice number** (e.g., INV-2026-001) for your records and the client's accounting system
+- Your **ABN or GST number** if you're registered — legally required in Australia for invoices over $75
+- **Itemized line items** — never lump everything into one line
+- A **specific due date** — "Net 30" is ambiguous; "Due: 15 May 2026" is not
+- **Payment instructions** — bank BSB and account number, PayID, or payment platform link
+
+## Making Your Own Invoice vs Using a Template
+
+Most invoice templates are rigid. They show fields you don't need and hide ones you do. When you make your own invoice with Invoice-Quickly, the form adapts to your workflow — add as many or as few line items as you need, choose your currency, select your language, and set your own payment terms. The result is an invoice that reflects your work, not a template designer's assumptions.`,
+  },
+  {
+    slug: "make-your-own-invoice",
+    metadata: {
+      title: "Make Your Own Invoice Online — Free, No Sign Up | Invoice-Quickly",
+      description: "Make your own invoice online in 60 seconds. Free PDF download, no watermark, no account required. The easiest way to create your own professional invoice for freelancers and small businesses in Australia & Canada.",
+    },
+    hero: {
+      badge: "Make Your Own Invoice — Free",
+      title: "Make Your Own ",
+      highlight: "Professional Invoice",
+      description: "Create exactly the invoice you need — your branding, your details, your terms. Download a clean PDF in under 60 seconds. No signup, no watermark.",
+    },
+    overview: {
+      title: "Why make your own invoice?",
+      content: "Pre-made templates force you into someone else's format. When you make your own invoice with Invoice-Quickly, you control every detail — your company name and logo, your client's details, your line items, your payment terms, and your currency. The result is a professional invoice that looks like it came from an established business, not a generic tool.",
+    },
+    features: {
+      title: "Everything you need to make your own invoice",
+      items: [
+        {
+          title: "Your Brand, Your Invoice",
+          description: "Upload your logo, enter your business name and address. Your invoice looks like it came from your company, not a template site.",
+          icon: "zap",
+          color: "text-amber-500 bg-amber-50 dark:bg-amber-900/20",
+        },
+        {
+          title: "No Sign Up Required",
+          description: "Start building your invoice immediately — no account, no email confirmation, no credit card. Just open and make your invoice.",
+          icon: "shield",
+          color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20",
+        },
+        {
+          title: "Instant PDF Download",
+          description: "Download a watermark-free, print-ready PDF the moment you're done. Share directly or save for your records.",
+          icon: "fileText",
+          color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20",
+        },
+      ],
+    },
+    exampleInvoice: {
+      title: "Your Invoice, Your Way",
+      description: "See how a fully customized invoice looks — with your logo, your line items, and your payment terms.",
+      data: {
+        company: { name: "Coastal Creative Co.\n12 Harbour View Rd, Sydney NSW 2000", logo: "", email: "hello@coastalcreative.com.au", address: "12 Harbour View Rd", phone: "+61 2 9000 1234" },
+        client: { name: "BluePeak Digital\n45 King St, Melbourne VIC 3000", email: "accounts@bluepeakdigital.com.au", address: "45 King St", phone: "+61 3 8000 5678" },
+        items: [
+          { id: "1", description: "Brand Identity Design — Logo, Colours & Typography Guide", quantity: 1, rate: 2800 },
+          { id: "2", description: "Social Media Asset Pack (Instagram, LinkedIn, Facebook)", quantity: 1, rate: 950 },
+          { id: "3", description: "Revision Rounds", quantity: 3, rate: 150 },
+        ],
+        details: { invoiceNumber: "INV-CC-2026-008", issueDate: new Date().toISOString(), dueDate: new Date().toISOString() },
+      },
+    },
+    faq: {
+      title: "Frequently Asked Questions",
+      items: [
+        {
+          question: "Can I really make my own invoice for free?",
+          answer: "Yes, completely free. Invoice-Quickly lets you make your own invoice with your logo, business details, and custom line items — then download a professional PDF with zero watermarks and zero cost. No account required.",
+        },
+        {
+          question: "Do I need to sign up to make my own invoice?",
+          answer: "No signup needed. Open the generator, fill in your details, and download your invoice. If you want to save your invoice history or company profile for future use, you can optionally create a free account.",
+        },
+        {
+          question: "Can I make my own invoice on my phone?",
+          answer: "Yes. Invoice-Quickly works on any device — phone, tablet, or desktop. The editor and PDF export are fully responsive, so you can make and send your own invoice from anywhere.",
+        },
+        {
+          question: "Is my invoice legally valid in Australia and Canada?",
+          answer: "An invoice created with Invoice-Quickly includes all the fields required for a legally compliant business invoice in Australia and Canada: your business details, client details, itemized services, GST/tax breakdowns, unique invoice number, issue date, and due date.",
+        },
+        {
+          question: "Can I make my own invoice in AUD or CAD?",
+          answer: "Yes. Invoice-Quickly supports 18+ currencies including AUD, CAD, USD, EUR, GBP, and more. Simply select your preferred currency when creating your invoice.",
+        },
+        {
+          question: "Can I add GST to my own invoice?",
+          answer: "Yes. You can add a custom tax rate — 10% GST for Australia or 5% GST for Canada — directly in the invoice editor. The tool automatically calculates the tax amount and shows it as a separate line item on your invoice.",
+        },
+      ],
+    },
+    content: `## How to Make Your Own Invoice Online — Step-by-Step
+
+Making your own invoice doesn't have to be complicated. Invoice-Quickly streamlines the entire process into a few simple steps, so you can make a professional invoice and get paid — without wrestling with Microsoft Word or paying for expensive accounting software.
+
+## Step 1: Enter Your Business Details
+
+Start by adding your company name, address, phone number, and email. If you have a logo, upload it — it appears at the top of your invoice and immediately gives your document a professional look. Australian businesses should include their ABN; Canadian businesses should include their GST/HST registration number.
+
+## Step 2: Add Your Client's Information
+
+Enter your client's name or company name, billing address, and contact email. For Australian business clients, it's good practice to include their ABN as well. Having the correct billing details ensures your invoice lands in the right accounts payable queue.
+
+## Step 3: List Your Services or Products
+
+Add each service or product as a separate line item. Be specific — "Brand logo design — 2 concepts, 3 revisions included" is far better than just "Design work." Clear descriptions reduce the chance of disputes and speed up payment approval.
+
+## Step 4: Set Your Tax Rate and Payment Terms
+
+For Australian freelancers registered for GST, add a 10% tax rate. For Canadian businesses, apply 5% GST federally (or the applicable HST for your province). Set a clear due date — Net 14 or Net 30 are standard for freelancers and small businesses.
+
+## Step 5: Download and Send
+
+Once you're satisfied with the preview, click Download PDF. Your invoice downloads instantly as a clean, watermark-free PDF. Attach it to an email or use Invoice-Quickly's secure share link to send clients a direct URL.
+
+## What Makes a Professional Invoice?
+
+When you make your own invoice, these elements separate professional documents from amateur ones:
+
+- A **unique invoice number** (e.g., INV-2026-001) for your records and the client's accounting system
+- Your **ABN or GST number** if you're registered — legally required in Australia for invoices over $75
+- **Itemized line items** — never lump everything into one line
+- A **specific due date** — "Net 30" is ambiguous; "Due: 15 May 2026" is not
+- **Payment instructions** — bank BSB and account number, PayID, or payment platform link
+
+## Making Your Own Invoice vs Using a Template
+
+Most invoice templates are rigid. They show fields you don't need and hide ones you do. When you make your own invoice with Invoice-Quickly, the form adapts to your workflow — add as many or as few line items as you need, choose your currency, select your language, and set your own payment terms. The result is an invoice that reflects your work, not a template designer's assumptions.`,
+  },
 ];
 

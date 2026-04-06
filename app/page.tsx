@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "invoice generator no watermark",
     "pdf invoice generator",
     "free invoice template",
+    "make your own invoice",
+    "make an invoice online free",
+    "make my own invoice",
+    "create your own invoice",
   ],
   alternates: { canonical: "/" },
 };
@@ -563,6 +567,10 @@ export default function LandingPage() {
             <h3 className="text-xl font-semibold text-slate-900 dark:text-white mt-8 mb-3">What makes a great invoice maker?</h3>
             <p>
               The best <strong className="text-slate-800 dark:text-zinc-200">invoice maker</strong> is one that stays out of your way. Invoice-Quickly gives you a live preview that updates as you type, automatic tax and discount calculations, a clean PDF export with zero watermarks, and a shareable link so clients can view their invoice on any device with no app required. You can <strong className="text-slate-800 dark:text-zinc-200">create an invoice for free</strong> and download it instantly — or save it to your account for future reference.
+            </p>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mt-8 mb-3">Make your own invoice — your way</h3>
+            <p>
+              Want to <strong className="text-slate-800 dark:text-zinc-200">make your own invoice</strong> that actually looks like your business? Invoice-Quickly puts you in full control. Add your logo, enter your business details, list your services, and choose your currency — AUD, CAD, USD, or 18+ others. Whether you need to send one invoice this week or dozens every month, you can <strong className="text-slate-800 dark:text-zinc-200">make your own invoice online</strong> for free without ever creating an account. Australian businesses can include GST at 10%, Canadian businesses can add GST/HST — calculations are automatic.
             </p>
           </div>
           <div className="mt-8 flex flex-wrap gap-2">

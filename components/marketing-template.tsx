@@ -56,8 +56,8 @@ export function MarketingTemplate({ page }: MarketingTemplateProps) {
       {/* Hero Section */}
       <section className="relative px-4 pt-14 pb-24 sm:px-6 lg:px-8 overflow-hidden">
         {/* Modern Mesh Gradient Background */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_var(--tw-gradient-stops))] from-blue-100/40 via-indigo-50/20 to-transparent dark:from-blue-900/10 dark:via-indigo-950/5" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_var(--tw-gradient-stops))] from-blue-100/40 via-indigo-50/20 to-transparent dark:from-blue-900/10 dark:via-indigo-950/5" />
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl">
            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/10 dark:bg-blue-600/5 rounded-full blur-[100px] animate-pulse" />
            <div className="absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-indigo-400/10 dark:bg-indigo-600/5 rounded-full blur-[80px]" />
         </div>
