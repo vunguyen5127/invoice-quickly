@@ -39,7 +39,7 @@ export default function MakeYourOwnInvoicePage() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-16">
 
             {/* ── LEFT: Copy & CTA ── */}
             <div className="w-full lg:w-[46%] shrink-0 text-left">
@@ -63,7 +63,7 @@ export default function MakeYourOwnInvoicePage() {
               </p>
 
               {/* CTA */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-7">
+              <div className="flex flex-col items-center sm:flex-row sm:items-center gap-3 mb-5">
                 <Link
                   href="/generator?new=1"
                   id="hero-cta-primary"
@@ -77,7 +77,7 @@ export default function MakeYourOwnInvoicePage() {
 
               {/* Feature pills */}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-medium text-slate-600 dark:text-zinc-400 mb-7">
-                {["No signup needed", "GST-ready (AU & CA)", "No watermark", "Instant PDF"].map((item) => (
+                {["No signup needed", "No watermark", "Instant PDF"].map((item) => (
                   <span key={item} className="flex items-center gap-1.5">
                     <svg className="w-4 h-4 text-green-500 shrink-0" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
@@ -85,25 +85,6 @@ export default function MakeYourOwnInvoicePage() {
                     {item}
                   </span>
                 ))}
-              </div>
-
-              {/* Trust badge — hidden on mobile, shown on desktop in left column */}
-              <div className="hidden sm:flex items-center gap-3">
-                <div className="flex -space-x-3">
-                  {[
-                    "bg-gradient-to-br from-pink-400 to-rose-500",
-                    "bg-gradient-to-br from-blue-400 to-indigo-500",
-                    "bg-gradient-to-br from-amber-400 to-orange-500",
-                    "bg-gradient-to-br from-emerald-400 to-teal-500",
-                  ].map((grad, i) => (
-                    <div key={i} className={`w-9 h-9 rounded-full ring-2 ring-white dark:ring-zinc-900 ${grad} flex items-center justify-center text-white text-xs font-bold shadow-sm`}>
-                      {["A", "B", "C", "D"][i]}
-                    </div>
-                  ))}
-                </div>
-                <p className="text-sm text-slate-500 dark:text-zinc-400 font-medium">
-                  Trusted by <span className="text-slate-900 dark:text-white font-semibold">5,000+</span> freelancers in AU & CA
-                </p>
               </div>
             </div>
 
@@ -140,24 +121,6 @@ export default function MakeYourOwnInvoicePage() {
                 <StatItem value="100%" label="Free to Use" />
               </div>
 
-              {/* Trust badge — shown only on mobile, below video */}
-              <div className="flex sm:hidden items-center justify-center gap-3 mt-5">
-                <div className="flex -space-x-3">
-                  {[
-                    "bg-gradient-to-br from-pink-400 to-rose-500",
-                    "bg-gradient-to-br from-blue-400 to-indigo-500",
-                    "bg-gradient-to-br from-amber-400 to-orange-500",
-                    "bg-gradient-to-br from-emerald-400 to-teal-500",
-                  ].map((grad, i) => (
-                    <div key={i} className={`w-9 h-9 rounded-full ring-2 ring-white dark:ring-zinc-900 ${grad} flex items-center justify-center text-white text-xs font-bold shadow-sm`}>
-                      {["A", "B", "C", "D"][i]}
-                    </div>
-                  ))}
-                </div>
-                <p className="text-sm text-slate-500 dark:text-zinc-400 font-medium">
-                  Trusted by <span className="text-slate-900 dark:text-white font-semibold">5,000+</span> freelancers in AU &amp; CA
-                </p>
-              </div>
             </div>
 
           </div>
