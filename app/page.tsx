@@ -199,7 +199,7 @@ export default function LandingPage() {
               href="/login"
               className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-10 py-4.5 text-lg font-semibold text-foreground shadow-sm transition-all hover:bg-secondary hover:scale-[1.02] active:scale-[0.98]"
             >
-              Sign In to Dashboard
+              Go to Dashboard
             </Link>
           </div>
 

@@ -32,14 +32,14 @@ export default function MakeYourOwnInvoicePage() {
       {/* ══════════════════════════════════════════════
           1. HERO SECTION — 2-column split with video
       ══════════════════════════════════════════════ */}
-      <section className="relative px-4 pt-6 md:pt-10 lg:pt-12 pb-12 sm:pb-16 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-6 md:pt-10 lg:pt-12 pb-12 sm:pb-16 overflow-hidden">
         {/* Glow blobs */}
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 flex justify-center overflow-hidden">
           <div className="h-[600px] w-[1200px] rounded-full bg-gradient-to-br from-blue-400/25 via-indigo-300/15 to-violet-300/10 blur-3xl dark:from-blue-600/20 dark:via-indigo-500/10 dark:to-violet-600/10" />
         </div>
 
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-8">
 
             {/* ── LEFT: Copy & CTA ── */}
             <div className="w-full lg:w-[46%] shrink-0 text-left">
@@ -89,7 +89,7 @@ export default function MakeYourOwnInvoicePage() {
             </div>
 
             {/* ── RIGHT: Video mockup ── */}
-            <div className="w-full lg:w-[54%] shrink-0">
+            <div className="w-full lg:flex-1 min-w-0">
               <div className="rounded-xl border border-slate-200/80 dark:border-zinc-700/70 shadow-2xl shadow-slate-900/15 overflow-hidden">
                 {/* macOS browser chrome */}
                 <div className="bg-slate-100/80 dark:bg-zinc-800 px-4 py-3 flex items-center gap-2 border-b border-slate-200 dark:border-zinc-700">
