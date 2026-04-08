@@ -177,6 +177,16 @@ function CreateInvoiceContent() {
     setIsGenerating(true);
     await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
     setIsGenerating(false);
+    // Google Ads conversion tracking — "PDF Downloaded"
+    try {
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-17800091853/-kStCJvts5gcEM2x36dC",
+        });
+      }
+    } catch (e) {
+      // Silently fail — never block the user experience
+    }
   };
 
   const handlePrint = () => {
