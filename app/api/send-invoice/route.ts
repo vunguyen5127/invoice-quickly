@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSupabase } from "@/utils/supabase/client";
-import { sendInvoiceToClient } from "@/utils/email-service";
-import config from "@/utils/config";
 import { getCurrencySymbol } from "@/types/invoice";
+import config from "@/utils/config";
+import { sendInvoiceToClient } from "@/utils/email-service";
+import { getServerSupabase } from "@/utils/supabase/client";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
@@ -55,12 +55,7 @@ export async function POST(request: NextRequest) {
 
     // Get company name for the From header
     const companyName = (invoiceData?.company?.name || "").split(/,|\n/)[0].trim() || "Business";
-    let companyEmail = invoiceData?.company?.email || "";
-    if (!companyEmail) {
-      const compParts = (invoiceData?.company?.name || "").split(/,|\n/);
-      const compEmailPart = compParts.find((p: string) => /\S+@\S+\.\S+/.test(p.trim()));
-      companyEmail = compEmailPart?.trim() || "";
-    }
+    const companyEmail = invoiceData?.company?.email || "";
 
     // Build the share URL
     const shareUrl = `${config.siteUrl}/share/${invoiceId}`;

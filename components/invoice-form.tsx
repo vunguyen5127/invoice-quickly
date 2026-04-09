@@ -39,6 +39,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
   const { companies: myCompanies, items: myItems, clients: myClients } = useData();
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   const clientDropdownRef = useRef<HTMLFieldSetElement>(null);
+  const originalInvoiceNumberRef = useRef<string | null>(invoice?.details?.invoiceNumber || null);
+  const initialCompanyIdRef = useRef<string | null>(defaultCompanyId || null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>(defaultCompanyId || "");
   const [focusedItemIndex, setFocusedItemIndex] = useState<number | null>(null);
 
@@ -76,9 +78,13 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
       let fetchedNextInvNum: string | null = null;
       try {
         if (docType === 'invoice' && supabase) {
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session) {
-            fetchedNextInvNum = await getNextInvoiceNumber(session.access_token, selectedId);
+          if (selectedId === initialCompanyIdRef.current && originalInvoiceNumberRef.current) {
+            fetchedNextInvNum = originalInvoiceNumberRef.current;
+          } else {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+              fetchedNextInvNum = await getNextInvoiceNumber(session.access_token, selectedId);
+            }
           }
         }
       } catch (e) {

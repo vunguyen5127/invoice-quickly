@@ -56,7 +56,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
   const [upgradeTrigger, setUpgradeTrigger] = useState<"company_limit" | "invoice_limit" | "recurring" | "no_ads" | "csv_export" | "general">("general");
   const [canUseAdvancedExport, setCanUseAdvancedExport] = useState(false);
   const { t } = useLanguage();
-  const { companies: globCompanies, entitlements: globEnts, loadingData } = useData();
+  const { companies: globCompanies, entitlements: globEnts, loadingData, refreshData } = useData();
   const router = useRouter();
 
   // Search, Sort, Pagination, Filter state
@@ -267,8 +267,9 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
     router.push(`/company/${resolvedParams.id}/new?duplicate=${invoiceId}`);
   };
 
-  const handleCompanyUpdated = (updatedCompany: any) => {
+  const handleCompanyUpdated = async (updatedCompany: any) => {
     setCompany({ ...company, ...updatedCompany });
+    await refreshData();
   };
 
   const SortIcon = ({ field }: { field: SortField }) => (
