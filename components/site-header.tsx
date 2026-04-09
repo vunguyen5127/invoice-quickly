@@ -87,7 +87,7 @@ export function SiteHeader() {
           {hasUser && <div className="hidden md:block w-px h-5 bg-zinc-200 dark:bg-zinc-700 mx-1" />}
           <ThemeToggle />
           <LanguageToggle />
-          {!pathname.startsWith("/make-your-own-invoice") && !pathname.startsWith("/free-") && pathname !== "/" && (
+          {!pathname.startsWith("/make-your-own-invoice") && !pathname.startsWith("/free-") && (
             <div className="ml-1 shrink-0">
               <AuthButton />
             </div>
