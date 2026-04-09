@@ -209,10 +209,10 @@ export function AuthButton() {
   return (
     <button
       onClick={handleLogin}
-      className="group relative inline-flex items-center justify-center gap-2 rounded-lg px-4 sm:px-5 h-9 text-xs sm:text-[13px] font-semibold transition-all duration-300 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700/80 active:scale-[0.98] border border-transparent shadow-sm"
+      className="group relative inline-flex items-center justify-center gap-2 rounded-lg px-4 sm:px-5 h-9 text-xs sm:text-[13px] font-semibold transition-all duration-300 bg-white dark:bg-zinc-900 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:shadow-md hover:shadow-blue-500/10 active:scale-[0.98] border border-blue-300 dark:border-blue-700 shadow-sm"
       aria-label="Sign in"
     >
-      <UserCircle className="w-4 h-4 text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors" />
+      <UserCircle className="w-4 h-4 text-blue-500 group-hover:text-blue-700 dark:text-blue-400 dark:group-hover:text-blue-300 transition-colors" />
       <span>{t.signIn}</span>
     </button>
   );
