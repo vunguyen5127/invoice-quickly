@@ -42,19 +42,19 @@ Here's why thousands of freelancers and small businesses use Invoice-Quickly ins
 
 Creating your first free invoice takes less than 2 minutes:
 
-## Step 1: Add Your Business Details
+### Step 1: Add Your Business Details
 
 Enter your company name, logo, email, and address. Invoice-Quickly saves this automatically so you don't have to type it again next time.
 
-## Step 2: Fill In Client Information
+### Step 2: Fill In Client Information
 
 Add your client's name, company, and billing address. The more specific, the more professional your invoice looks.
 
-## Step 3: Add Line Items
+### Step 3: Add Line Items
 
 List each service or product with a description, quantity, and rate. The free invoice generator automatically calculates subtotals, taxes, and discounts.
 
-## Step 4: Download or Share
+### Step 4: Download or Share
 
 Click **Download PDF** to get a pixel-perfect PDF instantly. Or click **Share** to generate a public link your client can open on any device.
 
@@ -93,31 +93,19 @@ Ready to create your first professional invoice for free? No account needed — 
 [Create your free invoice now](/generator) — it takes less than 60 seconds.
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### Is Invoice-Quickly really free to use?
+Yes. You can create and download professional PDF invoices without paying anything and without creating an account. There are no watermarks, no hidden fees, and no trial periods. The free plan includes up to 50 invoices per month — more than enough for most freelancers and small businesses.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### Can I use the free invoice generator on my phone?
+Absolutely. Invoice-Quickly is fully responsive and works on any device with a web browser — smartphones, tablets, laptops, and desktops. No app download is required, and the live preview adapts to your screen size.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### What file format are the invoices downloaded in?
+All invoices are exported as high-quality PDF files, which is the industry standard for professional business documents. PDFs preserve your formatting perfectly and can be printed, emailed, or uploaded to any accounting system.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### Do I need accounting knowledge to use an invoice generator?
+Not at all. The generator handles all calculations automatically — taxes, discounts, subtotals, and grand totals. Just enter your line items with quantities and rates, and the math is done for you instantly.
 `,
   },
   {
@@ -203,35 +191,19 @@ The cardinal rule: **send your invoice the same day you deliver your work**. Wai
 Ready to create your first freelance invoice? [Use Invoice-Quickly's free generator](/generator) — professional PDF in under 60 seconds, no account required.
     
 
-## The Psychology of Invoicing and Getting Paid
+## Frequently Asked Questions
 
-Invoicing isn't just a financial transaction; it's a psychological touchpoint with your client. How your invoice looks, when it arrives, and how you follow up all communicate your level of professionalism and dictate how quickly you get paid.
+### Do I need a business license to send invoices as a freelancer?
+In most jurisdictions, you do not need a business license to send invoices as a sole proprietor or independent contractor. However, you may need to register for tax purposes (such as obtaining an ABN in Australia or registering for VAT in the EU) depending on your country and annual revenue.
 
-**1. The Halo Effect of Good Design**
-Clients subconsciously judge the quality of your work by the quality of your administrative documents. A clean, well-aligned invoice with a crisp logo and clear typography signals that you are detail-oriented and professional. A messy Word document with misaligned columns suggests carelessness.
+### How do I decide what to charge as a freelancer?
+Research market rates for your specific skill set and experience level. Consider your desired annual income, realistic billable hours per year (typically 60-70% of total work hours), business expenses, and the measurable value you deliver to clients. Then add a buffer for taxes, insurance, and unpaid time off.
 
-**2. The Reciprocity Principle in Billing**
-If you make the client's life easier, they will make your life easier. By providing crystal-clear line item descriptions, including your bank details exactly where they expect to find them, and offering multiple ways to pay, you remove friction from their accounts payable process. The client's accounting department will prioritize your invoices simply because they are easy to process.
+### Should I require a deposit before starting freelance work?
+Yes, especially for new clients or projects exceeding a few hundred dollars. A 25-50% upfront deposit protects you from non-payment and confirms the client's commitment. Send a deposit invoice before starting work, then invoice the remaining balance upon delivery.
 
-**3. Timing Your Invoices for Maximum Impact**
-The best time to send an invoice is the exact moment you deliver the final work, when the client is most excited about the value you provided. Sending an invoice two weeks later breaks this psychological connection between the value received and the payment requested.
-
-## Implementing an Automated AR (Accounts Receivable) System
-
-Even with perfect invoices, you must have a system for tracking who owes you money. For businesses generating more than 10 invoices a month, manual tracking becomes a liability.
-
-### Step 1: The AR Aging Report
-Every Monday morning, you should look at an AR Aging Report. This simply categorizes outstanding invoices by how late they are: Current, 1-30 Days Past Due, 31-60 Days, and 60+. Your priority is always the 1-30 bucket — catching invoices right as they become late has the highest recovery rate.
-
-### Step 2: The Escalation Sequence
-Create a standard operating procedure for late payments so you don't have to think about what to say:
-- **Day 1 Past Due:** A gentle, automated "Just checking in to ensure you received this" email.
-- **Day 7 Past Due:** A direct email to both your point of contact and their accounting department.
-- **Day 15 Past Due:** A phone call. Emails are easily ignored; phone calls force a conversation.
-- **Day 30 Past Due:** A formal letter noting that late fees will begin accruing, and work on future projects is paused.
-
-### Step 3: Removing Emotion
-By having a system, you remove the emotion from chasing payments. You aren't "badgering" the client; you are simply executing your standard business processes. This makes you feel more confident and makes the client realize that your payment terms are firm policies, not mere suggestions.
+### How do I handle scope creep on my invoices?
+Prevent it by documenting the agreed scope clearly in your contract before starting. When additional work arises mid-project, send a written change order or supplementary quote before doing the extra work. Then invoice it as a clearly labeled separate line item referencing the approved change order.
 `,
   },
   {
@@ -295,36 +267,34 @@ A service invoice must clearly state:
 - **Include PO numbers** if your client's company requires them for their accounting
 - **Always specify if tax is included or excluded** from your rates
 
+## Common Mistakes on Service Invoices
+
+Even experienced service providers make these costly errors:
+
+1. **Bundling multiple services into one line** — Always separate each service into its own line item. Bundled invoices are harder to approve, more likely to be disputed, and give clients nothing to compare against your contract.
+2. **Missing the service date** — Unlike product invoices, service invoices should clearly state *when* the work was performed, not just when the invoice was issued. A client's accounting department may reject an invoice without a service date.
+3. **No reference to the original agreement** — If you have a signed contract, statement of work, or email confirmation, reference it on the invoice (e.g., "As per SOW dated March 1, 2026"). This makes payment disputes nearly impossible to escalate.
+4. **Ignoring currency and tax clarity** — If you charge $500 + tax, state it explicitly: "$500 + 10% GST = $550." Ambiguous totals cause delays while the client seeks clarification.
+5. **Forgetting a unique invoice number** — Even for one-off jobs, every invoice needs a unique sequential number. It's legally required in many jurisdictions and essential for your own records.
+
 ## Create Your Service Invoice
 
 [Try Invoice-Quickly's free generator](/generator) to create a professional service invoice in minutes. No signup needed, and it handles all the math automatically.
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### What is the difference between a service invoice and a product invoice?
+A service invoice describes the work performed — hours worked, project milestones reached, or deliverables completed. A product invoice lists physical goods sold and shipped. Service invoices typically include hourly rates or flat project fees rather than per-unit prices and shipping details.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### Should I show my hourly rate on a service invoice?
+It depends on your agreement with the client. If you bill hourly, showing your rate and hours worked provides transparency. For fixed-price projects, you can list the deliverable and its total cost without breaking down individual hours — this can actually position you better because clients focus on value, not time.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### When is the best time to send a service invoice?
+Send your invoice immediately upon completing the work or reaching the agreed milestone. Research shows that invoices sent the same day as delivery are paid significantly faster than those sent days or weeks later. Strike while the client still feels the value of what you delivered.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### Can I invoice for services before completing the work?
+Yes. This is called a deposit invoice or advance payment invoice. Many service providers request 25-50% upfront before starting, which protects both parties. Send a deposit invoice before work begins, then invoice the remaining balance upon completion.
 `,
   },
   {
@@ -400,35 +370,19 @@ If you're unsure about tax requirements, consult a local accountant. Invoicing s
 [Start creating professional invoices for free](/generator) with Invoice-Quickly. Takes less than 2 minutes, no subscription required.
     
 
-## The Psychology of Invoicing and Getting Paid
+## Frequently Asked Questions
 
-Invoicing isn't just a financial transaction; it's a psychological touchpoint with your client. How your invoice looks, when it arrives, and how you follow up all communicate your level of professionalism and dictate how quickly you get paid.
+### Do self-employed individuals need to charge VAT or GST?
+It depends on your country and annual revenue. In many countries, you must register for VAT or GST once your turnover exceeds a defined threshold — for example, £90,000 in the UK or $75,000 AUD in Australia. Below the threshold, you generally do not need to charge or collect tax, but you should still track your income carefully.
 
-**1. The Halo Effect of Good Design**
-Clients subconsciously judge the quality of your work by the quality of your administrative documents. A clean, well-aligned invoice with a crisp logo and clear typography signals that you are detail-oriented and professional. A messy Word document with misaligned columns suggests carelessness.
+### How should I track my self-employed income for taxes?
+Use your invoices as your primary income record. Download and store every invoice PDF organized by date and client name. Complement this with a simple spreadsheet or accounting tool that tracks each invoice's amount, date sent, date paid, and payment method. This makes tax filing straightforward.
 
-**2. The Reciprocity Principle in Billing**
-If you make the client's life easier, they will make your life easier. By providing crystal-clear line item descriptions, including your bank details exactly where they expect to find them, and offering multiple ways to pay, you remove friction from their accounts payable process. The client's accounting department will prioritize your invoices simply because they are easy to process.
+### Can I invoice under my personal name or do I need a registered business?
+You can absolutely invoice under your personal name as a sole trader or sole proprietor. However, registering a trade name (also called a DBA — "Doing Business As") can look more professional and helps separate your personal identity from your business identity on invoices and bank accounts.
 
-**3. Timing Your Invoices for Maximum Impact**
-The best time to send an invoice is the exact moment you deliver the final work, when the client is most excited about the value you provided. Sending an invoice two weeks later breaks this psychological connection between the value received and the payment requested.
-
-## Implementing an Automated AR (Accounts Receivable) System
-
-Even with perfect invoices, you must have a system for tracking who owes you money. For businesses generating more than 10 invoices a month, manual tracking becomes a liability.
-
-### Step 1: The AR Aging Report
-Every Monday morning, you should look at an AR Aging Report. This simply categorizes outstanding invoices by how late they are: Current, 1-30 Days Past Due, 31-60 Days, and 60+. Your priority is always the 1-30 bucket — catching invoices right as they become late has the highest recovery rate.
-
-### Step 2: The Escalation Sequence
-Create a standard operating procedure for late payments so you don't have to think about what to say:
-- **Day 1 Past Due:** A gentle, automated "Just checking in to ensure you received this" email.
-- **Day 7 Past Due:** A direct email to both your point of contact and their accounting department.
-- **Day 15 Past Due:** A phone call. Emails are easily ignored; phone calls force a conversation.
-- **Day 30 Past Due:** A formal letter noting that late fees will begin accruing, and work on future projects is paused.
-
-### Step 3: Removing Emotion
-By having a system, you remove the emotion from chasing payments. You aren't "badgering" the client; you are simply executing your standard business processes. This makes you feel more confident and makes the client realize that your payment terms are firm policies, not mere suggestions.
+### What business expenses can I deduct from my self-employed income?
+Common deductible expenses include software subscriptions, home office costs (a proportional share of rent or mortgage), internet and phone bills (business-use portion), professional development courses, travel for client meetings, and accounting fees. Keep detailed receipts for everything and consult a tax professional for your specific jurisdiction.
 `,
   },
   {
@@ -536,31 +490,19 @@ The best overdue invoice is the one that never happens. Tips to prevent late pay
 [Create professional invoices with built-in payment terms](/generator) — Invoice-Quickly makes it easy to set Net 15, Net 30, or custom due dates on every invoice.
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### How long should I wait before following up on an unpaid invoice?
+Send your first gentle reminder 1-3 days after the due date. Most late payments are simply oversights — a friendly nudge resolves roughly 80% of overdue invoices. Waiting too long signals that you are not serious about your payment terms.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### Should I charge late fees on overdue invoices?
+Yes, but only if you communicated the late fee policy upfront — either in your contract or on the original invoice. Common late fees range from 1% to 2% per month on the outstanding balance. The mere existence of a late fee clause often motivates clients to pay on time.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### What if a client ignores all my follow-up emails?
+After 2-3 email attempts over two weeks, try calling the client directly — phone calls are much harder to ignore. If that fails, send a formal written demand letter via certified mail. For significant amounts, consult a business attorney or consider a collections agency as a last resort.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### Can I stop working for a client who has overdue invoices?
+Absolutely. Pausing ongoing work is a standard and reasonable business practice when invoices are significantly overdue. Include this right in your contract terms, and reference it clearly in your final notice email so the client understands the consequence.
 `,
   },
   {
@@ -651,35 +593,19 @@ That's it. No tutorials, no learning curve, no subscription.
 [Create your first invoice now](/generator) — it's completely free.
     
 
-## The Psychology of Invoicing and Getting Paid
+## Frequently Asked Questions
 
-Invoicing isn't just a financial transaction; it's a psychological touchpoint with your client. How your invoice looks, when it arrives, and how you follow up all communicate your level of professionalism and dictate how quickly you get paid.
+### Is a free invoice generator professional enough for a registered business?
+Absolutely. Free invoice generators like Invoice-Quickly produce clean, professional PDF invoices that are fully acceptable for business use, tax filing, and client communication. The key requirement is that your invoices include all legally mandated information for your specific jurisdiction — business name, address, tax ID (if applicable), and itemized charges.
 
-**1. The Halo Effect of Good Design**
-Clients subconsciously judge the quality of your work by the quality of your administrative documents. A clean, well-aligned invoice with a crisp logo and clear typography signals that you are detail-oriented and professional. A messy Word document with misaligned columns suggests carelessness.
+### Can I add my company logo to invoices on the free plan?
+Yes. Invoice-Quickly allows you to upload and display your company logo even on the free plan. Your logo appears prominently at the top of every invoice, maintaining brand consistency and a professional appearance across all client communications.
 
-**2. The Reciprocity Principle in Billing**
-If you make the client's life easier, they will make your life easier. By providing crystal-clear line item descriptions, including your bank details exactly where they expect to find them, and offering multiple ways to pay, you remove friction from their accounts payable process. The client's accounting department will prioritize your invoices simply because they are easy to process.
+### How many invoices can a small business create for free per month?
+With Invoice-Quickly's free plan, you can create up to 50 invoices per month — more than sufficient for most small businesses. If your volume grows beyond that, the Pro plan at $10/month supports up to 500 invoices per month along with features like multi-company management and advanced branding.
 
-**3. Timing Your Invoices for Maximum Impact**
-The best time to send an invoice is the exact moment you deliver the final work, when the client is most excited about the value you provided. Sending an invoice two weeks later breaks this psychological connection between the value received and the payment requested.
-
-## Implementing an Automated AR (Accounts Receivable) System
-
-Even with perfect invoices, you must have a system for tracking who owes you money. For businesses generating more than 10 invoices a month, manual tracking becomes a liability.
-
-### Step 1: The AR Aging Report
-Every Monday morning, you should look at an AR Aging Report. This simply categorizes outstanding invoices by how late they are: Current, 1-30 Days Past Due, 31-60 Days, and 60+. Your priority is always the 1-30 bucket — catching invoices right as they become late has the highest recovery rate.
-
-### Step 2: The Escalation Sequence
-Create a standard operating procedure for late payments so you don't have to think about what to say:
-- **Day 1 Past Due:** A gentle, automated "Just checking in to ensure you received this" email.
-- **Day 7 Past Due:** A direct email to both your point of contact and their accounting department.
-- **Day 15 Past Due:** A phone call. Emails are easily ignored; phone calls force a conversation.
-- **Day 30 Past Due:** A formal letter noting that late fees will begin accruing, and work on future projects is paused.
-
-### Step 3: Removing Emotion
-By having a system, you remove the emotion from chasing payments. You aren't "badgering" the client; you are simply executing your standard business processes. This makes you feel more confident and makes the client realize that your payment terms are firm policies, not mere suggestions.
+### Should my small business use an invoice generator or full accounting software?
+If your primary need is creating, sending, and tracking invoices, a dedicated invoice generator is faster, simpler, and has virtually no learning curve. If you also need comprehensive expense tracking, payroll management, bank reconciliation, and financial reporting, consider full accounting software like Wave (free) or QuickBooks (paid).
 `,
   },
   {
@@ -760,31 +686,19 @@ It takes less than 2 minutes, and your proforma looks completely professional.
 [Create a proforma invoice for free](/generator) →
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### Is a proforma invoice legally binding?
+No. A proforma invoice is not a legal demand for payment. It is a preliminary document used to declare the intent of a sale, provide a cost estimate, or facilitate customs clearance. Only a final commercial or tax invoice creates a legal obligation for the buyer to pay.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### Can I convert a proforma invoice into a regular invoice?
+Yes, and this is the standard workflow. Once the buyer confirms the order, you issue a final tax invoice with the same details (or updated quantities and prices). Reference the original proforma number on the final invoice for clear record-keeping on both sides.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### Do I need a proforma invoice for domestic sales?
+Proforma invoices are most commonly used in international trade for customs and import duty purposes. However, they can be valuable domestically for large custom orders, manufacturing projects, or any situation where providing a formal, detailed quote in invoice format helps both parties agree on terms before committing.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### What are Incoterms and why do they appear on proforma invoices?
+Incoterms (International Commercial Terms) are standardized trade definitions that specify who is responsible for shipping costs, insurance, customs duties, and risk at each stage of delivery. Common terms include FOB (Free on Board), CIF (Cost, Insurance, Freight), and EXW (Ex Works). Including the correct Incoterm on your proforma prevents expensive disputes about delivery costs.
 `,
   },
   {
@@ -868,142 +782,131 @@ Document this in your invoice notes and original contract.
 [Create your design invoice now](/generator) — free, no signup needed.
     
 
-## The Psychology of Invoicing and Getting Paid
+## Frequently Asked Questions
 
-Invoicing isn't just a financial transaction; it's a psychological touchpoint with your client. How your invoice looks, when it arrives, and how you follow up all communicate your level of professionalism and dictate how quickly you get paid.
+### Should designers charge by the hour or by the project?
+Both models work depending on the context. Hourly billing is ideal for ongoing retainer work, consultations, and projects with evolving scope. Fixed project pricing is better for clearly defined deliverables like logo design, brand identity packages, or website mockups. Many successful designers use a hybrid approach — a fixed base price with hourly billing for revisions beyond the included rounds.
 
-**1. The Halo Effect of Good Design**
-Clients subconsciously judge the quality of your work by the quality of your administrative documents. A clean, well-aligned invoice with a crisp logo and clear typography signals that you are detail-oriented and professional. A messy Word document with misaligned columns suggests carelessness.
+### How do I invoice for intellectual property or licensing rights?
+List the IP transfer or licensing fee as a separate, clearly described line item on your invoice. For example: "Full Copyright Transfer — Logo Design: $500" or "Exclusive Usage License (12 months, North America): $300." Always reference the specific licensing terms outlined in your signed contract.
 
-**2. The Reciprocity Principle in Billing**
-If you make the client's life easier, they will make your life easier. By providing crystal-clear line item descriptions, including your bank details exactly where they expect to find them, and offering multiple ways to pay, you remove friction from their accounts payable process. The client's accounting department will prioritize your invoices simply because they are easy to process.
+### What should I do if a client wants unlimited revisions?
+Never agree to unlimited revisions — this undervalues your time and leads to project scope explosion. Your contract and invoice should state how many revision rounds are included (typically 2-3). Additional revisions should be billed at your standard hourly rate, communicated upfront: "Extra revisions beyond Round 2 billed at $75/hour."
 
-**3. Timing Your Invoices for Maximum Impact**
-The best time to send an invoice is the exact moment you deliver the final work, when the client is most excited about the value you provided. Sending an invoice two weeks later breaks this psychological connection between the value received and the payment requested.
-
-## Implementing an Automated AR (Accounts Receivable) System
-
-Even with perfect invoices, you must have a system for tracking who owes you money. For businesses generating more than 10 invoices a month, manual tracking becomes a liability.
-
-### Step 1: The AR Aging Report
-Every Monday morning, you should look at an AR Aging Report. This simply categorizes outstanding invoices by how late they are: Current, 1-30 Days Past Due, 31-60 Days, and 60+. Your priority is always the 1-30 bucket — catching invoices right as they become late has the highest recovery rate.
-
-### Step 2: The Escalation Sequence
-Create a standard operating procedure for late payments so you don't have to think about what to say:
-- **Day 1 Past Due:** A gentle, automated "Just checking in to ensure you received this" email.
-- **Day 7 Past Due:** A direct email to both your point of contact and their accounting department.
-- **Day 15 Past Due:** A phone call. Emails are easily ignored; phone calls force a conversation.
-- **Day 30 Past Due:** A formal letter noting that late fees will begin accruing, and work on future projects is paused.
-
-### Step 3: Removing Emotion
-By having a system, you remove the emotion from chasing payments. You aren't "badgering" the client; you are simply executing your standard business processes. This makes you feel more confident and makes the client realize that your payment terms are firm policies, not mere suggestions.
+### How do graphic designers set fair rush fees?
+Rush fees typically range from 25% to 100% of the original project cost, depending on the severity of the compressed timeline. List the rush fee as a distinct line item: "Rush Fee — 48-Hour Delivery: $300." Always discuss and agree on the rush price before accepting the expedited deadline, not after delivering the work.
 `,
   },
   {
     slug: "how-to-create-professional-invoice",
-    title: "How to Create a Professional Invoice in 2026",
-    description: "A step-by-step guide to creating invoices that look professional, include all required information, and help you get paid faster.",
+    title: "How Agencies & Companies Should Invoice Clients: A 2026 Guide",
+    description: "A complete invoicing guide for agencies, studios, and growing businesses. Learn how to structure multi-project invoices, manage retainers, handle PO numbers, and get enterprise clients to pay on time.",
     date: "2026-03-20",
     readTime: "12 min read",
     category: "Guide",
     authorId: "vubuilds",
     content: `
-## Why Your Invoice Matters
+## Why Agencies Need a Different Invoicing Approach
 
-Your invoice is more than just a bill—it's a reflection of your professionalism. A clean, well-structured invoice builds trust with clients and can significantly reduce the time it takes to get paid.
+Freelancers send simple one-off invoices. Agencies and growing businesses face a different reality: multiple active clients, retainer agreements, purchase orders, multi-currency billing, and accounts payable departments that reject invoices that don't match their internal systems.
 
-## Step 1: Include Your Business Information
+This guide covers everything agencies, studios, and small-to-medium businesses need to invoice professionally and get paid on time.
 
-Every invoice should start with your company or personal business details:
+## 1. Always Reference the Purchase Order (PO) Number
 
-- **Business name** (or your full name if you're a sole proprietor)
-- **Address** — physical or registered business address
-- **Email and phone number** — so clients can reach you with questions
-- **Logo** — adds instant brand recognition
+Most medium and large businesses will not pay an invoice that doesn't reference their internal Purchase Order number. Before starting any project, ask your client's accounts payable team: *"Do you require a PO number on invoices?"*
 
-## Step 2: Add Client Details
+Once you have it, add it prominently on the invoice:
 
-Always include your client's full name or company name, their billing address, and a contact email. This ensures the invoice reaches the right person in their accounts department.
+| Field | Example |
+|-------|---------|
+| Invoice Number | INV-2026-0142 |
+| Purchase Order | PO-CLIENT-88912 |
+| Project Reference | Website Redesign — Q1 2026 |
+| Billing Period | March 1 – March 31, 2026 |
 
-## Step 3: Use a Unique Invoice Number
+Missing a PO number is the single most common reason enterprise invoices get delayed by 30+ days.
 
-Every invoice needs a unique identification number. This helps both you and your client track payments. Common formats include:
+## 2. Structure Retainer Invoices Correctly
 
-- Sequential: INV-001, INV-002, INV-003
-- Date-based: INV-2026-03-001
-- Project-based: PROJ-ALPHA-001
+Retainer clients pay a fixed monthly fee for ongoing access to your team. Invoice them on a consistent day each month (e.g., the 1st) with a clear breakdown:
 
-## Step 4: Itemize Your Services
+| Service | Period | Rate | Total |
+|---------|--------|------|-------|
+| Monthly Retainer — Digital Marketing | March 2026 | $5,000/mo | $5,000 |
+| Additional Hours (8 hrs @ $150/hr) | March 15-22 | $150/hr | $1,200 |
+| Ad Spend Management Fee (10% of $20,000) | March 2026 | 10% | $2,000 |
+| **Total Due** | | | **$8,200** |
 
-Break down your work into clear line items. Each should include:
+**Key rule:** Always distinguish between the base retainer and any variable charges (extra hours, ad fees, third-party costs). Bundling them confuses accounts payable teams and triggers disputes.
 
-- **Description** of the service or product
-- **Quantity** (hours, units, or a flat "1" for project-based work)
-- **Rate** per unit
-- **Line total** (quantity × rate)
+## 3. Multi-Project Invoicing: One Invoice or Many?
 
-## Step 5: Show Clear Totals
+If you have multiple active projects with the same client, you have two options:
 
-After your line items, clearly display:
+**Option A — Separate invoices per project**
+Best for clients with different budget owners for each project. Easier to approve at department level.
 
-- **Subtotal** (sum of all line items)
-- **Tax** (if applicable, with the rate percentage shown)
-- **Discount** (if any)
-- **Grand Total** — make this the most prominent number on the invoice
+**Option B — Consolidated monthly invoice**
+Best for operational clients who prefer one payment per month. Use clear project labels as section headers.
 
-## Step 6: Specify Payment Terms
+| Project | Description | Total |
+|---------|-------------|-------|
+| **Project: Brand Refresh** | Logo redesign, brand guidelines | $3,200 |
+| **Project: Social Media** | 30 posts, copywriting, scheduling | $2,500 |
+| **Project: SEO Audit** | Technical audit + recommendations report | $1,800 |
+| | **Invoice Total** | **$7,500** |
 
-Tell your client exactly how and when to pay:
+## 4. Handling Multi-Currency Billing for International Clients
 
-- **Due date** — "Due on Receipt," "Net 15," or "Net 30" are common
-- **Payment methods** — bank transfer, PayPal, credit card, etc.
-- **Bank details** — if you accept wire transfers
+Always specify the currency on the invoice (e.g., "All amounts in USD"). State clearly who bears the foreign exchange and wire transfer fees:
 
-## Step 7: Add Notes and Terms
+> *"All amounts are in US Dollars (USD). Client is responsible for any bank transfer or currency conversion fees. Payments made in another currency will be accepted at the mid-market rate on the invoice date."*
 
-Use the notes section for:
+For Australian, Canadian, or UK clients, invoice in their local currency where possible — it reduces friction and payment delays significantly.
 
-- A friendly "Thank you for your business!"
-- Late payment penalties (e.g., "1.5% interest per month on overdue invoices")
-- Project-specific references or purchase order numbers
+## 5. Set Up an Accounts Receivable System
 
-## Pro Tips for Faster Payment
+Once you're sending 10+ invoices per month, manual tracking becomes a risk. Build a simple AR system:
 
-1. **Send invoices immediately** after completing work
-2. **Use online invoicing tools** like Invoice-Quickly for professional results
-3. **Follow up politely** 3 days after the due date if payment hasn't arrived
-4. **Offer multiple payment methods** to make it easy for clients to pay
+| Invoice | Client | Amount | Issued | Due | Status |
+|---------|--------|--------|--------|-----|--------|
+| INV-0141 | Acme Corp | $5,000 | Mar 1 | Mar 31 | Paid ✅ |
+| INV-0142 | BlueSky Ltd | $8,200 | Mar 1 | Mar 31 | Overdue ⚠️ |
+| INV-0143 | GlobalTech | $3,200 | Mar 15 | Apr 14 | Sent 📤 |
 
-## Start Creating Professional Invoices Now
+Review this AR report every Monday morning. Catching a late invoice at Day 3 has a near-100% recovery rate. At Day 60, it drops to under 50%.
 
-Ready to create your first professional invoice? [Try Invoice-Quickly's free generator](/generator) — no signup required, no watermarks, and unlimited downloads.
+## 6. What to Include on Every Agency Invoice
+
+- ✅ Your agency name, registered address, and ABN/VAT/EIN if applicable
+- ✅ Client's full legal company name and billing address
+- ✅ Purchase Order number (if required)
+- ✅ Unique invoice number
+- ✅ Invoice date and payment due date
+- ✅ Itemized services with project references
+- ✅ Subtotal, tax, and grand total
+- ✅ Payment instructions (bank details or payment link)
+- ✅ Late fee clause (e.g., "1.5% per month after due date")
+
+## Create Agency-Grade Invoices for Free
+
+[Invoice-Quickly's generator](/generator) supports multi-line itemization, custom notes, tax settings, logo upload, and PDF export — everything a professional agency needs, with no subscription required.
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### What makes an invoice look professional?
+A professional invoice has a clean, well-aligned layout with your company logo, consistent typography, clearly itemized services, and prominent totals. Using a dedicated invoice generator instead of Word or Excel ensures pixel-perfect alignment, accurate calculations, and a polished PDF export that reflects your brand quality.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### How long should I keep copies of my invoices?
+Most countries require businesses to retain financial records — including all issued invoices — for 5 to 7 years. Keep organized digital copies labeled by date, client name, and invoice number for easy retrieval during tax audits or financial reviews.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### Should I include my bank details on every invoice?
+Yes. Including your preferred payment method and complete bank details (or a direct payment link) on every invoice removes a major friction point. Clients should never have to ask how to pay you — every extra email exchange delays your payment.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### How do agencies handle clients that require PO numbers?
+Ask at the start of every new client relationship — before you do any work. Request the PO number in writing, and make it standard practice to include it on every invoice. Many enterprise clients have automated AP systems that will simply reject or ignore invoices without a matching PO reference, regardless of the work quality.
 `,
   },
   {
@@ -1088,36 +991,49 @@ Track every invoice you send:
 
 This makes tax season easy and helps you spot clients who consistently pay late.
 
+## Your Freelance Invoicing Checklist
+
+Save this checklist and run through it before sending every invoice:
+
+**Before creating the invoice:**
+- [ ] Deliverable has been completed and delivered to the client
+- [ ] Agreed scope is confirmed (no unapproved extras have been added)
+- [ ] You have the client's correct billing name, company, and email
+
+**While creating the invoice:**
+- [ ] Unique invoice number assigned (continuing your sequence)
+- [ ] Invoice date = today
+- [ ] Due date is clearly specified (not just "Net 30" — write the actual date)
+- [ ] Each service is a separate line item with description, quantity, and rate
+- [ ] All calculations are correct (use a generator to avoid manual errors)
+- [ ] Tax applied correctly (or explicitly stated as tax-exclusive)
+- [ ] Your payment details are included (bank account, PayPal, etc.)
+- [ ] Late fee clause is in the Notes section
+
+**After sending the invoice:**
+- [ ] Confirmation email sent with invoice attached as PDF
+- [ ] Invoice logged in your AR tracker with status "Sent"
+- [ ] Reminder calendar event set for 2 days before due date
+- [ ] Follow-up scheduled for 1 day after due date (if unpaid)
+
 ## Start Invoicing Smarter
 
-Ready to put these tips into practice? [Create your first professional invoice for free](/generator) with Invoice-Quickly — no signup required.
+Ready to put these tips — and the checklist above — into practice? [Create your first professional invoice for free](/generator) with Invoice-Quickly — no signup required.
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### How do I handle a client who always pays late?
+First, switch them to shorter payment terms (Net 15 or Due on Receipt). Second, require a deposit (25-50%) before starting new projects. Third, add an enforced late fee clause to your contract. If the pattern continues despite these measures, seriously consider whether the client is worth the cash flow stress.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### Should freelancers charge sales tax on invoices?
+It depends on your location, your client's location, and the type of service you provide. In many jurisdictions, professional and digital services are subject to sales tax, VAT, or GST once your revenue exceeds a certain threshold. Consult a local accountant to determine your obligations and register accordingly.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### How do I invoice a client in another country?
+Specify the billing currency clearly (e.g., "All amounts in USD"), include your international payment details (SWIFT/BIC code or use platforms like Wise for better exchange rates), and state who bears the transfer fees. Invoice-Quickly supports 18+ currencies to simplify international invoicing.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### What should I do if a client disputes my invoice?
+Stay calm and professional. Ask the client to specify exactly which items or charges they are questioning. If the dispute is valid, issue a revised invoice promptly. If it is not, reference your original signed contract or written agreement and provide supporting documentation for the contested charges.
 `,
   },
   {
@@ -1318,31 +1234,19 @@ Payment is due at the **end of the current month**, regardless of when the invoi
 Ready to create an invoice with clear payment terms? [Use Invoice-Quickly's free generator](/generator) — add custom terms, notes, and due dates in seconds.
     
 
-## Essential Financial Habits for Growing Businesses
+## Frequently Asked Questions
 
-Beyond generating the invoice itself, how you manage the financial lifecycle of your business determines your long-term success. Many freelancers and small business owners focus entirely on client acquisition while neglecting their accounts receivable, leading to a profitable but cash-poor business.
+### What does "Net 30" actually mean?
+Net 30 means the full invoice amount is due within 30 calendar days of the invoice date. The word "Net" refers to the total amount owed after any applicable discounts or credits. It is the most widely used payment term in business-to-business transactions worldwide.
 
-**1. Reconcile Weekly, Not Monthly**
-Waiting until the end of the month to reconcile your accounts is a common mistake. By the time you realize an invoice hasn't been paid, it's already 30 days late. Set aside 15 minutes every Friday afternoon to reconcile your bank accounts against your accounting software or invoice dashboard.
+### What does "2/10 Net 30" mean?
+This notation means the client receives a 2% early payment discount if they pay within 10 days of the invoice date. Otherwise, the full undiscounted amount is due within 30 days. For example, on a $5,000 invoice, paying within 10 days saves the client $100 — a meaningful incentive for both parties.
 
-**2. Separate Personal and Business Finances Immediately**
-If you are operating as a sole proprietor, you might be tempted to use your personal checking account for business income. This creates an accounting nightmare come tax season and makes it impossible to accurately gauge your business's financial health. Open a dedicated business checking account and route all invoice payments there.
+### Can I set different payment terms for different clients?
+Yes, and many businesses do. You might offer shorter terms like Due on Receipt to new or historically late-paying clients, and more generous terms like Net 30 to established, reliable partners. Just be consistent with each individual client to avoid confusion and disputes.
 
-**3. Build a 3-Month Cash Buffer**
-The most stressful part of freelancing or running a small business is the unpredictability of cash flow. Clients will pay late. Projects will get delayed. By retaining earnings in your business account until you have a 3-month operating buffer, you transform late payments from a crisis into a mere administrative annoyance.
-
-## Navigating Complex Payment Scenarios
-
-As your business grows, you will encounter payment situations that a standard invoice alone cannot solve. Understanding how to navigate these protects your income and your client relationships.
-
-### The "Net 60" Enterprise Client
-Large corporations often have strict Net 60 or Net 90 payment terms that they refuse to negotiate for vendors. If you land a whale client but cannot float the cash flow for 90 days, consider offering a 2/10 Net 60 discount — offering a 2% discount if they pay within 10 days. Many corporate accounts payable departments are actually mandated to take these discounts when offered.
-
-### Handling Disputed Invoices
-If a client disputes a line item on your invoice, the worst thing you can do is ignore it or get defensive. Immediately issue a revised invoice with the disputed item removed (or separated), and ask them to pay the undisputed balance immediately while you resolve the remaining issue. This ensures you still get 90% of your cash flow on time.
-
-### International Client Considerations
-When billing clients in other countries, always specify the currency clearly on your invoice (e.g., "All amounts in USD"). Decide who bears the cost of foreign exchange fees and wire transfer fees — these can eat up to 5% of your profit margin if you aren't careful. Platforms like Wise or Revolut Business often provide much better exchange rates than traditional banks.
+### What is the best payment term to use as a freelancer?
+For most freelancers, Net 15 offers the best balance between appearing reasonable to clients and maintaining healthy cash flow. For brand-new clients or small one-off projects where trust has not been established, Due on Receipt is the safest option to protect yourself from non-payment.
 `,
   },
 ];
