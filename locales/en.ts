@@ -151,14 +151,21 @@ export const en = {
   template_free: "100% Forever",
   pricing: "Pricing",
 
-  // Invoice Status
   statusDraft: "Draft",
   statusSent: "Sent",
   statusPaid: "Paid",
   statusOverdue: "Overdue",
-  markAsSent: "Mark as Sent",
+  markAsSent: "Send Invoice",
   markAsPaid: "Mark as Paid",
   status: "Status",
+  sendInvoice: "Send Invoice",
+  sendingInvoice: "Sending...",
+  sendInvoiceSuccess: "Invoice sent successfully!",
+  sendInvoiceFailed: "Failed to send invoice. Please try again.",
+  clientEmailRequired: "Client email is required to send invoice. Please edit the invoice and add the client's email.",
+  emailTo: "To",
+  emailSubject: "Subject",
+  emailMessage: "Message",
 
   // Dashboard Stats
   totalOutstanding: "Total Outstanding",

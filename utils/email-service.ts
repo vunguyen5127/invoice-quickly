@@ -199,3 +199,117 @@ export async function sendTestEmail(toEmail: string) {
     return { success: false, error: error instanceof Error ? error.message : String(error) };
   }
 }
+
+export async function sendInvoiceToClient(params: {
+  clientEmail: string;
+  companyName: string;
+  companyEmail?: string;
+  invoiceNumber: string;
+  totalAmount: string;
+  currency: string;
+  dueDate?: string;
+  shareUrl: string;
+  subject: string;
+  message: string;
+}) {
+  const {
+    clientEmail, companyName, companyEmail,
+    invoiceNumber, totalAmount, currency,
+    dueDate, shareUrl, subject, message,
+  } = params;
+
+  const BILLING_EMAIL = "billing@invoice-quickly.com";
+  const fromName = `${companyName} via Invoice Quickly`;
+
+  console.log(`[email-service] Sending invoice ${invoiceNumber} to: ${clientEmail}`);
+
+  try {
+    await transporter.verify();
+  } catch (err) {
+    console.error("[email-service] SMTP verification failed:", err);
+    return { success: false, error: "SMTP verification failed" };
+  }
+
+  // Escape user message for safe HTML rendering (preserve line breaks)
+  const escapedMessage = message
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\n/g, "<br/>");
+
+  const mailOptions = {
+    from: `"${fromName}" <${BILLING_EMAIL}>`,
+    replyTo: companyEmail || BILLING_EMAIL,
+    to: clientEmail,
+    subject,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          @media screen and (max-width: 600px) {
+            .email-container { padding: 24px 16px !important; }
+            .invoice-card { padding: 20px !important; }
+          }
+        </style>
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: 'Segoe UI', Arial, sans-serif;">
+        <div class="email-container" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+          
+          <!-- Message from sender -->
+          <div style="margin-bottom: 32px;">
+            <p style="font-size: 15px; color: #334155; line-height: 1.7; margin: 0;">
+              ${escapedMessage}
+            </p>
+          </div>
+
+          <!-- Invoice Card -->
+          <div class="invoice-card" style="background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; margin-bottom: 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px;">
+              <div>
+                <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Invoice</p>
+                <p style="font-size: 18px; color: #0f172a; margin: 0; font-weight: 700;">${invoiceNumber}</p>
+              </div>
+              <div style="text-align: right;">
+                <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Amount Due</p>
+                <p style="font-size: 22px; color: #0f172a; margin: 0; font-weight: 700;">${currency} ${totalAmount}</p>
+              </div>
+            </div>
+            
+            ${dueDate ? `
+            <div style="margin-bottom: 24px;">
+              <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Due Date</p>
+              <p style="font-size: 14px; color: #475569; margin: 0; font-weight: 500;">${dueDate}</p>
+            </div>
+            ` : ""}
+
+            <div style="text-align: center; padding-top: 8px;">
+              <a href="${shareUrl}" 
+                 style="display: inline-block; padding: 14px 36px; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; letter-spacing: 0.2px;">
+                View & Download Invoice
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div style="text-align: center; padding-top: 16px;">
+            <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0;">Sent via</p>
+            <a href="${config.siteUrl}" style="color: #2563eb; text-decoration: none; font-weight: 600; font-size: 13px;">Invoice Quickly</a>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`[email-service] Invoice ${invoiceNumber} sent to ${clientEmail}:`, info.messageId);
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error(`[email-service] Failed to send invoice to ${clientEmail}:`, error);
+    return { success: false, error: error instanceof Error ? error.message : String(error) };
+  }
+}

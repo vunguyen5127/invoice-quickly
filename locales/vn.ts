@@ -159,9 +159,17 @@ export const vn: Translations = {
   statusSent: "Đã gửi",
   statusPaid: "Đã thanh toán",
   statusOverdue: "Quá hạn",
-  markAsSent: "Đánh dấu đã gửi",
+  markAsSent: "Gửi hóa đơn",
   markAsPaid: "Đánh dấu đã trả",
   status: "Trạng thái",
+  sendInvoice: "Gửi hóa đơn",
+  sendingInvoice: "Đang gửi...",
+  sendInvoiceSuccess: "Hóa đơn đã được gửi thành công!",
+  sendInvoiceFailed: "Gửi hóa đơn thất bại. Vui lòng thử lại.",
+  clientEmailRequired: "Cần có email khách hàng để gửi hóa đơn. Vui lòng sửa hóa đơn và thêm email khách hàng.",
+  emailTo: "Đến",
+  emailSubject: "Tiêu đề",
+  emailMessage: "Nội dung",
 
   // Dashboard Stats
   totalOutstanding: "Tổng chưa thu",

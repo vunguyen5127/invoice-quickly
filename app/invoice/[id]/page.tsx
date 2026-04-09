@@ -13,14 +13,24 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 import { bulkUpdateInvoiceStatus } from "@/utils/supabase/dashboard-actions";
-import { STATUS_CONFIG, InvoiceStatus } from "@/types/invoice";
+import { STATUS_CONFIG, InvoiceStatus, getCurrencySymbol } from "@/types/invoice";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
+const SendInvoiceModal = dynamic(() => import("@/components/send-invoice-modal").then(mod => mod.SendInvoiceModal));
 import { Tooltip } from "@/components/tooltip";
 import { useLanguage } from "@/contexts/language-context";
 
 export default function InvoiceViewPage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
+
+  // Helper: extract email from client.name (comma-separated) or client.email
+  const getClientEmail = (inv: { client?: { email?: string; name?: string } }) => {
+    if (inv.client?.email) return inv.client.email;
+    // Fallback: scan comma/newline-separated client.name for an email pattern
+    const parts = (inv.client?.name || "").split(/,|\n/);
+    const emailPart = parts.find(p => /\S+@\S+\.\S+/.test(p.trim()));
+    return emailPart?.trim() || "";
+  };
   const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string; _status?: string; _dueDate?: string }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -28,6 +38,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<string>('draft');
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -126,6 +137,43 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     setIsUpdatingStatus(false);
   };
 
+  const handleSendInvoice = async (subject: string, message: string) => {
+    const { id } = await params;
+    let token = "";
+    if (supabase) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) token = session.access_token;
+    }
+    if (!token) {
+      alert(t.sessionExpired || "Session expired");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/send-invoice", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ invoiceId: id, subject, message }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCurrentStatus("sent");
+        setShowSendModal(false);
+        alert(t.sendInvoiceSuccess || "Invoice sent successfully!");
+      } else {
+        alert(data.error === "Client email is required"
+          ? (t.clientEmailRequired || "Client email is required to send invoice. Please edit the invoice and add the client's email.")
+          : (t.sendInvoiceFailed || "Failed to send invoice. Please try again."));
+      }
+    } catch {
+      alert(t.sendInvoiceFailed || "Failed to send invoice. Please try again.");
+    }
+  };
+
   if (loading) {
     return <InvoiceViewSkeleton />;
   }
@@ -184,14 +232,21 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         <div className="flex items-center gap-2 w-full sm:w-auto md:justify-end">
           {/* Status action buttons */}
           {currentStatus === 'draft' && (
-          <Tooltip content={t.markAsSent || "Mark as Sent"}>
+          <Tooltip content={t.sendInvoice || "Send Invoice"}>
             <button
-              onClick={() => handleStatusChange('sent')}
+              onClick={() => {
+                const email = getClientEmail(invoice);
+                if (!email) {
+                  alert(t.clientEmailRequired || "Client email is required to send invoice. Please edit the invoice and add the client's email.");
+                  return;
+                }
+                setShowSendModal(true);
+              }}
               disabled={isUpdatingStatus}
               className="flex items-center gap-1.5 px-4 h-10 text-sm font-semibold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-xl transition-all disabled:opacity-50 cursor-pointer"
             >
               <Send className="w-4 h-4" />
-              <span className="hidden sm:inline">{t.markAsSent}</span>
+              <span className="hidden sm:inline">{t.sendInvoice || "Send Invoice"}</span>
             </button>
           </Tooltip>
           )}
@@ -253,6 +308,17 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         message={t.deleteInvoiceConfirm || "Are you sure you want to delete this invoice? This action cannot be undone."}
         isProcessing={isDeleting}
       />
+      {invoice && (
+        <SendInvoiceModal
+          isOpen={showSendModal}
+          onClose={() => setShowSendModal(false)}
+          onSend={handleSendInvoice}
+          clientEmail={getClientEmail(invoice)}
+          defaultSubject={`Invoice #${invoice.details.invoiceNumber} from ${(invoice.company?.name || "").split(/,|\n/)[0].trim()}`}
+          defaultMessage={`Hi,\n\nPlease find the invoice #${invoice.details.invoiceNumber} attached below.\n\nThank you for your business!\n\nBest regards,\n${(invoice.company?.name || "").split(/,|\n/)[0].trim()}`}
+          t={t}
+        />
+      )}
     </div>
     </div>
   );
