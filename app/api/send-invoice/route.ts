@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { invoiceId, subject, message } = body;
+    const { invoiceId, to: toOverride, cc, subject, message } = body;
 
     if (!invoiceId || !subject || !message) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -41,13 +41,16 @@ export async function POST(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const invoiceData = invoice.data as any;
     
-    // Extract client email: try client.email first, then scan client.name for email pattern
-    let clientEmail = invoiceData?.client?.email || "";
-    if (!clientEmail) {
-      const parts = (invoiceData?.client?.name || "").split(/,|\n/);
-      const emailPart = parts.find((p: string) => /\S+@\S+\.\S+/.test(p.trim()));
-      clientEmail = emailPart?.trim() || "";
-    }
+    // Use overridden `to` from modal if provided, otherwise fall back to invoice client email
+    const clientEmail = toOverride?.trim() || (() => {
+      let email = invoiceData?.client?.email || "";
+      if (!email) {
+        const parts = (invoiceData?.client?.name || "").split(/,|\n/);
+        const emailPart = parts.find((p: string) => /\S+@\S+\.\S+/.test(p.trim()));
+        email = emailPart?.trim() || "";
+      }
+      return email;
+    })();
 
     if (!clientEmail) {
       return NextResponse.json({ error: "Client email is required" }, { status: 400 });
@@ -67,6 +70,7 @@ export async function POST(request: NextRequest) {
     // Send the email
     const result = await sendInvoiceToClient({
       clientEmail,
+      cc: cc?.trim() || undefined,
       companyName,
       companyEmail,
       invoiceNumber: invoice.invoice_number || invoiceData?.details?.invoiceNumber || "N/A",

@@ -202,6 +202,7 @@ export async function sendTestEmail(toEmail: string) {
 
 export async function sendInvoiceToClient(params: {
   clientEmail: string;
+  cc?: string;
   companyName: string;
   companyEmail?: string;
   invoiceNumber: string;
@@ -213,7 +214,7 @@ export async function sendInvoiceToClient(params: {
   message: string;
 }) {
   const {
-    clientEmail, companyName, companyEmail,
+    clientEmail, cc, companyName, companyEmail,
     invoiceNumber, totalAmount, currency,
     dueDate, shareUrl, subject, message,
   } = params;
@@ -241,6 +242,7 @@ export async function sendInvoiceToClient(params: {
     from: `"${fromName}" <${BILLING_EMAIL}>`,
     replyTo: companyEmail || BILLING_EMAIL,
     to: clientEmail,
+    ...(cc ? { cc } : {}),
     subject,
     html: `
       <!DOCTYPE html>

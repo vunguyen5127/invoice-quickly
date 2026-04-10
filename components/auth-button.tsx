@@ -14,6 +14,7 @@ export function AuthButton() {
   const { t } = useLanguage();
   const { user, loading, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -88,8 +89,8 @@ export function AuthButton() {
           aria-label="User menu"
           aria-expanded={isOpen}
         >
-          {user.user_metadata?.avatar_url ? (
-            <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+          {user.user_metadata?.avatar_url && !avatarError ? (
+            <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" onError={() => setAvatarError(true)} />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white transition-transform duration-300 group-hover:scale-110">
               <span className="text-[11px] font-bold tracking-wide">
@@ -107,8 +108,8 @@ export function AuthButton() {
               <div className="px-5 py-4 border-b border-zinc-100/50 dark:border-white/5 bg-zinc-50/30 dark:bg-white/[0.02]">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 shrink-0 rounded-full overflow-hidden border border-zinc-200 shadow-sm bg-white dark:bg-zinc-800 dark:border-white/10">
-                    {user.user_metadata?.avatar_url ? (
-                      <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                    {user.user_metadata?.avatar_url && !avatarError ? (
+                      <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" onError={() => setAvatarError(true)} />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
                         <span className="text-sm font-bold">

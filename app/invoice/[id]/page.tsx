@@ -137,7 +137,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     setIsUpdatingStatus(false);
   };
 
-  const handleSendInvoice = async (subject: string, message: string) => {
+  const handleSendInvoice = async (to: string, cc: string, subject: string, message: string) => {
     const { id } = await params;
     let token = "";
     if (supabase) {
@@ -156,7 +156,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ invoiceId: id, subject, message }),
+        body: JSON.stringify({ invoiceId: id, to, cc, subject, message }),
       });
 
       const data = await res.json();
@@ -314,6 +314,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           onClose={() => setShowSendModal(false)}
           onSend={handleSendInvoice}
           clientEmail={getClientEmail(invoice)}
+          replyEmail={invoice.company?.email || ""}
           defaultSubject={`Invoice #${invoice.details.invoiceNumber} from ${(invoice.company?.name || "").split(/,|\n/)[0].trim()}`}
           defaultMessage={`Hi,\n\nPlease find the invoice #${invoice.details.invoiceNumber} attached below.\n\nThank you for your business!\n\nBest regards,\n${(invoice.company?.name || "").split(/,|\n/)[0].trim()}`}
           t={t}
