@@ -5,6 +5,7 @@ import { updateItem } from "@/utils/supabase/items-actions";
 import { X, Loader2, PenLine } from "lucide-react";
 import { SavedItem } from "@/types/item";
 import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
 
 interface EditItemModalProps {
   isOpen: boolean;
@@ -44,7 +45,7 @@ export function EditItemModal({ isOpen, initialData, onClose, onSuccess }: EditI
       onClose();
     } catch (error) {
       console.error(error);
-      alert("Failed to update item.");
+      toast.error("Failed to update item.");
     } finally {
       setIsSubmitting(false);
     }

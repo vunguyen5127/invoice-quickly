@@ -250,55 +250,85 @@ export async function sendInvoiceToClient(params: {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--[if mso]>
+        <noscript>
+          <xml>
+            <o:OfficeDocumentSettings>
+              <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+          </xml>
+        </noscript>
+        <![endif]-->
         <style>
           @media screen and (max-width: 600px) {
             .email-container { padding: 24px 16px !important; }
-            .invoice-card { padding: 20px !important; }
+            .invoice-card { padding: 20px !important; width: 100% !important; }
+            .mobile-stack { display: block !important; width: 100% !important; }
           }
         </style>
       </head>
-      <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: 'Segoe UI', Arial, sans-serif;">
+      <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
         <div class="email-container" style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
           
+          <!-- Header -->
+          <div style="text-align: center; margin-bottom: 40px;">
+            <a href="${config.siteUrl}" style="text-decoration: none;">
+              <img src="${config.siteUrl}/logo.svg" alt="Invoice Quickly" style="width: 48px; height: 48px; margin-bottom: 12px; display: inline-block;">
+              <div style="font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">Invoice Quickly</div>
+            </a>
+          </div>
+
           <!-- Message from sender -->
-          <div style="margin-bottom: 32px;">
-            <p style="font-size: 15px; color: #334155; line-height: 1.7; margin: 0;">
-              ${escapedMessage}
-            </p>
+          <div style="margin-bottom: 32px; background: #ffffff; border-radius: 16px; padding: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);">
+            <p style="font-size: 16px; color: #475569; line-height: 1.8; margin: 0; white-space: pre-wrap;">${escapedMessage}</p>
           </div>
 
           <!-- Invoice Card -->
-          <div class="invoice-card" style="background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; margin-bottom: 32px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px;">
-              <div>
-                <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Invoice</p>
-                <p style="font-size: 18px; color: #0f172a; margin: 0; font-weight: 700;">${invoiceNumber}</p>
-              </div>
-              <div style="text-align: right;">
-                <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Amount Due</p>
-                <p style="font-size: 22px; color: #0f172a; margin: 0; font-weight: 700;">${currency} ${totalAmount}</p>
-              </div>
+          <div class="invoice-card" style="background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08); overflow: hidden;">
+            <div style="background: #f8fafc; padding: 24px 32px; border-bottom: 1px solid #f1f5f9;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left">
+                    <p style="font-size: 11px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800;">Invoice</p>
+                    <p style="font-size: 20px; color: #0f172a; margin: 0; font-weight: 700; letter-spacing: -0.01em;">${invoiceNumber}</p>
+                  </td>
+                  <td align="right">
+                    <p style="font-size: 11px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800;">Amount Due</p>
+                    <p style="font-size: 24px; color: #2563eb; margin: 0; font-weight: 800; letter-spacing: -0.02em;">${currency}${totalAmount}</p>
+                  </td>
+                </tr>
+              </table>
             </div>
             
-            ${dueDate ? `
-            <div style="margin-bottom: 24px;">
-              <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Due Date</p>
-              <p style="font-size: 14px; color: #475569; margin: 0; font-weight: 500;">${dueDate}</p>
-            </div>
-            ` : ""}
+            <div style="padding: 32px;">
+              ${dueDate ? `
+              <div style="margin-bottom: 32px; text-align: left;">
+                <p style="font-size: 11px; color: #94a3b8; margin: 0 0 6px 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800;">Due Date</p>
+                <div style="display: inline-block; padding: 6px 14px; background: #fee2e2; border-radius: 8px; color: #dc2626; font-size: 14px; font-weight: 700;">
+                  ${dueDate}
+                </div>
+              </div>
+              ` : ""}
 
-            <div style="text-align: center; padding-top: 8px;">
-              <a href="${shareUrl}" 
-                 style="display: inline-block; padding: 14px 36px; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; letter-spacing: 0.2px;">
-                View & Download Invoice
-              </a>
+              <div style="text-align: center;">
+                <a href="${shareUrl}" 
+                   style="display: block; padding: 18px 36px; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 16px; letter-spacing: -0.01em; box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35); transition: background 0.2s ease;">
+                  View & Download Invoice
+                </a>
+                <p style="font-size: 13px; color: #94a3b8; margin: 20px 0 0 0;">
+                  No signup required to view or pay.
+                </p>
+              </div>
             </div>
           </div>
 
           <!-- Footer -->
-          <div style="text-align: center; padding-top: 16px;">
-            <p style="font-size: 12px; color: #94a3b8; margin: 0 0 4px 0;">Sent via</p>
-            <a href="${config.siteUrl}" style="color: #2563eb; text-decoration: none; font-weight: 600; font-size: 13px;">Invoice Quickly</a>
+          <div style="text-align: center; padding-top: 48px;">
+            <p style="font-size: 13px; color: #94a3b8; margin: 0 0 12px 0;">Professional invoicing made simple.</p>
+            <div style="height: 1px; background: #e2e8f0; width: 60px; margin: 0 auto 20px auto;"></div>
+            <a href="${config.siteUrl}" style="color: #2563eb; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: -0.01em;">
+              Powered by Invoice Quickly
+            </a>
           </div>
         </div>
       </body>

@@ -7,6 +7,7 @@ import { generatePDF } from "@/utils/generate-pdf";
 import { Download, Loader2, CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
+import { toast } from "sonner";
 
 export default function ShareQuotePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -45,7 +46,7 @@ export default function ShareQuotePage({ params }: { params: Promise<{ id: strin
     if (res.success) {
       setQuote({ ...quote, status: 'accepted' });
     } else {
-      alert("Failed to accept quote. Please try again.");
+      toast.error("Failed to accept quote. Please try again.");
     }
     setIsActionLoading(false);
   };
@@ -56,7 +57,7 @@ export default function ShareQuotePage({ params }: { params: Promise<{ id: strin
     if (res.success) {
       setQuote({ ...quote, status: 'rejected' });
     } else {
-      alert("Failed to reject quote. Please try again.");
+      toast.error("Failed to reject quote. Please try again.");
     }
     setIsActionLoading(false);
   };

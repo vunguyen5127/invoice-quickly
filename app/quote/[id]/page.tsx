@@ -15,6 +15,7 @@ import { AuthButton } from "@/components/auth-button";
 import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { useData } from "@/contexts/data-context";
+import { toast } from "sonner";
 
 export default function QuoteEditor({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -123,7 +124,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
 
   const handleSave = async () => {
     if (!companyId) {
-      alert("Vui lòng chọn Công ty ở form bên dưới trước khi lưu Báo giá!");
+      toast.error("Vui lòng chọn Công ty ở form bên dưới trước khi lưu Báo giá!");
       return;
     }
 
@@ -160,7 +161,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
         setIsUpgradeModalOpen(true);
         return;
       }
-      alert("Error saving quote: " + (res.error || "Unknown error"));
+      toast.error("Error saving quote: " + (res.error || "Unknown error"));
       console.error(res);
       return;
     }
@@ -180,11 +181,11 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
       if (res.success && res.invoiceId) {
         router.push(`/invoice/${res.invoiceId}/edit`);
       } else if (res.error === "CONVERT_QUOTE_LIMIT_REACHED") {
-        alert("The '1-Click Convert to Invoice' feature is only available on the Pro plan. Please upgrade to use this feature.");
+        toast.error("The '1-Click Convert to Invoice' feature is only available on the Pro plan. Please upgrade to use this feature.");
       } else if (res.invoiceId) {
         router.push(`/invoice/${res.invoiceId}/edit`); // was already invoiced
       } else {
-        alert(res.error || "Failed to convert quote");
+        toast.error(res.error || "Failed to convert quote");
       }
     }
     setConverting(false);
@@ -204,7 +205,7 @@ export default function QuoteEditor({ params }: { params: Promise<{ id: string }
         });
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied to clipboard! You can now send it to your client.");
+        toast.success("Link copied to clipboard! You can now send it to your client.");
       }
     } catch (err) {
       console.error("Error sharing", err);

@@ -18,6 +18,7 @@ import { FREE_ENTITLEMENTS } from "@/types/subscription";
 import { deleteItem, deleteSavedClient } from "@/utils/supabase/items-actions";
 import { Mail, MapPin, Package, PackageSearch, PenLine, Phone, Plus, Trash2, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function ItemsPage() {
   const { session } = useAuth();
@@ -100,7 +101,7 @@ export default function ItemsPage() {
       // Refresh context instead of fetching locally
       await refreshData();
     } catch (error) {
-      alert("Failed to delete item.");
+      toast.error("Failed to delete item.");
     } finally {
       setIsDeleting(false);
       setItemToDelete(null);
@@ -114,7 +115,7 @@ export default function ItemsPage() {
       await deleteSavedClient(session.access_token, clientToDelete);
       await refreshData();
     } catch (error) {
-      alert("Failed to delete client.");
+      toast.error("Failed to delete client.");
     } finally {
       setIsDeleting(false);
       setClientToDelete(null);

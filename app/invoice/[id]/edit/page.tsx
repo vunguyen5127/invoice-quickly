@@ -19,6 +19,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
+import { toast } from "sonner";
 
 export default function EditInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
@@ -46,7 +47,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
 
       const data = await getInvoiceById(session.access_token, resolvedParams.id);
       if (!data) {
-        alert(t.invoiceNotFound || "Invoice not found");
+        toast.error(t.invoiceNotFound || "Invoice not found");
         router.push("/dashboard");
         return;
       }
@@ -91,7 +92,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         });
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert(t.linkCopied || "Link copied to clipboard!");
+        toast.success(t.linkCopied || "Link copied to clipboard!");
       }
     } catch (err) {
       console.error("Error sharing", err);
@@ -119,7 +120,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
         router.push("/dashboard");
       }
     } catch (e: any) {
-      alert(t.errorSavingInvoice || "Error saving invoice. Please check your config.");
+      toast.error(t.errorSavingInvoice || "Error saving invoice. Please check your config.");
       console.error(e);
     } finally {
       setIsSaving(false);

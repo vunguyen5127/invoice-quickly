@@ -6,6 +6,7 @@ import { X, Loader2, PenLine } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useLanguage } from "@/contexts/language-context";
 import { SavedClient } from "@/types/client";
+import { toast } from "sonner";
 
 interface EditClientModalProps {
   isOpen: boolean;
@@ -53,7 +54,7 @@ export function EditClientModal({ isOpen, onClose, onSuccess, initialData }: Edi
       onClose();
     } catch (error) {
       console.error(error);
-      alert("Failed to update client.");
+      toast.error("Failed to update client.");
     } finally {
       setIsSubmitting(false);
     }

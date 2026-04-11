@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { createItem } from "@/utils/supabase/items-actions";
 import { X, Loader2, Package, Plus } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
 
 interface CreateItemModalProps {
   isOpen: boolean;
@@ -38,10 +39,10 @@ export function CreateItemModal({ isOpen, onClose, onSuccess }: CreateItemModalP
     } catch (error: any) {
       console.error(error);
       if (error.message?.includes("ITEM_LIMIT_REACHED")) {
-        alert("You have reached the maximum number of saved items for the Free plan (10). Please upgrade to Pro to save unlimited items.");
+        toast.error("You have reached the maximum number of saved items for the Free plan (10). Please upgrade to Pro to save unlimited items.");
         onClose();
       } else {
-        alert("Failed to create item.");
+        toast.error("Failed to create item.");
       }
     } finally {
       setIsSubmitting(false);

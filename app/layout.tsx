@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/contexts/language-context";
+import { Toaster } from "sonner";
 import type { Metadata, Viewport } from "next";
 import {
   Inter,
@@ -209,6 +210,15 @@ export default function RootLayout({
       </Script>
       <body className="antialiased min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <Toaster
+            position="top-right"
+            richColors
+            closeButton
+            offset={{ top: 12, right: 24 }}
+            toastOptions={{
+              style: { marginTop: "0px" },
+            }}
+          />
           <AuthProvider>
             <DataProvider>
               <LanguageProvider>

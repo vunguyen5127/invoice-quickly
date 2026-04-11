@@ -9,6 +9,7 @@ import { getCompanyQuotes, bulkUpdateQuoteStatus, bulkDeleteQuotes } from "@/uti
 import { supabase } from "@/utils/supabase/client"
 import { useData } from "@/contexts/data-context"
 import { Tooltip } from "@/components/tooltip"
+import { toast } from "sonner"
 
 export default function QuotesDashboard() {
   const { t } = useLanguage()
@@ -285,7 +286,7 @@ export default function QuotesDashboard() {
                                <button 
                                  onClick={() => {
                                    navigator.clipboard.writeText(`${window.location.origin}/quote/${quote.id}/public`);
-                                   alert("Public link copied to clipboard!");
+                                   toast.success("Public link copied to clipboard!");
                                  }} 
                                  className="flex-1 flex items-center justify-center p-3 text-zinc-500 hover:text-blue-600 bg-white dark:bg-zinc-900 shadow-sm border border-zinc-200 dark:border-zinc-700 rounded-xl active:bg-zinc-50 dark:active:bg-zinc-800 transition-all cursor-pointer"
                                >

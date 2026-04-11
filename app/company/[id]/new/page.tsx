@@ -21,6 +21,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { UpgradeModal } from "@/components/upgrade-modal";
 import { CreateInvoiceSkeleton } from "@/components/create-invoice-skeleton";
 import { useData } from "@/contexts/data-context";
+import { toast } from "sonner";
 
 export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
@@ -59,7 +60,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
       // Load entitlements for free user guards
       setCanUseRecurring(entitlements?.canUseRecurring || false);
       if (!companyData) {
-        alert(t.companyNotFound || "Company not found");
+        toast.error(t.companyNotFound || "Company not found");
         router.push("/dashboard");
         return;
       }
@@ -152,7 +153,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
   };
 
   const handleShare = async () => {
-    alert(t.saveToSharePrompt || "Please save the invoice first to generate a shareable public link.");
+    toast.error(t.saveToSharePrompt || "Please save the invoice first to generate a shareable public link.");
     handleSave();
   };
 
@@ -175,7 +176,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
         setUpgradeTrigger('invoice_limit');
         setIsUpgradeModalOpen(true);
       } else {
-        alert(t.errorSavingInvoice || "Error saving invoice. Please check your config.");
+        toast.error(t.errorSavingInvoice || "Error saving invoice. Please check your config.");
         console.error(e);
       }
     } finally {

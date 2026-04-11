@@ -5,6 +5,7 @@ import { createSavedClient } from "@/utils/supabase/items-actions";
 import { X, Loader2, User, Plus } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useLanguage } from "@/contexts/language-context";
+import { toast } from "sonner";
 
 interface CreateClientModalProps {
   isOpen: boolean;
@@ -49,11 +50,10 @@ export function CreateClientModal({ isOpen, onClose, onSuccess }: CreateClientMo
     } catch (error: any) {
       console.error(error);
       if (error.message?.includes("CLIENT_LIMIT_REACHED")) {
-        alert("You have reached the maximum number of saved clients for the Free plan (5). Please upgrade to Pro to save unlimited clients.");
-        onClose(); // Optional: close it if they need to upgrade
-        // TODO: better to trigger onShowUpgrade if it was passed down, but alert works for now.
+        toast.error("You have reached the maximum number of saved clients for the Free plan (5). Please upgrade to Pro to save unlimited clients.");
+        onClose();
       } else {
-        alert("Failed to create client.");
+        toast.error("Failed to create client.");
       }
     } finally {
       setIsSubmitting(false);

@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 import { bulkUpdateInvoiceStatus } from "@/utils/supabase/dashboard-actions";
 import { STATUS_CONFIG, InvoiceStatus, getCurrencySymbol } from "@/types/invoice";
+import { toast } from "sonner";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 const SendInvoiceModal = dynamic(() => import("@/components/send-invoice-modal").then(mod => mod.SendInvoiceModal));
@@ -31,6 +32,14 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     const emailPart = parts.find(p => /\S+@\S+\.\S+/.test(p.trim()));
     return emailPart?.trim() || "";
   };
+
+  // Helper: extract email from company.email or company.name (comma-separated)
+  const getCompanyEmail = (inv: { company?: { email?: string; name?: string } }) => {
+    if (inv.company?.email) return inv.company.email;
+    const parts = (inv.company?.name || "").split(/,|\n/);
+    const emailPart = parts.find(p => /\S+@\S+\.\S+/.test(p.trim()));
+    return emailPart?.trim() || "";
+  };
   const [invoice, setInvoice] = useState<(InvoiceState & { _companyId?: string; _status?: string; _dueDate?: string }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -39,6 +48,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
   const [currentStatus, setCurrentStatus] = useState<string>('draft');
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const [showSendModal, setShowSendModal] = useState(false);
+  const [userEmail, setUserEmail] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -51,6 +61,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         router.push(`/login?redirect=/invoice/${id}`);
         return;
       }
+      setUserEmail(session.user?.email || "");
 
       const data = await getInvoiceById(session.access_token, id);
       
@@ -88,7 +99,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
         });
       } else {
         await navigator.clipboard.writeText(shareUrl);
-        alert(t.linkCopied || "Link copied to clipboard!");
+        toast.success(t.linkCopied || "Link copied to clipboard!");
       }
     } catch (err) {
       console.error("Error sharing", err);
@@ -106,7 +117,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     }
 
     if (!token) {
-      alert(t.sessionExpired || "Session expired");
+      toast.error(t.sessionExpired || "Session expired");
       setIsDeleting(false);
       return;
     }
@@ -115,7 +126,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     if (success) {
       router.push("/dashboard");
     } else {
-      alert("Failed to delete invoice");
+      toast.error("Failed to delete invoice");
       setIsDeleting(false);
     }
   };
@@ -145,7 +156,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       if (session) token = session.access_token;
     }
     if (!token) {
-      alert(t.sessionExpired || "Session expired");
+      toast.error(t.sessionExpired || "Session expired");
       return;
     }
 
@@ -163,14 +174,14 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
       if (res.ok && data.success) {
         setCurrentStatus("sent");
         setShowSendModal(false);
-        alert(t.sendInvoiceSuccess || "Invoice sent successfully!");
+        toast.success(t.sendInvoiceSuccess || "Invoice sent successfully!");
       } else {
-        alert(data.error === "Client email is required"
+        toast.error(data.error === "Client email is required"
           ? (t.clientEmailRequired || "Client email is required to send invoice. Please edit the invoice and add the client's email.")
           : (t.sendInvoiceFailed || "Failed to send invoice. Please try again."));
       }
     } catch {
-      alert(t.sendInvoiceFailed || "Failed to send invoice. Please try again.");
+      toast.error(t.sendInvoiceFailed || "Failed to send invoice. Please try again.");
     }
   };
 
@@ -231,13 +242,13 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
 
         <div className="flex items-center gap-2 w-full sm:w-auto md:justify-end">
           {/* Status action buttons */}
-          {currentStatus === 'draft' && (
+          {currentStatus !== 'paid' && (
           <Tooltip content={t.sendInvoice || "Send Invoice"}>
             <button
               onClick={() => {
                 const email = getClientEmail(invoice);
                 if (!email) {
-                  alert(t.clientEmailRequired || "Client email is required to send invoice. Please edit the invoice and add the client's email.");
+                  toast.error(t.clientEmailRequired || "Client email is required to send invoice. Please edit the invoice and add the client's email.");
                   return;
                 }
                 setShowSendModal(true);
@@ -314,7 +325,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
           onClose={() => setShowSendModal(false)}
           onSend={handleSendInvoice}
           clientEmail={getClientEmail(invoice)}
-          replyEmail={invoice.company?.email || ""}
+          replyEmail={getCompanyEmail(invoice) || userEmail}
           defaultSubject={`Invoice #${invoice.details.invoiceNumber} from ${(invoice.company?.name || "").split(/,|\n/)[0].trim()}`}
           defaultMessage={`Hi,\n\nPlease find the invoice #${invoice.details.invoiceNumber} attached below.\n\nThank you for your business!\n\nBest regards,\n${(invoice.company?.name || "").split(/,|\n/)[0].trim()}`}
           t={t}

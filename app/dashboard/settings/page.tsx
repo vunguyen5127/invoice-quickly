@@ -13,6 +13,7 @@ import { Subscription } from "@/types/subscription";
 import { format } from "date-fns";
 import { ConfirmModal } from "@/components/confirm-modal";
 import { SettingsSkeleton } from "@/components/settings-skeleton";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { t, lang, setLang } = useLanguage();

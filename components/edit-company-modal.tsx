@@ -8,6 +8,7 @@ import { SignaturePadModal } from "./signature-pad-modal";
 import { CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
 import { convertToWebP } from "@/utils/image-utils";
+import { toast } from "sonner";
 
 interface EditCompanyModalProps {
   isOpen: boolean;
@@ -102,7 +103,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
     }
     
     if (!sessionToken) {
-      alert("Session expired. Please log in again.");
+      toast.error("Session expired. Please log in again.");
       setIsSubmitting(false);
       return;
     }
@@ -114,13 +115,13 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
     });
     setIsSubmitting(false);
     if (updated) { await onSuccess(updated); onClose(); }
-    else alert("Failed to update company. Please try again.");
+    else toast.error("Failed to update company. Please try again.");
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { alert("Image must be less than 2MB"); return; }
+    if (file.size > 2 * 1024 * 1024) { toast.error("Image must be less than 2MB"); return; }
     
     try {
       const webpDataUrl = await convertToWebP(file);
@@ -273,7 +274,7 @@ export function EditCompanyModal({ isOpen, onClose, onSuccess, initialData }: Ed
                       <input id="sig-upload-edit" type="file" accept="image/*" className="hidden" onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        if (file.size > 2 * 1024 * 1024) { alert("Max 2MB"); return; }
+                        if (file.size > 2 * 1024 * 1024) { toast.error("Max 2MB"); return; }
                         try {
                           const webpDataUrl = await convertToWebP(file);
                           setSignatureUrl(webpDataUrl);

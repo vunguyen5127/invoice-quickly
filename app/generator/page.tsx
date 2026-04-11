@@ -20,6 +20,7 @@ import Link from "next/link";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLanguage } from "@/contexts/language-context";
+import { toast } from "sonner";
 const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then((mod) => mod.CreateCompanyModal));
 const SuccessModal = dynamic(() => import("@/components/success-modal").then((mod) => mod.SuccessModal));
 
@@ -194,7 +195,7 @@ function CreateInvoiceContent() {
   };
 
   const handleShare = async () => {
-    alert("Please save the invoice first to generate a shareable public link.");
+    toast.info("Please save the invoice first to generate a shareable public link.");
     handleSaveClick();
   };
 
@@ -224,7 +225,7 @@ function CreateInvoiceContent() {
       }
     } catch (e) {
       console.error(e);
-      alert("Failed to fetch companies.");
+      toast.error("Failed to fetch companies.");
     } finally {
       setIsSaving(false);
     }
@@ -284,7 +285,7 @@ function CreateInvoiceContent() {
       setIsSelectModalOpen(false);
       setShowSuccessModal(true);
     } catch (e: any) {
-      alert("Error saving invoice.");
+      toast.error("Error saving invoice.");
       console.error(e);
     } finally {
       setIsSaving(false);

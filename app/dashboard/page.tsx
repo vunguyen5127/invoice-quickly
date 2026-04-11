@@ -17,6 +17,7 @@ import { useLanguage } from "@/contexts/language-context";
 import { UpgradeModal } from "@/components/upgrade-modal";
 
 import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
 
 function DashboardContent() {
   const { t } = useLanguage();
@@ -117,7 +118,7 @@ function DashboardContent() {
       if (success) {
         setCompanies(prev => prev.filter(c => c.id !== companyToDelete));
       } else {
-        alert("Failed to delete company");
+        toast.error("Failed to delete company");
       }
     }
     setIsDeleting(false);

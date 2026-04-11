@@ -5,6 +5,7 @@ import { ArrowRight, Check, CreditCard, Crown, Infinity, Loader2, Shield, Sparkl
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { createCheckout, getBillingProviderName } from "@/utils/supabase/pricing-actions";
+import { toast } from "sonner";
 
 declare global {
   interface Window {
@@ -73,7 +74,7 @@ export default function PricingPage() {
       }
     } catch (err: any) { 
       console.error("Failed to open checkout:", err); 
-      alert(err.message || "Failed to initialize checkout. Please try again.");
+      toast.error(err.message || "Failed to initialize checkout. Please try again.");
     } finally { 
       if (!success || billingProvider === "paddle") {
         setIsLoading(false); 

@@ -8,6 +8,7 @@ import { SignaturePadModal } from "./signature-pad-modal";
 import { CURRENCIES } from "@/types/invoice";
 import { useLanguage } from "@/contexts/language-context";
 import { convertToWebP } from "@/utils/image-utils";
+import { toast } from "sonner";
 
 interface CreateCompanyModalProps {
   isOpen: boolean;
@@ -64,7 +65,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     }
     
     if (!sessionToken) {
-      alert("Session expired. Please log in again.");
+      toast.error("Session expired. Please log in again.");
       setIsSubmitting(false);
       return;
     }
@@ -78,7 +79,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
     setIsSubmitting(false);
 
     if (newCompany && newCompany.error === "COMPANY_LIMIT_REACHED") {
-      alert("You have reached the maximum number of companies allowed for your plan. Please upgrade to Pro to create unlimited companies.");
+      toast.error("You have reached the maximum number of companies allowed for your plan. Please upgrade to Pro to create unlimited companies.");
       onClose();
       return;
     }
@@ -96,14 +97,14 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
       setTab("company");
       onClose();
     } else {
-      alert("Failed to create company. Please try again.");
+      toast.error("Failed to create company. Please try again.");
     }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { alert("Image must be less than 2MB"); return; }
+    if (file.size > 2 * 1024 * 1024) { toast.error("Image must be less than 2MB"); return; }
     
     try {
       const webpDataUrl = await convertToWebP(file);
@@ -256,7 +257,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                       <input id="sig-upload-create" type="file" accept="image/*" className="hidden" onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
-                        if (file.size > 2 * 1024 * 1024) { alert("Max 2MB"); return; }
+                        if (file.size > 2 * 1024 * 1024) { toast.error("Max 2MB"); return; }
                         try {
                           const webpDataUrl = await convertToWebP(file);
                           setSignatureUrl(webpDataUrl);

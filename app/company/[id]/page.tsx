@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect, useRef, useState } from "react";
 const EditCompanyModal = dynamic(() => import("@/components/edit-company-modal").then(mod => mod.EditCompanyModal));
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
+import { toast } from "sonner";
 
 type SortField = "invoice_number" | "client_name" | "created_at" | "total_amount";
 type SortDir = "asc" | "desc";
@@ -125,7 +126,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
         // Fallback or handle missing
         const fallback = await getCompanyById(session.access_token, resolvedParams.id);
         if (!fallback) {
-          alert("Company not found");
+          toast.error("Company not found");
           router.push("/dashboard");
           return;
         }
@@ -256,7 +257,7 @@ export default function CompanyDashboardPage({ params }: { params: Promise<{ id:
       if (success) {
         setInvoices(invoices.filter((inv) => inv.id !== invoiceToDelete));
       } else {
-        alert("Failed to delete invoice");
+        toast.error("Failed to delete invoice");
       }
     }
     setIsDeleting(false);
