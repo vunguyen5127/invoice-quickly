@@ -72,8 +72,14 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
 
   const handleDownload = async () => {
     setIsGenerating(true);
-    await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
-    setIsGenerating(false);
+    try {
+      await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+    } catch {
+      toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
+      window.print();
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handlePrint = () => {

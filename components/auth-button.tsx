@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
 
 export function AuthButton() {
   const { t } = useLanguage();
@@ -34,7 +35,7 @@ export function AuthButton() {
 
   const handleLogin = async () => {
     if (!supabase) {
-      alert("Supabase client not initialized. Check your .env setup.");
+      toast.error("Supabase client not initialized. Check your .env setup.");
       return;
     }
 

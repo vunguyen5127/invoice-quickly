@@ -36,8 +36,14 @@ export default function ShareQuotePage({ params }: { params: Promise<{ id: strin
   const handleDownload = async () => {
     if (!quote) return;
     setIsGenerating(true);
-    await generatePDF("invoice-capture-area", `Quote-${quote.quote_number}`);
-    setIsGenerating(false);
+    try {
+      await generatePDF("invoice-capture-area", `Quote-${quote.quote_number}`);
+    } catch {
+      toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
+      window.print();
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleAccept = async () => {

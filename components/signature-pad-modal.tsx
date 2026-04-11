@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 import { X, Eraser, Check } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface SignaturePadModalProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ export function SignaturePadModal({ isOpen, onClose, onSave }: SignaturePadModal
 
   const save = () => {
     if (sigCanvas.current?.isEmpty()) {
-      alert("Please provide a signature first.");
+      toast.warning("Please draw your signature first.");
       return;
     }
     

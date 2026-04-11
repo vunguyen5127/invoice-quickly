@@ -64,7 +64,7 @@ export default function SettingsPage() {
         setIsCancelModalOpen(false);
         router.refresh(); // Ensure layout-level data is also fresh
       } else {
-        alert(result.error);
+        toast.error(result.error);
       }
     }
     setIsCancelling(false);
@@ -85,7 +85,7 @@ export default function SettingsPage() {
         setSubscription(sub);
         router.refresh(); // Ensure layout-level data is also fresh
       } else {
-        alert(result.error);
+        toast.error(result.error);
       }
     }
     setIsResuming(false);

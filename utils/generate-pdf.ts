@@ -122,8 +122,8 @@ export const generatePDF = async (elementId: string, filename: string) => {
     pdf.save(`${filename}.pdf`);
   } catch (error) {
     console.error("Error generating PDF:", error);
-    alert("Could not generate PDF file directly. Opening print dialog instead.");
-    window.print();
+    // Re-throw so callers can show appropriate UI feedback (e.g. toast)
+    throw error;
   } finally {
     // Restore everything
     document.documentElement.className = originalTheme;

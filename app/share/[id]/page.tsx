@@ -8,6 +8,7 @@ import { InvoiceState } from "@/types/invoice";
 import { Download, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
+import { toast } from "sonner";
 
 export default function ShareInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const [invoice, setInvoice] = useState<InvoiceState | null>(null);
@@ -36,8 +37,14 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
   const handleDownload = async () => {
     if (!invoice) return;
     setIsGenerating(true);
-    await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
-    setIsGenerating(false);
+    try {
+      await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+    } catch {
+      toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
+      window.print();
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   if (loading) {

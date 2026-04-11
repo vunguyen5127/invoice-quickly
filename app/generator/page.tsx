@@ -176,17 +176,23 @@ function CreateInvoiceContent() {
 
   const handleDownload = async () => {
     setIsGenerating(true);
-    await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
-    setIsGenerating(false);
-    // Google Ads conversion tracking — "PDF Downloaded"
     try {
-      if (typeof window !== "undefined" && (window as any).gtag) {
-        (window as any).gtag("event", "conversion", {
-          send_to: "AW-17800091853/-kStCJvts5gcEM2x36dC",
-        });
+      await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+      // Google Ads conversion tracking — "PDF Downloaded"
+      try {
+        if (typeof window !== "undefined" && (window as any).gtag) {
+          (window as any).gtag("event", "conversion", {
+            send_to: "AW-17800091853/-kStCJvts5gcEM2x36dC",
+          });
+        }
+      } catch {
+        // Silently fail — never block the user experience
       }
-    } catch (e) {
-      // Silently fail — never block the user experience
+    } catch {
+      toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
+      window.print();
+    } finally {
+      setIsGenerating(false);
     }
   };
 
