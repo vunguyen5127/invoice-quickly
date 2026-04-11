@@ -22,6 +22,7 @@ import { UpgradeModal } from "@/components/upgrade-modal";
 import { CreateInvoiceSkeleton } from "@/components/create-invoice-skeleton";
 import { useData } from "@/contexts/data-context";
 import { toast } from "sonner";
+import { trackPdfDownload } from "@/utils/analytics";
 
 export default function CreateCompanyInvoice({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
@@ -146,6 +147,7 @@ export default function CreateCompanyInvoice({ params }: { params: Promise<{ id:
     setIsGenerating(true);
     try {
       await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+      trackPdfDownload("invoice", invoice.details.invoiceNumber);
     } catch {
       toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
       window.print();

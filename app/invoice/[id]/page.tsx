@@ -15,6 +15,7 @@ import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 import { bulkUpdateInvoiceStatus } from "@/utils/supabase/dashboard-actions";
 import { STATUS_CONFIG, InvoiceStatus, getCurrencySymbol } from "@/types/invoice";
 import { toast } from "sonner";
+import { trackPdfDownload } from "@/utils/analytics";
 
 const ConfirmModal = dynamic(() => import("@/components/confirm-modal").then(mod => mod.ConfirmModal));
 const SendInvoiceModal = dynamic(() => import("@/components/send-invoice-modal").then(mod => mod.SendInvoiceModal));
@@ -80,6 +81,7 @@ export default function InvoiceViewPage({ params }: { params: Promise<{ id: stri
     setIsGenerating(true);
     try {
       await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+      trackPdfDownload("invoice", invoice.details.invoiceNumber);
     } catch {
       toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
       window.print();

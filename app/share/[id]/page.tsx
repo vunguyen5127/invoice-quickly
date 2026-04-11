@@ -9,6 +9,7 @@ import { Download, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 import { toast } from "sonner";
+import { trackPdfDownload } from "@/utils/analytics";
 
 export default function ShareInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const [invoice, setInvoice] = useState<InvoiceState | null>(null);
@@ -39,6 +40,7 @@ export default function ShareInvoicePage({ params }: { params: Promise<{ id: str
     setIsGenerating(true);
     try {
       await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+      trackPdfDownload("invoice", invoice.details.invoiceNumber);
     } catch {
       toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
       window.print();

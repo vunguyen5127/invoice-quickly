@@ -20,6 +20,7 @@ import { AuthButton } from "@/components/auth-button";
 import { useLanguage } from "@/contexts/language-context";
 import { InvoiceEditSkeleton } from "@/components/invoice-edit-skeleton";
 import { toast } from "sonner";
+import { trackPdfDownload } from "@/utils/analytics";
 
 export default function EditInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const { t } = useLanguage();
@@ -74,6 +75,7 @@ export default function EditInvoicePage({ params }: { params: Promise<{ id: stri
     setIsGenerating(true);
     try {
       await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+      trackPdfDownload("invoice", invoice.details.invoiceNumber);
     } catch {
       toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
       window.print();

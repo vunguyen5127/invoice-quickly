@@ -8,6 +8,7 @@ import { Download, Loader2, CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import { InvoiceViewSkeleton } from "@/components/invoice-view-skeleton";
 import { toast } from "sonner";
+import { trackPdfDownload } from "@/utils/analytics";
 
 export default function ShareQuotePage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
@@ -38,6 +39,7 @@ export default function ShareQuotePage({ params }: { params: Promise<{ id: strin
     setIsGenerating(true);
     try {
       await generatePDF("invoice-capture-area", `Quote-${quote.quote_number}`);
+      trackPdfDownload("quote", quote.quote_number);
     } catch {
       toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
       window.print();

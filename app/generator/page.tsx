@@ -21,6 +21,7 @@ import { AuthButton } from "@/components/auth-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLanguage } from "@/contexts/language-context";
 import { toast } from "sonner";
+import { trackPdfDownload } from "@/utils/analytics";
 const CreateCompanyModal = dynamic(() => import("@/components/create-company-modal").then((mod) => mod.CreateCompanyModal));
 const SuccessModal = dynamic(() => import("@/components/success-modal").then((mod) => mod.SuccessModal));
 
@@ -178,6 +179,8 @@ function CreateInvoiceContent() {
     setIsGenerating(true);
     try {
       await generatePDF("invoice-capture-area", `Invoice-${invoice.details.invoiceNumber}`);
+      // GA4 tracking
+      trackPdfDownload("invoice", invoice.details.invoiceNumber);
       // Google Ads conversion tracking — "PDF Downloaded"
       try {
         if (typeof window !== "undefined" && (window as any).gtag) {
