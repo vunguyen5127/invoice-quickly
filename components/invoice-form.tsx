@@ -83,7 +83,8 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
           } else {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-              fetchedNextInvNum = await getNextInvoiceNumber(session.access_token, selectedId);
+              // Pass the company's invoice_number_prefix so the number format matches the company
+              fetchedNextInvNum = await getNextInvoiceNumber(session.access_token, selectedId, comp.invoice_number_prefix || undefined);
             }
           }
         }
@@ -102,17 +103,18 @@ export function InvoiceForm({ invoice, setInvoice, defaultCompanyId, canUseRecur
            email: "",
            phone: "",
            address: "",
-           logo: comp.logo_url || prev.company.logo,
+           logo: comp.logo_url ?? "",
         },
-        signatureName: comp.signer_name || prev.signatureName,
-        signature: comp.signature_url || prev.signature,
-        currency: comp.default_currency || prev.currency,
-        notes: comp.default_notes || prev.notes,
-        terms: comp.default_terms || prev.terms,
+        signatureName: comp.signer_name ?? "",
+        signature: comp.signature_url ?? "",
+        // Use ?? so that a company with an explicit empty-string value still overrides the previous
+        currency: comp.default_currency ?? prev.currency,
+        notes: comp.default_notes ?? "",
+        terms: comp.default_terms ?? "",
         showNotes: comp.show_notes ?? true,
         showTerms: comp.show_terms ?? true,
-        taxRate: comp.default_tax || 0,
-        discount: comp.default_discount || 0,
+        taxRate: comp.default_tax ?? 0,
+        discount: comp.default_discount ?? 0,
       }));
     }
     setSelectedCompanyId(selectedId);

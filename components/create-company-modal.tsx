@@ -47,7 +47,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    if (!name.trim() || !email.trim() || !address.trim()) return;
 
     const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
     const isPhoneValid = !phone || phoneRegex.test(phone.replace(/\s/g, ''));
@@ -158,9 +158,9 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                       <legend className={lg}>{t.companyNameField} <span className="text-red-500">*</span></legend>
                       <input required value={name} onChange={e => setName(e.target.value)} className={ic} placeholder="Acme Corp" />
                     </fieldset>
-                    <fieldset className={fs}>
-                      <legend className={lg}>{t.billingEmailField}</legend>
-                      <input type="email" value={email} onChange={e => setEmail(e.target.value)} className={ic} placeholder="billing@acme.com" />
+                    <fieldset className={`${fs} ${!email.trim() ? 'border-red-400/60 dark:border-red-500/40' : ''}`}>
+                      <legend className={`${lg} ${!email.trim() ? 'text-red-400' : ''}`}>{t.billingEmailField} <span className="text-red-500">*</span></legend>
+                      <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className={ic} placeholder="billing@acme.com" />
                     </fieldset>
                   </div>
 
@@ -188,9 +188,9 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
                   </div>
                 </div>
 
-                <fieldset className={fs}>
-                  <legend className={lg}>{t.addressField}</legend>
-                  <textarea rows={2} value={address} onChange={e => setAddress(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="123 Business St, City, Country" />
+                <fieldset className={`${fs} ${!address.trim() ? 'border-red-400/60 dark:border-red-500/40' : ''}`}>
+                  <legend className={`${lg} ${!address.trim() ? 'text-red-400' : ''}`}>{t.addressField} <span className="text-red-500">*</span></legend>
+                  <textarea required rows={2} value={address} onChange={e => setAddress(e.target.value)} className={`${ic} resize-none mt-1`} placeholder="123 Business St, City, Country" />
                 </fieldset>
 
                 <div className="grid grid-cols-2 gap-2">
@@ -324,7 +324,7 @@ export function CreateCompanyModal({ isOpen, onClose, onSuccess }: CreateCompany
             <button type="button" onClick={onClose} disabled={isSubmitting} className="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors px-3 py-2">
               {t.cancel}
             </button>
-            <button type="submit" disabled={isSubmitting || !name.trim()} className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary hover:opacity-90 rounded-xl transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-[0.98]">
+            <button type="submit" disabled={isSubmitting || !name.trim() || !email.trim() || !address.trim()} className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-primary-foreground bg-primary hover:opacity-90 rounded-xl transition-all disabled:opacity-50 shadow-lg shadow-primary/20 active:scale-[0.98]">
               {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               {t.createCompanyBtn}
             </button>
