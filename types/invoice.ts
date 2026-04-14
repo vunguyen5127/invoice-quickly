@@ -99,7 +99,7 @@ export const initialInvoiceState: InvoiceState = {
     phone: ""
   },
   client: {
-    name: "Greenfield Properties LLC, 1200 Market Street Floor 8 New York NY 10001, elon.musk@greenfield.com, +1(321) 555-7799",
+    name: "Greenfield Properties LLC, 1200 Market Street Floor 8 New York NY 10001, billing@greenfield.com, +1(321) 555-7799",
     email: "",
     address: "",
     phone: ""
