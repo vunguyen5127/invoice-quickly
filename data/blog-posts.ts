@@ -1358,9 +1358,9 @@ This guide breaks down every major payment term, when to use each, and how to wr
 **How to read it:** The formula is always [Discount%] / [Days to get discount] Net [Full payment deadline]
 
 **Common variations:**
-- `1/10 Net 30` — 1% discount if paid within 10 days
-- `2/10 Net 45` — 2% discount if paid within 10 days, full due in 45
-- `5/10 Net 60` — 5% discount if paid within 10 days, full due in 60
+- **1/10 Net 30** — 1% discount if paid within 10 days
+- **2/10 Net 45** — 2% discount if paid within 10 days, full due in 45
+- **5/10 Net 60** — 5% discount if paid within 10 days, full due in 60
 
 **Real example:**
 - Invoice total: $10,000
