@@ -175,6 +175,18 @@ function CreateInvoiceContent() {
     }
   }, [invoice, isLoaded]);
 
+  const fireAdsConversion = () => {
+    try {
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-17800091853/-kStCJvts5gcEM2x36dC",
+        });
+      }
+    } catch {
+      // Silently fail — never block the user experience
+    }
+  };
+
   const handleDownload = async () => {
     setIsGenerating(true);
     try {
@@ -182,17 +194,11 @@ function CreateInvoiceContent() {
       // GA4 tracking
       trackPdfDownload("invoice", invoice.details.invoiceNumber);
       // Google Ads conversion tracking — "PDF Downloaded"
-      try {
-        if (typeof window !== "undefined" && (window as any).gtag) {
-          (window as any).gtag("event", "conversion", {
-            send_to: "AW-17800091853/-kStCJvts5gcEM2x36dC",
-          });
-        }
-      } catch {
-        // Silently fail — never block the user experience
-      }
+      fireAdsConversion();
     } catch {
       toast.error("Could not generate PDF. Try using your browser's print dialog instead.");
+      // Still fire conversion — user intent is clear even when falling back to print
+      fireAdsConversion();
       window.print();
     } finally {
       setIsGenerating(false);
