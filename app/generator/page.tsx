@@ -70,8 +70,16 @@ function CreateInvoiceContent() {
       if (isNew) {
         // Coming from landing page CTA — always start fresh
         localStorage.removeItem("Invoice-QuicklyDraft");
-        // Clean URL without reloading
-        window.history.replaceState({}, "", "/generator");
+        // Clean URL but PRESERVE tracking params (gclid, utm_*, wbraid, gbraid)
+        // so Google Ads can correctly attribute conversions to paid clicks.
+        const trackingParams = ["gclid", "wbraid", "gbraid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+        const preserved = new URLSearchParams();
+        trackingParams.forEach((key) => {
+          const val = searchParams.get(key);
+          if (val) preserved.set(key, val);
+        });
+        const cleanUrl = preserved.toString() ? `/generator?${preserved.toString()}` : "/generator";
+        window.history.replaceState({}, "", cleanUrl);
       } else {
         const savedDraft = localStorage.getItem("Invoice-QuicklyDraft");
         if (savedDraft) {
